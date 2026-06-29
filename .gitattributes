@@ -1,0 +1,24 @@
+# Force LF on checkout for all text files, regardless of core.autocrlf.
+# The Solo Dev OS frontmatter parsers anchor on \n and shell scripts require LF;
+# without this, Windows checkouts (autocrlf=true) produce CRLF task files whose
+# frontmatter the gate reads as empty — silently skipping every proof, the slop
+# check, scope enforcement, and handoff presence. eol=lf makes every harness and
+# OS see identical bytes.
+* text=auto eol=lf
+
+# Shell scripts must stay LF or they break under bash on every platform.
+*.sh text eol=lf
+*.mjs text eol=lf
+
+# Binary assets: never normalize.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff  binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
+*.pdf  binary
