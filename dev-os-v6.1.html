@@ -279,7 +279,7 @@
       <p class="lede">A cohesive source-of-truth manual for launching software projects with agentic coding tools. Continuity lives in artifacts, not in models. v6.1 stops <em>trusting</em> agents to follow the rules and makes the rules <strong>fail closed</strong>: one canonical state file, a single shell verify gate wired into Git, and quality checks that block a merge whether or not the agent cooperated.</p>
       <div class="flow">
         <div class="step"><span class="num">00</span><strong>State</strong><p>One canonical <code>STATE.json</code>. Every human-readable view is generated from it.</p></div>
-        <div class="step"><span class="num">01</span><strong>Spine</strong><p>Durable intent, outcomes, domain, data, technical, content, and design rules.</p></div>
+        <div class="step"><span class="num">01</span><strong>Spine</strong><p>Hydrated intent (00–09) plus design, content, and UI <em>elicited</em> from questionnaires + your references (10–12).</p></div>
         <div class="step"><span class="num">02</span><strong>Skills</strong><p>Vendored SKILL.md packages on disk. One active design lane per task.</p></div>
         <div class="step"><span class="num">03</span><strong>Handoff</strong><p>Session, task, and review handoffs by path. Continuity is workflow-driven.</p></div>
         <div class="step"><span class="num">04</span><strong>Proof</strong><p>A fail-closed <code>verify-task.sh</code> in Git hooks + CI. Not honor-system.</p></div>
@@ -358,18 +358,47 @@
 
           <section id="ug-start" class="section">
             <h2>Project Start</h2>
-            <p>Before any agent hydrates the eleven spine files, the project needs a front door. "Hydrate the spine" is not step one — it's step <em>three</em>. Skipping the first two is how spines end up as an agent's confident guess about a conversation that evaporated.</p>
-            <h3>Step 1 — Write the brief <span style="font-size:12px;color:var(--amber)">(you, by hand)</span></h3>
+            <p>Project start is a <strong>six-phase gated pipeline</strong>, not a single "hydrate the spine" step. The first three phases capture durable <em>intent</em> (brief → interview → hydrated spine). The last three <em>elicit</em> the things that cannot be guessed from intent — your design taste, your content structure, and the exact UI that presents it. Each phase is fail-closed: the next cannot start until the current one is genuinely complete and, where it produces an artifact, approved by you.</p>
+            <div class="notice info"><strong>Why split intent from elicitation:</strong> the manifesto, charter, PRD, and the rest are <em>elaborations of decisions you already made</em> — an agent can draft them faithfully from the brief. A design system, a content structure, and a UI map are <em>not</em> in the brief; if an agent drafts them from intent it is guessing at your taste. So those three are driven by dedicated questionnaires — and by <strong>your own screenshots and reference links</strong> — never hydrated.</div>
+
+            <h3>Phase 1 — Write the brief <span style="font-size:12px;color:var(--amber)">(you, by hand)</span></h3>
             <p>Run <code>bash scripts/intake.sh brief</code> to scaffold <code>project-spine/00-original-intent.md</code>, then fill it in yourself. This is the <strong>one purely-human artifact</strong> in the whole system — never agent-rewritten. It captures raw intent: what this is, who it's for, what success looks like, hard constraints (stack, compliance like ZRA, integrations like MoMo/Airtel/ZamPay), what's explicitly out of scope, known risks, existing assets. The spine must stay faithful to this file.</p>
             <div class="signal"><div class="ic good">✓</div><div><strong>Good:</strong> every section filled with a real answer (or an explicit "none"). Set <code>status: ready</code> when done.</div></div>
             <div class="signal"><div class="ic bad">✕</div><div><strong>Red flag:</strong> leaving <code>[...]</code> prompts in place and asking the agent to "figure it out." The intake gate refuses this.</div></div>
-            <h3>Step 2 — The hydration interview <span style="font-size:12px;color:var(--green)">(agent asks, you answer)</span></h3>
-            <p>Run <code>bash scripts/intake.sh interview</code>, then instruct a planning agent: <em>"Read <code>00-original-intent.md</code> and fill <code>INTAKE-INTERVIEW.md</code> with the gaps you need resolved before drafting the spine."</em> The agent interrogates ambiguity — "multi-tenant, but which isolation model?", "ZRA named, but required for v1 or phase 2?" — instead of papering over it. You answer each question inline. A thorough brief may yield few questions; that's fine. This is the bookend of the same "interrogate before you build" pattern the rest of the OS uses.</p>
+
+            <h3>Phase 2 — The hydration interview <span style="font-size:12px;color:var(--green)">(agent asks, you answer)</span></h3>
+            <p>Run <code>bash scripts/intake.sh interview</code>, then instruct a planning agent: <em>"Read <code>00-original-intent.md</code> and fill <code>INTAKE-INTERVIEW.md</code> with the gaps you need resolved before drafting the spine."</em> The agent interrogates ambiguity — "multi-tenant, but which isolation model?", "ZRA named, but required for v1 or phase 2?" — instead of papering over it. You answer each question inline. A thorough brief may yield few questions; that's fine. This is the same "interrogate before you build" pattern the rest of the OS uses.</p>
             <div class="signal"><div class="ic good">✓</div><div><strong>Good:</strong> the agent asks only where the brief is genuinely silent or ambiguous, you answer each, and you set <code>status: answered</code> (all checkboxes ticked).</div></div>
             <div class="signal"><div class="ic bad">✕</div><div><strong>Red flag:</strong> the agent pads the interview with questions the brief already answers, or starts drafting spine files with questions still open.</div></div>
-            <h3>Step 3 — Hydrate the spine <span style="font-size:12px;color:var(--green)">(agent drafts, you review)</span></h3>
-            <p>Only once <code>bash scripts/intake.sh ready</code> prints <strong>READY</strong> — brief filled, interview answered — does spine hydration begin. The planning agent drafts the eleven spine files <em>from</em> the brief and the answered interview; you review them. The intake gate is fail-closed: it blocks hydration until both inputs are complete.</p>
-            <div class="notice info"><strong>Why a gate here too:</strong> the brief and interview are non-mechanical, judgment-heavy inputs — exactly the kind the OS makes human-reviewable and gates downstream use of. The agent <em>advises</em> (asks questions, drafts); you <em>commit</em> (answer, approve). Same shape as every other decision point in the system.</div>
+
+            <h3>Phase 3 — Hydrate the spine <span style="font-size:12px;color:var(--green)">(agent drafts, you review)</span></h3>
+            <p>Only once <code>bash scripts/intake.sh ready</code> prints <strong>READY</strong> — brief filled, interview answered — does spine hydration begin. The planning agent drafts the <strong>ten intent files <code>00-manifesto</code> … <code>09-roadmap</code></strong> <em>from</em> the brief and the answered interview; you review them. Note what is <em>not</em> in this list: the design system, the content strategy, and the UI map. Those are elicited in Phases 4–6, not hydrated here.</p>
+            <div class="signal"><div class="ic good">✓</div><div><strong>Good:</strong> ten files (00–09) drafted, each faithful to the brief. No design tokens, content sitemap, or component choices invented at this stage.</div></div>
+            <div class="signal"><div class="ic bad">✕</div><div><strong>Red flag:</strong> the agent writes a design system or content strategy "to be thorough." That is guessing your taste — it belongs to the gated phases below.</div></div>
+
+            <h3>Phase 4 — Generate the design system <span style="font-size:12px;color:var(--amber)">(you answer + show; </span><span style="font-size:12px;color:var(--green)">agent generates)</span></h3>
+            <p>Run <code>bash scripts/design.sh questionnaire</code> to scaffold <code>10-design-system.QUESTIONNAIRE.md</code> and a <code>project-spine/references/design/</code> folder. This is where your taste enters the system as <em>evidence</em>, not adjectives:</p>
+            <ul>
+              <li><strong>Show, don't just tell.</strong> Drop screenshots of sites/UIs you love into <code>references/design/</code>, and paste links into the questionnaire's <em>Visual references</em> section — each with a one-line note on <em>what specifically</em> you like (the type, the spacing, the motion, the colour restraint).</li>
+              <li><strong>Answer the questionnaire.</strong> It interrogates emotional intent, colour direction, typography personality, density, motion appetite, imagery style, and hard anti-patterns. Set <code>status: answered</code> when done.</li>
+            </ul>
+            <p>Then <code>bash scripts/design.sh ready</code> gates it (questionnaire answered, at least one reference supplied). Once READY, instruct the agent: <em>"Read the answered design questionnaire and the references, then generate <code>10-design-system.md</code>."</em> The agent reads your screenshots (multimodal) and visits your links, and produces tokens, type scale, spacing, and component direction grounded in <em>your</em> evidence — <strong>plus a rendered visual reference <code>10-design-system.html</code></strong> built from those tokens. Run <code>bash scripts/design.sh preview</code> (it refuses until both the <code>.md</code> and the <code>.html</code> exist), then <strong>open the HTML in a browser and actually look at it</strong>: a design system reads completely differently rendered than as a token table. Note what is off, have the agent revise the tokens and regenerate the preview, and repeat until it is right. <strong>Only then</strong> set <code>status: approved</code> — the system may not be approved unseen, and Phase 5 will refuse to start without the inspected preview.</p>
+            <div class="signal"><div class="ic good">✓</div><div><strong>Good:</strong> the generated tokens visibly trace back to your references, and the rendered <code>10-design-system.html</code> (produced <em>from</em> the tokens, not hand-authored) is what you signed off on after one or more rounds of feedback.</div></div>
+            <div class="signal"><div class="ic bad">✕</div><div><strong>Red flag:</strong> tokens that look like a generic template (the agent guessed). If you supplied no references, you got a guess — that is the failure this phase exists to prevent.</div></div>
+
+            <h3>Phase 5 — Generate the content strategy &amp; site structure <span style="font-size:12px;color:var(--amber)">(you answer + show; </span><span style="font-size:12px;color:var(--green)">agent generates)</span></h3>
+            <p>Gated on an <strong>approved design system</strong>. Run <code>bash scripts/content.sh questionnaire</code> to scaffold <code>11-content-strategy.QUESTIONNAIRE.md</code> and <code>references/content/</code>. It interrogates audience priority, voice, proof assets, SEO intent, and — critically — the <strong>site structure</strong>: which pages exist, what each one is for, and the content each must carry. Supply references for tone and layout the same way (screenshots + annotated links).</p>
+            <p><code>bash scripts/content.sh ready</code> gates it; then the agent generates <code>11-content-strategy.md</code>, which must <strong>explicitly prescribe the sitemap, a page-by-page content outline, and a content inventory</strong> (what you already have vs. what must be created). You review and set <code>status: approved</code>.</p>
+            <div class="signal"><div class="ic good">✓</div><div><strong>Good:</strong> a concrete sitemap and per-page content prescription you could hand to a writer tomorrow — not vague "audience and tone" prose.</div></div>
+            <div class="signal"><div class="ic bad">✕</div><div><strong>Red flag:</strong> the strategy describes a voice but never names the pages or what goes on them. Structure is the deliverable here.</div></div>
+
+            <h3>Phase 6 — Prescribe the UI elements <span style="font-size:12px;color:var(--amber)">(you answer + show; </span><span style="font-size:12px;color:var(--green)">agent generates)</span></h3>
+            <p>Gated on an <strong>approved content strategy</strong>. Run <code>bash scripts/ui.sh questionnaire</code> to scaffold <code>12-ui-element-map.QUESTIONNAIRE.md</code> and <code>references/ui/</code>. Walking the approved sitemap section by section, you specify how each content block should be <em>presented</em> — and this is the phase where references matter most: <em>"the hero like </em>this<em> screenshot, the case-study cards like </em>that<em> link."</em> Drop the screenshots, paste the links, annotate each.</p>
+            <p><code>bash scripts/ui.sh ready</code> gates it; then the agent generates <code>12-ui-element-map.md</code> — a table mapping <strong>every content block → an exact UI element</strong> (shadcn/ui primitive, 21st.dev element, or custom), its source, the reference that inspired it, and its motion treatment. This is the bridge from the spine into implementation tasks.</p>
+            <div class="signal"><div class="ic good">✓</div><div><strong>Good:</strong> an unambiguous element-by-element map. An execution agent could build the page from it without inventing layout.</div></div>
+            <div class="signal"><div class="ic bad">✕</div><div><strong>Red flag:</strong> a content block with no element assigned, or an element with no reference and no design-system token behind it.</div></div>
+
+            <div class="notice info"><strong>The shape of all three elicitation phases is identical:</strong> a questionnaire you answer + references you supply (screenshots in <code>references/&lt;phase&gt;/</code>, annotated links in the questionnaire) → a fail-closed <code>ready</code> gate → an agent that <em>generates</em> the artifact from your evidence → your <code>status: approved</code> that unlocks the next phase. The agent <em>advises</em>; you <em>commit</em>. Same shape as every other decision point in the system.</div>
           </section>
 
           <section id="ug-day" class="section">
@@ -902,14 +931,22 @@ task: TASK-021A-03
 │   ├── review/   session/   task/   rework/   archive/
 │
 ├── project-spine/
-│   ├── 00-original-intent.md          ← NEW: human-authored seed (never agent-rewritten)
-│   ├── INTAKE-INTERVIEW.md            ← NEW: gap interview, gates hydration
+│   ├── 00-original-intent.md          ← human-authored seed (never agent-rewritten)
+│   ├── INTAKE-INTERVIEW.md            ← gap interview, gates hydration
+│   │   ── hydrated intent (00–09): agent drafts from brief + interview ──
 │   ├── 00-manifesto.md  01-project-charter.md  02-business-outcomes-map.md
 │   ├── 03-project-prd.md  04-domain-model.md
 │   ├── 05-data-model.md               ← protected
 │   ├── 06-project-technical-plan.md  07-architecture-principles.md
 │   ├── 08-risk-register.md  09-roadmap.md
-│   ├── 10-content-strategy.md  11-design-system.md
+│   │   ── elicited artifacts (10–12): generated from questionnaire + refs ──
+│   ├── 10-design-system.QUESTIONNAIRE.md   → 10-design-system.md  (+ 10-design-system.html — visual reference, inspect before approving)
+│   ├── 11-content-strategy.QUESTIONNAIRE.md → 11-content-strategy.md
+│   ├── 12-ui-element-map.QUESTIONNAIRE.md   → 12-ui-element-map.md
+│   └── references/                    ← NEW: your visual intent
+│       ├── design/   ← screenshots you drop for the design system
+│       ├── content/  ← screenshots for tone / layout
+│       └── ui/        ← screenshots for exact element treatment
 │
 ├── planning/
 │   ├── slices/   tests/
@@ -945,7 +982,10 @@ task: TASK-021A-03
 │
 ├── scripts/
 │   ├── bootstrap-solo-dev-os.sh
-│   ├── intake.sh                      ← NEW: project-start (brief | interview | ready gate)
+│   ├── intake.sh                      ← NEW: project-start P1–3 (brief | interview | ready gate)
+│   ├── design.sh                      ← NEW: P4 design system (questionnaire | ready)
+│   ├── content.sh                     ← NEW: P5 content strategy + structure (questionnaire | ready)
+│   ├── ui.sh                          ← NEW: P6 UI element map (questionnaire | ready)
 │   ├── os.sh                          ← NEW: start | end | check | render | rotate-log | migrate-v61
 │   ├── branch.sh                      ← NEW: 3-branch workflow (start|base|guard|sync-dev|cleanup|promote)
 │   ├── verify-task.sh                 ← NEW: fail-closed gate (replaces pnpm os:verify-task)
@@ -984,7 +1024,8 @@ task: TASK-021A-03
 
           <section id="spine" class="section">
             <h2>Project Spine</h2>
-            <p>The durable intent of the project. Unchanged from v6. Spine files are written by a human plus planning agent; no autonomous rewrite without human confirmation.</p>
+            <p>The durable foundation of the project. It splits into two groups by <em>how each file comes to exist</em>. Files <strong>00–09 are hydrated intent</strong> — drafted by a planning agent from the brief + interview, because they elaborate decisions you already made. Files <strong>10–12 are elicited artifacts</strong> — generated from dedicated questionnaires plus your own screenshots/links, because design taste, content structure, and UI choices cannot be guessed from intent. No autonomous rewrite of any spine file without human confirmation.</p>
+            <h3 style="font-size:15px;margin:6px 0 8px;color:var(--green)">Hydrated intent — drafted from brief + interview (Phase 3)</h3>
             <div class="table-wrap"><table>
               <thead><tr><th>#</th><th>File</th><th>Holds</th></tr></thead>
               <tbody>
@@ -998,21 +1039,41 @@ task: TASK-021A-03
                 <tr><td>07</td><td>Architecture Principles</td><td>Local rules agents must not violate.</td></tr>
                 <tr><td>08</td><td>Risk Register</td><td>Known risks, mitigations, human gates.</td></tr>
                 <tr><td>09</td><td>Roadmap</td><td>P1/P2/P3 sequence and rationale.</td></tr>
-                <tr><td>10</td><td>Content Strategy</td><td>Audience, message hierarchy, proof, UX writing, SEO.</td></tr>
-                <tr><td>11</td><td>Design System</td><td>Tokens, components, accessibility, layout principles.</td></tr>
               </tbody>
             </table></div>
-            <div class="notice"><strong>Rule:</strong> User-facing tasks that change layout, messaging, claims, forms, onboarding, dashboards, or client workflows must reference <code>10-content-strategy.md</code> and <code>11-design-system.md</code>, or explicitly mark them not required in the task frontmatter (the gate checks for one or the other).</div>
+            <h3 style="font-size:15px;margin:18px 0 8px;color:var(--amber)">Elicited artifacts — generated from questionnaire + references (Phases 4–6)</h3>
+            <div class="table-wrap"><table>
+              <thead><tr><th>#</th><th>File</th><th>Generated by</th><th>Holds</th></tr></thead>
+              <tbody>
+                <tr><td>10</td><td>Design System</td><td><code>design.sh</code></td><td>Tokens, type scale, spacing, component direction, motion, accessibility. <span class="badge violet">elicited</span></td></tr>
+                <tr><td>11</td><td>Content Strategy</td><td><code>content.sh</code></td><td>Audience, voice, SEO — <strong>plus the prescribed sitemap, per-page content outline, and content inventory</strong>. <span class="badge violet">elicited</span></td></tr>
+                <tr><td>12</td><td>UI Element Map</td><td><code>ui.sh</code></td><td>Every content block → exact UI element (shadcn / 21st.dev / custom), source, reference, motion. <span class="badge violet">elicited</span></td></tr>
+              </tbody>
+            </table></div>
+            <p>Each elicited file is paired with a <code>&lt;n&gt;-*.QUESTIONNAIRE.md</code> input and draws on <code>project-spine/references/&lt;design|content|ui&gt;/</code> for the screenshots and links that ground it in your taste. The phases are sequential and fail-closed: design must be <code>approved</code> before content; content before UI.</p>
+            <div class="notice"><strong>Rule:</strong> User-facing tasks that change layout, messaging, claims, forms, onboarding, dashboards, or client workflows must reference <code>10-design-system.md</code>, <code>11-content-strategy.md</code>, and (for build-out) <code>12-ui-element-map.md</code>, or explicitly mark them not required in the task frontmatter (the gate checks for one or the other).</div>
           </section>
 
           <section id="workflow" class="section">
             <h2>End-to-End Workflow</h2>
             <p>v6.1 wraps execution with a mandatory <code>os.sh start</code> / <code>os.sh end</code> and a fail-closed gate at push time. The Handoff Layer sits between Execution and Review.</p>
-            <div class="codebox"><pre><code>PROJECT START (once)
-  intake.sh brief      → fill 00-original-intent.md (human seed)
-  intake.sh interview  → planning agent asks gaps; human answers
-  intake.sh ready      → fail-closed gate; unblocks hydration
-  hydrate spine        → agent drafts 11 spine files FROM brief + interview
+            <div class="codebox"><pre><code>PROJECT START (once) — six gated phases
+  intake.sh brief        → fill 00-original-intent.md (human seed)
+  intake.sh interview    → planning agent asks gaps; human answers
+  intake.sh ready        → fail-closed gate; unblocks hydration
+  hydrate spine          → agent drafts 00–09 (intent) FROM brief + interview
+    ↓
+  design.sh questionnaire→ you answer + drop screenshots/links in references/design/
+  design.sh ready        → gate; agent GENERATES 10-design-system.md + 10-design-system.html
+  design.sh preview      → gate; you inspect the HTML in a browser, iterate, THEN approve
+    ↓
+  content.sh questionnaire→ you answer + references/content/  (gated on design approved)
+  content.sh ready       → gate; agent GENERATES 11-content-strategy.md
+                           (sitemap + per-page content + inventory) → you approve
+    ↓
+  ui.sh questionnaire    → you answer + references/ui/  (gated on content approved)
+  ui.sh ready            → gate; agent GENERATES 12-ui-element-map.md
+                           (every content block → exact UI element) → you approve
     ↓
 Session Start  →  os.sh start
     (read STATE.json · render views · load handoffs · write lock)
@@ -2024,6 +2085,9 @@ close until every rework item is resolved and you run rework.sh close.</code></p
         <aside class="sidebar">
           <strong>Scripts</strong>
           <a href="#sc-intake">intake.sh</a>
+          <a href="#sc-design">design.sh</a>
+          <a href="#sc-content">content.sh</a>
+          <a href="#sc-ui">ui.sh</a>
           <a href="#sc-os">os.sh</a>
           <a href="#sc-branch">branch.sh</a>
           <a href="#sc-verify">verify-task.sh</a>
@@ -2048,16 +2112,19 @@ close until every rework item is resolved and you run rework.sh close.</code></p
           <section id="sc-intake" class="section">
             <div class="code-head"><span class="code-title">intake.sh — Project Start (brief/interview/ready)</span><button class="copy" data-copy>Copy</button></div>
             <div class="codebox"><pre><code>#!/usr/bin/env bash
-# scripts/intake.sh — the project-start front door. Turns &quot;hydrate the spine&quot;
-# from a vibe into a defined, gated phase.
+# scripts/intake.sh — the project-start front door (Phases 1–3 of 6).
+# Turns &quot;hydrate the spine&quot; from a vibe into a defined, gated phase.
 #
 # Flow:
 #   1. brief    scaffold project-spine/00-original-intent.md (human-authored seed)
 #   2. interview generate INTAKE-INTERVIEW.md — gaps an agent must ask about
 #                BEFORE drafting any spine file
-#   3. ready    fail-closed check: spine hydration is blocked until the brief is
-#                filled AND every interview question is answered
+#   3. ready    fail-closed check: hydration of the INTENT files (00-09) is blocked
+#                until the brief is filled AND every interview question is answered
 #
+# Hydration drafts ONLY 00-manifesto … 09-roadmap. The design system (10),
+# content strategy (11), and UI element map (12) are NOT hydrated here — they are
+# elicited later via design.sh, content.sh, ui.sh (Phases 4–6).
 # The brief is the one purely-human artifact; the spine is agent-elaborated FROM it.
 set -euo pipefail
 SPINE=&quot;project-spine&quot;
@@ -2162,7 +2229,8 @@ cmd_ready() {
     grep -q &#x27;^- \[ \]&#x27; &quot;$INTERVIEW&quot; &amp;&amp; { echo &quot;  $INTERVIEW has unanswered questions&quot;; ok=0; }
   fi
   if [[ &quot;$ok&quot; -eq 1 ]]; then
-    echo &quot;[intake] READY — brief filled and interview answered. Spine hydration unblocked.&quot;
+    echo &quot;[intake] READY — brief filled and interview answered. Hydration of 00-09 unblocked.&quot;
+    echo &quot;[intake] next: hydrate 00-manifesto … 09-roadmap, then run: bash scripts/design.sh questionnaire&quot;
   else
     echo &quot;[intake] NOT READY — resolve the above before hydrating the spine.&quot;
     exit 1
@@ -2176,6 +2244,329 @@ case &quot;${1:-help}&quot; in
   *) echo &quot;Usage: bash scripts/intake.sh [brief|interview|ready]&quot; ;;
 esac</code></pre></div>
           </section>
+
+          <section id="sc-design" class="section">
+            <div class="code-head"><span class="code-title">design.sh — Phase 4: Design System (questionnaire → generate → preview → approve)</span><button class="copy" data-copy>Copy</button></div>
+            <div class="codebox"><pre><code>#!/usr/bin/env bash
+# scripts/design.sh — Phase 4 of project start. The design system is ELICITED,
+# never hydrated: an agent must not guess your taste from the brief. You answer a
+# questionnaire and supply real visual evidence (screenshots + links); the agent
+# then GENERATES 10-design-system.md grounded in that evidence.
+#
+# Flow:
+#   questionnaire  scaffold 10-design-system.QUESTIONNAIRE.md + references/design/
+#   ready          fail-closed: questionnaire answered AND >=1 reference supplied
+#                  → agent generates BOTH 10-design-system.md AND its rendered
+#                    visual reference 10-design-system.html
+#   preview        fail-closed: the system .md AND .html both exist. You then open
+#                  the HTML in a browser, inspect it, and iterate on the tokens +
+#                  preview with feedback until it is right. The design system may
+#                  NOT be approved unseen — approval requires a rendered preview you
+#                  have actually reviewed.
+#
+# Prereq: the intent spine (00-09) must be hydrated first.
+set -euo pipefail
+SPINE=&quot;project-spine&quot;
+Q=&quot;$SPINE/10-design-system.QUESTIONNAIRE.md&quot;
+OUT=&quot;$SPINE/10-design-system.md&quot;
+PREVIEW=&quot;$SPINE/10-design-system.html&quot;
+REF=&quot;$SPINE/references/design&quot;
+
+require_hydrated() {
+  for f in 00-manifesto 01-project-charter 03-project-prd 09-roadmap; do
+    [[ -s &quot;$SPINE/$f.md&quot; ]] || { echo &quot;[design] hydrate the intent spine first (missing $SPINE/$f.md)&quot;; exit 1; }
+  done
+}
+
+cmd_questionnaire() {
+  require_hydrated
+  mkdir -p &quot;$REF&quot;
+  if [[ -s &quot;$Q&quot; ]]; then echo &quot;[design] $Q already exists — edit it, don&#x27;t overwrite.&quot;; exit 0; fi
+  cat &gt; &quot;$REF/README.md&quot; &lt;&lt;&#x27;MD&#x27;
+# Design references
+Drop screenshots of UIs/sites whose look you want to borrow from into THIS folder.
+Name them so you can cite them in the questionnaire, e.g. hero-linear.png, type-stripe.png.
+The agent reads these images directly. Pair each with a note in the questionnaire&#x27;s
+&quot;Visual references&quot; section saying WHAT you like about it.
+MD
+  cat &gt; &quot;$Q&quot; &lt;&lt;&#x27;MD&#x27;
+---
+id: DESIGN-SYSTEM-QUESTIONNAIRE
+status: open            # open -> answered (you), then the agent generates the system
+phase: 4
+---
+# Design System Questionnaire
+&gt; The design system is elicited from YOUR taste, not guessed. Answer every prompt
+&gt; and supply real evidence. &quot;Show, don&#x27;t tell&quot; — a screenshot beats an adjective.
+&gt; Set status: answered when done, then run: bash scripts/design.sh ready
+
+## Visual references (REQUIRED — at least one)
+&gt; List the screenshots you dropped in references/design/ and/or live links.
+&gt; For each, say what specifically you want to borrow (type, spacing, colour, motion).
+- ref: [filename or URL]
+  like: [what specifically — e.g. &quot;the restraint of the palette, the huge type&quot;]
+- ref:
+  like:
+
+## 1. Emotional intent
+- [ ] Three adjectives this should evoke (e.g. precise, warm, confident):
+- [ ] Three adjectives it must NOT feel like:
+
+## 2. Colour direction
+- [ ] Light, dark, or both?
+- [ ] Existing brand colours / hex values (or &quot;none yet&quot;):
+- [ ] Accent appetite: monochrome-restrained or colourful?
+
+## 3. Typography
+- [ ] Serif, sans, or mixed? Any fonts you already love?
+- [ ] Personality: neutral-systemic, editorial, technical, expressive?
+
+## 4. Layout &amp; density
+- [ ] Minimal/airy or rich/dense?
+- [ ] Whitespace appetite (generous / efficient):
+
+## 5. Motion appetite
+- [ ] Subtle and restrained, or bold and expressive?
+- [ ] Anything you&#x27;ve seen that nailed it (cite a reference):
+
+## 6. Imagery style
+- [ ] Photography, illustration, 3D, abstract, none?
+
+## 7. Hard anti-patterns
+- [ ] Looks/trends you never want to see here:
+
+## 8. Brand assets / constraints
+- [ ] Logo, existing palette, mandated fonts, accessibility floor (e.g. WCAG AA):
+MD
+  echo &quot;[design] created $Q and $REF/ — answer it, drop screenshots, then: bash scripts/design.sh ready&quot;
+}
+
+cmd_ready() {
+  local ok=1
+  if [[ ! -s &quot;$Q&quot; ]]; then echo &quot;  MISSING: $Q (run: design.sh questionnaire)&quot;; ok=0
+  else
+    grep -q &#x27;^status: answered&#x27; &quot;$Q&quot; || { echo &quot;  $Q is not status: answered&quot;; ok=0; }
+    grep -q &#x27;^- \[ \]&#x27; &quot;$Q&quot; &amp;&amp; { echo &quot;  $Q has unanswered prompts&quot;; ok=0; }
+    grep -q &#x27;\[what specifically\|\[filename or URL\|\[what specifically —&#x27; &quot;$Q&quot; &amp;&amp; { echo &quot;  $Q still has placeholder reference prompts&quot;; ok=0; }
+  fi
+  # at least one reference file OR an http link in the questionnaire
+  local has_ref=0
+  [[ -d &quot;$REF&quot; ]] &amp;&amp; [[ -n &quot;$(find &quot;$REF&quot; -type f ! -name README.md 2&gt;/dev/null)&quot; ]] &amp;&amp; has_ref=1
+  grep -qiE &#x27;https?://&#x27; &quot;$Q&quot; 2&gt;/dev/null &amp;&amp; has_ref=1
+  if [[ &quot;$has_ref&quot; -eq 0 ]]; then echo &quot;  no visual references — drop a screenshot in $REF/ or paste a link in $Q&quot;; ok=0; fi
+  if [[ &quot;$ok&quot; -eq 1 ]]; then
+    echo &quot;[design] READY — questionnaire answered, references present.&quot;
+    echo &quot;[design] next: agent generates $OUT AND its rendered preview $PREVIEW from the&quot;
+    echo &quot;[design]       questionnaire + references; then run: bash scripts/design.sh preview&quot;
+  else
+    echo &quot;[design] NOT READY — resolve the above before generating the design system.&quot;; exit 1
+  fi
+}
+
+# Fail-closed: has the system been rendered for visual inspection?
+# The design system must be SEEN before it can be approved.
+cmd_preview() {
+  local ok=1
+  [[ -s &quot;$OUT&quot; ]] || { echo &quot;  MISSING: $OUT (agent generates it after design.sh ready)&quot;; ok=0; }
+  [[ -s &quot;$PREVIEW&quot; ]] || { echo &quot;  MISSING: $PREVIEW — the agent must generate a standalone HTML visual reference (palette swatches, type scale, spacing, component states, motion) rendered FROM the tokens in $OUT&quot;; ok=0; }
+  if [[ &quot;$ok&quot; -eq 1 ]]; then
+    echo &quot;[design] PREVIEW PRESENT — open $PREVIEW in a browser and inspect the system.&quot;
+    echo &quot;[design] Iterate: note what is off, have the agent revise $OUT + regenerate $PREVIEW, repeat until right.&quot;
+    echo &quot;[design] ONLY THEN set status: approved in $OUT. The design system must not be approved unseen.&quot;
+  else
+    echo &quot;[design] NOT READY FOR APPROVAL — generate the visual reference and inspect it before approving.&quot;; exit 1
+  fi
+}
+
+case &quot;${1:-help}&quot; in
+  questionnaire) cmd_questionnaire ;;
+  ready)         cmd_ready ;;
+  preview)       cmd_preview ;;
+  *) echo &quot;Usage: bash scripts/design.sh [questionnaire|ready|preview]&quot; ;;
+esac</code></pre></div>
+          </section>
+
+          <section id="sc-content" class="section">
+            <div class="code-head"><span class="code-title">content.sh — Phase 5: Content Strategy &amp; Site Structure</span><button class="copy" data-copy>Copy</button></div>
+            <div class="codebox"><pre><code>#!/usr/bin/env bash
+# scripts/content.sh — Phase 5. Gated on an APPROVED, visually-inspected design system. Elicits the
+# content strategy AND the explicit site structure: the generated 11-content-strategy.md
+# must prescribe a sitemap, a per-page content outline, and a content inventory.
+#
+# Flow:
+#   questionnaire  scaffold 11-content-strategy.QUESTIONNAIRE.md + references/content/
+#   ready          fail-closed: design approved AND questionnaire answered
+set -euo pipefail
+SPINE=&quot;project-spine&quot;
+DESIGN=&quot;$SPINE/10-design-system.md&quot;
+PREVIEW=&quot;$SPINE/10-design-system.html&quot;
+Q=&quot;$SPINE/11-content-strategy.QUESTIONNAIRE.md&quot;
+OUT=&quot;$SPINE/11-content-strategy.md&quot;
+REF=&quot;$SPINE/references/content&quot;
+
+require_design_approved() {
+  [[ -s &quot;$DESIGN&quot; ]] || { echo &quot;[content] $DESIGN missing — finish Phase 4 first.&quot;; exit 1; }
+  [[ -s &quot;$PREVIEW&quot; ]] || { echo &quot;[content] $PREVIEW missing — Phase 4 requires a rendered visual reference you inspected before approving. Run: bash scripts/design.sh preview&quot;; exit 1; }
+  grep -q &#x27;^status: approved&#x27; &quot;$DESIGN&quot; || { echo &quot;[content] design system is not status: approved — inspect the preview, iterate, then approve before content.&quot;; exit 1; }
+}
+
+cmd_questionnaire() {
+  require_design_approved
+  mkdir -p &quot;$REF&quot;
+  if [[ -s &quot;$Q&quot; ]]; then echo &quot;[content] $Q already exists — edit it, don&#x27;t overwrite.&quot;; exit 0; fi
+  cat &gt; &quot;$Q&quot; &lt;&lt;&#x27;MD&#x27;
+---
+id: CONTENT-STRATEGY-QUESTIONNAIRE
+status: open            # open -> answered
+phase: 5
+---
+# Content Strategy &amp; Structure Questionnaire
+&gt; Answer every prompt. The generated 11-content-strategy.md must come out the other
+&gt; side with a concrete sitemap and per-page content — not just &quot;voice and tone&quot;.
+&gt; Set status: answered when done, then run: bash scripts/content.sh ready
+
+## Visual references (tone / layout)
+- ref: [filename in references/content/ or URL]
+  like: [what about its content/structure you want]
+
+## 1. Audience
+- [ ] Primary audience (who must this convert?):
+- [ ] Secondary audiences:
+- [ ] What each should DO (the conversion action):
+
+## 2. Voice &amp; tone
+- [ ] Three words for the voice:
+- [ ] Things to never sound like:
+
+## 3. Site structure (REQUIRED — be concrete)
+- [ ] List every page/route the site needs:
+- [ ] For each page: its single job in one sentence:
+- [ ] The primary call-to-action per page:
+
+## 4. Per-page content
+- [ ] For each page, the sections/blocks it must contain:
+- [ ] What proof appears where (case studies, testimonials, metrics, logos):
+
+## 5. Content inventory
+- [ ] What content already exists (paths/links):
+- [ ] What must be newly created (and by whom):
+
+## 6. SEO intent
+- [ ] Search intents / keywords that matter:
+- [ ] Canonical domain, OG image policy:
+MD
+  echo &quot;[content] created $Q and $REF/ — answer it, then: bash scripts/content.sh ready&quot;
+}
+
+cmd_ready() {
+  require_design_approved
+  local ok=1
+  if [[ ! -s &quot;$Q&quot; ]]; then echo &quot;  MISSING: $Q (run: content.sh questionnaire)&quot;; ok=0
+  else
+    grep -q &#x27;^status: answered&#x27; &quot;$Q&quot; || { echo &quot;  $Q is not status: answered&quot;; ok=0; }
+    grep -q &#x27;^- \[ \]&#x27; &quot;$Q&quot; &amp;&amp; { echo &quot;  $Q has unanswered prompts&quot;; ok=0; }
+  fi
+  if [[ &quot;$ok&quot; -eq 1 ]]; then
+    echo &quot;[content] READY — design approved, questionnaire answered.&quot;
+    echo &quot;[content] next: agent generates $OUT (sitemap + per-page content + inventory); you set status: approved.&quot;
+  else
+    echo &quot;[content] NOT READY — resolve the above before generating the content strategy.&quot;; exit 1
+  fi
+}
+
+case &quot;${1:-help}&quot; in
+  questionnaire) cmd_questionnaire ;;
+  ready)         cmd_ready ;;
+  *) echo &quot;Usage: bash scripts/content.sh [questionnaire|ready]&quot; ;;
+esac</code></pre></div>
+          </section>
+
+          <section id="sc-ui" class="section">
+            <div class="code-head"><span class="code-title">ui.sh — Phase 6: UI Element Map</span><button class="copy" data-copy>Copy</button></div>
+            <div class="codebox"><pre><code>#!/usr/bin/env bash
+# scripts/ui.sh — Phase 6. Gated on an APPROVED content strategy. Walks the approved
+# sitemap and elicits how each content block is PRESENTED. References matter most here:
+# &quot;the hero like this screenshot, the cards like that link.&quot; The generated
+# 12-ui-element-map.md maps every content block to an exact UI element + source + ref.
+#
+# Flow:
+#   questionnaire  scaffold 12-ui-element-map.QUESTIONNAIRE.md + references/ui/
+#   ready          fail-closed: content approved AND questionnaire answered
+set -euo pipefail
+SPINE=&quot;project-spine&quot;
+CONTENT=&quot;$SPINE/11-content-strategy.md&quot;
+Q=&quot;$SPINE/12-ui-element-map.QUESTIONNAIRE.md&quot;
+OUT=&quot;$SPINE/12-ui-element-map.md&quot;
+REF=&quot;$SPINE/references/ui&quot;
+
+require_content_approved() {
+  [[ -s &quot;$CONTENT&quot; ]] || { echo &quot;[ui] $CONTENT missing — finish Phase 5 first.&quot;; exit 1; }
+  grep -q &#x27;^status: approved&#x27; &quot;$CONTENT&quot; || { echo &quot;[ui] content strategy is not status: approved — approve it before UI.&quot;; exit 1; }
+}
+
+cmd_questionnaire() {
+  require_content_approved
+  mkdir -p &quot;$REF&quot;
+  if [[ -s &quot;$Q&quot; ]]; then echo &quot;[ui] $Q already exists — edit it, don&#x27;t overwrite.&quot;; exit 0; fi
+  cat &gt; &quot;$Q&quot; &lt;&lt;&#x27;MD&#x27;
+---
+id: UI-ELEMENT-MAP-QUESTIONNAIRE
+status: open            # open -> answered
+phase: 6
+---
+# UI Element Map Questionnaire
+&gt; For each page in the APPROVED sitemap, specify how each content block is presented.
+&gt; This is the most reference-driven phase: cite a screenshot or link per block.
+&gt; Set status: answered when done, then run: bash scripts/ui.sh ready
+
+## Component sources allowed
+- [ ] Preference order (e.g. shadcn/ui first, 21st.dev for hero/feature, custom last):
+
+## Per page / per block
+&gt; Repeat this block for every page and every section in it.
+### Page: [route]
+- block: [e.g. hero]
+  present-as: [e.g. split hero with animated headline]
+  source: [shadcn | 21st.dev | custom]
+  reference: [filename in references/ui/ or URL]
+  motion: [e.g. Framer fade-up on entry]
+- block:
+  present-as:
+  source:
+  reference:
+  motion:
+
+## Global elements
+- [ ] Header/nav treatment + reference:
+- [ ] Footer treatment + reference:
+- [ ] Hard nos (elements/patterns you refuse):
+MD
+  echo &quot;[ui] created $Q and $REF/ — answer it per page, then: bash scripts/ui.sh ready&quot;
+}
+
+cmd_ready() {
+  require_content_approved
+  local ok=1
+  if [[ ! -s &quot;$Q&quot; ]]; then echo &quot;  MISSING: $Q (run: ui.sh questionnaire)&quot;; ok=0
+  else
+    grep -q &#x27;^status: answered&#x27; &quot;$Q&quot; || { echo &quot;  $Q is not status: answered&quot;; ok=0; }
+    grep -q &#x27;^- \[ \]&#x27; &quot;$Q&quot; &amp;&amp; { echo &quot;  $Q has unanswered prompts&quot;; ok=0; }
+  fi
+  if [[ &quot;$ok&quot; -eq 1 ]]; then
+    echo &quot;[ui] READY — content approved, questionnaire answered.&quot;
+    echo &quot;[ui] next: agent generates $OUT (block → exact element); you set status: approved. Project start complete.&quot;
+  else
+    echo &quot;[ui] NOT READY — resolve the above before generating the UI element map.&quot;; exit 1
+  fi
+}
+
+case &quot;${1:-help}&quot; in
+  questionnaire) cmd_questionnaire ;;
+  ready)         cmd_ready ;;
+  *) echo &quot;Usage: bash scripts/ui.sh [questionnaire|ready]&quot; ;;
+esac</code></pre></div>
+          </section>
+
           <section id="sc-os" class="section">
             <div class="code-head"><span class="code-title">os.sh — Entry Point</span><button class="copy" data-copy>Copy</button></div>
             <div class="codebox"><pre><code>#!/usr/bin/env bash
@@ -3193,6 +3584,7 @@ mkdir -p \
   project-state \
   handoffs/review handoffs/session handoffs/task handoffs/rework handoffs/archive \
   project-spine \
+  project-spine/references/design project-spine/references/content project-spine/references/ui \
   planning/slices planning/tests planning/content/.slop \
   planning/content/content-briefs planning/content/page-copy \
   planning/content/ux-copy planning/content/content-reviews \
@@ -3216,7 +3608,6 @@ for file in \
   project-spine/04-domain-model.md project-spine/05-data-model.md \
   project-spine/06-project-technical-plan.md project-spine/07-architecture-principles.md \
   project-spine/08-risk-register.md project-spine/09-roadmap.md \
-  project-spine/10-content-strategy.md project-spine/11-design-system.md \
   CODEOWNERS \
   .agents/skills/registry.md .agents/skills/lock.json; do
   [[ -f &quot;$file&quot; ]] || touch &quot;$file&quot;
@@ -3285,6 +3676,9 @@ JS
 fi
 
 if [[ -x scripts/skills.sh ]]; then bash scripts/skills.sh install-defaults || true; fi
+# Note: 10-design-system.md, 11-content-strategy.md and 12-ui-element-map.md are
+# intentionally NOT stubbed here — they are generated in Phases 4–6 by
+# design.sh / content.sh / ui.sh from their questionnaires + your references.
 # Scaffold the project-start intake so &quot;hydrate the spine&quot; has a front door.
 if [[ -x scripts/intake.sh ]]; then bash scripts/intake.sh brief || true; fi
 if command -v git &gt;/dev/null 2&gt;&amp;1; then
@@ -3299,10 +3693,12 @@ fi
 if [[ -f AGENTS.md &amp;&amp; -x scripts/sync-agent-files.sh ]]; then bash scripts/sync-agent-files.sh || true; fi
 
 echo &quot;Solo Dev OS v6.1 skeleton created.&quot;
-echo &quot;Next:&quot;
-echo &quot;  1. Hydrate project-spine/*.md.&quot;
-echo &quot;  2. Fill project-state/STATE.json current + completion, then run: bash scripts/os.sh render&quot;
-echo &quot;  3. Set real owners in CODEOWNERS.&quot;</code></pre></div>
+echo &quot;Next (project start — six gated phases):&quot;
+echo &quot;  P1-3 intake: fill 00-original-intent.md → intake.sh interview → intake.sh ready → hydrate 00-09.&quot;
+echo &quot;  P4 design:  design.sh questionnaire (answer + drop refs) → design.sh ready → agent gen 10 + 10.html → design.sh preview → inspect/iterate → approve.&quot;
+echo &quot;  P5 content: content.sh questionnaire → content.sh ready → agent gen 11 (sitemap+content) → approve.&quot;
+echo &quot;  P6 ui:      ui.sh questionnaire → ui.sh ready → agent gen 12 (block→element) → approve.&quot;
+echo &quot;  Then: fill STATE.json current + completion, run os.sh render, set owners in CODEOWNERS.&quot;</code></pre></div>
           </section>
         </div>
       </div>
@@ -3337,13 +3733,22 @@ echo &quot;  3. Set real owners in CODEOWNERS.&quot;</code></pre></div>
           </section>
 
           <section id="l-firstday" class="section">
-            <h2>First Day — Intake &amp; Hydrate Intent</h2>
-            <p>Spine hydration is gated. Do these in order; <code>intake.sh ready</code> won't pass until the first two are genuinely complete.</p>
+            <h2>First Day — Intake, Hydrate &amp; Elicit</h2>
+            <p>Project start is a six-phase gated pipeline. Do these in order; each gate refuses to pass until the prior phase is genuinely complete (and, for Phases 4–6, approved by you).</p>
+            <h3 style="font-size:14px;margin:4px 0 6px;color:var(--green)">Phases 1–3 · Intent (intake.sh)</h3>
             <ul class="checklist">
-              <li><span class="ck done"></span><strong>Write the brief (you):</strong> <code>bash scripts/intake.sh brief</code> scaffolds <code>00-original-intent.md</code>; fill every section, set <code>status: ready</code>.</li>
-              <li><span class="ck done"></span><strong>Run the interview (agent asks, you answer):</strong> <code>bash scripts/intake.sh interview</code>, then have a planning agent populate <code>INTAKE-INTERVIEW.md</code> with genuine gaps; answer each inline; set <code>status: answered</code>.</li>
-              <li><span class="ck done"></span><strong>Confirm ready:</strong> <code>bash scripts/intake.sh ready</code> must print <code>READY</code> before hydration.</li>
-              <li><span class="ck done"></span><strong>Hydrate the spine (agent drafts, you review):</strong> manifesto, charter, outcomes, PRD, domain, data, technical plan, principles, risks, roadmap, content strategy, design system — drafted <em>from</em> the brief + answered interview.</li>
+              <li><span class="ck done"></span><strong>P1 — Write the brief (you):</strong> <code>bash scripts/intake.sh brief</code> scaffolds <code>00-original-intent.md</code>; fill every section, set <code>status: ready</code>.</li>
+              <li><span class="ck done"></span><strong>P2 — Run the interview (agent asks, you answer):</strong> <code>bash scripts/intake.sh interview</code>, then have a planning agent populate <code>INTAKE-INTERVIEW.md</code> with genuine gaps; answer each inline; set <code>status: answered</code>.</li>
+              <li><span class="ck done"></span><strong>P3 — Confirm ready &amp; hydrate:</strong> <code>bash scripts/intake.sh ready</code> must print <code>READY</code>; the agent then drafts the <em>intent</em> files <code>00-manifesto … 09-roadmap</code> only — no design, content, or UI invented here.</li>
+            </ul>
+            <h3 style="font-size:14px;margin:14px 0 6px;color:var(--amber)">Phases 4–6 · Elicited (questionnaire + your references)</h3>
+            <ul class="checklist">
+              <li><span class="ck done"></span><strong>P4 — Design system:</strong> <code>bash scripts/design.sh questionnaire</code>; answer it and drop screenshots/links into <code>references/design/</code>; <code>design.sh ready</code>; the agent generates <code>10-design-system.md</code> <strong>and</strong> a rendered visual reference <code>10-design-system.html</code>; run <code>design.sh preview</code>, then <strong>open the HTML in a browser, inspect it, and iterate on the tokens with feedback until it is right</strong> — only then set <code>status: approved</code>. The system may not be approved unseen.</li>
+              <li><span class="ck done"></span><strong>P5 — Content strategy &amp; structure:</strong> <code>bash scripts/content.sh questionnaire</code> (gated on design approved); agent generates <code>11-content-strategy.md</code> with the <em>sitemap, per-page content, and inventory</em>; you set <code>status: approved</code>.</li>
+              <li><span class="ck done"></span><strong>P6 — UI element map:</strong> <code>bash scripts/ui.sh questionnaire</code> (gated on content approved); drop element references into <code>references/ui/</code>; agent generates <code>12-ui-element-map.md</code> mapping every block to an exact element; you set <code>status: approved</code>.</li>
+            </ul>
+            <h3 style="font-size:14px;margin:14px 0 6px;color:var(--cyan)">Then — first work</h3>
+            <ul class="checklist">
               <li><span class="ck done"></span>Vendor and pin default skills: <code>bash scripts/skills.sh install-defaults</code>, then record commits in <code>lock.json</code>.</li>
               <li><span class="ck done"></span>Shape the first Epic → Slice → Tasks. Each task declares <code>files_allowed</code>, <code>risk_level</code>, and <code>verification_required</code>.</li>
               <li><span class="ck done"></span>Fill <code>STATE.json</code> <code>current</code> + <code>completion</code>, then <code>bash scripts/os.sh render</code>; confirm <code>os.sh check</code> prints <code>state: consistent</code>.</li>

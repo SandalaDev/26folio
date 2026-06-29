@@ -1,0 +1,6 @@
+# Protected paths require a signed approving commit from an owner below.
+project-spine/05-data-model.md   @SandalaDev
+src/db/                          @SandalaDev
+src/auth/                        @SandalaDev
+drizzle/                         @SandalaDev
+.github/workflows/               @SandalaDev
