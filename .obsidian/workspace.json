@@ -4,53 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "4a35fe165490fac6",
+        "id": "7a2d4561908f55cb",
         "type": "tabs",
         "children": [
           {
-            "id": "ca95be3a1f36dd9c",
+            "id": "1f6f684700239829",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Welcome.md",
+                "file": "planning/slices/EPIC-001-SLICE-1.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Welcome"
-            }
-          },
-          {
-            "id": "a1cfc7e66b87c42c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ui plans/Inspiration Sites.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Inspiration Sites"
-            }
-          },
-          {
-            "id": "26cbbde7586c16c2",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ui plans/Inspiration Sites.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Inspiration Sites"
+              "title": "EPIC-001-SLICE-1"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -212,24 +183,53 @@
       "bases:Create new base": false
     }
   },
-  "active": "26cbbde7586c16c2",
+  "active": "1f6f684700239829",
   "lastOpenFiles": [
-    "obsidian images/Pasted image 20260625223822.png",
-    "obsidian images/Pasted image 20260625223749.png",
-    "obsidian images/Pasted image 20260625223615.png",
-    "obsidian images/Pasted image 20260625173844.png",
-    "obsidian images/Pasted image 20260625224958.png",
-    "obsidian images",
-    "New folder",
-    "solo-dev-os-v6.1.html",
-    "Pasted image 20260625224958.png",
-    "Pasted image 20260625223822.png",
-    "Pasted image 20260625223749.png",
-    "Pasted image 20260625223615.png",
-    "Pasted image 20260625173844.png",
-    "ui plans/Site Structure.md",
-    "ui plans/Inspiration Sites.md",
-    "ui plans",
-    "Welcome.md"
+    "project-state/STATE.json.tmp.13576.7a2118958667",
+    "backlog/done/TASK-001.md",
+    "backlog/tasks/TASK-001.md.tmp.13576.d053ca19c1de",
+    "backlog/tasks/TASK-001.md",
+    "next-env.d.ts",
+    "tsconfig.tsbuildinfo",
+    "node_modules/next/dist/compiled/webpack/WebWorkerTemplatePlugin.js",
+    "node_modules/next/dist/compiled/webpack/webpack.js",
+    "node_modules/next/dist/compiled/webpack/webpack.d.ts",
+    "node_modules/next/dist/compiled/webpack/webpack-lib.js",
+    "node_modules/next/dist/compiled/webpack/sources.js",
+    "node_modules/next/dist/compiled/webpack/NodeTemplatePlugin.js",
+    "node_modules/next/dist/compiled/webpack/SourceMapDevToolModuleOptionsPlugin.js",
+    "node_modules/next/dist/compiled/react-refresh/README.md",
+    "node_modules/typescript/README.md",
+    "node_modules/next/dist/compiled/regenerator-runtime/README.md",
+    "scaffold-tmp/node_modules/yaml/README.md",
+    "scaffold-tmp/node_modules/react/README.md",
+    "scaffold-tmp/node_modules/styled-jsx/readme.md",
+    "scaffold-tmp/node_modules/csstype/README.md",
+    "scaffold-tmp/node_modules/@next/env/README.md",
+    "scaffold-tmp/node_modules/source-map-js/README.md",
+    "scaffold-tmp/node_modules/baseline-browser-mapping/README.md",
+    "scaffold-tmp/scaffold-tmp/README.md",
+    "scaffold-tmp/scaffold-tmp/public/window.svg",
+    "scaffold-tmp/scaffold-tmp/public/vercel.svg",
+    "scaffold-tmp/scaffold-tmp/public/next.svg",
+    "scaffold-tmp/scaffold-tmp/public/globe.svg",
+    "scaffold-tmp/scaffold-tmp/public/file.svg",
+    "scaffold-tmp/CLAUDE.md",
+    "scaffold-tmp/AGENTS.md",
+    "scaffold-tmp/README.md",
+    "scaffold-tmp/public/window.svg",
+    "scaffold-tmp/public/vercel.svg",
+    "scaffold-tmp/public/next.svg",
+    "scaffold-tmp/public/globe.svg",
+    "scaffold-tmp/public/file.svg",
+    "planning/slices/EPIC-001-SLICE-1.md",
+    "project-spine/04-domain-model.md",
+    "backlog/epics/EPIC-001-project-scaffold.md",
+    "project-spine/03-project-prd.md",
+    "project-spine/references/design/README.md",
+    "project-spine/12-ui-element-map.md",
+    "project-spine/12-ui-element-map.QUESTIONNAIRE.md",
+    "project-spine/11-content-strategy.QUESTIONNAIRE.md",
+    "project-spine/11-content-strategy.md"
   ]
 }

@@ -1,43 +1,26 @@
 https://www.baunfire.com/
-copy candidate
+1. logo animated on scroll 2. cursor behaviors 3. featured work cards smooth zoom and diagonal animations 4. buttons on hover animation
 
 https://brittanychiang.com/
-timeline implement & flashlight effect
-
-https://www.tim-gesemann.dev/
-hero image color-matched / animated timeline
-
-https://edesigninteractive.com/
-Typography, scroll animation, duotone color, grids, buttons, unique imagery
+timeline implement & flashlight cursor effect (should be used to inspire the about page)
 
 https://www.ramotion.com/
-logo collage, project previews
+customer logos in a fixed grid new logos animating in into view  with a short scope of work preview on hover (I want this for the technologies logos). Video on hover implementations inspiration
 
 https://www.verteal.com/
-agent copy, pricing strategy and language
-
-https://www.helloupdigital.com/
-project cards, timeline 
-
-https://armory.framer.ai/
-motion graphics case study candidate, AI copy and strategy
-
-https://www.wolfpack-digital.com/
-svg backgrounds
-
-https://prismify.design/
-3d animated icons 
+==agent copy, pricing strategy and language==
 
 https://www.verceptdigital.com/
-messaging
+==messaging==
 
 www.lander.studio
-messaging pricing
+==messaging pricing==
+
 https://www.kristinevilnite.com/
-messaging pricing structure vibe-cohesiveness
+==messaging pricing structure vibe-cohesiveness==
 
 https://michaelmannucci.co
-hero image idea
+==hero image idea==
 
 https://arahi.ai/
 ![[Pasted image 20260625173844.png]] card border design

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design System — sandala.dev</title>
+<!--
+  Generated from project-spine/10-design-system.md
+  Tokens trace to §2 (colour), §4 (typography), §5 (layout), §6 (motion), §7 (interactions).
+  This is a PREVIEW. Per §12, tailwind.config.ts is canonical once it exists;
+  this file must then be reconciled to / regenerated from it — never the reverse.
+  Fonts loaded from Fontshare (free) for preview only; production self-hosts via @font-face.
+
+  Design directives applied:
+   1. No rounded corners — hard 90° angular corners everywhere.
+   2. Cards: cursor-tracked 3D tilt + smooth zoom. Buttons: baunfire-style magnetic
+      pull + cursor-origin square fill sweep + text mask reveal + arrow nudge.
+      (In production these map to Framer Motion variants; demoed here in vanilla JS.)
+   3. No white — text is a light-pink family tied to the rose accent.
+-->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=general-sans@400,600,700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Base — warm dark (§2) */
+    --background: #1a1411;
+    --surface: #241c18;
+    --surface-2: #2e2420;
+    --border: #3a2e28;
+    --border-2: #4a3a32;
+
+    /* Text — light-pink family (no white), tied to the rose accent */
+    --ink: #f8dfe7;   /* primary text — light rose */
+    --soft: #e9c8d3;  /* tertiary / captions — soft pink */
+    --muted: #c9a6b0; /* secondary text — muted mauve */
+
+    /* Brand accents — the skin palette (§2) */
+    --rose: #ec8ca0;
+    --caramel: #c99368;
+    --peach: #f0a98a;
+
+    /* Functional — kept quiet (§2) */
+    --success: #7fb89a;
+    --amber: #e3b34e;
+    --danger: #d65a4f;
+
+    /* Type roles (§4) */
+    --font-display: "Clash Display", "General Sans", system-ui, sans-serif;
+    --font-sans: "General Sans", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    /* Motion (§6) */
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-micro: 150ms;
+    --dur-component: 300ms;
+    --dur-page: 500ms;
+
+    --maxw: 1100px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.58;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Flashlight glow — warm peach/rose radial, not white (§7) */
+  .flashlight {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      520px circle at var(--mx, 50%) var(--my, 20%),
+      rgba(240, 169, 138, 0.10),
+      rgba(236, 140, 160, 0.05) 38%,
+      transparent 70%
+    );
+    transition: background var(--dur-component) var(--ease);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flashlight { display: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* Sticky header with warm blur backdrop (§5) */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(26, 20, 17, 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid var(--border);
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
+  .brand .dot {
+    width: 16px; height: 16px;
+    background: linear-gradient(135deg, var(--rose), var(--caramel));
+    box-shadow: 0 0 18px rgba(236, 140, 160, 0.45);
+  }
+  header nav { display: flex; gap: 22px; }
+  header nav a {
+    color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.01em; transition: color var(--dur-micro) var(--ease);
+  }
+  header nav a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { padding: 96px 0 72px; }
+  .eyebrow {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.09em; color: var(--rose); margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(36px, 5vw, 72px); line-height: 1.05;
+    letter-spacing: -0.02em; margin: 0 0 20px;
+    background: linear-gradient(180deg, var(--ink), var(--soft));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { max-width: 64ch; color: var(--muted); font-size: 18px; margin: 0; }
+  .hero .skin {
+    margin-top: 28px; display: inline-flex; align-items: center; gap: 0;
+    overflow: hidden; border: 1px solid var(--border-2);
+  }
+  .hero .skin span { width: 64px; height: 36px; display: block; }
+
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; }
+  .sec-head .num { font-family: var(--font-mono); font-size: 12px; color: var(--caramel); }
+  h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.01em; margin: 0; }
+  .sec-head .sub { color: var(--muted); font-size: 14px; margin-left: auto; }
+
+  /* Swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+  .swatch {
+    border: 1px solid var(--border); overflow: hidden;
+    background: var(--surface); transition: transform var(--dur-component) var(--ease), border-color var(--dur-component) var(--ease);
+  }
+  .swatch:hover { transform: translateY(-4px); border-color: var(--border-2); }
+  .swatch .chip { height: 88px; }
+  .swatch .meta { padding: 12px 14px; }
+  .swatch .name { font-weight: 600; font-size: 14px; }
+  .swatch .hex { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .swatch .role { font-size: 12px; color: var(--soft); margin-top: 6px; line-height: 1.4; }
+  .group-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+    color: var(--muted); margin: 30px 0 14px;
+  }
+
+  /* Type specimens */
+  .type-row { padding: 18px 0; border-bottom: 1px dashed var(--border); display: grid; grid-template-columns: 120px 1fr; gap: 24px; align-items: baseline; }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .label { font-family: var(--font-mono); font-size: 11px; color: var(--caramel); text-transform: uppercase; letter-spacing: 0.06em; }
+  .type-row .spec { color: var(--muted); font-size: 12px; font-family: var(--font-mono); margin-top: 8px; }
+  .sample-display { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 4vw, 56px); line-height: 1.05; letter-spacing: -0.02em; }
+  .sample-h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; }
+  .sample-body { font-size: 16px; color: var(--soft); max-width: 70ch; }
+  .sample-mono { font-family: var(--font-mono); font-size: 0.92em; color: var(--peach); }
+  .sample-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--rose); }
+
+  /* ============================================================
+     Buttons — baunfire-style (§7 #4)
+     magnetic pull · cursor-origin square fill sweep ·
+     text mask reveal · arrow nudge. Hard corners (no radius).
+     ============================================================ */
+  .btn-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .btn {
+    --accent: var(--rose);
+    position: relative; isolation: isolate; overflow: hidden;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 15px 28px;
+    font-family: var(--font-sans); font-weight: 600; font-size: 14px; line-height: 1.2;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    transition: color var(--dur-component) var(--ease), border-color var(--dur-component) var(--ease);
+    will-change: transform;
+  }
+  .btn-secondary { --accent: var(--caramel); }
+  .btn-ghost { --accent: var(--peach); }
+
+  /* the fill: a square that expands from the cursor's entry point */
+  .btn .btn-fill {
+    position: absolute; z-index: -1;
+    width: 340px; height: 340px;
+    top: var(--fy, 50%); left: var(--fx, 50%);
+    background: var(--accent);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform var(--dur-page) var(--ease);
+  }
+  .btn:hover { color: var(--background); border-color: var(--accent); }
+  .btn:hover .btn-fill { transform: translate(-50%, -50%) scale(1); }
+
+  /* text mask reveal: stacked copies slide up on hover */
+  .btn .btn-label { position: relative; display: block; overflow: hidden; height: 1.2em; }
+  .btn .btn-label .inner {
+    display: flex; flex-direction: column;
+    transition: transform var(--dur-component) var(--ease);
+  }
+  .btn .btn-label .inner span { height: 1.2em; line-height: 1.2em; }
+  .btn:hover .btn-label .inner { transform: translateY(-1.2em); }
+
+  /* arrow nudge */
+  .btn .btn-arrow { display: inline-block; transition: transform var(--dur-component) var(--ease); }
+  .btn:hover .btn-arrow { transform: translateX(4px); }
+
+  .btn:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+
+  /* ============================================================
+     Work cards — cursor-tracked 3D tilt + smooth zoom (§7 #3)
+     ============================================================ */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; perspective: 1100px; }
+  .work-card {
+    position: relative; overflow: hidden; aspect-ratio: 4/3;
+    border: 1px solid var(--border); cursor: pointer; background: var(--surface-2);
+    transform-style: preserve-3d;
+    transition: transform var(--dur-component) var(--ease), border-color var(--dur-component) var(--ease);
+    will-change: transform;
+  }
+  .work-card:hover { border-color: var(--border-2); }
+  .work-card .bg { position: absolute; inset: 0; transition: transform var(--dur-page) var(--ease); }
+  .work-card:nth-child(1) .bg { background: linear-gradient(135deg, #3a2630, #241c18); }
+  .work-card:nth-child(2) .bg { background: linear-gradient(135deg, #382a22, #241c18); }
+  .work-card:nth-child(3) .bg { background: linear-gradient(135deg, #2f2630, #241c18); }
+  .work-card:hover .bg { transform: scale(1.08); }
+  .work-card .reveal {
+    position: absolute; inset: 0; display: flex; align-items: flex-end; padding: 18px;
+    background: linear-gradient(120deg, transparent 40%, rgba(236, 140, 160, 0.18));
+    opacity: 0; transition: opacity var(--dur-component) var(--ease);
+    transform: translateZ(40px);
+  }
+  .work-card:hover .reveal { opacity: 1; }
+  .work-card .reveal span { font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--ink); }
+
+  /* Functional row */
+  .fn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+  .fn { border: 1px solid var(--border); padding: 14px; background: var(--surface); }
+  .fn .bar { height: 6px; margin-bottom: 12px; }
+  .fn .nm { font-weight: 600; font-size: 13px; }
+  .fn .hx { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  /* Guardrails */
+  .rails { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .rail { padding: 18px 20px; border: 1px solid var(--border); background: var(--surface); }
+  .rail h4 { margin: 0 0 6px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .rail p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .rail.no h4 { color: var(--danger); }
+  .rail.yes h4 { color: var(--success); }
+
+  /* Motion table */
+  .mtable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .mtable th, .mtable td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--border); }
+  .mtable th { color: var(--caramel); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .mtable td { color: var(--soft); }
+  .mtable code { font-family: var(--font-mono); font-size: 12px; color: var(--peach); }
+  .pill { display: inline-block; padding: 4px 12px; font-size: 11px; font-family: var(--font-mono); background: var(--surface-2); border: 1px solid var(--border-2); color: var(--rose); }
+
+  footer { padding: 48px 0 80px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+  footer code { font-family: var(--font-mono); color: var(--caramel); }
+
+  @media (max-width: 640px) {
+    .type-row { grid-template-columns: 1fr; gap: 8px; }
+    .rails { grid-template-columns: 1fr; }
+    .sec-head .sub { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="flashlight" id="flashlight"></div>
+
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> sandala.dev</div>
+    <nav>
+      <a href="#colour">Colour</a>
+      <a href="#type">Type</a>
+      <a href="#motion">Motion</a>
+      <a href="#components">Components</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">Design System · Phase 4</p>
+    <h1>Two things that weren't<br />supposed to go together.</h1>
+    <p>A warm, dark, airy canvas where refined rose and caramel — drawn from Abe's own skin — do the talking, and motion eases rather than shouts. Creative, modern, futuristic. Never boring, static, or serious.</p>
+    <div class="skin" title="rose → peach → caramel">
+      <span style="background:var(--rose)"></span>
+      <span style="background:var(--peach)"></span>
+      <span style="background:var(--caramel)"></span>
+    </div>
+  </div>
+
+  <!-- COLOUR -->
+  <section id="colour">
+    <div class="sec-head"><span class="num">§2</span><h2>Colour</h2><span class="sub">Warm analogous range on warm espresso-black</span></div>
+
+    <div class="group-label">Brand accents — the skin palette</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:var(--rose)"></div><div class="meta"><div class="name">rose</div><div class="hex">#ec8ca0</div><div class="role">Primary accent — the depigmented pink. Dusty, not magenta.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--caramel)"></div><div class="meta"><div class="name">caramel</div><div class="hex">#c99368</div><div class="role">Secondary accent — the pigmented brown. Warm tan.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--peach)"></div><div class="meta"><div class="name">peach</div><div class="hex">#f0a98a</div><div class="role">Bridge / highlight. Connects rose ↔ caramel.</div></div></div>
+    </div>
+
+    <div class="group-label">Base — warm dark</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:var(--background)"></div><div class="meta"><div class="name">background</div><div class="hex">#1a1411</div><div class="role">Page — warm espresso, not navy.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--surface)"></div><div class="meta"><div class="name">surface</div><div class="hex">#241c18</div><div class="role">Card / panel.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--surface-2)"></div><div class="meta"><div class="name">surface-2</div><div class="hex">#2e2420</div><div class="role">Elevated surface.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--border)"></div><div class="meta"><div class="name">border</div><div class="hex">#3a2e28</div><div class="role">Default hairline border.</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--border-2)"></div><div class="meta"><div class="name">border-2</div><div class="hex">#4a3a32</div><div class="role">Elevated / focused border.</div></div></div>
+    </div>
+
+    <div class="group-label">Text — light-pink family (no white)</div>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:var(--ink)"></div><div class="meta"><div class="name">ink</div><div class="hex">#f8dfe7</div><div class="role">Primary text — light rose · ~13:1 AAA on background</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--soft)"></div><div class="meta"><div class="name">soft</div><div class="hex">#e9c8d3</div><div class="role">Tertiary / captions — soft pink · AAA</div></div></div>
+      <div class="swatch"><div class="chip" style="background:var(--muted)"></div><div class="meta"><div class="name">muted</div><div class="hex">#c9a6b0</div><div class="role">Secondary text — muted mauve · AAA</div></div></div>
+    </div>
+
+    <div class="group-label">Functional — kept quiet so brand stays the story</div>
+    <div class="fn-grid">
+      <div class="fn"><div class="bar" style="background:var(--success)"></div><div class="nm">success</div><div class="hx">#7fb89a · muted sage</div></div>
+      <div class="fn"><div class="bar" style="background:var(--amber)"></div><div class="nm">amber</div><div class="hx">#e3b34e · warnings</div></div>
+      <div class="fn"><div class="bar" style="background:var(--danger)"></div><div class="nm">danger</div><div class="hx">#d65a4f · brick, not rose</div></div>
+    </div>
+  </section>
+
+  <!-- GUARDRAILS -->
+  <section id="guardrails">
+    <div class="sec-head"><span class="num">§3</span><h2>Colour guardrails</h2><span class="sub">Hard anti-patterns — rules, not preferences</span></div>
+    <div class="rails">
+      <div class="rail no"><h4>✕ No magenta</h4><p>rose stays dusty / coral. If a pink drifts toward #ff00ff hot fuchsia, it's wrong. Moderate saturation.</p></div>
+      <div class="rail no"><h4>✕ No harsh gradients</h4><p>Transitions between rose, peach, caramel are long and low-contrast — soft washes, large blur radii. Never a tight two-stop ramp.</p></div>
+      <div class="rail no"><h4>✕ No pure black, no cold navy</h4><p>The base is always warm dark.</p></div>
+      <div class="rail yes"><h4>✓ Accents are seasoning</h4><p>Large surfaces stay base tones. Rose and caramel punctuate — they are not the meal.</p></div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section id="type">
+    <div class="sec-head"><span class="num">§4</span><h2>Typography</h2><span class="sub">Editorial + technical · self-hosted</span></div>
+    <div class="type-row">
+      <div><div class="label">Display / H1</div><div class="spec">Clash Display · 700<br />clamp(36→72px) · lh 1.05</div></div>
+      <div><div class="sample-display">Futuristic, not systemic.</div></div>
+    </div>
+    <div class="type-row">
+      <div><div class="label">Heading H2–H3</div><div class="spec">General Sans · 600 · 18–26px</div></div>
+      <div><div class="sample-h2">Refined rose and caramel do the talking.</div></div>
+    </div>
+    <div class="type-row">
+      <div><div class="label">Body</div><div class="spec">General Sans · 400 · 16px<br />lh 1.58 · max ~70ch</div></div>
+      <div><div class="sample-body">The palette is personal — pink and brown, drawn from skin. Vitiligo gives the depigmented rose and the pigmented brown: two tones that coexist on one surface, made to look intentional.</div></div>
+    </div>
+    <div class="type-row">
+      <div><div class="label">Mono / code</div><div class="spec">JetBrains Mono · 400 · 0.92em</div></div>
+      <div><div class="sample-mono">const ease = [0.22, 1, 0.36, 1];</div></div>
+    </div>
+    <div class="type-row">
+      <div><div class="label">Eyebrow / label</div><div class="spec">General Sans · 700 · 11px<br />tracking .09em · uppercase</div></div>
+      <div><div class="sample-eyebrow">Selected Work — 2026</div></div>
+    </div>
+  </section>
+
+  <!-- MOTION -->
+  <section id="motion">
+    <div class="sec-head"><span class="num">§6</span><h2>Motion</h2><span class="sub">Subtle &amp; smooth · benchmark baunfire.com</span></div>
+    <table class="mtable">
+      <thead><tr><th>Trigger</th><th>Library</th><th>Convention</th></tr></thead>
+      <tbody>
+        <tr><td>Element viewport entry</td><td>Framer Motion</td><td><code>opacity 0→1, y 20→0</code>, ease-out</td></tr>
+        <tr><td>Staggered lists / grids</td><td>Framer Motion</td><td><code>staggerChildren: .08</code></td></tr>
+        <tr><td>Page transitions</td><td>Framer Motion</td><td><code>AnimatePresence mode="wait"</code></td></tr>
+        <tr><td>Scroll-driven reveals</td><td>GSAP + ScrollTrigger</td><td><code>scrub: 1</code>, cleanup on unmount</td></tr>
+        <tr><td>Icon / illustration playback</td><td>Lottie</td><td><code>autoplay:false</code>, play on hover</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <span class="pill">micro 150ms</span>
+      <span class="pill">component 300ms</span>
+      <span class="pill">page 500ms</span>
+      <span class="pill">ease [0.22, 1, 0.36, 1]</span>
+      <span class="pill">prefers-reduced-motion → honoured</span>
+    </div>
+    <p style="color:var(--muted); font-size:13px; margin-top:18px;">No aggressive springs, no overshoot. The flashlight glow following your cursor is the §7 pattern: a warm peach/rose radial, never a harsh white spotlight.</p>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section id="components">
+    <div class="sec-head"><span class="num">§7</span><h2>Signature interactions</h2><span class="sub">Hover the buttons and cards</span></div>
+
+    <div class="group-label">Buttons — magnetic pull · cursor-origin fill sweep · text mask reveal</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" data-magnetic>
+        <span class="btn-fill"></span>
+        <span class="btn-label"><span class="inner"><span>View work</span><span>View work</span></span></span>
+        <span class="btn-arrow">→</span>
+      </button>
+      <button class="btn btn-secondary" data-magnetic>
+        <span class="btn-fill"></span>
+        <span class="btn-label"><span class="inner"><span>Get in touch</span><span>Get in touch</span></span></span>
+        <span class="btn-arrow">→</span>
+      </button>
+      <button class="btn btn-ghost" data-magnetic>
+        <span class="btn-fill"></span>
+        <span class="btn-label"><span class="inner"><span>Read more</span><span>Read more</span></span></span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+
+    <div class="group-label">Work cards — cursor-tracked 3D tilt + smooth zoom</div>
+    <div class="card-grid">
+      <div class="work-card" data-tilt><div class="bg"></div><div class="reveal"><span>Project Atlas →</span></div></div>
+      <div class="work-card" data-tilt><div class="bg"></div><div class="reveal"><span>Caramel CMS →</span></div></div>
+      <div class="work-card" data-tilt><div class="bg"></div><div class="reveal"><span>Rose Engine →</span></div></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  Generated from <code>project-spine/10-design-system.md</code>. Per §12, once <code>tailwind.config.ts</code> exists it becomes canonical and this preview is reconciled to it — never the reverse. Status: <strong style="color:var(--rose)">draft</strong> — review §2 palette, §4 fonts, §7 interactions, then set <code>status: approved</code>.
+</footer>
+
+<script>
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(pointer: fine)").matches; // pointer-fine only (§11)
+
+  // Shared pointer tracker (§7) — drives the flashlight glow.
+  (function () {
+    if (reduce || !fine) return;
+    var fl = document.getElementById("flashlight");
+    var raf = null, x = 50, y = 20;
+    window.addEventListener("pointermove", function (e) {
+      x = (e.clientX / window.innerWidth) * 100;
+      y = (e.clientY / window.innerHeight) * 100;
+      if (raf) return;
+      raf = requestAnimationFrame(function () {
+        fl.style.setProperty("--mx", x + "%");
+        fl.style.setProperty("--my", y + "%");
+        raf = null;
+      });
+    }, { passive: true });
+  })();
+
+  // Magnetic buttons (baunfire) — button drifts toward the pointer; label parallaxes
+  // slightly more; the fill originates from the cursor's position over the button.
+  (function () {
+    if (reduce || !fine) return;
+    document.querySelectorAll("[data-magnetic]").forEach(function (btn) {
+      var fill = btn.querySelector(".btn-fill");
+      var label = btn.querySelector(".btn-label");
+      var pull = 0.35;     // how hard the button is pulled toward the cursor
+      var parallax = 0.18; // extra drift on the label for depth
+
+      btn.addEventListener("pointermove", function (e) {
+        var r = btn.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        btn.style.transform = "translate(" + dx * pull + "px," + dy * pull + "px)";
+        if (label) label.style.transform = "translate(" + dx * parallax + "px," + dy * parallax + "px)";
+        // fill origin = cursor position within the button
+        if (fill) {
+          fill.style.left = (e.clientX - r.left) + "px";
+          fill.style.top = (e.clientY - r.top) + "px";
+        }
+      });
+      btn.addEventListener("pointerleave", function () {
+        btn.style.transform = "";
+        if (label) label.style.transform = "";
+      });
+    });
+  })();
+
+  // Cursor-tracked 3D tilt + zoom on cards.
+  (function () {
+    if (reduce || !fine) return;
+    var MAX = 7; // degrees
+    document.querySelectorAll("[data-tilt]").forEach(function (card) {
+      card.addEventListener("pointermove", function (e) {
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;  // -0.5 .. 0.5
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        var rx = (-py * MAX).toFixed(2);
+        var ry = (px * MAX).toFixed(2);
+        card.style.transform =
+          "perspective(1100px) rotateX(" + rx + "deg) rotateY(" + ry + "deg) scale(1.04)";
+      });
+      card.addEventListener("pointerleave", function () {
+        card.style.transform = "";
+      });
+    });
+  })();
+</script>
+</body>
+</html>

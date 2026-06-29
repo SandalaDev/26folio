@@ -1,0 +1,26 @@
+{
+  "schema": "solo-dev-os.skills-lock.v1",
+  "updated": "2026-06-29",
+  "skills": {
+    "stop-slop": {
+      "method": "git",
+      "src": "https://github.com/hardikpandya/stop-slop.git",
+      "commit": "8da1f030185bdfe8471220585162991eaeb970e9"
+    },
+    "design-taste-frontend": {
+      "method": "npx",
+      "src": "https://github.com/leonxlnx/taste-skill",
+      "skill": "design-taste-frontend",
+      "commit": "unpinned"
+    },
+    "impeccable": { "method": "stub", "commit": "unpinned" },
+    "frontend-design": { "method": "stub", "commit": "unpinned" },
+    "shadcn-ui-builder": { "method": "stub", "commit": "unpinned" },
+    "21st-dev-components": { "method": "stub", "commit": "unpinned" },
+    "ds-task-slicer": { "method": "stub", "commit": "unpinned" },
+    "ds-test-planner": { "method": "stub", "commit": "unpinned" },
+    "ds-reviewer": { "method": "stub", "commit": "unpinned" },
+    "ds-handoff": { "method": "stub", "commit": "unpinned" },
+    "ds-content-review": { "method": "stub", "commit": "unpinned" }
+  }
+}

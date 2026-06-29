@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Agents must push feature/* branches, never main/dev directly.
+bash scripts/branch.sh guard
+TASK="$(node scripts/active-task.mjs 2>/dev/null || true)"
+if [[ -n "${TASK:-}" ]]; then bash scripts/verify-task.sh "$TASK"; else bash scripts/os.sh check; fi
