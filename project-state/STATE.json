@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-06-30T00:00:00.000Z",
+  "updated": "2026-06-30T01:00:00.000Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": null,
@@ -17,25 +17,26 @@
     "handoff_status": "none"
   },
   "completion": {
-    "summary": "EPIC-001 SLICE-2 complete: Tailwind CSS v4 + shadcn/ui init. Next: SLICE-3 (ESLint/Prettier + runtime deps).",
+    "summary": "EPIC-001 SLICE-2 + SLICE-3 complete. All 5 tooling tasks done. TASK-006 (CI) deferred — protected path requires human CODEOWNER commit. EPIC-001 ready for PR to dev.",
     "done": [
       "Project spine 00-12 authored",
       "12-ui-element-map.md generated",
-      "EPIC-001 TASK-001: Next.js 15 scaffold + static route skeleton (committed, gate passed)",
+      "EPIC-001 TASK-001: Next.js 15 scaffold + static route skeleton",
       "EPIC-001 TASK-002: Tailwind CSS v4 — postcss config, globals.css, tailwind.config.ts",
-      "EPIC-001 TASK-003: shadcn/ui init — components.json, cn helper, clsx + tailwind-merge"
+      "EPIC-001 TASK-003: shadcn/ui init — components.json, cn helper, clsx + tailwind-merge",
+      "EPIC-001 TASK-004: ESLint 9 + Prettier + proof scripts (lint.sh, typecheck.sh)",
+      "EPIC-001 TASK-005: framer-motion, gsap, lottie-react + env.example + src/lib/env.ts"
     ],
     "remaining": [
-      "EPIC-001 SLICE-3: ESLint/Prettier + scripts + test runners + deps (TASK-004, TASK-005)",
-      "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred/human-signed)"
+      "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — requires human CODEOWNER signed commit for .github/workflows/)"
     ],
-    "blocked": "none"
+    "blocked": "TASK-006: .github/workflows/ is a protected path — needs human-signed CODEOWNER commit"
   },
   "counts": {
     "epics_total": 1,
     "tasks_open": 0,
     "tasks_in_progress": 0,
-    "tasks_done": 3,
+    "tasks_done": 5,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
