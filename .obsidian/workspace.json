@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "planning/slices/EPIC-001-SLICE-1.md",
+                "file": "project-spine/09-roadmap.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "EPIC-001-SLICE-1"
+              "title": "09-roadmap"
             }
           }
         ]
@@ -185,19 +185,25 @@
   },
   "active": "1f6f684700239829",
   "lastOpenFiles": [
-    "project-state/STATE.json.tmp.13576.7a2118958667",
-    "backlog/done/TASK-001.md",
-    "backlog/tasks/TASK-001.md.tmp.13576.d053ca19c1de",
-    "backlog/tasks/TASK-001.md",
+    "dashboard.html",
+    "OPERATING_MANUAL.md",
+    "scripts/render-dashboard.mjs",
+    "dev-os-v6.1.generated.html",
+    "planning/slices/EPIC-001-SLICE-1.md",
     "next-env.d.ts",
-    "tsconfig.tsbuildinfo",
-    "node_modules/next/dist/compiled/webpack/WebWorkerTemplatePlugin.js",
-    "node_modules/next/dist/compiled/webpack/webpack.js",
-    "node_modules/next/dist/compiled/webpack/webpack.d.ts",
-    "node_modules/next/dist/compiled/webpack/webpack-lib.js",
-    "node_modules/next/dist/compiled/webpack/sources.js",
-    "node_modules/next/dist/compiled/webpack/NodeTemplatePlugin.js",
-    "node_modules/next/dist/compiled/webpack/SourceMapDevToolModuleOptionsPlugin.js",
+    "tailwind.config.ts",
+    "src/lib/utils.ts",
+    "src/lib/env.ts",
+    "src/lib",
+    "src/app/globals.css",
+    "scripts/test/typecheck.sh",
+    "backlog/tasks/TASK-005.md",
+    "backlog/done/TASK-005.md",
+    "backlog/done/TASK-004.md",
+    "backlog/done/TASK-003.md",
+    "backlog/done/TASK-002.md",
+    "backlog/done/TASK-001.md",
+    "backlog/tasks/TASK-001.md",
     "node_modules/next/dist/compiled/react-refresh/README.md",
     "node_modules/typescript/README.md",
     "node_modules/next/dist/compiled/regenerator-runtime/README.md",
@@ -222,14 +228,7 @@
     "scaffold-tmp/public/next.svg",
     "scaffold-tmp/public/globe.svg",
     "scaffold-tmp/public/file.svg",
-    "planning/slices/EPIC-001-SLICE-1.md",
     "project-spine/04-domain-model.md",
-    "backlog/epics/EPIC-001-project-scaffold.md",
-    "project-spine/03-project-prd.md",
-    "project-spine/references/design/README.md",
-    "project-spine/12-ui-element-map.md",
-    "project-spine/12-ui-element-map.QUESTIONNAIRE.md",
-    "project-spine/11-content-strategy.QUESTIONNAIRE.md",
-    "project-spine/11-content-strategy.md"
+    "backlog/epics/EPIC-001-project-scaffold.md"
   ]
 }

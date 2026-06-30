@@ -129,3 +129,16 @@ try {
     execFileSync(process.execPath, ["scripts/render-metrics.mjs"], { stdio: "inherit" });
   }
 } catch { /* metrics are best-effort; never block a render */ }
+
+// ---- generate the Build Dashboard (dashboard.html) ----
+// Delegates to scripts/render-dashboard.mjs, which builds the HTML/CSS/JS in
+// code (no template file) and stamps live values from STATE.json. It reloads
+// STATE fresh, so the metrics block written above is reflected. Best-effort:
+// a missing script or a failure never blocks the Markdown render.
+try {
+  if (fs.existsSync("scripts/render-dashboard.mjs")) {
+    const { execFileSync } = await import("node:child_process");
+    execFileSync(process.execPath, ["scripts/render-dashboard.mjs"], { stdio: "inherit" });
+  }
+} catch { /* dashboard is best-effort; never block a render */ }
+

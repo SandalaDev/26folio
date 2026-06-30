@@ -3,23 +3,21 @@
 set -euo pipefail
 ROOT="${1:-.}"; cd "$ROOT"
 
+# Only pre-create directories that exist from day one AND are not self-provisioned
+# by a phase script. Deferred / lazy-created: project-spine/references/{design,
+# content,ui}/ (created by design.sh/content.sh/ui.sh when their questionnaire
+# runs), planning/content/** and planning/design/** (created as work lands),
+# handoffs/archive (created on first archive), tests/** (created when tests are
+# written). This keeps the skeleton to what is actually used on a fresh clone.
 mkdir -p \
   project-state \
-  handoffs/review handoffs/session handoffs/task handoffs/rework handoffs/archive \
+  handoffs/review handoffs/session handoffs/task handoffs/rework \
   project-spine \
-  project-spine/references/design project-spine/references/content project-spine/references/ui \
-  planning/slices planning/tests planning/content/.slop \
-  planning/content/content-briefs planning/content/page-copy \
-  planning/content/ux-copy planning/content/content-reviews \
-  planning/design/interface-blueprints planning/design/design-prompts \
-  planning/design/design-reviews planning/design/design-decisions \
+  planning/slices \
   backlog/epics backlog/tasks backlog/done \
   memory memory/agent-log \
   .agents/skills/local .agents/reviews \
-  scripts scripts/test .githooks .github/workflows \
-  tests/fixtures/factories tests/integration \
-  tests/e2e/critical-flows tests/accessibility tests/visual \
-  00-inbox
+  scripts scripts/test .githooks .github/workflows
 
 for file in \
   AGENTS.md \
@@ -114,6 +112,13 @@ if command -v git >/dev/null 2>&1; then
 fi
 [[ -f project-state/SESSION_LEDGER.jsonl ]] || touch project-state/SESSION_LEDGER.jsonl
 if [[ -f AGENTS.md && -x scripts/sync-agent-files.sh ]]; then bash scripts/sync-agent-files.sh || true; fi
+
+# Generate the first Build Dashboard from the freshly-seeded STATE.json.
+# render-dashboard.mjs has no template dependency — it builds dashboard.html in
+# code. Re-runs on every `os.sh render`. dashboard.html is gitignored.
+if [[ -f scripts/render-dashboard.mjs ]] && command -v node >/dev/null 2>&1; then
+  node scripts/render-dashboard.mjs || true
+fi
 
 echo "Solo Dev OS v6.1 skeleton created."
 echo "Next (project start — six gated phases):"
