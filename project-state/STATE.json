@@ -1,7 +1,7 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-06-30T14:25:17.983Z",
-  "updated_by": "claude-code",
+  "updated": "2026-06-30T15:18:21.128Z",
+  "updated_by": "zcode",
   "actor": {
     "harness": "claude-code",
     "model": "claude-opus-4-8",
@@ -39,8 +39,8 @@
     "tasks_open": 0,
     "tasks_in_progress": 0,
     "tasks_done": 9,
-    "handoffs_pending": 2,
-    "handoffs_consumed": 0
+    "handoffs_pending": 1,
+    "handoffs_consumed": 1
   },
   "verification": {
     "lint": "pass",
@@ -50,18 +50,18 @@
     "e2e": "skipped"
   },
   "metrics": {
-    "updated": "2026-06-30T14:25:18.040Z",
+    "updated": "2026-06-30T15:18:21.188Z",
     "min_n": 5,
     "combos": [
       {
         "harness": "claude-code",
         "model": "claude-opus-4-8",
         "role": "executor",
-        "sessions": 1,
+        "sessions": 2,
         "gate_pass": 1,
         "gate_fail": 0,
         "gate_pass_rate": 100,
-        "avg_session_min": 25,
+        "avg_session_min": 24,
         "low_n": true
       }
     ]
@@ -73,7 +73,7 @@
       "type": "review",
       "task_ref": "backlog/done/TASK-007.md",
       "file": "handoffs/review/HANDOFF-REVIEW-TASK-007.md",
-      "status": "pending"
+      "status": "consumed"
     },
     {
       "id": "HANDOFF-REVIEW-TASK-010",
