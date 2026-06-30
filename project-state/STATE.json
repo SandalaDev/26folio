@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-06-30T15:18:21.128Z",
+  "updated": "2026-06-30T20:49:31.150Z",
   "updated_by": "zcode",
   "actor": {
     "harness": "claude-code",
@@ -39,8 +39,8 @@
     "tasks_open": 0,
     "tasks_in_progress": 0,
     "tasks_done": 9,
-    "handoffs_pending": 1,
-    "handoffs_consumed": 1
+    "handoffs_pending": 0,
+    "handoffs_consumed": 2
   },
   "verification": {
     "lint": "pass",
@@ -50,7 +50,7 @@
     "e2e": "skipped"
   },
   "metrics": {
-    "updated": "2026-06-30T15:18:21.188Z",
+    "updated": "2026-06-30T20:49:31.224Z",
     "min_n": 5,
     "combos": [
       {
@@ -80,7 +80,7 @@
       "type": "review",
       "task_ref": "backlog/done/TASK-010.md",
       "file": "handoffs/review/HANDOFF-REVIEW-TASK-010.md",
-      "status": "pending"
+      "status": "consumed"
     }
   ]
 }

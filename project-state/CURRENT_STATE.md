@@ -1,6 +1,6 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-06-30T15:18:21.128Z
+updated: 2026-06-30T20:49:31.150Z
 updated_by: zcode
 ---
 # Current State
@@ -24,4 +24,4 @@ EPIC-002 (design system) implemented on feature/EPIC-002 — all 4 tasks done, a
 ## Blocked
 none for EPIC-002. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)
 ## Assigned handoffs
-- handoffs/review/HANDOFF-REVIEW-TASK-010.md
+none
