@@ -1,1 +1,135 @@
 @import "tailwindcss";
+
+/* ============================================================================
+   Self-hosted typefaces (§4). The design-system reference (10-design-system.html)
+   loads these from the Fontshare CDN for preview only; production self-hosts —
+   no CDN / Google-Fonts call (07-architecture-principles §rendering).
+   Binaries are intentionally NOT committed yet (faces are proposals, §4): drop
+   the woff2 files named below into /public/fonts/ (see public/fonts/README.md).
+   Until then `font-display: swap` falls back to the system stacks in --font-*.
+   ============================================================================ */
+@font-face {
+  font-family: "Clash Display";
+  src: url("/fonts/ClashDisplay-Variable.woff2") format("woff2-variations");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-Variable.woff2") format("woff2-variations");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-Variable.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================================
+   Design tokens — canonical Tailwind v4 @theme layer.
+   Ported verbatim from project-spine/10-design-system.html (:root) / §2 of
+   10-design-system.md. These names are stable contracts (§12); values are the
+   single source of truth from which the doc/preview are reconciled — never the
+   reverse. A divergence from the reference hexes is a bug, not a choice.
+   ============================================================================ */
+@theme {
+  /* Base — warm dark (§2). Warm espresso-black, never cold navy / pure black. */
+  --color-background: #1a1411;
+  --color-surface: #241c18;
+  --color-surface-2: #2e2420;
+  --color-border: #3a2e28;
+  --color-border-2: #4a3a32;
+
+  /* Text — light-pink family, never white (§2), tied to the rose accent. */
+  --color-ink: #f8dfe7; /* primary — light rose · ~13:1 AAA on background */
+  --color-muted: #c9a6b0; /* secondary — muted mauve · AA/AAA */
+  --color-soft: #e9c8d3; /* tertiary / captions — soft pink · AAA */
+
+  /* Brand accents — the skin palette (§2). Dusty rose, not magenta. */
+  --color-rose: #ec8ca0; /* primary accent — depigmented pink */
+  --color-caramel: #c99368; /* secondary accent — pigmented brown */
+  --color-peach: #f0a98a; /* bridge / highlight — rose ↔ caramel */
+
+  /* Functional — kept quiet so brand stays the story (§2). */
+  --color-success: #7fb89a; /* muted sage */
+  --color-amber: #e3b34e; /* warnings */
+  --color-danger: #d65a4f; /* brick red — distinct from rose */
+
+  /* Hard 90° corners are the brand default (§3): radius 0 everywhere, rounding
+     is the audited exception. shadcn primitives read this token. */
+  --radius: 0px;
+
+  /* Type roles (§4). Families generate font-display/-sans/-mono utilities; each
+     ends in a real system fallback so the site reads correctly before binaries
+     land. Ported from 10-design-system.html :root. */
+  --font-display: "Clash Display", "General Sans", system-ui, sans-serif;
+  --font-sans: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Display scale (§4): clamp(36→72px), tight leading, heavy weight. Generates
+     the `text-display` utility (pair with `font-display`). */
+  --text-display: clamp(36px, 5vw, 72px);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 700;
+}
+
+/* ============================================================================
+   Global base layer — §3 guardrails + §10 accessibility.
+   Utilities (layer: utilities) still win over these, so component-level
+   overrides (e.g. an intentional rounded element) remain possible.
+   ============================================================================ */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.58; /* §4 body 1.55–1.6 */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* No rounded corners by default (§3). Opt back in with a `rounded-*` utility. */
+  *,
+  ::before,
+  ::after {
+    border-radius: 0;
+  }
+
+  /* Focus ring: rose, 2px, offset 2 — on every interactive element (§10). */
+  *:focus-visible {
+    outline: 2px solid var(--color-rose);
+    outline-offset: 2px;
+  }
+
+  /* Warm selection wash, not browser blue (§3 — accents are seasoning). */
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-rose) 28%, transparent);
+    color: var(--color-ink);
+  }
+}
+
+/* ============================================================================
+   Type utilities (§4) — reusable role classes the page epics apply.
+   ============================================================================ */
+
+/* Eyebrow / label: uppercase, tracked, heavy, small. Pair with a colour utility
+   (e.g. `text-rose`). Ported from 10-design-system.html .eyebrow. */
+@utility eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+}
+
+/* Comfortable body measure (§4: max line length ~70ch). */
+@utility measure {
+  max-width: 70ch;
+}

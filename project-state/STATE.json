@@ -1,69 +1,86 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-06-30T13:37:05.811Z",
-  "updated_by": "claude-code",
+  "updated": "2026-06-30T15:18:21.128Z",
+  "updated_by": "zcode",
   "actor": {
-    "harness": null,
-    "model": null,
-    "role": null
+    "harness": "claude-code",
+    "model": "claude-opus-4-8",
+    "role": "executor"
   },
   "current": {
-    "epic": null,
-    "slice": null,
+    "epic": "EPIC-002",
+    "slice": "EPIC-002-SLICE-3",
     "task": null,
-    "agent": null,
-    "branch": null,
-    "session_status": "none",
-    "handoff_status": "none"
+    "agent": "claude-code",
+    "branch": "feature/EPIC-002",
+    "session_status": "review",
+    "handoff_status": "pending"
   },
   "completion": {
-    "summary": "EPIC-001 SLICE-2 + SLICE-3 complete. All 5 tooling tasks done. TASK-006 (CI) deferred — protected path requires human CODEOWNER commit. EPIC-001 ready for PR to dev.",
+    "summary": "EPIC-002 (design system) implemented on feature/EPIC-002 — all 4 tasks done, awaiting cross-model review + PR to dev. SLICE-0 (design spec) was pre-existing/DONE (10-design-system.{md,html}); tasks 007–010 PORTED it into the Next.js app, nothing re-derived. Each task verified: lint + typecheck clean, build green + fully static.",
     "done": [
-      "Project spine 00-12 authored",
-      "12-ui-element-map.md generated",
-      "EPIC-001 TASK-001: Next.js 15 scaffold + static route skeleton",
-      "EPIC-001 TASK-002: Tailwind CSS v4 — postcss config, globals.css, tailwind.config.ts",
-      "EPIC-001 TASK-003: shadcn/ui init — components.json, cn helper, clsx + tailwind-merge",
-      "EPIC-001 TASK-004: ESLint 9 + Prettier + proof scripts (lint.sh, typecheck.sh)",
-      "EPIC-001 TASK-005: framer-motion, gsap, lottie-react + env.example + src/lib/env.ts"
+      "EPIC-001 complete — merged to dev",
+      "EPIC-002 SLICE-0 (design spec) pre-existing/DONE — 10-design-system.md + .html approved",
+      "EPIC-002 TASK-007: colour + base tokens ported into Tailwind v4 @theme + global base layer (hard corners, rose focus, warm selection); also fixed EPIC-001 eslint .next/next-env ignore gap",
+      "EPIC-002 TASK-008: self-hosted typography (@font-face, font tokens, type scale, eyebrow/measure utilities) + public/fonts/README; no CDN/Google-Fonts",
+      "EPIC-002 TASK-009: src/lib/motion.ts — typed Framer constants (DURATION, EASE_OUT, fadeUp, staggerContainer, prefersReducedMotion)",
+      "EPIC-002 TASK-010: base shadcn primitives (Button/Card/Input/Textarea/Label), token-styled, hard corners; deps cva + @radix-ui/react-slot"
     ],
     "remaining": [
-      "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — requires human CODEOWNER signed commit for .github/workflows/)"
+      "Cross-model review of TASK-007 + TASK-010 (handoffs/review/HANDOFF-REVIEW-TASK-00{7,10}.md); solo dev → reviewer: human",
+      "Open PR feature/EPIC-002 → dev and merge after review",
+      "Later epics: §7 signature interactions (magnetic button, tilt cards, flashlight) + real font binaries dropped into public/fonts/",
+      "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)"
     ],
-    "blocked": "TASK-006: .github/workflows/ is a protected path — needs human-signed CODEOWNER commit"
+    "blocked": "none for EPIC-002. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)"
   },
   "counts": {
-    "epics_total": 1,
+    "epics_total": 2,
     "tasks_open": 0,
     "tasks_in_progress": 0,
-    "tasks_done": 5,
-    "handoffs_pending": 0,
-    "handoffs_consumed": 0
+    "tasks_done": 9,
+    "handoffs_pending": 1,
+    "handoffs_consumed": 1
   },
   "verification": {
-    "lint": "skipped",
+    "lint": "pass",
     "typecheck": "pass",
     "unit": "skipped",
     "integration": "skipped",
     "e2e": "skipped"
   },
   "metrics": {
-    "updated": "2026-06-30T13:37:05.874Z",
+    "updated": "2026-06-30T15:18:21.188Z",
     "min_n": 5,
     "combos": [
       {
         "harness": "claude-code",
         "model": "claude-opus-4-8",
         "role": "executor",
-        "sessions": 1,
+        "sessions": 2,
         "gate_pass": 1,
         "gate_fail": 0,
         "gate_pass_rate": 100,
-        "avg_session_min": 25,
+        "avg_session_min": 24,
         "low_n": true
       }
     ]
   },
   "epics": [],
-  "handoff_queue": []
+  "handoff_queue": [
+    {
+      "id": "HANDOFF-REVIEW-TASK-007",
+      "type": "review",
+      "task_ref": "backlog/done/TASK-007.md",
+      "file": "handoffs/review/HANDOFF-REVIEW-TASK-007.md",
+      "status": "consumed"
+    },
+    {
+      "id": "HANDOFF-REVIEW-TASK-010",
+      "type": "review",
+      "task_ref": "backlog/done/TASK-010.md",
+      "file": "handoffs/review/HANDOFF-REVIEW-TASK-010.md",
+      "status": "pending"
+    }
+  ]
 }
