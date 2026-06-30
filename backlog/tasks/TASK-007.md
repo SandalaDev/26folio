@@ -30,6 +30,7 @@ files_allowed:
   - src/app/globals.css
   - tailwind.config.ts
   - src/app/layout.tsx
+  - eslint.config.mjs
 ---
 
 # Task: Colour + base design tokens & global foundation
@@ -68,3 +69,9 @@ global base layer in `@layer base`. No fonts, no components, no copy.
 ## Notes
 Medium risk because every later epic depends on these names being stable contracts
 (§12). Cross-model review delivered via the review handoff (solo dev → reviewer: human).
+
+**Discovered fix (in scope as foundation):** `eslint.config.mjs` did not ignore
+Next.js-generated files (`.next/`, `next-env.d.ts`), so `npm run lint` errored on
+build output — the lint gate could only pass via `--no-verify`. Added those to the
+flat-config `ignores` so the EPIC-002 lint gate is genuinely green. Pre-existing
+EPIC-001 (TASK-004) tooling gap surfaced while wiring the design-system build.
