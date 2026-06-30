@@ -14,7 +14,7 @@ export default function RootLayout({
   // next/font/google). Fonts are wired in EPIC-002.
   return (
     <html lang="en">
-      <body className="min-h-dvh bg-background text-ink antialiased">
+      <body className="min-h-dvh bg-background font-sans text-ink antialiased">
         {children}
       </body>
     </html>
