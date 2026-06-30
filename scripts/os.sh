@@ -53,6 +53,12 @@ cmd_end() {
   local task="${1:-${ACTIVE_TASK:-}}"
   local gate="skipped"
   if [[ -n "$task" ]]; then
+    # Materialise any required handoff BEFORE the gate checks for its presence.
+    # ds-handoff (the judgement layer) then enriches the generated prose blocks.
+    if have_node && [[ -f "$task" ]] && \
+       [[ "$(node scripts/read-fm.mjs "$task" handoff_required 2>/dev/null)" == "true" ]]; then
+      node scripts/create-handoff.mjs "$task" || echo "[os] warning: create-handoff failed; gate will reject if file is missing"
+    fi
     if bash scripts/verify-task.sh "$task"; then gate="pass"; else gate="fail"; fi
   else
     echo "[os] no task supplied; running state check only"

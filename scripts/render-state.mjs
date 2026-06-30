@@ -17,7 +17,8 @@ const exists   = (p) => fs.existsSync(p);
 
 function frontmatter(file) {
   const src = fs.readFileSync(file, "utf8");
-  const m = src.match(/^---\n([\s\S]*?)\n---/);
+  // CRLF-tolerant anchor (Windows autocrlf yields ---\r\n).
+  const m = src.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!m) return {};
   try { return YAML.parse(m[1]) ?? {}; } catch { return {}; }
 }
