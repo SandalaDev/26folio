@@ -1,0 +1,80 @@
+"use client";
+
+import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
+
+import { Section } from "@/components/site/section";
+import { NAV_LINKS } from "@/components/site/mobile-nav";
+import { fadeUp } from "@/lib/motion";
+
+// Placeholder handles — real profile URLs are an owner-confirmed follow-up.
+// Deliberately no LinkedIn (11-content-strategy.md §7 policy).
+const SOCIAL_LINKS = [
+  { label: "TikTok", href: "#" },
+  { label: "YouTube", href: "#" },
+  { label: "X", href: "#" },
+  { label: "Bluesky", href: "#" },
+  { label: "GitHub", href: "#" },
+];
+
+/**
+ * SiteFooter — global footer (12-ui-element-map.md §2). Monochrome wordmark,
+ * nav repeat, socials (no LinkedIn), link out to the Scrumtrulescent magazine.
+ */
+function SiteFooter() {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <motion.footer
+      initial={shouldReduceMotion ? undefined : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "show"}
+      viewport={{ once: true }}
+      variants={shouldReduceMotion ? undefined : fadeUp}
+      className="border-t border-border"
+    >
+      <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
+        <div className="flex flex-col gap-2">
+          <span className="font-display text-lg font-bold text-muted">
+            Sandala
+          </span>
+          <Link
+            href="https://scrumtrulescent.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="eyebrow text-muted transition-colors hover:text-rose"
+          >
+            Scrumtrulescent Magazine
+          </Link>
+        </div>
+
+        <nav className="flex flex-col gap-2">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm text-ink/80 transition-colors hover:text-rose"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <nav aria-label="Social links" className="flex flex-col gap-2">
+          {SOCIAL_LINKS.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-ink/80 transition-colors hover:text-rose"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </Section>
+    </motion.footer>
+  );
+}
+
+export { SiteFooter };
