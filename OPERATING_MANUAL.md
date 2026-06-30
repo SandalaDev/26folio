@@ -22,6 +22,71 @@ script *is for* and when to run it.
 
 ---
 
+## Starting a New Project
+
+This repository **is** the Solo Dev OS distribution — the OS travels inside it
+as a set of scripts and skills, not as a generated artifact. A brand-new project
+is created by **cloning this repo as a template, stripping the previous app,
+and running bootstrap**. There is no separate "generate the scripts" step: the
+scripts are the source of truth and live in `scripts/`.
+
+`bootstrap-solo-dev-os.sh` does **not** create the OS scripts. It writes only
+three small helper files (`.githooks/pre-push`, `.githooks/pre-commit`,
+`scripts/active-task.mjs`) via heredocs and then *calls* the scripts that must
+already be on disk. Run bootstrap in an empty repo and it will fail — the scripts
+have to come from the template repo first.
+
+### Greenfield flow
+
+```bash
+# 1. Clone this repo as the starting point for the new project.
+git clone <this-repo> my-new-project && cd my-new-project
+
+# 2. Remove the previous project's application + its intent.
+#    KEEP: the OS scaffolding (scripts/, .agents/, .githooks/, .github/,
+#          AGENTS.md, OPERATING_MANUAL.md, CODEOWNERS, .gitignore).
+#    STRIP: the app itself, and the previous project's spine/backlog/state.
+rm -rf src node_modules .next package.json package-lock.json \
+       next.config.ts tsconfig.json components.json postcss.config.mjs \
+       tailwind.config.ts eslint.config.mjs .prettierrc .prettierignore env.example
+rm -rf project-spine backlog planning memory project-state
+
+# 3. Seed the OS into the empty project: folders, STATE.json, CODEOWNERS,
+#    git hooks, the first dashboard.html.
+bash scripts/bootstrap-solo-dev-os.sh
+
+# 4. Install the one Node dependency the render/validate scripts need.
+npm install yaml        # or vendor it; no app dependency is assumed
+
+# 5. Reset git history (optional) and commit the fresh skeleton.
+rm -rf .git && git init && git add -A && git commit -m "chore: Solo Dev OS skeleton"
+
+# 6. Begin the six-phase project start (see User Guide → Project Start):
+#    intake.sh brief → interview → ready → hydrate the spine.
+```
+
+### What bootstrap writes vs. what it expects
+
+- **Writes (via heredoc):** the directory skeleton, `project-state/STATE.json`,
+  `CODEOWNERS`, `.githooks/{pre-push,pre-commit}`, `scripts/active-task.mjs`,
+  and the first `dashboard.html`.
+- **Expects already present:** every other `scripts/*.sh` and `scripts/*.mjs`,
+  `.agents/skills/` (it runs `skills.sh install-defaults`), and the intake/design/
+  content/ui scripts. These come from the template repo in step 1 — they are not
+  generated.
+
+### Keeping the OS up to date in an existing project
+
+The OS is vendored into each project (it is not a runtime dependency). To pull in
+OS fixes later, re-clone the template and copy the changed `scripts/`,
+`.agents/skills/`, `AGENTS.md`, and `OPERATING_MANUAL.md` over your project's
+copies, leaving your `project-state/`, `project-spine/`, and `backlog/` intact.
+State and intent are always project-owned; the OS machinery is repo-vendored.
+
+---
+
+---
+
 ## User Guide
 
 ### Who Does What
@@ -1067,6 +1132,11 @@ cannot close until every rework item is resolved and you run `rework.sh close`.
 ## Launch Checklist
 
 ### First Hour — Stand Up the OS
+
+This assumes you have the OS scripts on disk already. If starting truly
+greenfield, follow **Starting a New Project** above first — clone the template
+repo, strip the previous app, then bootstrap. Bootstrap does not generate the
+OS scripts; they come from the template.
 
 - Run `bash scripts/bootstrap-solo-dev-os.sh` — creates the skeleton, seeds
   `STATE.json` and `CODEOWNERS`, installs Git hooks, generates the first
