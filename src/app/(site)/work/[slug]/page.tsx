@@ -1,10 +1,14 @@
+import { notFound } from "next/navigation";
+
+import { CaseStudyDetail } from "@/components/work/case-study-detail";
+import { CTACallout } from "@/components/site/cta-callout";
+import { projects } from "@/lib/projects";
+
 export const dynamic = "force-static";
-// No project entries yet (EPIC-005 supplies them). Empty params + dynamicParams:false
-// keeps this route fully static — unknown slugs 404 rather than render on demand.
 export const dynamicParams = false;
 
 export function generateStaticParams(): { slug: string }[] {
-  return [];
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export default async function WorkDetailPage({
@@ -13,5 +17,19 @@ export default async function WorkDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <h1>Work: {slug}</h1>;
+  const project = projects.find((p) => p.slug === slug);
+
+  if (!project) notFound();
+
+  return (
+    <>
+      <CaseStudyDetail project={project} />
+      <CTACallout
+        heading="Got something like this in mind?"
+        body="Tell me what you're trying to build and I'll tell you straight whether I'm the right fit."
+        ctaLabel="Start a project"
+        href="/contact"
+      />
+    </>
+  );
 }

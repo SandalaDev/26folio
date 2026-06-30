@@ -37,7 +37,14 @@ function CapabilityRail() {
   const sectionRef = React.useRef<HTMLElement | null>(null);
   const trackRef = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
+  // useLayoutEffect (not useEffect): GSAP's `pin: true` reparents this
+  // section into a pin-spacer wrapper, changing the DOM structure React
+  // isn't aware of. The cleanup (ctx.revert(), which un-wraps the spacer)
+  // must run synchronously during React's commit/unmount phase — useEffect's
+  // cleanup fires after React has already tried (and failed) to remove the
+  // node from its now-stale expected parent, throwing
+  // "Failed to execute 'removeChild' on 'Node'" on client-side navigation.
+  React.useLayoutEffect(() => {
     const section = sectionRef.current;
     const track = trackRef.current;
     if (!section || !track) return;
