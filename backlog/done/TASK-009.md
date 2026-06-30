@@ -1,7 +1,7 @@
 ---
 id: TASK-009
 title: "Shared motion constants (durations, easings, Framer presets)"
-status: ready
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code

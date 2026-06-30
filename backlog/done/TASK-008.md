@@ -1,7 +1,7 @@
 ---
 id: TASK-008
 title: "Typography system — faces, font tokens, type scale, eyebrow utility"
-status: ready
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code

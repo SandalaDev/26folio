@@ -1,7 +1,7 @@
 ---
 id: TASK-007
 title: "Colour + base design tokens & global foundation"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

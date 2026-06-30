@@ -1,25 +1,28 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-06-30T13:37:05.811Z
+updated: 2026-06-30T14:25:17.983Z
 updated_by: claude-code
 ---
 # Current State
 ## Active work
-Epic: —   Slice: —   Task: —
-Branch: —   Actor: —
+Epic: EPIC-002   Slice: EPIC-002-SLICE-3   Task: —
+Branch: feature/EPIC-002   Actor: claude-code / claude-opus-4-8 (executor)
 ## Completion status
-EPIC-001 SLICE-2 + SLICE-3 complete. All 5 tooling tasks done. TASK-006 (CI) deferred — protected path requires human CODEOWNER commit. EPIC-001 ready for PR to dev.
+EPIC-002 (design system) implemented on feature/EPIC-002 — all 4 tasks done, awaiting cross-model review + PR to dev. SLICE-0 (design spec) was pre-existing/DONE (10-design-system.{md,html}); tasks 007–010 PORTED it into the Next.js app, nothing re-derived. Each task verified: lint + typecheck clean, build green + fully static.
 ## What is done
-- Project spine 00-12 authored
-- 12-ui-element-map.md generated
-- EPIC-001 TASK-001: Next.js 15 scaffold + static route skeleton
-- EPIC-001 TASK-002: Tailwind CSS v4 — postcss config, globals.css, tailwind.config.ts
-- EPIC-001 TASK-003: shadcn/ui init — components.json, cn helper, clsx + tailwind-merge
-- EPIC-001 TASK-004: ESLint 9 + Prettier + proof scripts (lint.sh, typecheck.sh)
-- EPIC-001 TASK-005: framer-motion, gsap, lottie-react + env.example + src/lib/env.ts
+- EPIC-001 complete — merged to dev
+- EPIC-002 SLICE-0 (design spec) pre-existing/DONE — 10-design-system.md + .html approved
+- EPIC-002 TASK-007: colour + base tokens ported into Tailwind v4 @theme + global base layer (hard corners, rose focus, warm selection); also fixed EPIC-001 eslint .next/next-env ignore gap
+- EPIC-002 TASK-008: self-hosted typography (@font-face, font tokens, type scale, eyebrow/measure utilities) + public/fonts/README; no CDN/Google-Fonts
+- EPIC-002 TASK-009: src/lib/motion.ts — typed Framer constants (DURATION, EASE_OUT, fadeUp, staggerContainer, prefersReducedMotion)
+- EPIC-002 TASK-010: base shadcn primitives (Button/Card/Input/Textarea/Label), token-styled, hard corners; deps cva + @radix-ui/react-slot
 ## What remains
-- EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — requires human CODEOWNER signed commit for .github/workflows/)
+- Cross-model review of TASK-007 + TASK-010 (handoffs/review/HANDOFF-REVIEW-TASK-00{7,10}.md); solo dev → reviewer: human
+- Open PR feature/EPIC-002 → dev and merge after review
+- Later epics: §7 signature interactions (magnetic button, tilt cards, flashlight) + real font binaries dropped into public/fonts/
+- EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
 ## Blocked
-TASK-006: .github/workflows/ is a protected path — needs human-signed CODEOWNER commit
+none for EPIC-002. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)
 ## Assigned handoffs
-none
+- handoffs/review/HANDOFF-REVIEW-TASK-007.md
+- handoffs/review/HANDOFF-REVIEW-TASK-010.md

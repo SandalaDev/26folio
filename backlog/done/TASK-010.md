@@ -1,7 +1,7 @@
 ---
 id: TASK-010
 title: "Base shadcn primitives — Button, Card, Input, Textarea, Label"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
