@@ -8,3 +8,4 @@
 | HANDOFF-REVIEW-TASK-015 | review | backlog/done/TASK-015.md | handoffs/review/HANDOFF-REVIEW-TASK-015.md | consumed |
 | HANDOFF-REVIEW-TASK-020 | review | backlog/done/TASK-020.md | handoffs/review/HANDOFF-REVIEW-TASK-020.md | consumed |
 | HANDOFF-REVIEW-TASK-021 | review | backlog/done/TASK-021.md | handoffs/review/HANDOFF-REVIEW-TASK-021.md | consumed |
+| HANDOFF-REVIEW-TASK-029 | review | backlog/done/TASK-029.md | handoffs/review/HANDOFF-REVIEW-TASK-029.md | pending |
