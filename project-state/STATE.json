@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-01T07:45:05.305Z",
+  "updated": "2026-07-01T18:43:06.383Z",
   "updated_by": "zcode",
   "actor": {
     "harness": "claude-code",
@@ -33,7 +33,7 @@
       "Owner-confirmed follow-up still outstanding: EPIC-004's real biography/interests/timeline/social URLs; EPIC-005's real project list; EPIC-006's TechGrid is a real-but-partial stack list",
       "Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back",
       "Follow-up: vendor the 21st.dev ShaderBackground (celestial-ink-shader) as a Hero upgrade once perf/a11y-audited",
-      "Gate gaps flagged, not fixed (tooling, out of any single epic's scope): scripts/read-fm.mjs reads top-level fields only so verification_required.lint/typecheck never auto-trigger; verify-task.sh's scope check is cumulative against dev so it false-positives once >1 task shares a feature branch; stop-slop's score.mjs only scans .md/.html files, never .tsx",
+      "Gate gaps fixed on chore/os-cleanup-and-simplify: read-fm.mjs now reads nested verification_required.* so lint/typecheck actually run; verify-task.sh scope check unions files_allowed across branch tasks and ignores OS-managed paths; stop-slop score.mjs now scans .tsx/.ts too",
       "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)"
     ],
     "blocked": "none for EPIC-007. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)"
@@ -53,35 +53,6 @@
     "integration": "skipped",
     "e2e": "skipped"
   },
-  "metrics": {
-    "updated": "2026-07-01T07:45:05.366Z",
-    "min_n": 5,
-    "combos": [
-      {
-        "harness": "claude-code",
-        "model": "claude-opus-4-8",
-        "role": "executor",
-        "sessions": 2,
-        "gate_pass": 1,
-        "gate_fail": 0,
-        "gate_pass_rate": 100,
-        "avg_session_min": 24,
-        "low_n": true
-      },
-      {
-        "harness": "claude-code",
-        "model": "claude-sonnet-5",
-        "role": "executor",
-        "sessions": 4,
-        "gate_pass": 0,
-        "gate_fail": 0,
-        "gate_pass_rate": null,
-        "avg_session_min": 32,
-        "low_n": true
-      }
-    ]
-  },
-  "epics": [],
   "handoff_queue": [
     {
       "id": "HANDOFF-REVIEW-TASK-007",

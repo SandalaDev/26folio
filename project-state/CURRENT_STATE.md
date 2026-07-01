@@ -1,6 +1,6 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-01T07:45:05.305Z
+updated: 2026-07-01T18:43:06.383Z
 updated_by: zcode
 ---
 # Current State
@@ -23,7 +23,7 @@ EPIC-006 merged to dev (PR #8). EPIC-007 (magazine integration) implemented on f
 - Owner-confirmed follow-up still outstanding: EPIC-004's real biography/interests/timeline/social URLs; EPIC-005's real project list; EPIC-006's TechGrid is a real-but-partial stack list
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back
 - Follow-up: vendor the 21st.dev ShaderBackground (celestial-ink-shader) as a Hero upgrade once perf/a11y-audited
-- Gate gaps flagged, not fixed (tooling, out of any single epic's scope): scripts/read-fm.mjs reads top-level fields only so verification_required.lint/typecheck never auto-trigger; verify-task.sh's scope check is cumulative against dev so it false-positives once >1 task shares a feature branch; stop-slop's score.mjs only scans .md/.html files, never .tsx
+- Gate gaps fixed on chore/os-cleanup-and-simplify: read-fm.mjs now reads nested verification_required.* so lint/typecheck actually run; verify-task.sh scope check unions files_allowed across branch tasks and ignores OS-managed paths; stop-slop score.mjs now scans .tsx/.ts too
 - EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
 ## Blocked
 none for EPIC-007. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)
