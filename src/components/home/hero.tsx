@@ -15,12 +15,11 @@ import { fadeUp, staggerContainer } from "@/lib/motion";
  * `prefers-reduced-motion` / low-power / SSR fallback) with the WebGL mesh
  * shader mounted above it only when motion is allowed and the pointer is fine.
  *
- * EPIC-011 (owner note 1): the h1 is a SINGLE weight and visibly larger (the
- * display token carries the emphasis now, not a heavy/light span mix). The CTA
- * and the portrait align to the h1's left/right ends: the h1 sets the column
- * width, then a row below the subhead drops the CTA at the left edge and the
- * portrait at the right edge. The portrait is larger, portrait-aspect, cropped
- * to the face; still blob-masked (§Blob motif). Copy unchanged.
+ * EPIC-011 (owner note 1, adjusted): the h1 is a SINGLE weight and visibly
+ * larger (the display token carries the emphasis now, not a heavy/light span
+ * mix). The CTA is centered in the viewport; the portrait sits to its right,
+ * larger, portrait-aspect, cropped to the face; still blob-masked (§Blob motif).
+ * Copy unchanged.
  */
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -75,18 +74,18 @@ function Hero() {
           partner who gets to the point.
         </motion.p>
 
-        {/* CTA at the h1's left end, portrait at the h1's right end (owner
-            note 1). The portrait is larger, portrait-aspect, cropped to the
-            face, blob-masked with a soft caramel echo (§Blob motif). */}
+        {/* CTA centered in the viewport (owner note 1, adjusted); portrait kept
+            on the right, larger, portrait-aspect, cropped to the face, blob-
+            masked with a soft caramel echo (§Blob motif). */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="flex flex-col items-start gap-10 sm:flex-row sm:items-end sm:justify-between"
+          className="flex flex-col items-center gap-10 sm:flex-row sm:items-end sm:justify-center"
         >
           <MagneticButton href="/contact" size="lg">
             Let&apos;s talk
           </MagneticButton>
 
-          <div className="relative order-first w-40 shrink-0 sm:w-48 md:w-56 lg:w-64">
+          <div className="relative order-first w-40 shrink-0 sm:ml-16 sm:w-48 md:w-56 lg:w-64">
             <Blob
               variant={3}
               fill="var(--color-caramel)"

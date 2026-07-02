@@ -35,10 +35,12 @@ const BLOCKS: Array<[x: number, y: number, w: number, h: number]> = [
 ];
 
 function MasonryPattern({ className, opacity = 0.5 }: MasonryPatternProps) {
-  // Low-contrast fill (a quiet wash of the border tone) plus a faint matching
-  // stroke so each block reads as a filled tile, not an outline.
-  const fill = `color-mix(in srgb, var(--color-border) ${Math.round(opacity * 100)}%, transparent)`;
-  const stroke = "color-mix(in srgb, var(--color-border-2) 22%, transparent)";
+  // Low-contrast fill (a quiet wash of the border tone). The stroke is a faint
+  // fraction of the SAME opacity so fill + edge scale together; at low opacity
+  // the whole pattern reads as a near-invisible filled wash, never an outline.
+  const pct = Math.round(opacity * 100);
+  const fill = `color-mix(in srgb, var(--color-border) ${pct}%, transparent)`;
+  const stroke = `color-mix(in srgb, var(--color-border-2) ${Math.max(8, Math.round(pct * 0.4))}%, transparent)`;
   return (
     <svg
       aria-hidden="true"
