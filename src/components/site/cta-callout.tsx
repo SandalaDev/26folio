@@ -1,10 +1,8 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
-import { Button } from "@/components/ui/button";
+import { MagneticButton } from "@/components/motion/magnetic-button";
 import { Section } from "@/components/site/section";
 import { Blob } from "@/components/site/blob";
 import { MeshBg } from "@/components/site/mesh-bg";
@@ -12,9 +10,14 @@ import { fadeUp, staggerContainer } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * CTACallout — shared end-of-page conversion band (12-ui-element-map.md §1).
+ * CTACallout - shared end-of-page conversion band (12-ui-element-map.md §1).
  * Every page passes its own heading/body/CTA copy; the destination is always a
  * qualified inquiry (11-content-strategy.md §1), usually `/contact`.
+ *
+ * EPIC-011 (owner note 4): the CTA uses `MagneticButton`, so every page's
+ * conversion button shares the hero's magnetic hover (pull + fill sweep + text
+ * reveal). `MagneticButton` degrades to a plain styled button under
+ * reduced-motion / coarse pointers, so the band is never motion-gated.
  */
 export interface CTACalloutProps {
   heading: string;
@@ -65,9 +68,9 @@ function CTACallout({
           {body}
         </motion.p>
         <motion.div variants={shouldReduceMotion ? undefined : fadeUp}>
-          <Button asChild size="lg">
-            <Link href={href}>{ctaLabel}</Link>
-          </Button>
+          <MagneticButton href={href} size="lg">
+            {ctaLabel}
+          </MagneticButton>
         </motion.div>
       </motion.div>
     </Section>

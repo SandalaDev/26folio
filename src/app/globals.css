@@ -77,12 +77,13 @@
   --font-sans: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Display scale (§4, EPIC-010): clamp(40→84px), tight leading, heavy weight.
-     Generates the `text-display` utility (pair with `font-display`). The scale
-     leans on weight CONTRAST: heavy display words against light spans/subheads
-     (the variable faces cover 200–700). */
-  --text-display: clamp(40px, 5.5vw, 84px);
-  --text-display--line-height: 1.04;
+  /* Display scale (§4). EPIC-011 raised the ceiling (owner note 1: enlarge the
+     hero h1) and dropped the in-headline weight contrast — the h1 is now a single
+     weight (the 650 below), so the larger scale carries the emphasis instead of a
+     heavy/light span mix. Generates `text-display` (pair with `font-display`).
+     Subheads/section-headings still provide the weight counterpoint. */
+  --text-display: clamp(44px, 7vw, 112px);
+  --text-display--line-height: 1.02;
   --text-display--letter-spacing: -0.03em;
   --text-display--font-weight: 650;
 

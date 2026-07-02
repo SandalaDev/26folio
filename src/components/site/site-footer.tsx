@@ -8,7 +8,7 @@ import { MasonryPattern } from "@/components/site/masonry-pattern";
 import { NAV_LINKS } from "@/components/site/mobile-nav";
 import { fadeUp } from "@/lib/motion";
 
-// Placeholder handles — real profile URLs are an owner-confirmed follow-up.
+// Placeholder handles - real profile URLs are an owner-confirmed follow-up.
 // Deliberately no LinkedIn (11-content-strategy.md §7 policy).
 const SOCIAL_LINKS = [
   { label: "TikTok", href: "#" },
@@ -19,8 +19,13 @@ const SOCIAL_LINKS = [
 ];
 
 /**
- * SiteFooter — global footer (12-ui-element-map.md §2). Monochrome wordmark,
+ * SiteFooter - global footer (12-ui-element-map.md §2). Monochrome wordmark,
  * nav repeat, socials (no LinkedIn), link out to the Scrumtrulescent magazine.
+ *
+ * EPIC-011 (owner note 3): lowered contrast. Text/links read as light brown
+ * (caramel, the system's secondary accent) at low opacity over the warm-dark
+ * base; hover lifts to rose. The masonry texture behind the columns is now a
+ * filled low-opacity wash instead of an outlined grid (see MasonryPattern).
  */
 function SiteFooter() {
   const shouldReduceMotion = useReducedMotion();
@@ -33,19 +38,19 @@ function SiteFooter() {
       variants={shouldReduceMotion ? undefined : fadeUp}
       className="relative overflow-hidden border-t border-border"
     >
-      {/* Irregular masonry texture — the angular counterpart to the blob
+      {/* Irregular masonry texture - the angular counterpart to the blob
           motif, whisper-quiet behind the footer columns. */}
-      <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.3} />
+      <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.5} />
       <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
         <div className="flex flex-col gap-2">
-          <span className="font-display text-lg font-bold text-muted">
+          <span className="font-display text-lg font-bold text-caramel/70">
             Sandala
           </span>
           <Link
             href="https://scrumtrulescent.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="eyebrow text-muted transition-colors hover:text-rose"
+            className="eyebrow text-caramel/70 transition-colors hover:text-rose"
           >
             Scrumtrulescent Magazine
           </Link>
@@ -56,7 +61,7 @@ function SiteFooter() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-ink/80 transition-colors hover:text-rose"
+              className="text-sm text-caramel/70 transition-colors hover:text-rose"
             >
               {link.label}
             </Link>
@@ -70,7 +75,7 @@ function SiteFooter() {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-ink/80 transition-colors hover:text-rose"
+              className="text-sm text-caramel/70 transition-colors hover:text-rose"
             >
               {link.label}
             </Link>

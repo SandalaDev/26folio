@@ -3,19 +3,20 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * MasonryPattern — irregular offset-rectangle texture (EPIC-010, §Blob
- * backgrounds). Hairline masonry blocks in the border tone at very low opacity:
- * the angular counterpart to the blob, keeping the 90° system present inside
- * decorated areas. Decorative: aria-hidden, behind content.
+ * MasonryPattern - irregular offset-rectangle texture (EPIC-010, §Blob
+ * backgrounds; EPIC-011 lowered its contrast). Filled, very-low-opacity blocks
+ * in the surface tone, with a faint border hairline: the angular counterpart to
+ * the blob, keeping the 90° system present inside decorated areas without
+ * competing with foreground content. Decorative: aria-hidden, behind content.
  */
 export interface MasonryPatternProps {
   className?: string;
-  /** Stroke opacity. Keep whisper-quiet. */
+  /** Fill opacity (0–1). Keep whisper-quiet so it never competes with content. */
   opacity?: number;
 }
 
 /* One hand-set irregular arrangement (not a uniform grid): column seams shift
-   per row, block sizes vary, and two cells are intentionally missing — the
+   per row, block sizes vary, and two cells are intentionally missing - the
    irregular-masonry read the brief asked for. */
 const BLOCKS: Array<[x: number, y: number, w: number, h: number]> = [
   [0, 0, 120, 72],
@@ -33,7 +34,11 @@ const BLOCKS: Array<[x: number, y: number, w: number, h: number]> = [
   [328, 152, 72, 48],
 ];
 
-function MasonryPattern({ className, opacity = 0.35 }: MasonryPatternProps) {
+function MasonryPattern({ className, opacity = 0.5 }: MasonryPatternProps) {
+  // Low-contrast fill (a quiet wash of the border tone) plus a faint matching
+  // stroke so each block reads as a filled tile, not an outline.
+  const fill = `color-mix(in srgb, var(--color-border) ${Math.round(opacity * 100)}%, transparent)`;
+  const stroke = "color-mix(in srgb, var(--color-border-2) 22%, transparent)";
   return (
     <svg
       aria-hidden="true"
@@ -48,9 +53,8 @@ function MasonryPattern({ className, opacity = 0.35 }: MasonryPatternProps) {
           y={y + 0.5}
           width={w - 1}
           height={h - 1}
-          fill="none"
-          stroke="var(--color-border)"
-          strokeOpacity={opacity}
+          fill={fill}
+          stroke={stroke}
         />
       ))}
     </svg>
