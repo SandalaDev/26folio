@@ -33,3 +33,6 @@ yarn-debug.log*
 
 # solo-dev-os generated slop-score artifacts (written by stop-slop/score.mjs)
 planning/content/.slop/
+
+# obsidian volatile UI state (per-machine; keeps re-appearing as modified)
+.obsidian/workspace.json
