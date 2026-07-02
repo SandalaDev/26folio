@@ -8,7 +8,7 @@ import { MasonryPattern } from "@/components/site/masonry-pattern";
 import { NAV_LINKS } from "@/components/site/mobile-nav";
 import { fadeUp } from "@/lib/motion";
 
-// Placeholder handles — real profile URLs are an owner-confirmed follow-up.
+// Placeholder handles - real profile URLs are an owner-confirmed follow-up.
 // Deliberately no LinkedIn (11-content-strategy.md §7 policy).
 const SOCIAL_LINKS = [
   { label: "TikTok", href: "#" },
@@ -19,8 +19,13 @@ const SOCIAL_LINKS = [
 ];
 
 /**
- * SiteFooter — global footer (12-ui-element-map.md §2). Monochrome wordmark,
+ * SiteFooter - global footer (12-ui-element-map.md §2). Monochrome wordmark,
  * nav repeat, socials (no LinkedIn), link out to the Scrumtrulescent magazine.
+ *
+ * EPIC-011 (owner note 3, adjusted): text/links stay in the pink family (the
+ * ink/soft tokens), hover to rose. The masonry texture behind the columns is a
+ * filled wash at a very low opacity so it barely reads against the background
+ * (see MasonryPattern).
  */
 function SiteFooter() {
   const shouldReduceMotion = useReducedMotion();
@@ -33,9 +38,9 @@ function SiteFooter() {
       variants={shouldReduceMotion ? undefined : fadeUp}
       className="relative overflow-hidden border-t border-border"
     >
-      {/* Irregular masonry texture — the angular counterpart to the blob
+      {/* Irregular masonry texture - the angular counterpart to the blob
           motif, whisper-quiet behind the footer columns. */}
-      <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.3} />
+      <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.16} />
       <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
         <div className="flex flex-col gap-2">
           <span className="font-display text-lg font-bold text-muted">

@@ -10,15 +10,15 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /**
- * MagneticButton — the §7 #4 signature interaction (baunfire), reserved as a note in
- * button.tsx ("magnetic pull, cursor-origin fill sweep, text-mask reveal — a separate
+ * MagneticButton - the §7 #4 signature interaction (baunfire), reserved as a note in
+ * button.tsx ("magnetic pull, cursor-origin fill sweep, text-mask reveal: a separate
  * motion component"). It reuses the design-system `buttonVariants` (hard corners, token
  * fills) so styling stays canonical, and layers three effects:
  *
- *   1. Magnetic pull  — GSAP `quickTo` translates the button toward the cursor (§6:
+ *   1. Magnetic pull  - GSAP `quickTo` translates the button toward the cursor (§6:
  *      ease-out, no overshoot). GSAP owns the imperative transform (one library/job).
- *   2. Fill sweep     — a peach field scales up from the cursor's entry point.
- *   3. Text-mask reveal — the label rolls to a duplicate (CSS, `motion-reduce` safe).
+ *   2. Fill sweep     - a peach field scales up from the cursor's entry point.
+ *   3. Text-mask reveal - the label rolls to a duplicate (CSS, `motion-reduce` safe).
  *
  * Degrades to a plain styled button/link under `prefers-reduced-motion` or on
  * touch/coarse pointers; the native focus ring (globals.css §10) is never removed.
@@ -29,6 +29,9 @@ interface MagneticButtonProps extends VariantProps<typeof buttonVariants> {
   className?: string;
   strength?: number;
   onClick?: () => void;
+  /** Button-only attrs (ignored when `href` renders a link). */
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
   "aria-label"?: string;
 }
 

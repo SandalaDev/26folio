@@ -15,9 +15,11 @@ import { fadeUp, staggerContainer } from "@/lib/motion";
  * `prefers-reduced-motion` / low-power / SSR fallback) with the WebGL mesh
  * shader mounted above it only when motion is allowed and the pointer is fine.
  *
- * EPIC-010: asymmetric composition on the full-viewport width. Hierarchy is
- * deliberate: h1 (heavy/light weight contrast) → subhead + CTA → portrait.
- * The portrait is small and blob-masked (§Blob motif): present, not dominant.
+ * EPIC-011 (owner note 1, adjusted): the h1 is a SINGLE weight and visibly
+ * larger (the display token carries the emphasis now, not a heavy/light span
+ * mix). The CTA is centered in the viewport; the portrait sits to its right,
+ * larger, portrait-aspect, cropped to the face; still blob-masked (§Blob motif).
+ * Copy unchanged.
  */
 function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -52,54 +54,54 @@ function Hero() {
         initial={shouldReduceMotion ? undefined : "hidden"}
         animate={shouldReduceMotion ? undefined : "show"}
         variants={shouldReduceMotion ? undefined : staggerContainer}
-        className="grid w-full items-end gap-10 lg:grid-cols-12"
+        className="flex w-full flex-col gap-8 lg:gap-10"
       >
-        <div className="flex flex-col gap-8 lg:col-span-8">
-          <motion.h1
-            variants={shouldReduceMotion ? undefined : fadeUp}
-            className="text-display font-display font-extralight text-ink"
-          >
-            I build the <span className="font-semibold">software</span> your
-            business <span className="font-semibold">actually needs.</span>
-          </motion.h1>
-          <motion.p
-            variants={shouldReduceMotion ? undefined : fadeUp}
-            className="measure text-subhead text-muted"
-          >
-            Web, custom software, and AI integration from one engineer who
-            scopes the problem before he names the stack. No agency theatre, no
-            handoff to someone who&apos;s never met you. Just a strategic
-            partner who gets to the point.
-          </motion.p>
-          <motion.div variants={shouldReduceMotion ? undefined : fadeUp}>
-            <MagneticButton href="/contact" size="lg">
-              Let&apos;s talk
-            </MagneticButton>
-          </motion.div>
-        </div>
+        {/* h1 sets the column width; everything below aligns to its ends. */}
+        <motion.h1
+          variants={shouldReduceMotion ? undefined : fadeUp}
+          className="text-display font-display text-ink"
+        >
+          I build the software your business actually needs.
+        </motion.h1>
 
-        {/* Portrait: third in the hierarchy: small, offset low-right, blob-
-            masked with a soft caramel echo behind (§Blob motif). */}
+        <motion.p
+          variants={shouldReduceMotion ? undefined : fadeUp}
+          className="measure text-subhead text-muted"
+        >
+          Web, custom software, and AI integration from one engineer who
+          scopes the problem before he names the stack. No agency theatre, no
+          handoff to someone who&apos;s never met you. Just a strategic
+          partner who gets to the point.
+        </motion.p>
+
+        {/* CTA centered in the viewport (owner note 1, adjusted); portrait kept
+            on the right, larger, portrait-aspect, cropped to the face, blob-
+            masked with a soft caramel echo (§Blob motif). */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="order-first flex justify-start lg:order-none lg:col-span-4 lg:justify-end lg:pb-6"
+          className="flex flex-col items-center gap-10 sm:flex-row sm:items-end sm:justify-center"
         >
-          <div className="relative w-28 md:w-40 lg:w-52">
+          <MagneticButton href="/contact" size="lg">
+            Let&apos;s talk
+          </MagneticButton>
+
+          <div className="relative order-first w-40 shrink-0 sm:ml-16 sm:w-48 md:w-56 lg:w-64">
             <Blob
               variant={3}
               fill="var(--color-caramel)"
               opacity={0.16}
               blur={2}
-              className="-left-6 -top-6 w-[130%]"
+              className="-left-6 -top-8 w-[130%]"
             />
-            <div className="blob-mask-1 blob-morph relative aspect-square overflow-hidden bg-surface-2">
+            {/* Portrait aspect (taller than square) cropped to the face. */}
+            <div className="blob-mask-1 blob-morph relative aspect-[4/5] overflow-hidden bg-surface-2">
               <Image
                 src="/images/portrait.png"
                 alt="Abe Sandala"
                 fill
-                sizes="(min-width: 1024px) 13rem, (min-width: 768px) 10rem, 7rem"
+                sizes="(min-width: 1024px) 16rem, (min-width: 640px) 12rem, 10rem"
                 priority
-                className="object-cover"
+                className="object-cover object-[50%_22%]"
               />
             </div>
           </div>
