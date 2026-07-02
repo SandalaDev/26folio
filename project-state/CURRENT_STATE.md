@@ -1,6 +1,6 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-02T10:50:19.048Z
+updated: 2026-07-02T13:57:09.905Z
 updated_by: zcode
 ---
 # Current State
@@ -8,7 +8,7 @@ updated_by: zcode
 Epic: EPIC-009   Slice: EPIC-009-SLICE-2   Task: —
 Branch: feature/EPIC-009   Actor: claude-code / claude-opus-4-8 (executor)
 ## Completion status
-EPIC-009 (hero redesign + signature motion) implemented on feature/EPIC-009, branched off origin/dev (EPIC-008 contact work is unmerged on its own branch and intentionally absent here). SLICE-1/TASK-035 (low): repo cleanup (gitignored + untracked .obsidian/workspace.json; kept the loose planning notes) and vendored three animation SKILL.md packages onto disk — gsap (OFFICIAL greensock/gsap-skills), framer-motion (C-Jeril/framer-motion-skills), lottie (OFFICIAL lottiefiles/motion-design-skill) — registered in registry.md + pinned in lock.json (npm packages gsap/framer-motion/lottie-react were ALREADY installed; the gap was skills, now filled). SLICE-2/TASK-036 (medium): added @paper-design/shaders-react and src/components/motion/shader-background.tsx — the 21st.dev MeshGradient remapped to the warm skin palette (rose/peach/caramel/soft/surface/background; NO teal/magenta per §3), distortion/swirl/speed tuned low for §6's 'subtle & smooth'; Hero keeps its static radial-gradient as the always-present reduced-motion/touch/SSR base and mounts the shader above it only when motion is allowed AND pointer is fine (decision #1). TASK-037 (medium): extended src/lib/use-pointer.ts to a single shared listener exposing both a state API (flashlight) and MotionValues (no per-move re-render); added src/components/motion/cursor.tsx (global custom cursor, pointer-fine only, native focus preserved) and src/components/motion/magnetic-button.tsx (GSAP quickTo magnetic pull + cursor-origin fill sweep + CSS text-mask reveal, degrades to the plain Button under reduced-motion/touch), wired the hero CTA. lint/typecheck/build all green. In-browser: canvas + WebGL context mount with no console errors; the headless PREVIEW's ResizeObserver never fires (verified) so the shader canvas can't size THERE — it renders in a real browser. Reviews waived to human (solo) at PR into dev. NOT committed/pushed — left in the working tree for the owner to review.
+EPIC-009 (hero redesign + signature motion) implemented on feature/EPIC-009, now merged up to date with origin/dev (which received the OS cleanup via PR #10). SLICE-1/TASK-035 (low): repo cleanup (gitignored + untracked .obsidian/workspace.json; kept the loose planning notes) and vendored three animation SKILL.md packages onto disk — gsap (OFFICIAL greensock/gsap-skills), framer-motion (C-Jeril/framer-motion-skills), lottie (OFFICIAL lottiefiles/motion-design-skill) — registered in registry.md + pinned in lock.json (npm packages gsap/framer-motion/lottie-react were ALREADY installed; the gap was skills, now filled). SLICE-2/TASK-036 (medium): added @paper-design/shaders-react and src/components/motion/shader-background.tsx — the 21st.dev MeshGradient remapped to the warm skin palette (rose/peach/caramel/soft/surface/background; NO teal/magenta per §3), distortion/swirl/speed tuned low for §6's 'subtle & smooth'; Hero keeps its static radial-gradient as the always-present reduced-motion/touch/SSR base and mounts the shader above it only when motion is allowed AND pointer is fine (decision #1). TASK-037 (medium): extended src/lib/use-pointer.ts to a single shared listener exposing both a state API (flashlight) and MotionValues (no per-move re-render); added src/components/motion/cursor.tsx (global custom cursor, pointer-fine only, native focus preserved) and src/components/motion/magnetic-button.tsx (GSAP quickTo magnetic pull + cursor-origin fill sweep + CSS text-mask reveal, degrades to the plain Button under reduced-motion/touch), wired the hero CTA. lint/typecheck/build all green. In-browser: canvas + WebGL context mount with no console errors; the headless PREVIEW's ResizeObserver never fires (verified) so the shader canvas can't size THERE — it renders in a real browser. Reviews waived to human (solo) at PR #11 into dev.
 ## What is done
 - EPIC-001 complete — merged to dev
 - EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live
@@ -16,14 +16,14 @@ EPIC-009 (hero redesign + signature motion) implemented on feature/EPIC-009, bra
 - EPIC-004 complete — merged to dev (PR #6); about page (hybrid intro, sticky cards/modals, timeline, magazine section, socials) live
 - EPIC-005 complete — merged to dev (PR #7); work page (grid + case study details) live
 - EPIC-006 complete — merged to dev (PR #8); capabilities page (services, technologies, process, CTA) live
-- EPIC-007 TASK-032: lib/magazine.ts — getFeaturedMagazineArticles(), 1hr ISR, never-throws contract, MAGAZINE_API_URL/KEY added to env.ts/env.example
-- EPIC-007 TASK-033: wired into HomePage (now async), MagazineTeaser/ArticleCard contract untouched
+- EPIC-007 TASK-032/033: lib/magazine.ts + HomePage wiring (magazine integration)
+- OS cleanup merged to dev (PR #10, chore/os-cleanup-and-simplify): pruned unused machinery, gate-bug fixes, manual rewrite
 - EPIC-009 TASK-035: cleanup (gitignore/untrack .obsidian/workspace.json; keep notes) + vendored gsap/framer-motion/lottie skills (registry.md + lock.json pinned commits)
 - EPIC-009 TASK-036: warm shader hero — @paper-design/shaders-react + ShaderBackground (palette-remapped MeshGradient), mounted above the static gradient fallback only when motion is allowed
 - EPIC-009 TASK-037: signature motion — shared pointer MotionValues, global custom Cursor, MagneticButton (magnetic pull + fill sweep + text reveal); hero CTA wired
 ## What remains
 - Owner: eyeball the hero shader in a REAL browser (npm run dev) — the headless preview's ResizeObserver doesn't fire so the shader canvas can't size there; confirm the warm field reads well and tune ShaderBackground distortion/swirl/speed or the veil (bg-background/50) to taste.
-- Open PR feature/EPIC-009 -> dev; review is waived to human (solo) — both medium tasks carry review_waiver. Also PR feature/EPIC-007 -> dev if not yet merged.
+- Merge PR #11 (feature/EPIC-009 -> dev); review waived to human (solo) — both medium tasks carry review_waiver. Merge feature/EPIC-007 -> dev too if not yet done.
 - Follow-up: apply MagneticButton to other primary CTAs and build the remaining §7 signature interactions (work-card zoom, timeline, flashlight, tech grid) in their own epics.
 - Owner-confirmed follow-up still outstanding: EPIC-004's real biography/interests/timeline/social URLs; EPIC-005's real project list; EPIC-006's TechGrid is a real-but-partial stack list
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back

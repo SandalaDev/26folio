@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-# sync-agent-files.sh — generate per-harness instruction files from canonical AGENTS.md.
-# Copies (not symlinks) for Windows/MINGW64 compatibility. Run after editing AGENTS.md.
+# sync-agent-files.sh — generate the harness instruction file from canonical AGENTS.md.
+# Copy (not symlink) for Windows/MINGW64 compatibility. Run after editing AGENTS.md.
+# Only CLAUDE.md is generated — this project runs one harness (Claude Code). Add a
+# target here if another harness is adopted; don't hand-maintain a second copy.
 set -euo pipefail
 SRC="AGENTS.md"
 [[ -f "$SRC" ]] || { echo "missing $SRC"; exit 1; }
 BANNER="<!-- generated from AGENTS.md — do not edit; run scripts/sync-agent-files.sh -->"
-for target in CLAUDE.md CODEX.md GEMINI.md; do
-  { echo "$BANNER"; echo; cat "$SRC"; } > "$target"
-  echo "  wrote $target"
-done
-echo "[sync] per-harness files regenerated from AGENTS.md"
+{ echo "$BANNER"; echo; cat "$SRC"; } > CLAUDE.md
+echo "[sync] CLAUDE.md regenerated from AGENTS.md"
