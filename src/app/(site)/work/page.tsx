@@ -1,5 +1,5 @@
 import { Section } from "@/components/site/section";
-import { Eyebrow } from "@/components/site/eyebrow";
+import { MeshBg } from "@/components/site/mesh-bg";
 import { WorkGrid } from "@/components/work/work-grid";
 import { CTACallout } from "@/components/site/cta-callout";
 
@@ -8,10 +8,10 @@ export const dynamic = "force-static";
 export default function WorkPage() {
   return (
     <>
-      <Section>
-        <Eyebrow>Work</Eyebrow>
-        <h1 className="mt-3 text-display font-display text-ink">
-          A few things I&apos;ve shipped
+      <Section className="relative overflow-hidden">
+        <MeshBg tone="rose" className="-z-10" />
+        <h1 className="text-display font-display font-extralight text-ink">
+          A few things <span className="font-semibold">I&apos;ve shipped</span>
         </h1>
       </Section>
 

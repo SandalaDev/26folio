@@ -1,20 +1,27 @@
 import { Section } from "@/components/site/section";
-import { Eyebrow } from "@/components/site/eyebrow";
 import { WorkCard } from "@/components/home/work-card";
 import { projects } from "@/lib/projects";
 
-/** FeaturedWork — home page block #2 (12-ui-element-map.md §3). */
+/**
+ * FeaturedWork — home page block #2 (12-ui-element-map.md §3). EPIC-010: the
+ * first two REAL projects as enlarged image cards in a staggered asymmetric
+ * two-column layout (the full-viewport width finally gives them room).
+ */
 function FeaturedWork() {
+  const [first, second] = projects.slice(0, 2);
+
   return (
     <Section>
-      <Eyebrow>Featured work</Eyebrow>
-      <h2 className="mt-3 text-3xl font-display font-semibold text-ink">
-        A couple of things I&apos;ve shipped
+      <h2 className="text-heading font-display text-ink">
+        A couple of things <span className="font-extralight">I&apos;ve shipped</span>
       </h2>
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
-        {projects.slice(0, 2).map((project) => (
-          <WorkCard key={project.slug} project={project} />
-        ))}
+      <div className="mt-12 grid gap-8 md:grid-cols-12">
+        <div className="md:col-span-7">
+          <WorkCard project={first} featured />
+        </div>
+        <div className="md:col-span-5 md:mt-24">
+          <WorkCard project={second} featured />
+        </div>
       </div>
     </Section>
   );

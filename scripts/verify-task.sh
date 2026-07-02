@@ -92,7 +92,17 @@ run_if "verification_required.accessibility" "a11y"      proof a11y        test:
 section "stop-slop (public text)"
 if [[ "$(fm public_text)" == "true" ]]; then
   if have_node; then
-    node .agents/skills/stop-slop/score.mjs --verify "$CHANGED" || { echo "  SLOP GATE FAILED"; FAIL=1; }
+    # Score only rendered-app sources (src/). Same over-breadth family as the
+    # scope check's OS_MANAGED exclusion: planning docs, task files, and the
+    # spine are internal, and the GENERATED views (CURRENT_STATE.md) emit
+    # typographic dashes as null placeholders by design — scoring them made
+    # every public_text push fail on files no reader ever sees.
+    PUBLIC_CHANGED="$(printf '%s\n' "$CHANGED" | grep -E '^src/' || true)"
+    if [[ -n "$PUBLIC_CHANGED" ]]; then
+      node .agents/skills/stop-slop/score.mjs --verify "$PUBLIC_CHANGED" || { echo "  SLOP GATE FAILED"; FAIL=1; }
+    else
+      echo "  no changed public-surface files (src/) — n/a"
+    fi
   else
     echo "  skip (no node) — enforced in CI"
   fi

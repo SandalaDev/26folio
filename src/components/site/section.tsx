@@ -4,8 +4,10 @@ import { cn } from "@/lib/utils";
 
 /**
  * Section — shared layout primitive (12-ui-element-map.md §1). Enforces the
- * canonical section rhythm so every page composes the same spacing/width without
- * repeating utility classes.
+ * canonical section rhythm so every page composes the same spacing without
+ * repeating utility classes. EPIC-010: no layout max-width — the site uses the
+ * viewport; the padding rhythm scales up instead. Prose readability still comes
+ * from `measure` (70ch) on body copy, not from a container cap.
  */
 export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   as?: React.ElementType;
@@ -17,8 +19,7 @@ const Section = React.forwardRef<HTMLElement, SectionProps>(
       <Comp
         ref={ref}
         className={cn(
-          "py-20 md:py-28 px-6 md:px-12 lg:px-24",
-          "mx-auto max-w-7xl",
+          "py-20 md:py-28 px-5 md:px-10 lg:px-16 xl:px-24",
           className,
         )}
         {...props}
