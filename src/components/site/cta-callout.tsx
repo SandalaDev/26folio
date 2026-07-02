@@ -6,6 +6,8 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/site/section";
+import { Blob } from "@/components/site/blob";
+import { MeshBg } from "@/components/site/mesh-bg";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +34,17 @@ function CTACallout({
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <Section className={cn("text-center", className)}>
+    <Section className={cn("relative overflow-hidden text-center", className)}>
+      {/* Conversion band gets the loudest (still quiet) wash on the page:
+          mesh + one large blob behind the centered copy (§Blob motif). */}
+      <MeshBg tone="warm" className="-z-10" />
+      <Blob
+        variant={1}
+        fill="var(--color-rose)"
+        opacity={0.07}
+        blur={8}
+        className="-z-10 left-1/2 top-1/2 w-[36rem] -translate-x-1/2 -translate-y-1/2"
+      />
       <motion.div
         initial={shouldReduceMotion ? undefined : "hidden"}
         whileInView={shouldReduceMotion ? undefined : "show"}

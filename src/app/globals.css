@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   Self-hosted typefaces (§4). The design-system reference (10-design-system.html)
-   loads these from the Fontshare CDN for preview only; production self-hosts —
-   no CDN / Google-Fonts call (07-architecture-principles §rendering).
-   Binaries are intentionally NOT committed yet (faces are proposals, §4): drop
-   the woff2 files named below into /public/fonts/ (see public/fonts/README.md).
-   Until then `font-display: swap` falls back to the system stacks in --font-*.
+   Self-hosted typefaces (§4). Production self-hosts — no CDN / Google-Fonts
+   call (07-architecture-principles §rendering). Binaries shipped in EPIC-010
+   (variable woff2: Clash Display + General Sans from Fontshare, JetBrains Mono
+   from fontsource); `font-display: swap` still falls back to the system stacks
+   in --font-* while loading.
    ============================================================================ */
 @font-face {
   font-family: "Clash Display";
@@ -20,6 +19,13 @@
   src: url("/fonts/GeneralSans-Variable.woff2") format("woff2-variations");
   font-weight: 200 700;
   font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-VariableItalic.woff2") format("woff2-variations");
+  font-weight: 200 700;
+  font-style: italic;
   font-display: swap;
 }
 @font-face {
@@ -71,12 +77,35 @@
   --font-sans: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Display scale (§4): clamp(36→72px), tight leading, heavy weight. Generates
-     the `text-display` utility (pair with `font-display`). */
-  --text-display: clamp(36px, 5vw, 72px);
-  --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.02em;
-  --text-display--font-weight: 700;
+  /* Display scale (§4, EPIC-010): clamp(40→84px), tight leading, heavy weight.
+     Generates the `text-display` utility (pair with `font-display`). The scale
+     leans on weight CONTRAST: heavy display words against light spans/subheads
+     (the variable faces cover 200–700). */
+  --text-display: clamp(40px, 5.5vw, 84px);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 650;
+
+  /* Subhead scale (§4, EPIC-010): the light counterweight to the display.
+     Generates `text-subhead`. */
+  --text-subhead: clamp(19px, 1.6vw, 24px);
+  --text-subhead--line-height: 1.45;
+  --text-subhead--letter-spacing: 0em;
+  --text-subhead--font-weight: 320;
+
+  /* Section-heading scale (§4, EPIC-010): generates `text-heading` for h2s —
+     bigger than the old text-3xl, still under the display. */
+  --text-heading: clamp(30px, 3.2vw, 52px);
+  --text-heading--line-height: 1.08;
+  --text-heading--letter-spacing: -0.02em;
+  --text-heading--font-weight: 600;
+
+  /* Blob motif (§Blob, EPIC-010) — organic border-radius presets. The brand's
+     vitiligo reference: two tones on one surface, irregular but intentional.
+     Decorative masks/washes ONLY; UI chrome stays 90° (§3). */
+  --blob-1: 58% 42% 55% 45% / 46% 58% 42% 54%;
+  --blob-2: 44% 56% 62% 38% / 55% 42% 58% 45%;
+  --blob-3: 63% 37% 46% 54% / 42% 61% 39% 58%;
 }
 
 /* ============================================================================
@@ -119,17 +148,55 @@
    Type utilities (§4) — reusable role classes the page epics apply.
    ============================================================================ */
 
-/* Eyebrow / label: uppercase, tracked, heavy, small. Pair with a colour utility
-   (e.g. `text-rose`). Ported from 10-design-system.html .eyebrow. */
+/* Eyebrow / label (EPIC-010): normal case — all-caps is banned site-wide (owner
+   decision + design-lane rule). A quiet medium-weight label; pair with a colour
+   utility (e.g. `text-rose`). Use sparingly: max one eyebrow per three sections. */
 @utility eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  line-height: 1.2;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
 }
 
-/* Comfortable body measure (§4: max line length ~70ch). */
+/* Comfortable body measure (§4: max line length ~70ch). Readability constraint,
+   not a layout cap — kept after the EPIC-010 max-width removal. */
 @utility measure {
   max-width: 70ch;
+}
+
+/* ============================================================================
+   Blob motif utilities (§Blob, EPIC-010). Masks pull from the --blob-* tokens;
+   the morph slides between them slowly. Decorative only — every consumer is
+   aria-hidden or an image mask, never interactive chrome.
+   ============================================================================ */
+@utility blob-mask-1 {
+  border-radius: var(--blob-1);
+}
+@utility blob-mask-2 {
+  border-radius: var(--blob-2);
+}
+@utility blob-mask-3 {
+  border-radius: var(--blob-3);
+}
+@utility blob-morph {
+  animation: blob-morph 16s ease-in-out infinite;
+}
+
+@keyframes blob-morph {
+  0%,
+  100% {
+    border-radius: var(--blob-1);
+  }
+  33% {
+    border-radius: var(--blob-2);
+  }
+  66% {
+    border-radius: var(--blob-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob-morph {
+    animation: none;
+  }
 }

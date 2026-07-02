@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Section } from "@/components/site/section";
+import { MasonryPattern } from "@/components/site/masonry-pattern";
 import { NAV_LINKS } from "@/components/site/mobile-nav";
 import { fadeUp } from "@/lib/motion";
 
@@ -30,8 +31,11 @@ function SiteFooter() {
       whileInView={shouldReduceMotion ? undefined : "show"}
       viewport={{ once: true }}
       variants={shouldReduceMotion ? undefined : fadeUp}
-      className="border-t border-border"
+      className="relative overflow-hidden border-t border-border"
     >
+      {/* Irregular masonry texture — the angular counterpart to the blob
+          motif, whisper-quiet behind the footer columns. */}
+      <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.3} />
       <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
         <div className="flex flex-col gap-2">
           <span className="font-display text-lg font-bold text-muted">
