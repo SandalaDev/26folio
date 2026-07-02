@@ -6,4 +6,4 @@ Gate pass = `verify-task.sh` passed at session end (externally computed, not sel
 | Harness | Model | Role | Sessions | Gate pass rate | Avg session | Confidence |
 |---|---|---|---:|---|---|---|
 | claude-code | claude-opus-4-8 | executor | 2 | 100% (1/1) | 24 min | ⚠ low-n |
-| claude-code | claude-sonnet-5 | executor | 4 | — (0/0) | 32 min | ⚠ low-n |
+| claude-code | claude-sonnet-5 | executor | 5 | — (0/0) | 30 min | ok |

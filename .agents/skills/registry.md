@@ -14,6 +14,9 @@ written (tracked debt — `skills.sh validate` warns, `audit` fails).
 | ds-reviewer | Cross-model diff review against task/slice/spine/tests; writes REVIEW notes. | authored |
 | stop-slop | Public-text de-slop gate; recomputed by verify-task.sh. | vendored |
 | design-taste-frontend | Brief inference + anti-templated design direction for landing/portfolio/redesign. | vendored |
+| gsap | GSAP usage: core tweens, timelines, ScrollTrigger, matchMedia (reduced-motion), React integration, performance. Scroll-driven + imperative motion lane (§6). | vendored |
+| framer-motion | Framer Motion usage: motion components, variants, gestures, scroll, layout, motion values/springs. React viewport-entry + interaction lane (§6). | vendored |
+| lottie | LottieFiles motion-design principles: timing, easing, choreography, Disney principles. Library-agnostic; supports the Lottie playback lane (§6). | vendored |
 | ds-task-slicer | Splits epics into slices and risk-matched tasks. | stub |
 | ds-test-planner | Maps acceptance criteria + risk to minimal verification. | stub |
 | ds-content-review | Review gate for public/client-facing copy and UX writing. | stub |

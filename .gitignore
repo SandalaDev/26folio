@@ -33,3 +33,6 @@ yarn-debug.log*
 
 # solo-dev-os generated views (overwritten by scripts/os.sh render)
 /dashboard.html
+
+# obsidian volatile UI state (per-machine; keeps re-appearing as modified)
+.obsidian/workspace.json

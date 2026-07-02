@@ -1,14 +1,14 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-01T07:45:05.305Z
+updated: 2026-07-02T10:50:19.048Z
 updated_by: zcode
 ---
 # Current State
 ## Active work
-Epic: EPIC-007   Slice: EPIC-007-SLICE-2   Task: —
-Branch: feature/EPIC-007   Actor: claude-code / claude-opus-4-8 (executor)
+Epic: EPIC-009   Slice: EPIC-009-SLICE-2   Task: —
+Branch: feature/EPIC-009   Actor: claude-code / claude-opus-4-8 (executor)
 ## Completion status
-EPIC-006 merged to dev (PR #8). EPIC-007 (magazine integration) implemented on feature/EPIC-007 — both tasks (032-033) done, both low risk, no review handoffs needed; PR open to dev. Implemented lib/magazine.ts exactly per 06-project-technical-plan.md's pre-decided spec (getFeaturedMagazineArticles, MagazineArticle type, 1hr ISR revalidate, never-throws contract) and wired it into the home page without touching MagazineTeaser/ArticleCard's contract (EPIC-003 built them specifically to accept this). No live magazine API exists yet, so the only exercisable path is 'not configured' -> []: verified in-browser that the home page's magazine section now correctly renders nothing (the documented graceful-fallback behaviour) rather than the 3 placeholder cards it showed before — an intended visible change, not a regression, called out explicitly so it isn't mistaken for a bug later.
+EPIC-009 (hero redesign + signature motion) implemented on feature/EPIC-009, branched off origin/dev (EPIC-008 contact work is unmerged on its own branch and intentionally absent here). SLICE-1/TASK-035 (low): repo cleanup (gitignored + untracked .obsidian/workspace.json; kept the loose planning notes) and vendored three animation SKILL.md packages onto disk — gsap (OFFICIAL greensock/gsap-skills), framer-motion (C-Jeril/framer-motion-skills), lottie (OFFICIAL lottiefiles/motion-design-skill) — registered in registry.md + pinned in lock.json (npm packages gsap/framer-motion/lottie-react were ALREADY installed; the gap was skills, now filled). SLICE-2/TASK-036 (medium): added @paper-design/shaders-react and src/components/motion/shader-background.tsx — the 21st.dev MeshGradient remapped to the warm skin palette (rose/peach/caramel/soft/surface/background; NO teal/magenta per §3), distortion/swirl/speed tuned low for §6's 'subtle & smooth'; Hero keeps its static radial-gradient as the always-present reduced-motion/touch/SSR base and mounts the shader above it only when motion is allowed AND pointer is fine (decision #1). TASK-037 (medium): extended src/lib/use-pointer.ts to a single shared listener exposing both a state API (flashlight) and MotionValues (no per-move re-render); added src/components/motion/cursor.tsx (global custom cursor, pointer-fine only, native focus preserved) and src/components/motion/magnetic-button.tsx (GSAP quickTo magnetic pull + cursor-origin fill sweep + CSS text-mask reveal, degrades to the plain Button under reduced-motion/touch), wired the hero CTA. lint/typecheck/build all green. In-browser: canvas + WebGL context mount with no console errors; the headless PREVIEW's ResizeObserver never fires (verified) so the shader canvas can't size THERE — it renders in a real browser. Reviews waived to human (solo) at PR into dev. NOT committed/pushed — left in the working tree for the owner to review.
 ## What is done
 - EPIC-001 complete — merged to dev
 - EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live
@@ -18,14 +18,17 @@ EPIC-006 merged to dev (PR #8). EPIC-007 (magazine integration) implemented on f
 - EPIC-006 complete — merged to dev (PR #8); capabilities page (services, technologies, process, CTA) live
 - EPIC-007 TASK-032: lib/magazine.ts — getFeaturedMagazineArticles(), 1hr ISR, never-throws contract, MAGAZINE_API_URL/KEY added to env.ts/env.example
 - EPIC-007 TASK-033: wired into HomePage (now async), MagazineTeaser/ArticleCard contract untouched
+- EPIC-009 TASK-035: cleanup (gitignore/untrack .obsidian/workspace.json; keep notes) + vendored gsap/framer-motion/lottie skills (registry.md + lock.json pinned commits)
+- EPIC-009 TASK-036: warm shader hero — @paper-design/shaders-react + ShaderBackground (palette-remapped MeshGradient), mounted above the static gradient fallback only when motion is allowed
+- EPIC-009 TASK-037: signature motion — shared pointer MotionValues, global custom Cursor, MagneticButton (magnetic pull + fill sweep + text reveal); hero CTA wired
 ## What remains
-- Open PR feature/EPIC-007 -> dev and merge (no cross-model review needed, both tasks low risk)
+- Owner: eyeball the hero shader in a REAL browser (npm run dev) — the headless preview's ResizeObserver doesn't fire so the shader canvas can't size there; confirm the warm field reads well and tune ShaderBackground distortion/swirl/speed or the veil (bg-background/50) to taste.
+- Open PR feature/EPIC-009 -> dev; review is waived to human (solo) — both medium tasks carry review_waiver. Also PR feature/EPIC-007 -> dev if not yet merged.
+- Follow-up: apply MagneticButton to other primary CTAs and build the remaining §7 signature interactions (work-card zoom, timeline, flashlight, tech grid) in their own epics.
 - Owner-confirmed follow-up still outstanding: EPIC-004's real biography/interests/timeline/social URLs; EPIC-005's real project list; EPIC-006's TechGrid is a real-but-partial stack list
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back
-- Follow-up: vendor the 21st.dev ShaderBackground (celestial-ink-shader) as a Hero upgrade once perf/a11y-audited
-- Gate gaps flagged, not fixed (tooling, out of any single epic's scope): scripts/read-fm.mjs reads top-level fields only so verification_required.lint/typecheck never auto-trigger; verify-task.sh's scope check is cumulative against dev so it false-positives once >1 task shares a feature branch; stop-slop's score.mjs only scans .md/.html files, never .tsx
 - EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
 ## Blocked
-none for EPIC-007. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)
+none for EPIC-009. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)
 ## Assigned handoffs
 none
