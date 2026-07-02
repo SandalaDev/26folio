@@ -31,5 +31,5 @@ yarn-debug.log*
 # vercel
 .vercel
 
-# solo-dev-os generated views (overwritten by scripts/os.sh render)
-/dashboard.html
+# solo-dev-os generated slop-score artifacts (written by stop-slop/score.mjs)
+planning/content/.slop/

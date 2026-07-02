@@ -26,8 +26,11 @@ function scoreText(t) {
 
 const args = process.argv.slice(2);
 const verify = args[0] === "--verify";
+// Public copy also lives in components (.tsx/.jsx) and content modules
+// (.ts/.js) — not just Markdown/HTML. Scoring only .md/.html let every string
+// rendered from a React component skip the slop gate entirely.
 const files = (verify ? args.slice(1) : args).join(" ").split(/\s+/).filter(Boolean)
-  .filter(f => /\.(md|mdx|txt|html?)$/i.test(f) && fs.existsSync(f));
+  .filter(f => /\.(md|mdx|txt|html?|tsx?|jsx?)$/i.test(f) && fs.existsSync(f));
 
 const outDir = "planning/content/.slop";
 fs.mkdirSync(outDir, { recursive: true });

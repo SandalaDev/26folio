@@ -30,13 +30,30 @@ section "skill registry"
 bash scripts/skills.sh validate || FAIL=1
 
 # 3) Scope — diff must stay inside files_allowed
+# The diff is cumulative (BASE...HEAD covers the whole feature branch), but one
+# epic branch carries several tasks. Checking that cumulative diff against a
+# single task's files_allowed false-flags every *other* task's files. So the
+# allowed set is the UNION of files_allowed across the current task plus every
+# task referenced in the branch's commit messages.
 section "scope (files_allowed)"
 CHANGED="$(git diff --name-only "$BASE"...HEAD 2>/dev/null || git diff --name-only || true)"
 if have_node && [[ -n "$CHANGED" ]]; then
-  ALLOWED="$(node scripts/read-fm.mjs "$TASK" files_allowed --list 2>/dev/null || true)"
+  branch_task_files() {
+    printf '%s\n' "$TASK"
+    git log --format=%s "$BASE"..HEAD 2>/dev/null | grep -oE 'TASK-[0-9]+' | sort -u | while IFS= read -r id; do
+      for d in backlog/tasks backlog/done; do [[ -f "$d/$id.md" ]] && echo "$d/$id.md"; done
+    done
+  }
+  ALLOWED="$(branch_task_files | sort -u | while IFS= read -r tf; do
+    node scripts/read-fm.mjs "$tf" files_allowed --list 2>/dev/null; done | sort -u)"
+  # OS-managed paths are written by os.sh/render/create-handoff, not by task
+  # implementation, so they are never listed in files_allowed. Exclude them so
+  # the scope gate judges real code/content, not the OS's own bookkeeping.
+  OS_MANAGED='^(project-state/|handoffs/|memory/|backlog/done/|backlog/epics/|CLAUDE\.md$)'
   if [[ -n "$ALLOWED" ]]; then
     while IFS= read -r f; do
       [[ -z "$f" ]] && continue
+      [[ "$f" =~ $OS_MANAGED ]] && continue
       ok=0
       while IFS= read -r a; do [[ -n "$a" && "$f" == $a* ]] && ok=1; done <<< "$ALLOWED"
       if [[ "$ok" -eq 0 ]]; then echo "  SCOPE ESCAPE: $f not in files_allowed"; FAIL=1; fi
@@ -61,12 +78,15 @@ run_if() { # field, label, command...
 }
 # Stack-agnostic dispatch: prefer scripts/test/*.sh if present, else npm script if available.
 proof() { local s="scripts/test/$1.sh"; if [[ -x "$s" ]]; then bash "$s"; elif command -v npm >/dev/null 2>&1; then npm run -s "$2" 2>/dev/null || true; else echo "   (no runner for $1)"; fi; }
-run_if "lint"        "lint"        proof lint        lint
-run_if "typecheck"   "typecheck"   proof typecheck   typecheck
-run_if "unit"        "unit"        proof unit        test:unit
-run_if "integration" "integration" proof integration test:integration
-run_if "e2e"         "e2e"         proof e2e         test:e2e
-run_if "accessibility" "a11y"      proof a11y        test:a11y
+# Proof levels live under the `verification_required:` map in task frontmatter,
+# so they must be read by dot-path — a bare `lint` reads a (nonexistent)
+# top-level key and skips every check.
+run_if "verification_required.lint"        "lint"        proof lint        lint
+run_if "verification_required.typecheck"   "typecheck"   proof typecheck   typecheck
+run_if "verification_required.unit"        "unit"        proof unit        test:unit
+run_if "verification_required.integration" "integration" proof integration test:integration
+run_if "verification_required.e2e"         "e2e"         proof e2e         test:e2e
+run_if "verification_required.accessibility" "a11y"      proof a11y        test:a11y
 
 # 5) Public-text slop gate — score recomputed independently
 section "stop-slop (public text)"
