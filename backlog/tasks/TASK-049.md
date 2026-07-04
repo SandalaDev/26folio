@@ -32,6 +32,11 @@ files_allowed:
   - src/app/(site)/layout.tsx
   - src/components/about/about-intro.tsx
   - backlog/tasks/TASK-049.md
+  # Gate fix (cherry-picked from unmerged EPIC-008 4e8ea56): the scope check
+  # aborted under `set -euo pipefail` before running, blocking every push from
+  # this branch. Declared here because it blocks this epic's own verification —
+  # same precedent as TASK-034's original declaration.
+  - scripts/verify-task.sh
 ---
 
 # Task: Global flashlight at design-system spec
