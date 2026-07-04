@@ -3,11 +3,6 @@
 import * as React from "react";
 import { useMotionValue, type MotionValue } from "framer-motion";
 
-export interface PointerPosition {
-  x: number;
-  y: number;
-}
-
 /**
  * usePointer — single `mousemove` source (12-ui-element-map.md §1, 10-design-system.md
  * §7). The flashlight spotlight and the custom cursor "both hang off a single shared
@@ -45,21 +40,11 @@ function subscribe(fn: Subscriber): () => void {
 }
 
 /**
- * State-based reader (re-renders on move). Kept as the original API for
- * `FlashlightCursor`, now backed by the shared listener instead of its own.
- */
-export function usePointer(): PointerPosition | null {
-  const [position, setPosition] = React.useState<PointerPosition | null>(null);
-
-  React.useEffect(() => subscribe((x, y) => setPosition({ x, y })), []);
-
-  return position;
-}
-
-/**
  * MotionValue-based reader — updates `x`/`y` imperatively with **no React
- * re-render**, so a per-frame consumer (the custom cursor, magnetic buttons) stays
- * smooth. Same single listener as `usePointer`.
+ * re-render**, so a per-frame consumer (the custom cursor, the flashlight,
+ * magnetic buttons) stays smooth. The state-based `usePointer` reader was
+ * removed in EPIC-012 TASK-049 when its last consumer (FlashlightCursor)
+ * moved to MotionValues.
  */
 export function usePointerMotion(): {
   x: MotionValue<number>;

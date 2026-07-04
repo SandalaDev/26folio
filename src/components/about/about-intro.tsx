@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Section } from "@/components/site/section";
 import { Blob } from "@/components/site/blob";
-import { FlashlightCursor } from "@/components/site/flashlight-cursor";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
@@ -17,7 +16,7 @@ function AboutIntro() {
 
   return (
     <Section className="relative overflow-hidden">
-      <FlashlightCursor />
+      {/* Flashlight is global chrome since EPIC-012 TASK-049 (site layout). */}
       {/* Blob accent behind the flashlight area (§Blob motif). */}
       <Blob
         variant={2}
