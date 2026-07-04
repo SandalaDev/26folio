@@ -24,6 +24,12 @@ related:
 > site's gradients look jagged, not smooth, (3) the token set defined in the
 > design system is not fully applied. This epic closes the gap between the
 > preview and the build without dropping any shipped functionality.
+>
+> Owner second pass (2026-07-05), added to this epic: (4) the About flashlight
+> is **too narrow** — folded into TASK-049 (the 520px preview recipe is the
+> reference, not a tunable); (5) the featured-work card tilt is **broken** —
+> no door-opening motion on hover and what remains feels abrupt. Fix it, then
+> roll the door-tilt out to **all cards in the project**, smooth — TASK-054.
 
 ## Gap analysis (what the preview does that the site doesn't)
 
@@ -70,6 +76,21 @@ its display type is single-weight — several page h1s still carry the
 extralight/semibold span mix that EPIC-011 (owner note 1) removed from the
 hero.
 
+### 4. Card motion (owner second pass, 2026-07-05)
+
+The featured-work door-tilt is **dead in production** — root-caused live
+(in-browser, pointer-fine, motion allowed; full write-up in TASK-054):
+`work-card.tsx` passes its motion values conditionally —
+`style={tiltEnabled ? { rotateX, rotateY } : undefined}` — and `tiltEnabled`
+only flips true in a post-mount effect. framer-motion never subscribes to
+motion values that first appear in `style` after mount, so the DOM transform
+stays `transform: none` forever. Latent since EPIC-010 (masked then by the
+pure-CSS `group-hover` image zoom); EPIC-011/TASK-047 moved the zoom onto the
+same dead motion-value path, so since then the card has had NO smooth hover
+motion — the owner's "broken + abrupt". A second defect compounds it:
+`handleMove` measures the rect of the element INSIDE the rotated wrapper, so
+at 9° the pointer math chases its own tilt (edge jitter).
+
 ## Goal & non-goals
 
 **Goal:** make the shipped site match or beat the preview on these three
@@ -102,6 +123,11 @@ interactions, gates, and fallbacks keep working).
 |---|---|---|---|
 | **TASK-052** | Palette redistribution: soft for captions/tertiary, caramel for labels/section accents, peach for mono/bridge highlights, surface-2/border-2 elevation steps; rose returns to seasoning. | medium | lint + typecheck + build |
 | **TASK-053** | Type & functional fidelity: page h1s single-weight like the hero (+ optional ink→soft display gradient), contact success state uses `success`. | low | lint + typecheck + build |
+
+### SLICE-4 — Card motion (owner second pass)
+| Task | Title | risk | proof |
+|---|---|---|---|
+| **TASK-054** | Fix the dead door-tilt (bind motion values at mount, stable rect measurement, edge-hinged smooth spring) and roll the tilt out to all card surfaces via a shared `TiltCard` primitive. | medium | lint + typecheck + build + in-browser computed-transform check |
 
 ## Key decisions
 
@@ -145,8 +171,12 @@ interactions, gates, and fallbacks keep working).
 - [ ] `soft`, `caramel`, `peach`, `surface-2`, `border-2`, `success` all carry
       their §2 roles somewhere real; rose count drops materially from 42.
 - [ ] Page h1s are single-weight display; contact success state is sage.
+- [ ] Card door-tilt WORKS (computed transform changes on hover — verify in
+      the browser, this bug hid from code review), glides on enter and leave,
+      and every card surface in the project carries it at size-appropriate
+      amplitude.
 - [ ] All existing functionality intact: tabs, anchors, magnetic buttons,
-      card tilt, form states, reduced-motion fallbacks.
+      form states, sticky-card modals, reduced-motion fallbacks.
 - [ ] lint / typecheck / build green; in-browser verification on /,
       /capabilities, /about, /work, /contact.
 

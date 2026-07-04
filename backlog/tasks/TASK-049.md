@@ -44,6 +44,11 @@ files_allowed:
 > Owner: the flashlight in `10-design-system.html` looks better than the site's,
 > and /capabilities has none at all. Make the preview's flashlight the site's:
 > global, bigger, warmer, smoother.
+>
+> Owner (2026-07-05, second pass): the About-page flashlight is specifically
+> **too narrow** — the 280px circle reads as a tight puck following the cursor,
+> not ambient light. The preview's 520px implementation is the reference. Width
+> is not a tunable here; match the preview.
 
 ## Scope
 - Mount `FlashlightCursor` once in `src/app/(site)/layout.tsx` (global fixed
@@ -67,6 +72,8 @@ files_allowed:
 ## Acceptance criteria
 - [ ] Flashlight visible on /, /capabilities, /about, /work, /contact.
 - [ ] Recipe matches the preview (520px, peach→rose, 38%/70% stops) via tokens.
+- [ ] On /about specifically, the light reads as wide ambient glow, not a
+      tight cursor puck (owner's 2026-07-05 complaint — eyeball it there).
 - [ ] Zero React re-renders on pointer move (MotionValue-driven).
 - [ ] Movement glides like the preview; no stutter.
 - [ ] Coarse-pointer / reduced-motion clients never see it; focus rings and
