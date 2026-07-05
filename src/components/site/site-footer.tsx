@@ -42,9 +42,9 @@ function SiteFooter() {
       {/* Irregular masonry texture - the angular counterpart to the blob
           motif, whisper-quiet behind the footer columns. */}
       <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.16} />
-      <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
-        <div className="flex flex-col gap-2">
-          <Link href="/" aria-label="Sandala" className="w-fit">
+      <Section className="grid gap-10 py-12 md:grid-cols-4 md:py-16">
+        <div>
+          <Link href="/" aria-label="Sandala" className="inline-block">
             <Image
               src="/images/logo/logo_combo-muted.svg"
               alt=""
@@ -66,7 +66,21 @@ function SiteFooter() {
           ))}
         </nav>
 
-        <div className="flex flex-col gap-2 md:items-end md:text-right">
+        <nav aria-label="Social links" className="flex flex-col gap-2">
+          {SOCIAL_LINKS.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-ink/80 transition-colors hover:text-rose"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="md:text-right">
           <Link
             href="https://scrumtrulescent.com"
             target="_blank"
@@ -75,19 +89,6 @@ function SiteFooter() {
           >
             Scrumtrulescent Magazine
           </Link>
-          <nav aria-label="Social links" className="flex flex-col gap-2 md:items-end">
-            {SOCIAL_LINKS.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-ink/80 transition-colors hover:text-rose"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
         </div>
       </Section>
     </motion.footer>
