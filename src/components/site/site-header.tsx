@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
@@ -38,8 +39,14 @@ function SiteHeader() {
       className="sticky top-0 z-40 bg-transparent"
     >
       <div className="flex h-16 items-center justify-between px-5 md:px-10 lg:px-16 xl:px-24">
-        <Link href="/" className="font-display text-lg font-bold text-ink">
-          Sandala
+        <Link href="/" aria-label="Sandala" className="shrink-0">
+          <Image
+            src="/images/logo/logo_muted.svg"
+            alt=""
+            width={42}
+            height={56}
+            priority
+          />
         </Link>
 
         <NavigationMenu className="hidden md:flex">

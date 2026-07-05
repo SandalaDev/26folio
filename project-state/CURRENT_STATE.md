@@ -1,14 +1,14 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-02T19:32:49.555Z
-updated_by: zcode
+updated: 2026-07-05T17:08:04.864Z
+updated_by: claude-code
 ---
 # Current State
 ## Active work
-Epic: EPIC-011   Slice: EPIC-011-SLICE-3   Task: TASK-048
-Branch: feature/EPIC-011   Actor: zcode / zai-coding-plan/GLM-5.2 (executor)
+Epic: EPIC-013   Slice: EPIC-013-SLICE-1   Task: TASK-055
+Branch: feature/EPIC-013   Actor: claude-code / claude-sonnet-5 (executor)
 ## Completion status
-EPIC-011 (design refinement wave, owner review of EPIC-010, 6 notes 2026-07-02) implemented on feature/EPIC-011 off dev (dev now holds EPIC-010 via PR #12). Six bounded tasks, one per owner note, all inside the EPIC-010 design system (no new tokens/type). TASK-043 (hero): h1 is now SINGLE weight (the inline heavy/light spans removed; the display token carries the emphasis) and visibly larger (the --text-display clamp raised to clamp(44px,7vw,112px)); the CTA + portrait now align to the h1 left/right ends in one row under the subhead; the portrait is larger, portrait-aspect (4/5), cropped to the face via object-position; copy unchanged; shader/CTA machinery untouched. TASK-044 (header): verified the header is already fully transparent in the live build (site-header + navigation-menu + mobile trigger paint nothing); no destructive change needed (owner likely saw a stale build). TASK-045 (footer): contrast lowered - text/links now light-brown caramel at /70 opacity (hover rose); the masonry switched from fill=none hairlines to a low-opacity FILLED wash in the border tone so it reads as a filled texture, not an outlined grid; structure unchanged. TASK-046 (buttons): every page conversion-band CTA (CTACallout) now uses MagneticButton instead of the plain Button, so the pull + fill sweep + text reveal is consistent site-wide; MagneticButton gained type/disabled props for form submits; the Button primitive variants are untouched. TASK-047 (cards): featured-work hover retuned to a DOOR-OPENING read - dominant rotateY (9deg hinge toward pointer) + small rotateX (3deg), spring softened to stiffness 120/damping 18 for no snap, and the image zoom is now spring-driven from the SAME hover signal (motion.div wrapper, not next/image directly) so tilt + zoom read as one smooth motion; coarse/reduced-motion fall back to a static card + plain CSS zoom. TASK-048 (contact): the bare stub is now a real page - display head + the new ContactForm (name/email/message + optional native select for project type, client validation with inline errors, idle/submitting/success/unavailable states, magnetic submit) + a contact-details aside with SocialLinks and a what-happens-next block; POSTs to the existing /api/contact 501 stub (501 maps to a clean unavailable state, no invented delivery promise). Public-text tasks (043/045/048) all score 50/50 (em-dash-free, no banned verbs). lint/typecheck/build green (cleared a stale .next cache that threw a transient /_not-found page-data error; 13 routes incl /contact + /api/contact). Owner review outstanding: eyeball the hero alignment + portrait crop, the card door-tilt feel, and the footer/masonry contrast in a real browser; supply a real contact email for the details block (spine does not specify one).
+EPIC-013 (content phase 1) opened on feature/EPIC-013, branched off dev. NOTE: dev is currently at the EPIC-011 merge point (PR #13) — EPIC-012 (design-system fidelity, all six tasks done: TASK-049..054) is EXECUTED and CLOSED on feature/EPIC-012 but its PR into dev is still pending owner review/merge, so EPIC-012's work is not yet reflected in dev's STATE.json history below. EPIC-013 SLICE-1/TASK-055 DONE: applied logo_combo-muted.svg to SiteHeader (36px, replacing the text wordmark) and SiteFooter (44px, replacing the text label), both behind the existing home Link with an aria-label; verified in-browser (correct asset src, no layout shift, no console/network errors) + lint/typecheck/build green. EPIC-013's later slices (real bio/timeline/socials, real project descriptors, real contact email, services copy confirmation) remain unscoped pending owner input.
 ## What is done
 - EPIC-001 complete — merged to dev
 - EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live
@@ -33,19 +33,18 @@ EPIC-011 (design refinement wave, owner review of EPIC-010, 6 notes 2026-07-02) 
 - EPIC-011 TASK-046: CTA hover unified - CTACallout uses MagneticButton site-wide; MagneticButton gained type/disabled
 - EPIC-011 TASK-047: featured-work card hover retuned to door-opening tilt (rotateY hinge) + synchronized spring zoom
 - EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside
+- EPIC-012 (on feature/EPIC-012, not yet merged to dev): TASK-049 global flashlight, TASK-050 smooth ramps + shader grain, TASK-051 SVG-space blob blur, TASK-052 palette redistribution (rose 42->27), TASK-053 single-weight h1s + display-gradient + sage success, TASK-054 TiltCard door-tilt on all cards — all six done, PR pending owner review/merge
 ## What remains
 - OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.
-- OWNER REVIEW (gate fix, EPIC-010 TASK-041): verify-task.sh's slop check now scores only changed src/ files (it previously fed generated views + planning docs to the scorer, which made every public_text push fail on internal files). Sanity-check the reasoning in backlog/done/TASK-041.md.
-- Owner: eyeball EPIC-010 in a REAL browser (npm run dev): hero portrait size/placement, blob wash intensities (opacity dials in each component), featured-card tilt feel, rail focus emphasis, and the new full-viewport width on your monitors.
-- Follow-up: owner may supply his own blob SVG paths (Blob accepts a custom `path` prop) to replace the generated presets.
-- Follow-up: remaining §7 signature interactions (timeline, tech-grid logo hovers, video-on-hover) in their own epics.
 - Owner-confirmed follow-up still outstanding: EPIC-004's real biography/interests/timeline/social URLs; EPIC-005's full real project list; EPIC-006's TechGrid is a real-but-partial stack list
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back
 - EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
-- OWNER REVIEW (EPIC-011, in a real browser at npm run dev): hero h1 single-weight + size and the CTA/portrait alignment to the h1 ends; portrait crop shows the face; featured-work card door-tilt feel + synchronized zoom (pointer-fine only); footer caramel text + filled masonry contrast; transparent header floats; every page CTA has the magnetic hover.
 - Owner: supply a real contact email for the contact details block (the spine does not specify one; it currently uses socials + a neutral line). Real Resend delivery (RESEND_API_KEY + wiring /api/contact past its 501 stub) is a separate epic per the no-stored-submissions charter.
-- Merge PR (feature/EPIC-011 -> dev); review waived to human (solo) - all six tasks carry review_waiver.
+- Merge PR (feature/EPIC-011 -> dev) and PR (feature/EPIC-012 -> dev), both pending owner review/merge — reviews waived to human (solo); tasks carry review_waiver.
+- OWNER REVIEW (EPIC-013 TASK-055): confirm the muted combo-mark logo reads right in a real browser (header 36px inline with nav, footer 44px standalone) — the in-session check was DOM/network/inspect-based, not an eyeballed screenshot (preview screenshot tool timed out this session).
+- EPIC-013 later slices not yet scoped into tasks (needs owner input): real bio/timeline/socials, real project list/descriptors, real contact email, new services copy confirmation — see backlog/epics/EPIC-013-content-phase-1.md.
+- Push feature/EPIC-013 and open PR into dev once the owner confirms the logo placement/color.
 ## Blocked
-none for EPIC-011. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email delivery deferred to a Resend epic.)
+none for EPIC-013. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email delivery deferred to a Resend epic.)
 ## Assigned handoffs
 none
