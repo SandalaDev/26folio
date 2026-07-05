@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -43,9 +44,14 @@ function SiteFooter() {
       <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.16} />
       <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
         <div className="flex flex-col gap-2">
-          <span className="font-display text-lg font-bold text-muted">
-            Sandala
-          </span>
+          <Link href="/" aria-label="Sandala" className="w-fit">
+            <Image
+              src="/images/logo/logo_combo-muted.svg"
+              alt=""
+              width={44}
+              height={44}
+            />
+          </Link>
           <Link
             href="https://scrumtrulescent.com"
             target="_blank"
