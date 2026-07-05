@@ -19,8 +19,10 @@ export default function CapabilitiesPage() {
           blur={14}
           className="-z-10 -right-16 -top-20 w-[26rem]"
         />
-        <h1 className="text-display font-display font-extralight text-ink">
-          What I can <span className="font-semibold">do for you</span>
+        {/* Single-weight display h1 (owner note 1 → EPIC-012 TASK-053) with
+            the preview's ink→soft gradient fill. Copy unchanged. */}
+        <h1 className="text-display font-display display-gradient">
+          What I can do for you
         </h1>
       </Section>
 

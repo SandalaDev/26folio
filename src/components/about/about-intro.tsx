@@ -31,12 +31,13 @@ function AboutIntro() {
         variants={shouldReduceMotion ? undefined : staggerContainer}
         className="relative z-10 flex flex-col gap-6"
       >
+        {/* Single-weight display h1 (owner note 1 → EPIC-012 TASK-053) with
+            the preview's ink→soft gradient fill. Copy unchanged. */}
         <motion.h1
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="text-display font-display font-extralight text-ink"
+          className="text-display font-display display-gradient"
         >
-          I&apos;m Abe. I build things, and I{" "}
-          <span className="font-semibold">care how they turn out.</span>
+          I&apos;m Abe. I build things, and I care how they turn out.
         </motion.h1>
         <motion.p
           variants={shouldReduceMotion ? undefined : fadeUp}

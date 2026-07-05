@@ -10,8 +10,10 @@ export default function WorkPage() {
     <>
       <Section className="relative overflow-hidden">
         <MeshBg tone="rose" className="-z-10" />
-        <h1 className="text-display font-display font-extralight text-ink">
-          A few things <span className="font-semibold">I&apos;ve shipped</span>
+        {/* Single-weight display h1 (owner note 1 → EPIC-012 TASK-053) with
+            the preview's ink→soft gradient fill. Copy unchanged. */}
+        <h1 className="text-display font-display display-gradient">
+          A few things I&apos;ve shipped
         </h1>
       </Section>
 

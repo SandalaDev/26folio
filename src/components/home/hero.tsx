@@ -62,9 +62,10 @@ function Hero() {
         className="flex w-full flex-col gap-8 lg:gap-10"
       >
         {/* h1 sets the column width; everything below aligns to its ends. */}
+        {/* ink→soft gradient fill — the preview h1 signature (TASK-053). */}
         <motion.h1
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="text-display font-display text-ink"
+          className="text-display font-display display-gradient"
         >
           I build the software your business actually needs.
         </motion.h1>
