@@ -6,7 +6,7 @@ import { TechGrid } from "@/components/capabilities/tech-grid";
 function TechnologiesSection() {
   return (
     <Section>
-      <Eyebrow>Technologies</Eyebrow>
+      <Eyebrow tone="caramel">Technologies</Eyebrow>
       <h2 className="mt-3 text-heading font-display text-ink">
         Tools I reach for, <span className="font-extralight">and why</span>
       </h2>

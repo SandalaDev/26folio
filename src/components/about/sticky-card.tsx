@@ -28,10 +28,11 @@ function StickyCard({
           type="button"
           whileHover={{ y: -4 }}
           transition={{ duration: DURATION.micro, ease: EASE_OUT }}
-          className={`sticky top-24 block w-full border border-border bg-surface p-8 text-left ${className ?? ""}`}
+          className={`sticky top-24 block w-full border border-border bg-surface p-8 text-left transition-colors hover:border-border-2 hover:bg-surface-2 ${className ?? ""}`}
         >
           <h3 className="font-display text-2xl font-semibold text-ink">{title}</h3>
-          <p className="mt-3 text-muted">{description}</p>
+          {/* soft = tertiary caption text (§2). */}
+          <p className="mt-3 text-soft">{description}</p>
         </motion.button>
       </DialogTrigger>
       {children}

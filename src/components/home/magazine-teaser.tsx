@@ -40,7 +40,7 @@ function MagazineTeaser({
         blur={14}
         className="-z-10 -left-28 bottom-0 w-80"
       />
-      <Eyebrow>From Scrumtrulescent</Eyebrow>
+      <Eyebrow tone="caramel">From Scrumtrulescent</Eyebrow>
       <h2 className="mt-3 text-heading font-display text-ink">
         Recent <span className="font-extralight">from the magazine</span>
       </h2>

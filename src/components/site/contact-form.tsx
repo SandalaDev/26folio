@@ -154,7 +154,7 @@ function ContactForm() {
       {/* Optional project type */}
       <motion.div variants={shouldReduceMotion ? undefined : fadeUp} className="flex flex-col gap-2">
         <Label htmlFor="projectType">
-          Type of project <span className="text-muted">(optional)</span>
+          Type of project <span className="text-soft">(optional)</span>
         </Label>
         <select
           id="projectType"

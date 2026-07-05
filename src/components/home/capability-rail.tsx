@@ -122,7 +122,7 @@ function CapabilityRail() {
               key={service.id}
               href={`/capabilities#${service.id}`}
               data-rail-card
-              className="group relative flex min-h-[22rem] w-full shrink-0 flex-col justify-between overflow-hidden border border-border bg-surface p-8 will-change-transform md:min-h-[26rem] md:w-[min(78vw,44rem)] md:p-10"
+              className="group relative flex min-h-[22rem] w-full shrink-0 flex-col justify-between overflow-hidden border border-border bg-surface p-8 transition-colors will-change-transform hover:border-border-2 md:min-h-[26rem] md:w-[min(78vw,44rem)] md:p-10"
             >
               <MeshBg tone={index % 2 === 0 ? "rose" : "warm"} />
               <Blob
@@ -131,10 +131,12 @@ function CapabilityRail() {
                 opacity={0.09}
                 className="-right-16 -top-16 w-56"
               />
+              {/* Icon tone follows the card's wash (rose/caramel alternation,
+                  §2) — rose stops being the only accent voice on the rail. */}
               <IconGlyph
                 size={40}
                 weight="light"
-                className="relative text-rose"
+                className={`relative ${index % 2 === 0 ? "text-rose" : "text-caramel"}`}
                 aria-hidden="true"
               />
               <div className="relative mt-10">

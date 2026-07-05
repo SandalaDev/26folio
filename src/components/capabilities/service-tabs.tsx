@@ -62,7 +62,7 @@ function ServiceTabs() {
             className={`eyebrow border-l-2 px-4 py-3 text-left transition-colors ${
               service.id === activeId
                 ? "border-rose text-rose"
-                : "border-border text-ink/70 hover:text-ink"
+                : "border-border text-ink/70 hover:border-border-2 hover:text-ink"
             }`}
           >
             {service.title}
@@ -87,7 +87,9 @@ function ServiceTabs() {
                     {service.title}
                   </h3>
                   {service.subtitle && (
-                    <p className="mt-1 text-muted">{service.subtitle}</p>
+                    /* soft = tertiary text (§2) — the third text level on the
+                       card, distinct from the muted body items below. */
+                    <p className="mt-1 text-soft">{service.subtitle}</p>
                   )}
                   <ul className="mt-6 flex flex-col gap-2 text-ink/80">
                     {service.items.map((item) => (

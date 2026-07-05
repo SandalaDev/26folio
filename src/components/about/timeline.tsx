@@ -63,7 +63,8 @@ function Timeline() {
             className="absolute -left-[2.3rem] top-1.5 size-3 rounded-full bg-rose"
           />
           <h3 className="font-display text-xl font-semibold text-ink">{beat.title}</h3>
-          <p className="mt-2 text-muted">{beat.description}</p>
+          {/* soft = tertiary/meta text (§2) — timeline meta line. */}
+          <p className="mt-2 text-soft">{beat.description}</p>
         </li>
       ))}
     </ol>

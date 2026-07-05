@@ -51,15 +51,20 @@ function TechGrid() {
           >
             <HoverCard>
               <HoverCardTrigger asChild>
+                {/* peach mono/tech accent + surface-2/border-2 elevation on
+                    hover (§2, the preview's swatch-hover pattern) — rose no
+                    longer carries every state change. */}
                 <button
                   type="button"
-                  className="flex h-20 w-full items-center justify-center border border-border bg-surface px-4 text-center font-display text-sm font-semibold text-ink/80 transition-colors hover:text-rose"
+                  className="flex h-20 w-full items-center justify-center border border-border bg-surface px-4 text-center font-display text-sm font-semibold text-ink/80 transition-colors hover:border-border-2 hover:bg-surface-2 hover:text-peach"
                 >
                   {tech.name}
                 </button>
               </HoverCardTrigger>
               <HoverCardContent>
-                <p className="eyebrow text-rose">{tech.name}</p>
+                {/* caramel label + peach usage accent — the preview's mtable
+                    th/code pairing. */}
+                <p className="eyebrow text-caramel">{tech.name}</p>
                 <p className="mt-2 text-muted">{tech.usage}</p>
               </HoverCardContent>
             </HoverCard>
