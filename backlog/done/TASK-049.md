@@ -1,7 +1,7 @@
 ---
 id: TASK-049
 title: "Global flashlight at design-system spec — site-wide mount, 520px peach-led recipe, MotionValue-driven"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

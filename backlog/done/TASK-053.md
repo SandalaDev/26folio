@@ -1,7 +1,7 @@
 ---
 id: TASK-053
 title: "Type & functional fidelity — single-weight page h1s, optional display gradient, sage success state"
-status: ready
+status: done
 priority: P2
 risk_level: low
 preferred_executor: claude-code

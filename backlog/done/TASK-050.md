@@ -1,7 +1,7 @@
 ---
 id: TASK-050
 title: "Smooth gradient ramps — low-alpha multi-stop hero fallback, longer MeshBg ramps, shader grain on"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

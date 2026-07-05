@@ -1,7 +1,7 @@
 ---
 id: EPIC-012
 title: Design-system fidelity — flashlight, gradient smoothness, full token application
-status: ready          # ready -> in-progress -> done
+status: done          # ready -> in-progress -> done
 phase: 4
 priority: P1
 risk_level: medium

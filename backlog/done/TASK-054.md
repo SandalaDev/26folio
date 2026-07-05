@@ -1,7 +1,7 @@
 ---
 id: TASK-054
 title: "Card motion repair + rollout: fix the dead door-tilt (motion values never bound), then a smooth door-opening tilt on every card"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

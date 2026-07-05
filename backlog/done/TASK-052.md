@@ -1,7 +1,7 @@
 ---
 id: TASK-052
 title: "Palette redistribution — soft/caramel/peach/surface-2/border-2 carry their §2 roles; rose back to seasoning"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

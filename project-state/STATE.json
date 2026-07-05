@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-04T23:08:07.065Z",
+  "updated": "2026-07-05T11:29:19.518Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": "claude-code",
@@ -9,15 +9,15 @@
   },
   "current": {
     "epic": "EPIC-012",
-    "slice": "EPIC-012-SLICE-1",
-    "task": "TASK-049",
+    "slice": "complete",
+    "task": "complete",
     "agent": "claude-code",
     "branch": "feature/EPIC-012",
     "session_status": "ready",
     "handoff_status": "none"
   },
   "completion": {
-    "summary": "EPIC-012 (design-system fidelity) PLANNED on feature/EPIC-012 off dev (dev holds EPIC-011 via PR #13; repo cleaned: merged local branches EPIC-009/010/011 + chore/os-cleanup-and-simplify deleted; feature/EPIC-008 kept LOCAL-ONLY, it holds an unmerged Resend contact-form spike superseded by TASK-048 but relevant to the future Resend epic). Owner review 2026-07-04: project-spine/10-design-system.html reads better than the shipped site. Gap analysis in backlog/epics/EPIC-012-design-system-fidelity.md: (1) flashlight — preview is global/520px/peach-led/rAF+eased, site is About-only/280px/rose-led/setState-per-mousemove and absent from /capabilities; (2) jagged gradients — hero static fallback runs FULL-strength caramel/rose two-stop ramps (the exact SS3 anti-pattern, bands on dark), shader grain dither is off, Blob washes use 2-8px CSS blur on 26rem-scaled SVGs (stepped edges); (3) tokens under-applied — component grep: rose 42 uses vs soft 1, surface-2 1, success 0, caramel 9 (mostly blob fills), peach 8; the preview distributes caramel labels/soft captions/peach mono/surface-2 elevation. Five tasks, no new tokens, no copy changes, zero functional regression: TASK-049 global DS-spec flashlight (MotionValue-driven), TASK-050 smooth ramps (low-alpha multi-stop hero fallback + MeshBg + shader grain), TASK-051 blob blur proportional to rendered size (SVG-space feGaussianBlur), TASK-052 palette redistribution to SS2 roles, TASK-053 single-weight page h1s + optional ink-to-soft display gradient + sage success state. Two owner open questions recorded in the epic (h2 weight mixes; display gradient). Owner second pass 2026-07-05 added: (4) About flashlight too narrow (folded into TASK-049 — 520px preview recipe is the reference) and (5) featured-work card door-tilt BROKEN — root-caused live: motion values passed conditionally into style after mount are never subscribed by framer-motion (tiltEnabled flips in an effect), DOM transform stays none; latent since EPIC-010, fully exposed when TASK-047 moved the zoom onto the same path. TASK-054 (SLICE-4): fix binding + stable rect measurement + edge-hinged smooth spring, then roll door-tilt out to all cards via a shared TiltCard primitive.",
+    "summary": "EPIC-012 (design-system fidelity) EXECUTED and CLOSED on feature/EPIC-012 — all six tasks done, PR into dev pending review. TASK-049: FlashlightCursor is global chrome (site layout, z-0 under z-[1] main), 520px peach-led preview recipe via color-mix tokens, usePointerMotion + useMotionTemplate + soft springs, zero re-renders per move; verified gliding live. TASK-050: hero static fallback rebuilt as low-alpha (14%/12% cap) three-stop washes, MeshBg mid-stops, shader grain on (0.12/0.06); verified in-browser. TASK-051: Blob blur moved into SVG user space (feGaussianBlur, props-derived deterministic filter id — Blob renders in RSCs, no useId; overflow-visible so washes never clip square); consumers retuned stdDev 12-16; verified live. TASK-052: palette redistribution — Eyebrow tone prop (rose/caramel alternation), caramel step numbers + tech hover-card labels, peach tech accents, surface-2/border-2 elevation hovers, soft tertiary text (footer links, captions, timeline meta); rose 42 -> 27; caramel verified computing live. TASK-053: all display h1s single-weight, new display-gradient utility (ink-to-soft, applied to all five h1s incl hero + contact), contact success state sage; verified computed. TASK-054: shared TiltCard/useDoorTilt primitive (edge-hinged door swing, animate()-driven springs, motion values bound at mount ALWAYS — the original bug was conditional style binding — pointer measured on the un-transformed frame) rolled out to WorkCard (+synced zoom), capability rail (frame carries data-rail-card for GSAP), magazine teaser cards, sticky cards, tech tiles; magazine-section skipped (text link, not a card). CRITICAL SESSION LESSON captured in agent memory: a hidden preview tab freezes rAF entirely — ALL framer motion (variants, springs, transforms, templates) looks dead while React events still work; cost hours chasing phantom framer-API bugs before document.hidden was checked. The tilt therefore ships verified at fiber/pipeline level + lint/typecheck/build; its ANIMATED transform needs one owner eyeball in a visible browser.",
     "done": [
       "EPIC-001 complete — merged to dev",
       "EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live",
@@ -44,9 +44,11 @@
       "EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside",
       "EPIC-011 merged to dev (PR #13); merged branches cleaned up locally (EPIC-009/010/011, chore/os-cleanup-and-simplify)",
       "EPIC-012 planned: design-system fidelity gap analysis + 5 task specs (TASK-049..053) on feature/EPIC-012",
-      "EPIC-012 re-planned 2026-07-05: owner second pass folded in — TASK-049 amended (About flashlight width), TASK-054 authored (card door-tilt root cause + rollout), SLICE-4 added"
+      "EPIC-012 re-planned 2026-07-05: owner second pass folded in — TASK-049 amended (About flashlight width), TASK-054 authored (card door-tilt root cause + rollout), SLICE-4 added",
+      "EPIC-012 executed: TASK-049 global flashlight, TASK-050 smooth ramps + shader grain, TASK-051 SVG-space blob blur, TASK-052 palette redistribution (rose 42->27), TASK-053 single-weight h1s + display-gradient + sage success, TASK-054 TiltCard door-tilt on all cards"
     ],
     "remaining": [
+      "OWNER REVIEW (EPIC-012, in a REAL visible browser at npm run dev): 1) door-tilt on featured work cards, rail cards, article cards, sticky cards, tech tiles — hinge feel, amplitude, smoothness on enter AND leave (code-verified to the fiber level but the preview tab was hidden = rAF frozen, so the animated transform itself was not eyeballed this session); 2) global 520px flashlight glide on all five pages incl /about width feel; 3) gradient smoothness at your monitors (hero fallback + shader grain 0.12/0.06 + blob washes); 4) palette redistribution + display-gradient h1s + sage contact success — confirm the taste calls.",
       "OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.",
       "OWNER REVIEW (gate fix, EPIC-010 TASK-041): verify-task.sh's slop check now scores only changed src/ files (it previously fed generated views + planning docs to the scorer, which made every public_text push fail on internal files). Sanity-check the reasoning in backlog/done/TASK-041.md.",
       "Owner: eyeball EPIC-010 in a REAL browser (npm run dev): hero portrait size/placement, blob wash intensities (opacity dials in each component), featured-card tilt feel, rail focus emphasis, and the new full-viewport width on your monitors.",
@@ -57,7 +59,6 @@
       "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)",
       "OWNER REVIEW (EPIC-011, in a real browser at npm run dev): hero h1 single-weight + size and the CTA/portrait alignment to the h1 ends; portrait crop shows the face; featured-work card door-tilt feel + synchronized zoom (pointer-fine only); footer caramel text + filled masonry contrast; transparent header floats; every page CTA has the magnetic hover.",
       "Owner: supply a real contact email for the contact details block (the spine does not specify one; it currently uses socials + a neutral line). Real Resend delivery (RESEND_API_KEY + wiring /api/contact past its 501 stub) is a separate epic per the no-stored-submissions charter.",
-      "EPIC-012 execution: TASK-049 (global DS-spec flashlight) -> TASK-050/051 (gradient smoothness) -> TASK-052/053 (token + type fidelity) -> TASK-054 (card door-tilt fix + all-cards rollout; root cause pre-diagnosed in the task file, do not re-diagnose); epic at backlog/epics/EPIC-012-design-system-fidelity.md",
       "OWNER DECISION (EPIC-012 open questions): 1) keep or drop the extralight counterpoint in section h2s; 2) adopt the preview's ink-to-soft display-gradient text fill on h1s (TASK-053 ships it removable).",
       "Repo chore (owner, needs push rights): delete stale REMOTE branches origin/feature/EPIC-009, origin/feature/EPIC-010, origin/feature/EPIC-011, origin/chore/os-cleanup-and-simplify (all merged; agent push --delete was permission-blocked). Local feature/EPIC-008 kept deliberately: unmerged Resend contact-form spike (TASK-034) relevant to the future Resend epic."
     ],
@@ -65,9 +66,9 @@
   },
   "counts": {
     "epics_total": 11,
-    "tasks_open": 6,
+    "tasks_open": 0,
     "tasks_in_progress": 0,
-    "tasks_done": 46,
+    "tasks_done": 52,
     "handoffs_pending": 0,
     "handoffs_consumed": 7
   },

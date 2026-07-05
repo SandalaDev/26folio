@@ -1,7 +1,7 @@
 ---
 id: TASK-051
 title: "De-jag blob washes — blur proportional to rendered size (SVG-space feGaussianBlur)"
-status: ready
+status: done
 priority: P2
 risk_level: low
 preferred_executor: claude-code
