@@ -29,15 +29,15 @@ function MagazineTeaser({
       <Blob
         variant={2}
         fill="var(--color-rose)"
-        opacity={0.05}
-        blur={4}
+        opacity={0.06}
+        blur={12}
         className="-z-10 -right-24 top-8 w-96"
       />
       <Blob
         variant={4}
         fill="var(--color-caramel)"
-        opacity={0.05}
-        blur={6}
+        opacity={0.06}
+        blur={14}
         className="-z-10 -left-28 bottom-0 w-80"
       />
       <Eyebrow>From Scrumtrulescent</Eyebrow>

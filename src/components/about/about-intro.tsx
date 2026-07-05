@@ -21,8 +21,8 @@ function AboutIntro() {
       <Blob
         variant={2}
         fill="var(--color-rose)"
-        opacity={0.06}
-        blur={6}
+        opacity={0.07}
+        blur={14}
         className="-right-20 -top-12 w-[28rem]"
       />
       <motion.div

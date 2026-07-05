@@ -31,7 +31,13 @@ export interface BlobProps {
   fill?: string;
   /** 0–1. Keep low: blobs season, they don't shout (§3). */
   opacity?: number;
-  /** Optional blur radius in px for a soft wash. */
+  /**
+   * Soft-wash strength in the 200×200 viewBox's user space (EPIC-012
+   * TASK-051): an SVG-space feGaussianBlur stdDeviation, so the blur scales
+   * with the rendered blob. (Previously a CSS px blur, which stayed 2–8px on
+   * blobs scaled to 26rem+ — §3's "large blur radii" rendered as stepped
+   * edges.) Washes want ~12–16; omit for a crisp intentional shape.
+   */
   blur?: number;
   className?: string;
 }
@@ -44,14 +50,36 @@ function Blob({
   blur,
   className,
 }: BlobProps) {
+  // Deterministic filter id — Blob renders in Server Components too, so no
+  // useId. Identical props produce identical ids AND identical filter
+  // definitions, so a document-wide duplicate resolves to an equivalent
+  // filter; SSR and client markup always agree.
+  const filterId = blur
+    ? `blob-blur-${variant}-${String(blur).replace(/\W/g, "_")}`
+    : undefined;
+
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 200 200"
-      className={cn("pointer-events-none absolute select-none", className)}
-      style={blur ? { filter: `blur(${blur}px)` } : undefined}
+      // overflow-visible: the blur spills past the 200×200 viewport; without
+      // it the wash clips to a hard square at the SVG edge.
+      className={cn(
+        "pointer-events-none absolute select-none overflow-visible",
+        className,
+      )}
     >
-      <path d={path ?? BLOB_PATHS[variant]} fill={fill} fillOpacity={opacity} />
+      {filterId && (
+        <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation={blur} />
+        </filter>
+      )}
+      <path
+        d={path ?? BLOB_PATHS[variant]}
+        fill={fill}
+        fillOpacity={opacity}
+        filter={filterId ? `url(#${filterId})` : undefined}
+      />
     </svg>
   );
 }

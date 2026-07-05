@@ -15,8 +15,8 @@ export default function CapabilitiesPage() {
         <Blob
           variant={4}
           fill="var(--color-caramel)"
-          opacity={0.07}
-          blur={5}
+          opacity={0.08}
+          blur={14}
           className="-z-10 -right-16 -top-20 w-[26rem]"
         />
         <h1 className="text-display font-display font-extralight text-ink">

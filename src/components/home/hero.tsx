@@ -95,7 +95,7 @@ function Hero() {
               variant={3}
               fill="var(--color-caramel)"
               opacity={0.16}
-              blur={2}
+              blur={8}
               className="-left-6 -top-8 w-[130%]"
             />
             {/* Portrait aspect (taller than square) cropped to the face. */}
