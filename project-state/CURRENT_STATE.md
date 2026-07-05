@@ -1,6 +1,6 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-05T16:38:16.678Z
+updated: 2026-07-05T17:08:04.864Z
 updated_by: claude-code
 ---
 # Current State

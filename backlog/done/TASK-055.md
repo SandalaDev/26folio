@@ -76,3 +76,20 @@ names itself. Confirmed in-browser (dev server): correct `currentSrc`, no
 layout shift (boundingBox matches the declared width/height, no reflow), no
 console/network errors. lint + typecheck green; `next build` not re-run this
 session (no risk-bearing logic changed beyond static asset swap).
+
+## Follow-up (2026-07-05, same day, owner feedback)
+The combo mark in the header was barely identifiable at 36px. Owner asked for:
+1. Header: switch to the symbol-only mark (`logo_muted.svg`, no wordmark)
+   and enlarge it (42x56, up from the 36px combo) for legibility at nav-bar
+   scale.
+2. Footer: enlarge the combo mark (72x72, up from 44px) and move
+   "Scrumtrulescent Magazine" out of the logo's column into the third
+   (rightmost) column, stacked above the social links, right-aligned on
+   desktop (`md:items-end md:text-right`) — visually opposite the logo mark.
+
+Verified in-browser at a real 1280px desktop viewport (the preview tab
+defaults to a narrow/mobile size): footer grid computes 3 equal 331px
+columns; logo bounding box at x=96 (column 1), magazine link + social nav at
+x=1003-1169 (column 3, right-aligned) — logo and magazine now sit on
+opposite sides. Header symbol renders 42x56 inside the 64px nav bar,
+vertically centered. lint + typecheck + `next build` (13 routes) all green.

@@ -48,17 +48,9 @@ function SiteFooter() {
             <Image
               src="/images/logo/logo_combo-muted.svg"
               alt=""
-              width={44}
-              height={44}
+              width={72}
+              height={72}
             />
-          </Link>
-          <Link
-            href="https://scrumtrulescent.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="eyebrow text-muted transition-colors hover:text-rose"
-          >
-            Scrumtrulescent Magazine
           </Link>
         </div>
 
@@ -74,19 +66,29 @@ function SiteFooter() {
           ))}
         </nav>
 
-        <nav aria-label="Social links" className="flex flex-col gap-2">
-          {SOCIAL_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-ink/80 transition-colors hover:text-rose"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex flex-col gap-2 md:items-end md:text-right">
+          <Link
+            href="https://scrumtrulescent.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="eyebrow text-muted transition-colors hover:text-rose"
+          >
+            Scrumtrulescent Magazine
+          </Link>
+          <nav aria-label="Social links" className="flex flex-col gap-2 md:items-end">
+            {SOCIAL_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-ink/80 transition-colors hover:text-rose"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </Section>
     </motion.footer>
   );

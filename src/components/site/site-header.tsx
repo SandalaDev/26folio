@@ -41,10 +41,10 @@ function SiteHeader() {
       <div className="flex h-16 items-center justify-between px-5 md:px-10 lg:px-16 xl:px-24">
         <Link href="/" aria-label="Sandala" className="shrink-0">
           <Image
-            src="/images/logo/logo_combo-muted.svg"
+            src="/images/logo/logo_muted.svg"
             alt=""
-            width={36}
-            height={36}
+            width={42}
+            height={56}
             priority
           />
         </Link>
