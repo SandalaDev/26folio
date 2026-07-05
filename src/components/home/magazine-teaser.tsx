@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/components/site/section";
 import { Eyebrow } from "@/components/site/eyebrow";
 import { Blob } from "@/components/site/blob";
+import { TiltCard } from "@/components/motion/tilt-card";
 import { ArticleCard } from "@/components/home/article-card";
 import { placeholderArticles, type Article } from "@/lib/magazine-placeholder";
 import { fadeUp, staggerContainer } from "@/lib/motion";
@@ -56,7 +57,10 @@ function MagazineTeaser({
             key={article.slug}
             variants={shouldReduceMotion ? undefined : fadeUp}
           >
-            <ArticleCard article={article} />
+            {/* Door-tilt at grid-card amplitude (TASK-054). */}
+            <TiltCard tiltY={6} className="h-full">
+              <ArticleCard article={article} />
+            </TiltCard>
           </motion.div>
         ))}
       </motion.div>
