@@ -1,11 +1,11 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-05T11:29:19.518Z
+updated: 2026-07-05T11:29:45.177Z
 updated_by: claude-code
 ---
 # Current State
 ## Active work
-Epic: EPIC-012   Slice: complete   Task: complete
+Epic: EPIC-012   Slice: EPIC-012-SLICE-4   Task: TASK-054
 Branch: feature/EPIC-012   Actor: claude-code / claude-fable-5 (planner)
 ## Completion status
 EPIC-012 (design-system fidelity) EXECUTED and CLOSED on feature/EPIC-012 — all six tasks done, PR into dev pending review. TASK-049: FlashlightCursor is global chrome (site layout, z-0 under z-[1] main), 520px peach-led preview recipe via color-mix tokens, usePointerMotion + useMotionTemplate + soft springs, zero re-renders per move; verified gliding live. TASK-050: hero static fallback rebuilt as low-alpha (14%/12% cap) three-stop washes, MeshBg mid-stops, shader grain on (0.12/0.06); verified in-browser. TASK-051: Blob blur moved into SVG user space (feGaussianBlur, props-derived deterministic filter id — Blob renders in RSCs, no useId; overflow-visible so washes never clip square); consumers retuned stdDev 12-16; verified live. TASK-052: palette redistribution — Eyebrow tone prop (rose/caramel alternation), caramel step numbers + tech hover-card labels, peach tech accents, surface-2/border-2 elevation hovers, soft tertiary text (footer links, captions, timeline meta); rose 42 -> 27; caramel verified computing live. TASK-053: all display h1s single-weight, new display-gradient utility (ink-to-soft, applied to all five h1s incl hero + contact), contact success state sage; verified computed. TASK-054: shared TiltCard/useDoorTilt primitive (edge-hinged door swing, animate()-driven springs, motion values bound at mount ALWAYS — the original bug was conditional style binding — pointer measured on the un-transformed frame) rolled out to WorkCard (+synced zoom), capability rail (frame carries data-rail-card for GSAP), magazine teaser cards, sticky cards, tech tiles; magazine-section skipped (text link, not a card). CRITICAL SESSION LESSON captured in agent memory: a hidden preview tab freezes rAF entirely — ALL framer motion (variants, springs, transforms, templates) looks dead while React events still work; cost hours chasing phantom framer-API bugs before document.hidden was checked. The tilt therefore ships verified at fiber/pipeline level + lint/typecheck/build; its ANIMATED transform needs one owner eyeball in a visible browser.
