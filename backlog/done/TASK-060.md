@@ -32,6 +32,7 @@ files_allowed:
   - backlog/epics/EPIC-014-about-page-content.md
   - planning/slices/EPIC-014-SLICE-2.md
   - backlog/tasks/TASK-060.md
+  - scripts/verify-task.sh
 ---
 
 # Task: Dual-CTA closing band
