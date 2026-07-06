@@ -13,11 +13,13 @@ import { DURATION, EASE_OUT } from "@/lib/motion";
 function StickyCard({
   title,
   description,
+  cta,
   children,
   className,
 }: {
   title: string;
   description: string;
+  cta?: string;
   children: React.ReactNode;
   className?: string;
 }) {
@@ -32,6 +34,7 @@ function StickyCard({
         >
           <h3 className="font-display text-2xl font-semibold text-ink">{title}</h3>
           <p className="mt-3 text-muted">{description}</p>
+          {cta ? <p className="mt-4 eyebrow text-rose">{cta} →</p> : null}
         </motion.button>
       </DialogTrigger>
       {children}

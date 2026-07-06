@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-06T22:16:32.433Z",
+  "updated": "2026-07-06T22:29:25.378Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": "claude-code",
@@ -9,15 +9,15 @@
   },
   "current": {
     "epic": "EPIC-014",
-    "slice": "EPIC-014-SLICE-1",
-    "task": "TASK-056",
+    "slice": "EPIC-014-SLICE-2",
+    "task": "TASK-060",
     "agent": "claude-code",
     "branch": "feature/EPIC-014",
-    "session_status": "in-progress",
+    "session_status": "review",
     "handoff_status": "none"
   },
   "completion": {
-    "summary": "EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping done on chore/repo-cleanup-obsidian-and-state (PR #16, pending merge): synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. EPIC-014 (about page content) opened on feature/EPIC-014 off dev: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. SLICE-1 (TASK-056 intro copy, TASK-057 three-epoch timeline) and SLICE-2 (TASK-058 bio + card reorder, TASK-059 interests chips, TASK-060 dual-CTA band) scoped; implementation starting.",
+    "summary": "EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping done on chore/repo-cleanup-obsidian-and-state (PR #16, pending merge): synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35).",
     "done": [
       "EPIC-001 complete — merged to dev",
       "EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live",
@@ -44,7 +44,8 @@
       "EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside",
       "EPIC-012 (feature/EPIC-012): all six tasks done, PR #15 opened into dev, pending owner review/merge",
       "EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter",
-      "Repo housekeeping (chore/repo-cleanup-obsidian-and-state, PR #16): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked"
+      "Repo housekeeping (chore/repo-cleanup-obsidian-and-state, PR #16): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked",
+      "EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder"
     ],
     "remaining": [
       "OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.",
@@ -54,15 +55,15 @@
       "Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.",
       "Merge PR #15 (feature/EPIC-012 -> dev) and PR #16 (chore cleanup -> dev), both pending owner review/merge.",
       "No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.",
-      "EPIC-014 in progress on feature/EPIC-014: SLICE-1 (TASK-056 intro, TASK-057 timeline) + SLICE-2 (TASK-058 bio/cards, TASK-059 interests, TASK-060 dual-CTA band) — implementation underway this session."
+      "OWNER REVIEW (EPIC-014): confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right, then push feature/EPIC-014 and open its PR into dev."
     ],
     "blocked": "none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)"
   },
   "counts": {
     "epics_total": 12,
-    "tasks_open": 5,
+    "tasks_open": 0,
     "tasks_in_progress": 0,
-    "tasks_done": 47,
+    "tasks_done": 52,
     "handoffs_pending": 0,
     "handoffs_consumed": 7
   },

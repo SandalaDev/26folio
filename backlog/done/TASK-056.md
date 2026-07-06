@@ -1,7 +1,7 @@
 ---
 id: TASK-056
 title: "AboutIntro: real hybrid intro copy"
-status: ready
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code
@@ -53,7 +53,16 @@ files_allowed:
    column, so land both tasks together before merging.
 
 ## Acceptance criteria
-- [ ] `AboutIntro` renders real copy (no "draft copy" placeholder language).
-- [ ] Copy reads as both a hiring pitch and a personal bio in one pass.
-- [ ] Ends with the two-column hand-off sentence.
-- [ ] lint / typecheck / build green; slop score >= 35/50.
+- [x] `AboutIntro` renders real copy (no "draft copy" placeholder language).
+- [x] Copy reads as both a hiring pitch and a personal bio in one pass.
+- [x] Ends with the two-column hand-off sentence.
+- [x] lint / typecheck / build green; slop score >= 35/50.
+
+## Verified (2026-07-06)
+Real Variation C copy (adapted: no em dashes, no buzzwords) landed in
+`about-intro.tsx`; h1 dropped the old extralight/semibold split weight to
+match the site-wide single-weight display convention (EPIC-011). Confirmed
+in-browser: renders as the page's opening section, ends on the hand-off
+sentence, reads correctly now that TASK-057 put the timeline in the left
+column. lint + typecheck + `next build` (8 routes) green; stop-slop score
+46/50.

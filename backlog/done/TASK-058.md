@@ -1,7 +1,7 @@
 ---
 id: TASK-058
 title: "BioModal + StickyCard: real Who I Am bio + card reorder"
-status: ready
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code
@@ -57,7 +57,16 @@ files_allowed:
    around" (copy for the second card's modal body is TASK-059).
 
 ## Acceptance criteria
-- [ ] `BioModal` renders the real six-section bio, no placeholder language.
-- [ ] "Who I am" card is first in DOM/visual order in the right column, with
+- [x] `BioModal` renders the real six-section bio, no placeholder language.
+- [x] "Who I am" card is first in DOM/visual order in the right column, with
       real teaser + cta copy.
-- [ ] lint / typecheck / build green; slop score >= 35/50.
+- [x] lint / typecheck / build green; slop score >= 35/50.
+
+## Verified (2026-07-06)
+`BioModal` carries the real six-section biography (~570 words: opening hook,
+design roots, telecom chapter, the turn, how I work, the close). `StickyCard`
+gained an optional `cta` prop rendered as a rose affordance line. About page
+reordered: "Who I am" (teaser + "Read the full story →") first, "The way I
+am" (teaser + "Poke around →") second. Confirmed in-browser: clicked "Who I
+am", modal opens with the full bio, scrollable, close button works. lint +
+typecheck + `next build` (8 routes) green; stop-slop score 46/50.

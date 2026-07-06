@@ -1,7 +1,7 @@
 ---
 id: TASK-060
 title: "New DualCtaBand: closing conversion band"
-status: ready
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code
@@ -58,7 +58,17 @@ files_allowed:
    `CTACallout` with `DualCtaBand`.
 
 ## Acceptance criteria
-- [ ] Full-width band with two distinct, clearly-labeled paths.
-- [ ] Both CTAs use `MagneticButton` and degrade cleanly under reduced-motion.
-- [ ] Page's final section is this band (single generic `CTACallout` removed).
-- [ ] lint / typecheck / build green; slop score >= 35/50.
+- [x] Full-width band with two distinct, clearly-labeled paths.
+- [x] Both CTAs use `MagneticButton` and degrade cleanly under reduced-motion.
+- [x] Page's final section is this band (single generic `CTACallout` removed).
+- [x] lint / typecheck / build green; slop score >= 35/50.
+
+## Verified (2026-07-06)
+`DualCtaBand` built: two side-by-side panels (stack on mobile via the grid's
+`md:grid-cols-2`), client path -> `/contact`, teams path -> `/work` (no CV
+asset exists; flagged in STATE.json remaining, not fabricated here). Both
+use `MagneticButton`, which already degrades under reduced-motion/coarse
+pointers. Replaced the about page's closing `CTACallout`. Confirmed
+in-browser: band renders as the page's final section, both buttons show
+correct hrefs and hover treatment. lint + typecheck + `next build` (8
+routes) green; stop-slop score 46/50.

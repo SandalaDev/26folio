@@ -1,7 +1,7 @@
 ---
 id: TASK-059
 title: "InterestsModal: chip-and-reveal restructure"
-status: ready
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code
@@ -52,6 +52,15 @@ files_allowed:
 3. Keep the existing `Dialog`/`DialogContent` shell and heading structure.
 
 ## Acceptance criteria
-- [ ] Grid of 6 clickable chips, no placeholder image boxes remain.
-- [ ] Each chip reveals a real 40-80 word paragraph on click.
-- [ ] lint / typecheck / build green; slop score >= 35/50.
+- [x] Grid of 6 clickable chips, no placeholder image boxes remain.
+- [x] Each chip reveals a real 40-80 word paragraph on click.
+- [x] lint / typecheck / build green; slop score >= 35/50.
+
+## Verified (2026-07-06)
+`INTEREST_CATEGORIES` replaced with 6 real chips (The Design Gene, The
+Systems Brain, What I Read/Watch/Play, Off the Clock, The Tools I Love,
+Zambia and Home), each a specific 40-70 word paragraph, `useState` toggle,
+no new dependency, placeholder `aspect-video` boxes removed. Confirmed
+in-browser: opened "The way I am", clicked between chips, active chip gets
+the rose border/`aria-pressed` state and its paragraph swaps correctly.
+lint + typecheck + `next build` (8 routes) green; stop-slop score 46/50.

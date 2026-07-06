@@ -1,7 +1,7 @@
 ---
 id: TASK-057
 title: "Timeline: three-epoch restructure + grid reorder"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
@@ -73,10 +73,22 @@ files_allowed:
    TASK-056's hand-off sentence ("...on the left... on the right.") correct.
 
 ## Acceptance criteria
-- [ ] Timeline renders three named epochs, each with its own epigraph and
+- [x] Timeline renders three named epochs, each with its own epigraph and
       card anatomy (not a flat generic list).
-- [ ] Epoch headers behave as sticky dividers while scrolling their own cards.
-- [ ] Final Awakening card is visually distinct (present-tense treatment).
-- [ ] Timeline is the left column on the about page; sticky cards are the right.
-- [ ] Reduced-motion still renders full content immediately (no motion-gated content).
-- [ ] lint / typecheck / build green; slop score >= 35/50.
+- [x] Epoch headers behave as sticky dividers while scrolling their own cards.
+- [x] Final Awakening card is visually distinct (present-tense treatment).
+- [x] Timeline is the left column on the about page; sticky cards are the right.
+- [x] Reduced-motion still renders full content immediately (no motion-gated content).
+- [x] lint / typecheck / build green; slop score >= 35/50.
+
+## Verified (2026-07-06)
+Three epoch sections (Foundation/Convergence/Awakening) with sticky
+(`position: sticky top-24`) headers, real beats from the owner's blueprint
+(Foundation: single-role cards with skill tags + "seed planted"; Convergence:
+dual-track split cards + "converging" line; Awakening: milestone cards + the
+"Now" card visually distinct via `bg-surface` panel + pulsing rose dot).
+GSAP `ScrollTrigger` re-scoped to `[data-beat]` across the whole container.
+About page grid reordered: `Timeline` first (left), sticky-card column
+second (right). Confirmed in-browser: scrolled through all three epochs,
+sticky headers pin/unpin correctly, final card reads as present-tense/live.
+lint + typecheck + `next build` (8 routes) green; stop-slop score 42/50.

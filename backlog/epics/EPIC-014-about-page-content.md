@@ -1,7 +1,7 @@
 ---
 id: EPIC-014
 title: About page content — three-epoch timeline, bio, interests, closing CTA
-status: in-progress          # ready -> in-progress -> done
+status: done          # ready -> in-progress -> done
 phase: 5
 priority: P1
 risk_level: low
@@ -66,17 +66,17 @@ the stop-slop gate (no em dashes, no buzzwords, no binary-contrast filler).
 
 ## Definition of done
 
-- [ ] Intro reads as one opening that works as both a hiring pitch and a personal
+- [x] Intro reads as one opening that works as both a hiring pitch and a personal
       bio, and ends with a sentence that hands off to the two-column layout below it.
-- [ ] Timeline shows three named epochs in order, each with its own epigraph and
+- [x] Timeline shows three named epochs in order, each with its own epigraph and
       card anatomy; epoch headers behave as sticky dividers while their cards
       scroll past; the final ("Now") card is visually distinct (present-tense,
       pulsing accent).
-- [ ] "Who I Am" modal contains the real six-section bio (~550-700 words); its
+- [x] "Who I Am" modal contains the real six-section bio (~550-700 words); its
       sticky card is first in the right-column order with real teaser/CTA copy.
-- [ ] "The Way I Am" modal is a grid of clickable chips, each revealing a real
+- [x] "The Way I Am" modal is a grid of clickable chips, each revealing a real
       paragraph; the placeholder image boxes are gone.
-- [ ] A full-width dual-CTA band closes the page with a client path and a
+- [x] A full-width dual-CTA band closes the page with a client path and a
       teams/employer path.
-- [ ] lint / typecheck / build green; slop artifacts present and >= 35/50 for
+- [x] lint / typecheck / build green; slop artifacts present and >= 35/50 for
       every public-text task; in-browser verification done.
