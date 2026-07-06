@@ -28,7 +28,9 @@ review_waiver: "Solo dev (reviewer: human). Cross-model review reassigned to the
 protected_paths_touched: []
 files_allowed:
   - src/components/about/timeline.tsx
+  - src/components/about/epoch-nav.tsx
   - src/app/(site)/about/page.tsx
+  - .claude/launch.json
   - backlog/epics/EPIC-014-about-page-content.md
   - planning/slices/EPIC-014-SLICE-1.md
   - backlog/tasks/TASK-057.md
@@ -92,3 +94,26 @@ About page grid reordered: `Timeline` first (left), sticky-card column
 second (right). Confirmed in-browser: scrolled through all three epochs,
 sticky headers pin/unpin correctly, final card reads as present-tense/live.
 lint + typecheck + `next build` (8 routes) green; stop-slop score 42/50.
+
+## Follow-up (2026-07-07, owner feedback on PR #17)
+Owner asked for four refinements; the timeline-side ones land here:
+1. Epochs color-coded with the three brand accents: Foundation = caramel,
+   Convergence = peach (the design system's own rose-to-caramel bridge color,
+   matching the two-crafts-merging movement), Awakening = rose.
+2. Beats redesigned as cards (border + surface + colored left edge) hanging
+   off a per-epoch rail whose color fill draws in with scroll (GSAP scrub);
+   rail markers switched from rounded dots to brand-correct diamonds.
+3. Entrance upgraded to a blur-dissolve rise (opacity + y + blur, power3.out)
+   per card, plus a settle on each epoch header; reduced-motion still renders
+   everything statically.
+4. New `EpochNav` (src/components/about/epoch-nav.tsx) under the right-column
+   cards: brittanychiang-inspired scroll indicator, differentiated (numeral
+   squares rotate into filled epoch-colored diamonds; the active tagline
+   expands downward instead of a sideways line). IntersectionObserver on
+   `[data-epoch]`, click scrolls to the epoch, hidden on mobile.
+Also `.claude/launch.json` gained autoPort so the preview can verify while
+the owner's own dev server holds port 3000. Verified in-browser at 1280x900:
+active state tracks scroll through all three epochs, click-to-scroll lands
+at the section (scroll-mt offset correct), both cards + all three nav rows
+fit the sticky viewport, no console errors; mobile hides the nav with no
+overflow. lint + typecheck + build green; slop 38-50/50.

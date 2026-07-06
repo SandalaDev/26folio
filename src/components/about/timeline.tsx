@@ -7,13 +7,43 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { prefersReducedMotion } from "@/lib/motion";
 
 /**
- * Timeline — GSAP ScrollTrigger reveal-on-scroll (12-ui-element-map.md §3
- * About #2b). Restructured (EPIC-014/TASK-057) around the owner's content
- * blueprint (2026-07-06): a three-epoch career narrative, not a flat
- * milestone list. Every card stays in normal document flow so reduced-motion
- * / pre-hydration renders the full content immediately; only the entrance
- * animation is gated.
+ * Timeline — three-epoch career narrative (12-ui-element-map.md §3 About #2b,
+ * EPIC-014). Owner follow-up round: epochs are color-coded with the three
+ * brand accents (Foundation = caramel for the early soil, Convergence = peach
+ * because the design system defines peach as the rose↔caramel bridge — the
+ * two-crafts-merging movement, Awakening = rose, the primary accent), beats
+ * are cards hanging off a rail whose colored fill draws in with scroll
+ * (GSAP scrub), and each card enters with a blur-dissolve rise. Every card
+ * stays in normal document flow so reduced-motion / pre-hydration renders the
+ * full content immediately; only the entrance choreography is gated.
+ * `data-epoch` attributes drive the EpochNav scroll indicator.
  */
+
+const ACCENTS = {
+  caramel: {
+    eyebrow: "text-caramel",
+    edge: "bg-caramel/70",
+    marker: "bg-caramel",
+    rail: "bg-caramel/50",
+    note: "text-caramel",
+  },
+  peach: {
+    eyebrow: "text-peach",
+    edge: "bg-peach/70",
+    marker: "bg-peach",
+    rail: "bg-peach/50",
+    note: "text-peach",
+  },
+  rose: {
+    eyebrow: "text-rose",
+    edge: "bg-rose/70",
+    marker: "bg-rose",
+    rail: "bg-rose/50",
+    note: "text-rose",
+  },
+} as const;
+
+type Accent = (typeof ACCENTS)[keyof typeof ACCENTS];
 
 interface FoundationCard {
   marker: string;
@@ -122,15 +152,20 @@ function EpochHeader({
   title,
   tagline,
   epigraph,
+  accent,
 }: {
   numeral: string;
   title: string;
   tagline: string;
   epigraph: string;
+  accent: Accent;
 }) {
   return (
-    <div className="sticky top-24 z-10 mb-8 bg-background/85 py-3 backdrop-blur-sm">
-      <span className="eyebrow text-rose">
+    <div
+      data-epoch-header
+      className="sticky top-24 z-10 mb-8 bg-background/85 py-3 backdrop-blur-sm"
+    >
+      <span className={`eyebrow ${accent.eyebrow}`}>
         Epoch {numeral} — {title}
       </span>
       <h3 className="mt-1 font-display text-2xl font-semibold text-ink">{tagline}</h3>
@@ -139,14 +174,29 @@ function EpochHeader({
   );
 }
 
-function BeatMarker({ accent = false }: { accent?: boolean }) {
+/** Diamond marker pinned to the epoch rail, one per card. */
+function RailMarker({ accent, pulse = false }: { accent: Accent; pulse?: boolean }) {
   return (
     <span
       aria-hidden="true"
-      className={`absolute -left-[2.3rem] top-1.5 size-3 rounded-full ${
-        accent ? "bg-rose" : "bg-border-2"
-      } ${accent ? "animate-pulse" : ""}`}
+      className={`absolute -left-7 top-8 size-2 -translate-x-1/2 rotate-45 ${accent.marker} ${
+        pulse ? "animate-pulse" : ""
+      }`}
     />
+  );
+}
+
+/** Rail behind an epoch's cards: static hairline + color fill drawn on scroll. */
+function EpochRail({ accent }: { accent: Accent }) {
+  return (
+    <>
+      <span aria-hidden="true" className="absolute bottom-2 left-0 top-2 w-px bg-border" />
+      <span
+        aria-hidden="true"
+        data-rail-fill
+        className={`absolute bottom-2 left-0 top-2 w-px origin-top ${accent.rail}`}
+      />
+    </>
   );
 }
 
@@ -160,21 +210,54 @@ function Timeline() {
     if (!container) return;
 
     gsap.registerPlugin(ScrollTrigger);
-    const beats = container.querySelectorAll<HTMLElement>("[data-beat]");
 
     const ctx = gsap.context(() => {
-      beats.forEach((beat) => {
+      // Cards: blur-dissolve rise, once, on entry.
+      container.querySelectorAll<HTMLElement>("[data-beat]").forEach((beat) => {
         gsap.fromTo(
           beat,
-          { opacity: 0, y: 24 },
+          { opacity: 0, y: 36, filter: "blur(8px)" },
+          {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: { trigger: beat, start: "top 82%" },
+          },
+        );
+      });
+
+      // Epoch headers: quick settle as each movement begins.
+      container.querySelectorAll<HTMLElement>("[data-epoch-header]").forEach((header) => {
+        gsap.fromTo(
+          header,
+          { opacity: 0, y: 16 },
           {
             opacity: 1,
             y: 0,
             duration: 0.5,
             ease: "power2.out",
+            scrollTrigger: { trigger: header, start: "top 88%" },
+          },
+        );
+      });
+
+      // Rail fills: drawn in sync with scroll through their epoch.
+      container.querySelectorAll<HTMLElement>("[data-epoch]").forEach((section) => {
+        const fill = section.querySelector<HTMLElement>("[data-rail-fill]");
+        if (!fill) return;
+        gsap.fromTo(
+          fill,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: "none",
             scrollTrigger: {
-              trigger: beat,
-              start: "top 80%",
+              trigger: section,
+              start: "top 65%",
+              end: "bottom 70%",
+              scrub: true,
             },
           },
         );
@@ -204,18 +287,21 @@ function Timeline() {
         </p>
       </div>
 
-      <section>
+      <section data-epoch="foundation" className="scroll-mt-24">
         <EpochHeader
           numeral="I"
           title="Foundation"
           tagline="Seeds, planted early"
           epigraph="Every skill in this era looked unrelated at the time. None of them were."
+          accent={ACCENTS.caramel}
         />
-        <ol className="flex flex-col gap-10 border-l border-border pl-8">
+        <ol className="relative flex flex-col gap-6 pl-7">
+          <EpochRail accent={ACCENTS.caramel} />
           {FOUNDATION_CARDS.map((card) => (
-            <li key={card.marker} data-beat className="relative">
-              <BeatMarker />
-              <span className="eyebrow text-caramel">{card.marker}</span>
+            <li key={card.marker} data-beat className="relative border border-border bg-surface p-6">
+              <RailMarker accent={ACCENTS.caramel} />
+              <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${ACCENTS.caramel.edge}`} />
+              <span className={`eyebrow ${ACCENTS.caramel.eyebrow}`}>{card.marker}</span>
               <h4 className="mt-1 font-display text-xl font-semibold text-ink">{card.title}</h4>
               <p className="mt-2 text-muted">{card.description}</p>
               <ul className="mt-3 flex flex-wrap gap-2">
@@ -228,59 +314,69 @@ function Timeline() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 text-sm text-rose">Seed planted: {card.seed}</p>
+              <p className={`mt-3 text-sm ${ACCENTS.caramel.note}`}>Seed planted: {card.seed}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section>
+      <section data-epoch="convergence" className="scroll-mt-24">
         <EpochHeader
           numeral="II"
           title="Convergence"
           tagline="Two crafts, one person"
           epigraph="Infrastructure by day, design by night: two full practices running in parallel, and a growing suspicion that neither one alone was the point."
+          accent={ACCENTS.peach}
         />
-        <ol className="flex flex-col gap-10 border-l border-border pl-8">
+        <ol className="relative flex flex-col gap-6 pl-7">
+          <EpochRail accent={ACCENTS.peach} />
           {CONVERGENCE_CARDS.map((card) => (
-            <li key={card.marker} data-beat className="relative">
-              <BeatMarker />
-              <span className="eyebrow text-caramel">{card.marker}</span>
-              <div className="mt-2 grid gap-4 sm:grid-cols-2">
+            <li key={card.marker} data-beat className="relative border border-border bg-surface p-6">
+              <RailMarker accent={ACCENTS.peach} />
+              <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${ACCENTS.peach.edge}`} />
+              <span className={`eyebrow ${ACCENTS.peach.eyebrow}`}>{card.marker}</span>
+              <div className="mt-3 grid gap-4 sm:grid-cols-2">
                 <div className="border-l-2 border-border-2 pl-4">
                   <span className="eyebrow text-muted">Telecom</span>
                   <p className="mt-1 text-ink">{card.primary}</p>
                 </div>
-                <div className="border-l-2 border-rose/40 pl-4">
+                <div className="border-l-2 border-peach/50 pl-4">
                   <span className="eyebrow text-muted">Design</span>
                   <p className="mt-1 text-ink">{card.parallel}</p>
                 </div>
               </div>
-              <p className="mt-3 text-sm text-rose">Converging: {card.converging}</p>
+              <p className={`mt-3 text-sm ${ACCENTS.peach.note}`}>Converging: {card.converging}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section>
+      <section data-epoch="awakening" className="scroll-mt-24">
         <EpochHeader
           numeral="III"
           title="Awakening"
           tagline="The path that demands all of it"
           epigraph="In 2021 I stopped negotiating with my tools and taught myself to code. It's the most intellectually alive I've ever been."
+          accent={ACCENTS.rose}
         />
-        <ol className="flex flex-col gap-10 border-l border-border pl-8">
+        <ol className="relative flex flex-col gap-6 pl-7">
+          <EpochRail accent={ACCENTS.rose} />
           {AWAKENING_CARDS.map((card) => (
             <li
               key={card.marker}
               data-beat
-              className={`relative ${card.current ? "bg-surface p-5" : ""}`}
+              className={`relative border bg-surface p-6 ${
+                card.current ? "border-rose" : "border-border"
+              }`}
             >
-              <BeatMarker accent={card.current} />
-              <span className="eyebrow text-caramel">{card.marker}</span>
+              <RailMarker accent={ACCENTS.rose} pulse={card.current} />
+              {card.current ? null : (
+                <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${ACCENTS.rose.edge}`} />
+              )}
+              <span className={`eyebrow ${ACCENTS.rose.eyebrow}`}>{card.marker}</span>
               <h4 className="mt-1 font-display text-xl font-semibold text-ink">{card.milestone}</h4>
               <p className="mt-2 text-muted">{card.description}</p>
-              <p className="mt-3 text-sm text-rose">Points to: {card.pointsTo}</p>
+              <p className={`mt-3 text-sm ${ACCENTS.rose.note}`}>Points to: {card.pointsTo}</p>
             </li>
           ))}
         </ol>

@@ -30,6 +30,7 @@ files_allowed:
   - src/components/about/bio-modal.tsx
   - src/components/about/sticky-card.tsx
   - src/app/(site)/about/page.tsx
+  - public/images/abe-about.png
   - backlog/epics/EPIC-014-about-page-content.md
   - planning/slices/EPIC-014-SLICE-2.md
   - backlog/tasks/TASK-058.md
@@ -70,3 +71,13 @@ reordered: "Who I am" (teaser + "Read the full story →") first, "The way I
 am" (teaser + "Poke around →") second. Confirmed in-browser: clicked "Who I
 am", modal opens with the full bio, scrollable, close button works. lint +
 typecheck + `next build` (8 routes) green; stop-slop score 46/50.
+
+## Follow-up (2026-07-07, owner feedback on PR #17)
+Cards enlarged with image headers: "Who I am" carries the full combo logo
+lockup (peach variant, object-contain on the background field), "The way I
+am" carries the owner-supplied public/images/abe-about.png portrait
+(object-cover, subtle hover zoom). Stickiness moved off the individual cards
+onto the column wrapper in page.tsx, so both cards pin together and stay
+visible instead of staggering past each other; image height capped at 18vh
+so cards + EpochNav fit shorter viewports. Verified in-browser (see
+TASK-057 follow-up). lint + typecheck + build green; slop 46/50.
