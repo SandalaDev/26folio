@@ -1,6 +1,6 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-06T22:36:57.333Z
+updated: 2026-07-08T21:41:27.129Z
 updated_by: claude-code
 ---
 # Current State
@@ -8,7 +8,7 @@ updated_by: claude-code
 Epic: EPIC-014   Slice: EPIC-014-SLICE-2   Task: TASK-060
 Branch: feature/EPIC-014   Actor: claude-code / claude-sonnet-5 (executor)
 ## Completion status
-EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping done on chore/repo-cleanup-obsidian-and-state (PR #16, pending merge): synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35).
+EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping (chore/repo-cleanup-obsidian-and-state) merged to dev via PR #16: synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. feature/EPIC-014 then merged origin/dev to clear PR #17's conflict — the collision was only in the OS state files (STATE.json + generated CURRENT_STATE.md), both branches having edited the completion bookkeeping; resolved by keeping EPIC-014's superset and regenerating the view. No source/about-page conflicts. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35).
 ## What is done
 - EPIC-001 complete — merged to dev
 - EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live
@@ -35,7 +35,7 @@ EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks
 - EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside
 - EPIC-012 (feature/EPIC-012): all six tasks done, PR #15 opened into dev, pending owner review/merge
 - EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter
-- Repo housekeeping (chore/repo-cleanup-obsidian-and-state, PR #16): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked
+- Repo housekeeping merged to dev (PR #16, chore/repo-cleanup-obsidian-and-state): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked
 - EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder
 ## What remains
 - OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.
@@ -43,9 +43,9 @@ EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back
 - EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
 - Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.
-- Merge PR #15 (feature/EPIC-012 -> dev) and PR #16 (chore cleanup -> dev), both pending owner review/merge.
+- Merge PR #15 (feature/EPIC-012 -> dev), pending owner review/merge.
 - No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.
-- OWNER REVIEW (EPIC-014): confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right, then push feature/EPIC-014 and open its PR into dev.
+- OWNER REVIEW (EPIC-014): PR #17 open into dev, now conflict-free after merging origin/dev. Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right, then merge.
 ## Blocked
 none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)
 ## Assigned handoffs
