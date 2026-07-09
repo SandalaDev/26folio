@@ -6,9 +6,7 @@ set -euo pipefail
 
 STATE="project-state/STATE.json"
 LOCK="project-state/ACTIVE_SESSION.lock"
-LEDGER="project-state/SESSION_LEDGER.jsonl"
-# Structured actor identity — set these per harness so the dashboard can compare
-# harness/model/role performance. HARNESS is the tool, MODEL the actual model id.
+# Actor identity — recorded in the session lock for the crash journal.
 HARNESS="${HARNESS_NAME:-${AGENT_NAME:-unknown}}"
 MODEL="${MODEL_NAME:-unknown}"
 ROLE="${AGENT_ROLE:-executor}"        # executor | reviewer | planner
@@ -65,14 +63,6 @@ cmd_end() {
     cmd_check || true
   fi
   render
-  # Append one ledger line per session — the raw data for harness/model metrics.
-  # gate result is externally computed ground truth, not self-reported.
-  local started branch
-  started="$(grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
-  branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)"
-  printf '{"ended":"%s","started":"%s","harness":"%s","model":"%s","role":"%s","task":"%s","branch":"%s","gate":"%s"}\n' \
-    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$started" "$HARNESS" "$MODEL" "$ROLE" "${task:-none}" "$branch" "$gate" \
-    >> "$LEDGER"
   cmd_rotate_log || true
   rm -f "$LOCK"
   if [[ "$gate" == "fail" ]]; then

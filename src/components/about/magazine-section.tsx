@@ -7,9 +7,9 @@ import { Eyebrow } from "@/components/site/eyebrow";
 function MagazineSection() {
   return (
     <Section>
-      <Eyebrow>Scrumtrulescent Magazine</Eyebrow>
-      <h2 className="mt-3 max-w-2xl text-3xl font-display font-semibold text-ink">
-        A side project that earns its keep
+      <Eyebrow tone="caramel">Scrumtrulescent Magazine</Eyebrow>
+      <h2 className="mt-3 text-heading font-display text-ink">
+        A side project <span className="font-extralight">that earns its keep</span>
       </h2>
       <p className="measure mt-6 text-muted">
         Scrumtrulescent is a publication I run on the side, covering tech,

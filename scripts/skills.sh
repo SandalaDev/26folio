@@ -68,13 +68,11 @@ cmd_vendor() { # name method src [sub]
 }
 
 cmd_install_defaults() {
-  for s in impeccable frontend-design shadcn-ui-builder 21st-dev-components \
-           ds-task-slicer ds-test-planner ds-reviewer ds-handoff ds-content-review; do
-    mkdir -p "$SKILLS_DIR/$s"; [[ -f "$SKILLS_DIR/$s/SKILL.md" ]] || touch "$SKILLS_DIR/$s/SKILL.md"
-  done
+  # Vendor only the real third-party skills. Other skills are authored on disk as
+  # a task needs them (skills.sh add <name>) — no empty stubs are pre-created.
   cmd_vendor stop-slop            git "https://github.com/hardikpandya/stop-slop.git"
   cmd_vendor design-taste-frontend npx "https://github.com/leonxlnx/taste-skill" "design-taste-frontend"
-  echo "[skills] defaults installed/vendored. Pin commits in lock.json."
+  echo "[skills] defaults vendored. Pin commits in lock.json."
 }
 
 cmd_add() { [[ -z "$arg" ]] && { echo "Usage: skills.sh add <name>"; exit 1; }; mkdir -p "$SKILLS_DIR/local/$arg"; touch "$SKILLS_DIR/local/$arg/SKILL.md"; echo "[skills] candidate: $SKILLS_DIR/local/$arg/SKILL.md"; }

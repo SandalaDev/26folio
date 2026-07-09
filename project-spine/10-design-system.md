@@ -95,31 +95,56 @@ not preferences:
 - **No pure black, no cold navy.** The base is always *warm* dark.
 - Accents are **seasoning, not the meal** — large surfaces stay base tones; rose and
   caramel punctuate.
-- **No rounded corners.** Hard 90° corners everywhere — cards, buttons, inputs,
-  chips, swatches. `border-radius: 0` is the default; rounding is the exception that
-  needs a reason. Angular geometry is part of the brand's futuristic edge.
+- **No rounded corners on UI chrome.** Hard 90° corners for cards, buttons, inputs,
+  chips, swatches. `border-radius: 0` is the default. The **one sanctioned organic
+  exception is the blob motif (§3b)** — decorative masks and washes only, never
+  interactive chrome. Angular geometry is part of the brand's futuristic edge.
+- **No all-caps text, anywhere** (EPIC-010 owner decision). The former uppercase
+  eyebrow is restyled to a normal-case 13px/500 label; nothing on the site sets
+  `text-transform: uppercase`. Emphasis comes from weight contrast (§4), not case.
+
+## 3b. Blob motif (EPIC-010)
+
+The brand's second signature after the palette itself: **organic blob shapes as a
+vitiligo reference** — irregular patches, two tones coexisting on one surface,
+intentional rather than accidental. Implementation lives in `globals.css`
+(`--blob-1/2/3` border-radius tokens, `.blob-mask-*`, `.blob-morph`) and
+`src/components/site/blob.tsx` (preset SVG paths; accepts a custom `path` for
+owner-supplied shapes). Companions: `mesh-bg.tsx` (static CSS mesh wash) and
+`masonry-pattern.tsx` (irregular hairline masonry — the angular counterpart).
+
+**Usage rules (hard):**
+
+- Decorative only: `aria-hidden`, `pointer-events-none`, behind content.
+- Warm tokens only, **low opacity** (washes ≤ ~0.1) — blobs season, never shout.
+- Never behind long-form text; body copy on decorated sections keeps AA contrast.
+- The morph animation is CSS-only and disabled under `prefers-reduced-motion`.
+- UI chrome stays 90° (§3); blobs appear as image masks (hero portrait) and
+  background accents, not as buttons/cards/inputs.
 
 ## 4. Typography
 
-Sans, **unique** but legible, personality **editorial + technical**. Fonts are not
-finalised — these are self-hostable proposals (no Google Fonts calls in production,
-per the architecture rules) chosen to feel distinctive rather than systemic:
+Sans, **unique** but legible, personality **editorial + technical**. EPIC-010 shipped
+the variable binaries (they had been declared but never committed — the site rendered
+in system fallback until then) and rebuilt the scale around **weight contrast**: the
+variable faces cover 200–700, so heavy display words sit against extralight spans and
+light subheads. That contrast, not case or color, is the emphasis system.
 
-| Role | Proposed face | Why | Weight / size |
+| Role | Face (shipped) | Treatment | Weight / size |
 |---|---|---|---|
-| Display / H1 | **Clash Display** (Fontshare) | characterful, futuristic-editorial | 600–700 · clamp(36px, 5vw, 72px) |
-| Headings H2–H3 | **General Sans** (Fontshare) | clean technical neutral with warmth | 600 · 18–26px |
-| Body | **General Sans** | pairs with itself; airy at body size | 400 · 16px |
-| Mono / code | **JetBrains Mono** | technical signal, self-hostable | 400 · 0.92em |
-| Eyebrow / label | General Sans | uppercase, tracked | 700 · 11px, `letter-spacing:.09em` |
+| Display / H1 | **Clash Display** (variable) | heavy base with extralight spans (or inverted) | 650 base · clamp(40px, 5.5vw, 84px) · `text-display` |
+| Headings H2 | **Clash Display** | semibold base + extralight span | 600 · clamp(30px, 3.2vw, 52px) · `text-heading` |
+| Subhead | **General Sans** | the light counterweight | 320 · clamp(19px, 1.6vw, 24px) · `text-subhead` |
+| Body | **General Sans** | airy at body size | 400 · 16px |
+| Mono / code | **JetBrains Mono** (variable) | technical signal | 400 · 0.92em |
+| Eyebrow / label | General Sans | **normal case** (no caps, §3), quiet | 500 · 13px, `letter-spacing:.01em` |
 
-- Line height 1.55–1.6 body, 1.05–1.1 display.
-- Max line length ~70ch for body.
-- **Self-hosted via `@font-face` only.** Fontshare faces are free for this use and
-  ship distinctive character without a CDN call.
-
-> If you already have a face in mind, swap it here and the proposals fall away — the
-> *roles* (display / heading / body / mono / label) are what's fixed.
+- Line height 1.55–1.6 body, ~1.04 display.
+- Max line length ~70ch for body (`measure` — readability, not layout).
+- **Self-hosted via `@font-face` only** (Fontshare + fontsource variable woff2 in
+  `public/fonts/`; General Sans also ships its italic).
+- Eyebrow restraint: max one eyebrow per three sections on a page; most headings
+  stand alone.
 
 ## 5. Layout & spacing
 
@@ -127,10 +152,13 @@ per the architecture rules) chosen to feel distinctive rather than systemic:
 acreage. Tight where it should be tight, open where it should breathe.
 
 - Tailwind's default spacing scale only — no arbitrary px.
-- Section rhythm: `py-20 md:py-28 px-6 md:px-12 lg:px-24`.
-- Constrained content: `max-w-7xl mx-auto`; full-bleed sections, contained copy.
+- Section rhythm: `py-20 md:py-28 px-5 md:px-10 lg:px-16 xl:px-24`.
+- **No layout max-width** (EPIC-010 owner decision): the site uses the viewport;
+  the padding rhythm scales up instead of capping the container. Prose readability
+  comes from `measure` (70ch) on body copy, never from a container cap.
 - Grid-based; no float/absolute for flow layout.
-- Sticky header with warm blur backdrop.
+- Sticky header, **fully transparent** (EPIC-010): logo + nav text only — no
+  border, background, or blur.
 
 ## 6. Motion system
 

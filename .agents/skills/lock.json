@@ -1,7 +1,23 @@
 {
   "schema": "solo-dev-os.skills-lock.v1",
-  "updated": "2026-06-29",
+  "updated": "2026-07-02",
   "skills": {
+    "gsap": {
+      "method": "git",
+      "src": "https://github.com/greensock/gsap-skills",
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760"
+    },
+    "framer-motion": {
+      "method": "git",
+      "src": "https://github.com/C-Jeril/framer-motion-skills",
+      "commit": "837d7268fc4a3cf5b1f8904616ec97c7485e3eda"
+    },
+    "lottie": {
+      "method": "git",
+      "src": "https://github.com/lottiefiles/motion-design-skill",
+      "skill": "motion-design",
+      "commit": "f9a8a041b85185ee4881b3471d3415e939aac772"
+    },
     "stop-slop": {
       "method": "git",
       "src": "https://github.com/hardikpandya/stop-slop.git",
@@ -13,14 +29,7 @@
       "skill": "design-taste-frontend",
       "commit": "unpinned"
     },
-    "impeccable": { "method": "stub", "commit": "unpinned" },
-    "frontend-design": { "method": "stub", "commit": "unpinned" },
-    "shadcn-ui-builder": { "method": "stub", "commit": "unpinned" },
-    "21st-dev-components": { "method": "stub", "commit": "unpinned" },
-    "ds-task-slicer": { "method": "stub", "commit": "unpinned" },
-    "ds-test-planner": { "method": "stub", "commit": "unpinned" },
-    "ds-reviewer": { "method": "stub", "commit": "unpinned" },
-    "ds-handoff": { "method": "stub", "commit": "unpinned" },
-    "ds-content-review": { "method": "stub", "commit": "unpinned" }
+    "ds-reviewer": { "method": "authored", "commit": "local" },
+    "ds-handoff": { "method": "authored", "commit": "local" }
   }
 }

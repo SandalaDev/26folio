@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
@@ -15,9 +16,10 @@ import { MobileNav, NAV_LINKS } from "@/components/site/mobile-nav";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 
 /**
- * SiteHeader — sticky global nav (12-ui-element-map.md §2). Warm-blur backdrop;
- * hides on scroll-down, shows on scroll-up (Framer), disabled entirely under
- * `prefers-reduced-motion` (header simply stays put).
+ * SiteHeader — sticky global nav (12-ui-element-map.md §2). EPIC-010: fully
+ * transparent — no border, background, or blur; just the logo and nav text over
+ * the page. Hides on scroll-down, shows on scroll-up (Framer), disabled entirely
+ * under `prefers-reduced-motion` (header simply stays put).
  */
 function SiteHeader() {
   const pathname = usePathname();
@@ -34,11 +36,17 @@ function SiteHeader() {
     <motion.header
       animate={shouldReduceMotion ? undefined : { y: hidden ? "-100%" : "0%" }}
       transition={{ duration: DURATION.component, ease: EASE_OUT }}
-      className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md"
+      className="sticky top-0 z-40 bg-transparent"
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 md:px-12 lg:px-24">
-        <Link href="/" className="font-display text-lg font-bold text-ink">
-          Sandala
+      <div className="flex h-16 items-center justify-between px-5 md:px-10 lg:px-16 xl:px-24">
+        <Link href="/" aria-label="Sandala" className="shrink-0">
+          <Image
+            src="/images/logo/logo_muted.svg"
+            alt=""
+            width={42}
+            height={56}
+            priority
+          />
         </Link>
 
         <NavigationMenu className="hidden md:flex">

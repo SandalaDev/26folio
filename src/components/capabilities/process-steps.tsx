@@ -48,10 +48,17 @@ function ProcessSteps() {
             className={`eyebrow border px-4 py-3 transition-colors ${
               step.id === activeId
                 ? "border-rose text-rose"
-                : "border-border text-ink/70 hover:text-ink"
+                : "border-border text-ink/70 hover:border-border-2 hover:text-ink"
             }`}
           >
-            {i + 1}. {step.title}
+            {/* caramel step number — the preview's `.num` label role (§2);
+                the active tab's rose still owns the selected state. */}
+            <span
+              className={step.id === activeId ? undefined : "text-caramel"}
+            >
+              {i + 1}.
+            </span>{" "}
+            {step.title}
           </button>
         ))}
       </div>

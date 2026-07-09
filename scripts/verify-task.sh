@@ -30,15 +30,43 @@ section "skill registry"
 bash scripts/skills.sh validate || FAIL=1
 
 # 3) Scope — diff must stay inside files_allowed
+# The diff is cumulative (BASE...HEAD covers the whole feature branch), but one
+# epic branch carries several tasks. Checking that cumulative diff against a
+# single task's files_allowed false-flags every *other* task's files. So the
+# allowed set is the UNION of files_allowed across the current task plus every
+# task referenced in the branch's commit messages.
 section "scope (files_allowed)"
 CHANGED="$(git diff --name-only "$BASE"...HEAD 2>/dev/null || git diff --name-only || true)"
 if have_node && [[ -n "$CHANGED" ]]; then
-  ALLOWED="$(node scripts/read-fm.mjs "$TASK" files_allowed --list 2>/dev/null || true)"
+  # Collect the task files in play: the current task plus every task referenced
+  # in the branch's commit messages. `|| true` guards each step so a no-match
+  # grep or a trailing failed test can't trip `set -euo pipefail` and abort the
+  # gate before the scope check even runs.
+  branch_task_files() {
+    printf '%s\n' "$TASK"
+    local ids id d
+    ids="$(git log --format=%s "$BASE"..HEAD 2>/dev/null | grep -oE 'TASK-[0-9]+' | sort -u || true)"
+    while IFS= read -r id; do
+      [[ -z "$id" ]] && continue
+      for d in backlog/tasks backlog/done; do
+        [[ -f "$d/$id.md" ]] && echo "$d/$id.md"
+      done
+    done <<< "$ids"
+    return 0
+  }
+  ALLOWED="$(branch_task_files | sort -u | while IFS= read -r tf; do
+    [[ -n "$tf" ]] && node scripts/read-fm.mjs "$tf" files_allowed --list 2>/dev/null
+  done | sort -u || true)"
+  # OS-managed paths are written by os.sh/render/create-handoff, not by task
+  # implementation, so they are never listed in files_allowed. Exclude them so
+  # the scope gate judges real code/content, not the OS's own bookkeeping.
+  OS_MANAGED='^(project-state/|handoffs/|memory/|backlog/done/|backlog/epics/|CLAUDE\.md$)'
   if [[ -n "$ALLOWED" ]]; then
     while IFS= read -r f; do
       [[ -z "$f" ]] && continue
+      [[ "$f" =~ $OS_MANAGED ]] && continue
       ok=0
-      while IFS= read -r a; do [[ -n "$a" && "$f" == $a* ]] && ok=1; done <<< "$ALLOWED"
+      while IFS= read -r a; do [[ -n "$a" && "$f" == $a* ]] && ok=1; done <<< "$ALLOWED" || true
       if [[ "$ok" -eq 0 ]]; then echo "  SCOPE ESCAPE: $f not in files_allowed"; FAIL=1; fi
     done <<< "$CHANGED"
     [[ "$FAIL" -eq 0 ]] && echo "  all changed files are allowed"
@@ -61,18 +89,31 @@ run_if() { # field, label, command...
 }
 # Stack-agnostic dispatch: prefer scripts/test/*.sh if present, else npm script if available.
 proof() { local s="scripts/test/$1.sh"; if [[ -x "$s" ]]; then bash "$s"; elif command -v npm >/dev/null 2>&1; then npm run -s "$2" 2>/dev/null || true; else echo "   (no runner for $1)"; fi; }
-run_if "lint"        "lint"        proof lint        lint
-run_if "typecheck"   "typecheck"   proof typecheck   typecheck
-run_if "unit"        "unit"        proof unit        test:unit
-run_if "integration" "integration" proof integration test:integration
-run_if "e2e"         "e2e"         proof e2e         test:e2e
-run_if "accessibility" "a11y"      proof a11y        test:a11y
+# Proof levels live under the `verification_required:` map in task frontmatter,
+# so they must be read by dot-path — a bare `lint` reads a (nonexistent)
+# top-level key and skips every check.
+run_if "verification_required.lint"        "lint"        proof lint        lint
+run_if "verification_required.typecheck"   "typecheck"   proof typecheck   typecheck
+run_if "verification_required.unit"        "unit"        proof unit        test:unit
+run_if "verification_required.integration" "integration" proof integration test:integration
+run_if "verification_required.e2e"         "e2e"         proof e2e         test:e2e
+run_if "verification_required.accessibility" "a11y"      proof a11y        test:a11y
 
 # 5) Public-text slop gate — score recomputed independently
 section "stop-slop (public text)"
 if [[ "$(fm public_text)" == "true" ]]; then
   if have_node; then
-    node .agents/skills/stop-slop/score.mjs --verify "$CHANGED" || { echo "  SLOP GATE FAILED"; FAIL=1; }
+    # Score only rendered-app sources (src/). Same over-breadth family as the
+    # scope check's OS_MANAGED exclusion: planning docs, task files, and the
+    # spine are internal, and the GENERATED views (CURRENT_STATE.md) emit
+    # typographic dashes as null placeholders by design — scoring them made
+    # every public_text push fail on files no reader ever sees.
+    PUBLIC_CHANGED="$(printf '%s\n' "$CHANGED" | grep -E '^src/' || true)"
+    if [[ -n "$PUBLIC_CHANGED" ]]; then
+      node .agents/skills/stop-slop/score.mjs --verify "$PUBLIC_CHANGED" || { echo "  SLOP GATE FAILED"; FAIL=1; }
+    else
+      echo "  no changed public-surface files (src/) — n/a"
+    fi
   else
     echo "  skip (no node) — enforced in CI"
   fi

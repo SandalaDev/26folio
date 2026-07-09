@@ -4,34 +4,41 @@ import * as React from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import {
+  ArrowRight,
+  DeviceMobile,
+  Globe,
+  Robot,
+  Storefront,
+  Wrench,
+  type Icon,
+} from "@phosphor-icons/react";
 
 import { Section } from "@/components/site/section";
-import { Eyebrow } from "@/components/site/eyebrow";
+import { Blob, type BlobVariant } from "@/components/site/blob";
+import { MeshBg } from "@/components/site/mesh-bg";
+import { TiltCard } from "@/components/motion/tilt-card";
+import { services, type ServiceIcon } from "@/lib/services";
 import { prefersReducedMotion } from "@/lib/motion";
 
-const PANELS = [
-  {
-    id: "web-development",
-    title: "Web development",
-    description: "A site that loads fast, reads clearly, and actually converts.",
-  },
-  {
-    id: "custom-software",
-    title: "Custom software",
-    description: "Internal tools built around how your team already works.",
-  },
-  {
-    id: "ai-integration",
-    title: "AI integration",
-    description: "Automation that earns its place, not a chatbot bolted on.",
-  },
-] as const;
+/* Phosphor is the project's one icon family (design lane §3.C); weight is
+   standardized here so every card reads the same. */
+const ICONS: Record<ServiceIcon, Icon> = {
+  globe: Globe,
+  wrench: Wrench,
+  robot: Robot,
+  device: DeviceMobile,
+  storefront: Storefront,
+};
 
 /**
  * CapabilityRail — GSAP ScrollTrigger pinned horizontal scroll
- * (12-ui-element-map.md §3 Home #3). Defaults to a normal stacked vertical
- * list; the pin/scrub is only wired up client-side, after mount, when motion
- * isn't reduced and the pointer is fine (architecture principle #3/#4).
+ * (12-ui-element-map.md §3 Home #3). EPIC-010: five enlarged cards from the
+ * shared services source, each with an icon, a background wash + blob accent,
+ * and an anchored link into /capabilities. The card nearest the viewport
+ * center is emphasized (scale/opacity via the scrub) so the focused card takes
+ * more of the viewport. Defaults to a stacked vertical list; pin/scrub/focus
+ * only engage client-side on fine pointers with motion allowed.
  */
 function CapabilityRail() {
   const sectionRef = React.useRef<HTMLElement | null>(null);
@@ -60,6 +67,25 @@ function CapabilityRail() {
       const scrollDistance = track.scrollWidth - section.clientWidth;
       if (scrollDistance <= 0) return;
 
+      const cards = gsap.utils.toArray<HTMLElement>("[data-rail-card]", track);
+
+      // Focus emphasis: the card nearest the viewport center is full-size and
+      // full-opacity; neighbours recede. Driven by the same scrub, not state.
+      const emphasize = () => {
+        const mid = window.innerWidth / 2;
+        for (const card of cards) {
+          const rect = card.getBoundingClientRect();
+          const distance = Math.min(
+            1,
+            Math.abs(rect.left + rect.width / 2 - mid) / mid,
+          );
+          gsap.set(card, {
+            scale: 1 - 0.06 * distance,
+            opacity: 1 - 0.45 * distance,
+          });
+        }
+      };
+
       gsap.to(track, {
         x: -scrollDistance,
         ease: "none",
@@ -69,8 +95,11 @@ function CapabilityRail() {
           end: () => `+=${scrollDistance}`,
           scrub: true,
           pin: true,
+          onUpdate: emphasize,
+          onRefresh: emphasize,
         },
       });
+      emphasize();
     }, section);
 
     return () => ctx.revert();
@@ -82,26 +111,59 @@ function CapabilityRail() {
       // Pin target needs overflow control; harmless when the pin never engages.
       className="overflow-hidden"
     >
-      <Eyebrow>What I do</Eyebrow>
-      <h2 className="mt-3 text-3xl font-display font-semibold text-ink">
-        Three ways I can help
-      </h2>
+      <h2 className="text-heading font-display text-ink">What I do</h2>
       <div
         ref={trackRef}
-        className="mt-10 flex flex-col items-center gap-6"
+        className="mt-12 flex flex-col items-center gap-6 md:gap-8"
       >
-        {PANELS.map((panel) => (
-          <Link
-            key={panel.id}
-            href={`/capabilities#${panel.id}`}
-            className="block w-[min(80vw,32rem)] shrink-0 border border-border bg-surface p-8"
-          >
-            <h3 className="font-display text-xl font-semibold text-ink">
-              {panel.title}
-            </h3>
-            <p className="mt-3 text-muted">{panel.description}</p>
-          </Link>
-        ))}
+        {services.map((service, index) => {
+          const IconGlyph = ICONS[service.icon];
+          return (
+            /* Door-tilt (TASK-054): the TiltCard frame is the flex item AND
+               the GSAP emphasize target (data-rail-card) — it never rotates,
+               so the scrub's rect measurements stay stable while the inner
+               card swings. Hinge alternates with the card's wash tone. */
+            <TiltCard
+              key={service.id}
+              data-rail-card
+              hinge={index % 2 === 0 ? "left" : "right"}
+              className="w-full shrink-0 will-change-transform md:w-[min(78vw,44rem)]"
+            >
+              <Link
+                href={`/capabilities#${service.id}`}
+                className="group relative flex h-full min-h-[22rem] flex-col justify-between overflow-hidden border border-border bg-surface p-8 transition-colors hover:border-border-2 md:min-h-[26rem] md:p-10"
+              >
+                <MeshBg tone={index % 2 === 0 ? "rose" : "warm"} />
+                <Blob
+                  variant={((index % 4) + 1) as BlobVariant}
+                  fill={index % 2 === 0 ? "var(--color-rose)" : "var(--color-caramel)"}
+                  opacity={0.09}
+                  className="-right-16 -top-16 w-56"
+                />
+                {/* Icon tone follows the card's wash (rose/caramel alternation,
+                    §2) — rose stops being the only accent voice on the rail. */}
+                <IconGlyph
+                  size={40}
+                  weight="light"
+                  className={`relative ${index % 2 === 0 ? "text-rose" : "text-caramel"}`}
+                  aria-hidden="true"
+                />
+                <div className="relative mt-10">
+                  <h3 className="font-display text-2xl font-semibold text-ink md:text-3xl">
+                    {service.title}
+                  </h3>
+                  <p className="measure mt-3 text-base text-muted md:text-lg">
+                    {service.description}
+                  </p>
+                  <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-rose transition-transform group-hover:translate-x-1">
+                    See how
+                    <ArrowRight size={16} weight="bold" aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
+            </TiltCard>
+          );
+        })}
       </div>
     </Section>
   );

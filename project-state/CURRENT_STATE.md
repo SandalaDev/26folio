@@ -1,14 +1,14 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-01T07:45:05.305Z
-updated_by: zcode
+updated: 2026-07-09T14:37:48.558Z
+updated_by: claude-code
 ---
 # Current State
 ## Active work
-Epic: EPIC-007   Slice: EPIC-007-SLICE-2   Task: —
-Branch: feature/EPIC-007   Actor: claude-code / claude-opus-4-8 (executor)
+Epic: EPIC-014   Slice: EPIC-014-SLICE-2   Task: TASK-060
+Branch: feature/EPIC-014   Actor: claude-code / claude-sonnet-5 (executor)
 ## Completion status
-EPIC-006 merged to dev (PR #8). EPIC-007 (magazine integration) implemented on feature/EPIC-007 — both tasks (032-033) done, both low risk, no review handoffs needed; PR open to dev. Implemented lib/magazine.ts exactly per 06-project-technical-plan.md's pre-decided spec (getFeaturedMagazineArticles, MagazineArticle type, 1hr ISR revalidate, never-throws contract) and wired it into the home page without touching MagazineTeaser/ArticleCard's contract (EPIC-003 built them specifically to accept this). No live magazine API exists yet, so the only exercisable path is 'not configured' -> []: verified in-browser that the home page's magazine section now correctly renders nothing (the documented graceful-fallback behaviour) rather than the 3 placeholder cards it showed before — an intended visible change, not a regression, called out explicitly so it isn't mistaken for a bug later.
+EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping (chore/repo-cleanup-obsidian-and-state) merged to dev via PR #16: synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. feature/EPIC-014 then merged origin/dev to clear PR #17's conflict — the collision was only in the OS state files (STATE.json + generated CURRENT_STATE.md), both branches having edited the completion bookkeeping; resolved by keeping EPIC-014's superset and regenerating the view. No source/about-page conflicts. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35). EPIC-012's PR #15 conflict then resolved by merging origin/dev into feature/EPIC-012: state files taken from dev's superset; about-intro h1 kept EPIC-014's copy with EPIC-012's display-gradient; timeline taken wholesale from EPIC-014 (EPIC-012's one-line token tweak on the obsolete placeholder was superseded by the three-epoch rewrite); sticky-card reconciled to EPIC-014's image-card structure wrapped in EPIC-012's TiltCard door-tilt, per-card sticky dropped since EPIC-014 relocated it to the column; hero/footer/verify-task/launch.json auto-merged.
 ## What is done
 - EPIC-001 complete — merged to dev
 - EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live
@@ -16,16 +16,37 @@ EPIC-006 merged to dev (PR #8). EPIC-007 (magazine integration) implemented on f
 - EPIC-004 complete — merged to dev (PR #6); about page (hybrid intro, sticky cards/modals, timeline, magazine section, socials) live
 - EPIC-005 complete — merged to dev (PR #7); work page (grid + case study details) live
 - EPIC-006 complete — merged to dev (PR #8); capabilities page (services, technologies, process, CTA) live
-- EPIC-007 TASK-032: lib/magazine.ts — getFeaturedMagazineArticles(), 1hr ISR, never-throws contract, MAGAZINE_API_URL/KEY added to env.ts/env.example
-- EPIC-007 TASK-033: wired into HomePage (now async), MagazineTeaser/ArticleCard contract untouched
+- EPIC-007 TASK-032/033: lib/magazine.ts + HomePage wiring (magazine integration)
+- OS cleanup merged to dev (PR #10, chore/os-cleanup-and-simplify): pruned unused machinery, gate-bug fixes, manual rewrite
+- EPIC-009 TASK-035: cleanup (gitignore/untrack .obsidian/workspace.json; keep notes) + vendored gsap/framer-motion/lottie skills (registry.md + lock.json pinned commits)
+- EPIC-009 TASK-036: warm shader hero — @paper-design/shaders-react + ShaderBackground (palette-remapped MeshGradient), mounted above the static gradient fallback only when motion is allowed
+- EPIC-009 TASK-037: signature motion — shared pointer MotionValues, global custom Cursor, MagneticButton (magnetic pull + fill sweep + text reveal); hero CTA wired
+- EPIC-009 merged to dev (PR #11)
+- EPIC-010 TASK-038: typography (shipped variable font binaries + weight-contrast scales + de-capsed eyebrow), no max-width, transparent header
+- EPIC-010 TASK-039: blob motif in the design system (spine §3b) + Blob/MeshBg/MasonryPattern applied to plain sections
+- EPIC-010 TASK-040: hero recomposed — blob-masked portrait, small, third in hierarchy; copy unchanged
+- EPIC-010 TASK-041: featured work — real Provision Finance + OK Pharmacy image cards with zoom + pointer tilt
+- EPIC-010 TASK-042: services single source; 5 rail cards (icons, washes, focus emphasis); /capabilities#<id> anchors land
+- EPIC-011 TASK-043: hero single-weight enlarged h1 + CTA/portrait aligned to h1 ends + larger portrait-cropped image
+- EPIC-011 TASK-044: header confirmed fully transparent in live build (no destructive change; already bg-transparent)
+- EPIC-011 TASK-045: footer low-contrast light-brown (caramel) text + filled low-opacity masonry texture
+- EPIC-011 TASK-046: CTA hover unified - CTACallout uses MagneticButton site-wide; MagneticButton gained type/disabled
+- EPIC-011 TASK-047: featured-work card hover retuned to door-opening tilt (rotateY hinge) + synchronized spring zoom
+- EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside
+- EPIC-012 (feature/EPIC-012): all six tasks done, PR #15 opened into dev, pending owner review/merge
+- EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter
+- Repo housekeeping merged to dev (PR #16, chore/repo-cleanup-obsidian-and-state): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked
+- EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder
 ## What remains
-- Open PR feature/EPIC-007 -> dev and merge (no cross-model review needed, both tasks low risk)
-- Owner-confirmed follow-up still outstanding: EPIC-004's real biography/interests/timeline/social URLs; EPIC-005's real project list; EPIC-006's TechGrid is a real-but-partial stack list
+- OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.
+- Owner-confirmed follow-up still outstanding: EPIC-005's full real project list; EPIC-006's TechGrid is a real-but-partial stack list
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back
-- Follow-up: vendor the 21st.dev ShaderBackground (celestial-ink-shader) as a Hero upgrade once perf/a11y-audited
-- Gate gaps flagged, not fixed (tooling, out of any single epic's scope): scripts/read-fm.mjs reads top-level fields only so verification_required.lint/typecheck never auto-trigger; verify-task.sh's scope check is cumulative against dev so it false-positives once >1 task shares a feature branch; stop-slop's score.mjs only scans .md/.html files, never .tsx
 - EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
+- Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.
+- Merge PR #15 (feature/EPIC-012 -> dev): conflict resolved (origin/dev merged into feature/EPIC-012), now mergeable — pending owner review/merge.
+- No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.
+- OWNER REVIEW (EPIC-014): merged to dev (PR #17). Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right in a real browser.
 ## Blocked
-none for EPIC-007. (TASK-006 CI still deferred — protected .github/workflows/ path needs a human-signed CODEOWNER commit.)
+none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)
 ## Assigned handoffs
 none

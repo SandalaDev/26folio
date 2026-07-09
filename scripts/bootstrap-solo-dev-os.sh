@@ -3,12 +3,11 @@
 set -euo pipefail
 ROOT="${1:-.}"; cd "$ROOT"
 
-# Only pre-create directories that exist from day one AND are not self-provisioned
-# by a phase script. Deferred / lazy-created: project-spine/references/{design,
-# content,ui}/ (created by design.sh/content.sh/ui.sh when their questionnaire
-# runs), planning/content/** and planning/design/** (created as work lands),
-# handoffs/archive (created on first archive), tests/** (created when tests are
-# written). This keeps the skeleton to what is actually used on a fresh clone.
+# Only pre-create directories that exist from day one. Deferred / lazy-created:
+# project-spine/references/{design,content,ui}/ (created when you drop references
+# in), planning/content/** (created as work lands), handoffs/archive (created on
+# first archive), tests/** (created when tests are written). This keeps the
+# skeleton to what is actually used on a fresh clone.
 mkdir -p \
   project-state \
   handoffs/review handoffs/session handoffs/task handoffs/rework \
@@ -46,8 +45,6 @@ if [[ ! -s "project-state/STATE.json" ]]; then
   "completion": { "summary": "", "done": [], "remaining": [], "blocked": "none" },
   "counts": { "epics_total": 0, "tasks_open": 0, "tasks_in_progress": 0, "tasks_done": 0, "handoffs_pending": 0, "handoffs_consumed": 0 },
   "verification": { "lint": "skipped", "typecheck": "skipped", "unit": "skipped", "integration": "skipped", "e2e": "skipped" },
-  "metrics": { "updated": "", "min_n": 5, "combos": [] },
-  "epics": [],
   "handoff_queue": []
 }
 JSON
@@ -96,12 +93,9 @@ try {
 JS
 fi
 
+# Vendor the two real third-party skills (stop-slop, design-taste-frontend).
+# Other skills are authored on disk as needed — no empty stubs are pre-created.
 if [[ -x scripts/skills.sh ]]; then bash scripts/skills.sh install-defaults || true; fi
-# Note: 10-design-system.md, 11-content-strategy.md and 12-ui-element-map.md are
-# intentionally NOT stubbed here — they are generated in Phases 4–6 by
-# design.sh / content.sh / ui.sh from their questionnaires + your references.
-# Scaffold the project-start intake so "hydrate the spine" has a front door.
-if [[ -x scripts/intake.sh ]]; then bash scripts/intake.sh brief || true; fi
 if command -v git >/dev/null 2>&1; then
   git config core.hooksPath .githooks || true
   # Establish the integration branch off main if it does not exist yet.
@@ -110,20 +104,12 @@ if command -v git >/dev/null 2>&1; then
     echo "[bootstrap] created 'dev' off 'main'. Protect both on your host; agents branch feature/* off dev."
   fi
 fi
-[[ -f project-state/SESSION_LEDGER.jsonl ]] || touch project-state/SESSION_LEDGER.jsonl
 if [[ -f AGENTS.md && -x scripts/sync-agent-files.sh ]]; then bash scripts/sync-agent-files.sh || true; fi
 
-# Generate the first Build Dashboard from the freshly-seeded STATE.json.
-# render-dashboard.mjs has no template dependency — it builds dashboard.html in
-# code. Re-runs on every `os.sh render`. dashboard.html is gitignored.
-if [[ -f scripts/render-dashboard.mjs ]] && command -v node >/dev/null 2>&1; then
-  node scripts/render-dashboard.mjs || true
-fi
-
-echo "Solo Dev OS v6.1 skeleton created."
-echo "Next (project start — six gated phases):"
-echo "  P1-3 intake: fill 00-original-intent.md → intake.sh interview → intake.sh ready → hydrate 00-09."
-echo "  P4 design:  design.sh questionnaire (answer + drop refs) → design.sh ready → agent gen 10 → approve."
-echo "  P5 content: content.sh questionnaire → content.sh ready → agent gen 11 (sitemap+content) → approve."
-echo "  P6 ui:      ui.sh questionnaire → ui.sh ready → agent gen 12 (block→element) → approve."
-echo "  Then: fill STATE.json current + completion, run os.sh render, set owners in CODEOWNERS."
+echo "Solo Dev OS skeleton created."
+echo "Next:"
+echo "  1. Author the project spine (00-manifesto … 09-roadmap, then 10-design-system,"
+echo "     11-content-strategy, 12-ui-element-map) under project-spine/."
+echo "  2. Set owners in CODEOWNERS (replace @owner)."
+echo "  3. Shape the first Epic → Slice → Tasks under backlog/ and planning/slices/."
+echo "  4. Fill STATE.json current + completion, then run 'bash scripts/os.sh render'."

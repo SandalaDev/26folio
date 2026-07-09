@@ -6,9 +6,9 @@ import { TechGrid } from "@/components/capabilities/tech-grid";
 function TechnologiesSection() {
   return (
     <Section>
-      <Eyebrow>Technologies</Eyebrow>
-      <h2 className="mt-3 max-w-2xl text-3xl font-display font-semibold text-ink">
-        Tools I reach for, and why
+      <Eyebrow tone="caramel">Technologies</Eyebrow>
+      <h2 className="mt-3 text-heading font-display text-ink">
+        Tools I reach for, <span className="font-extralight">and why</span>
       </h2>
       <p className="measure mt-6 text-muted">
         I pick boring, well-supported tools for the parts that need to be

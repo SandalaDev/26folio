@@ -1,5 +1,5 @@
 import { Section } from "@/components/site/section";
-import { Eyebrow } from "@/components/site/eyebrow";
+import { MeshBg } from "@/components/site/mesh-bg";
 import { WorkGrid } from "@/components/work/work-grid";
 import { CTACallout } from "@/components/site/cta-callout";
 
@@ -8,9 +8,11 @@ export const dynamic = "force-static";
 export default function WorkPage() {
   return (
     <>
-      <Section>
-        <Eyebrow>Work</Eyebrow>
-        <h1 className="mt-3 text-display font-display text-ink">
+      <Section className="relative overflow-hidden">
+        <MeshBg tone="rose" className="-z-10" />
+        {/* Single-weight display h1 (owner note 1 → EPIC-012 TASK-053) with
+            the preview's ink→soft gradient fill. Copy unchanged. */}
+        <h1 className="text-display font-display display-gradient">
           A few things I&apos;ve shipped
         </h1>
       </Section>
