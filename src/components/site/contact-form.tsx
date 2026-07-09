@@ -93,9 +93,11 @@ function ContactForm() {
         animate={shouldReduceMotion ? undefined : "show"}
         variants={shouldReduceMotion ? undefined : fadeUp}
         role="status"
-        className="border border-border bg-surface p-8"
+        /* success = quiet functional sage (§2, TASK-053): the affirmative
+           accent is the border + heading tint, kept quiet — no green shouting. */
+        className="border border-success/50 bg-surface p-8"
       >
-        <h2 className="font-display text-2xl font-semibold text-ink">
+        <h2 className="font-display text-2xl font-semibold text-success">
           Thanks for the message.
         </h2>
         <p className="mt-3 max-w-[52ch] text-muted">
@@ -154,7 +156,7 @@ function ContactForm() {
       {/* Optional project type */}
       <motion.div variants={shouldReduceMotion ? undefined : fadeUp} className="flex flex-col gap-2">
         <Label htmlFor="projectType">
-          Type of project <span className="text-muted">(optional)</span>
+          Type of project <span className="text-soft">(optional)</span>
         </Label>
         <select
           id="projectType"

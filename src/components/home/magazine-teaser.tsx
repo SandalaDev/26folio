@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Section } from "@/components/site/section";
 import { Eyebrow } from "@/components/site/eyebrow";
 import { Blob } from "@/components/site/blob";
+import { TiltCard } from "@/components/motion/tilt-card";
 import { ArticleCard } from "@/components/home/article-card";
 import { placeholderArticles, type Article } from "@/lib/magazine-placeholder";
 import { fadeUp, staggerContainer } from "@/lib/motion";
@@ -29,18 +30,18 @@ function MagazineTeaser({
       <Blob
         variant={2}
         fill="var(--color-rose)"
-        opacity={0.05}
-        blur={4}
+        opacity={0.06}
+        blur={12}
         className="-z-10 -right-24 top-8 w-96"
       />
       <Blob
         variant={4}
         fill="var(--color-caramel)"
-        opacity={0.05}
-        blur={6}
+        opacity={0.06}
+        blur={14}
         className="-z-10 -left-28 bottom-0 w-80"
       />
-      <Eyebrow>From Scrumtrulescent</Eyebrow>
+      <Eyebrow tone="caramel">From Scrumtrulescent</Eyebrow>
       <h2 className="mt-3 text-heading font-display text-ink">
         Recent <span className="font-extralight">from the magazine</span>
       </h2>
@@ -56,7 +57,10 @@ function MagazineTeaser({
             key={article.slug}
             variants={shouldReduceMotion ? undefined : fadeUp}
           >
-            <ArticleCard article={article} />
+            {/* Door-tilt at grid-card amplitude (TASK-054). */}
+            <TiltCard tiltY={6} className="h-full">
+              <ArticleCard article={article} />
+            </TiltCard>
           </motion.div>
         ))}
       </motion.div>

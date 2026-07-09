@@ -19,11 +19,14 @@ export default function ContactPage() {
         <Blob
           variant={2}
           fill="var(--color-rose)"
-          opacity={0.06}
-          blur={6}
+          opacity={0.07}
+          blur={14}
           className="-right-20 -top-12 w-[28rem]"
         />
-        <h1 className="text-display font-display text-ink">Let&apos;s talk.</h1>
+        {/* ink→soft gradient fill — the preview h1 signature (TASK-053). */}
+        <h1 className="text-display font-display display-gradient">
+          Let&apos;s talk.
+        </h1>
         <p className="measure mt-6 text-subhead text-muted">
           Tell me what you are trying to build and I will tell you straight
           whether I am the right fit. The more concrete the message, the faster

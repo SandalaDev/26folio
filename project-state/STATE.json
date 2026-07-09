@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-08T21:41:27.129Z",
+  "updated": "2026-07-09T14:37:48.558Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": "claude-code",
@@ -17,7 +17,7 @@
     "handoff_status": "none"
   },
   "completion": {
-    "summary": "EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping (chore/repo-cleanup-obsidian-and-state) merged to dev via PR #16: synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. feature/EPIC-014 then merged origin/dev to clear PR #17's conflict — the collision was only in the OS state files (STATE.json + generated CURRENT_STATE.md), both branches having edited the completion bookkeeping; resolved by keeping EPIC-014's superset and regenerating the view. No source/about-page conflicts. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35).",
+    "summary": "EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping (chore/repo-cleanup-obsidian-and-state) merged to dev via PR #16: synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. feature/EPIC-014 then merged origin/dev to clear PR #17's conflict — the collision was only in the OS state files (STATE.json + generated CURRENT_STATE.md), both branches having edited the completion bookkeeping; resolved by keeping EPIC-014's superset and regenerating the view. No source/about-page conflicts. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35). EPIC-012's PR #15 conflict then resolved by merging origin/dev into feature/EPIC-012: state files taken from dev's superset; about-intro h1 kept EPIC-014's copy with EPIC-012's display-gradient; timeline taken wholesale from EPIC-014 (EPIC-012's one-line token tweak on the obsolete placeholder was superseded by the three-epoch rewrite); sticky-card reconciled to EPIC-014's image-card structure wrapped in EPIC-012's TiltCard door-tilt, per-card sticky dropped since EPIC-014 relocated it to the column; hero/footer/verify-task/launch.json auto-merged.",
     "done": [
       "EPIC-001 complete — merged to dev",
       "EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live",
@@ -53,17 +53,17 @@
       "Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back",
       "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)",
       "Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.",
-      "Merge PR #15 (feature/EPIC-012 -> dev), pending owner review/merge.",
+      "Merge PR #15 (feature/EPIC-012 -> dev): conflict resolved (origin/dev merged into feature/EPIC-012), now mergeable — pending owner review/merge.",
       "No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.",
-      "OWNER REVIEW (EPIC-014): PR #17 open into dev, now conflict-free after merging origin/dev. Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right, then merge."
+      "OWNER REVIEW (EPIC-014): merged to dev (PR #17). Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right in a real browser."
     ],
     "blocked": "none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)"
   },
   "counts": {
-    "epics_total": 12,
+    "epics_total": 13,
     "tasks_open": 0,
     "tasks_in_progress": 0,
-    "tasks_done": 52,
+    "tasks_done": 58,
     "handoffs_pending": 0,
     "handoffs_consumed": 7
   },

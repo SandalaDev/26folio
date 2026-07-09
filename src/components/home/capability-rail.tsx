@@ -17,6 +17,7 @@ import {
 import { Section } from "@/components/site/section";
 import { Blob, type BlobVariant } from "@/components/site/blob";
 import { MeshBg } from "@/components/site/mesh-bg";
+import { TiltCard } from "@/components/motion/tilt-card";
 import { services, type ServiceIcon } from "@/lib/services";
 import { prefersReducedMotion } from "@/lib/motion";
 
@@ -118,38 +119,49 @@ function CapabilityRail() {
         {services.map((service, index) => {
           const IconGlyph = ICONS[service.icon];
           return (
-            <Link
+            /* Door-tilt (TASK-054): the TiltCard frame is the flex item AND
+               the GSAP emphasize target (data-rail-card) — it never rotates,
+               so the scrub's rect measurements stay stable while the inner
+               card swings. Hinge alternates with the card's wash tone. */
+            <TiltCard
               key={service.id}
-              href={`/capabilities#${service.id}`}
               data-rail-card
-              className="group relative flex min-h-[22rem] w-full shrink-0 flex-col justify-between overflow-hidden border border-border bg-surface p-8 will-change-transform md:min-h-[26rem] md:w-[min(78vw,44rem)] md:p-10"
+              hinge={index % 2 === 0 ? "left" : "right"}
+              className="w-full shrink-0 will-change-transform md:w-[min(78vw,44rem)]"
             >
-              <MeshBg tone={index % 2 === 0 ? "rose" : "warm"} />
-              <Blob
-                variant={((index % 4) + 1) as BlobVariant}
-                fill={index % 2 === 0 ? "var(--color-rose)" : "var(--color-caramel)"}
-                opacity={0.09}
-                className="-right-16 -top-16 w-56"
-              />
-              <IconGlyph
-                size={40}
-                weight="light"
-                className="relative text-rose"
-                aria-hidden="true"
-              />
-              <div className="relative mt-10">
-                <h3 className="font-display text-2xl font-semibold text-ink md:text-3xl">
-                  {service.title}
-                </h3>
-                <p className="measure mt-3 text-base text-muted md:text-lg">
-                  {service.description}
-                </p>
-                <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-rose transition-transform group-hover:translate-x-1">
-                  See how
-                  <ArrowRight size={16} weight="bold" aria-hidden="true" />
-                </span>
-              </div>
-            </Link>
+              <Link
+                href={`/capabilities#${service.id}`}
+                className="group relative flex h-full min-h-[22rem] flex-col justify-between overflow-hidden border border-border bg-surface p-8 transition-colors hover:border-border-2 md:min-h-[26rem] md:p-10"
+              >
+                <MeshBg tone={index % 2 === 0 ? "rose" : "warm"} />
+                <Blob
+                  variant={((index % 4) + 1) as BlobVariant}
+                  fill={index % 2 === 0 ? "var(--color-rose)" : "var(--color-caramel)"}
+                  opacity={0.09}
+                  className="-right-16 -top-16 w-56"
+                />
+                {/* Icon tone follows the card's wash (rose/caramel alternation,
+                    §2) — rose stops being the only accent voice on the rail. */}
+                <IconGlyph
+                  size={40}
+                  weight="light"
+                  className={`relative ${index % 2 === 0 ? "text-rose" : "text-caramel"}`}
+                  aria-hidden="true"
+                />
+                <div className="relative mt-10">
+                  <h3 className="font-display text-2xl font-semibold text-ink md:text-3xl">
+                    {service.title}
+                  </h3>
+                  <p className="measure mt-3 text-base text-muted md:text-lg">
+                    {service.description}
+                  </p>
+                  <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-rose transition-transform group-hover:translate-x-1">
+                    See how
+                    <ArrowRight size={16} weight="bold" aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
+            </TiltCard>
           );
         })}
       </div>

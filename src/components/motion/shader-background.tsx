@@ -40,8 +40,11 @@ export function ShaderBackground({ className = "" }: ShaderBackgroundProps) {
         colors={WARM_COLORS}
         distortion={0.6}
         swirl={0.4}
-        grainMixer={0}
-        grainOverlay={0}
+        /* EPIC-012 TASK-050: low grain dithers the WebGL field — long dark
+           ramps band on 8-bit displays without it (§3 smoothness). Kept low
+           so it reads as texture, not noise. */
+        grainMixer={0.12}
+        grainOverlay={0.06}
         speed={0.3}
         offsetX={0.05}
       />

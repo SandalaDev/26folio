@@ -7,7 +7,7 @@ import { Eyebrow } from "@/components/site/eyebrow";
 function MagazineSection() {
   return (
     <Section>
-      <Eyebrow>Scrumtrulescent Magazine</Eyebrow>
+      <Eyebrow tone="caramel">Scrumtrulescent Magazine</Eyebrow>
       <h2 className="mt-3 text-heading font-display text-ink">
         A side project <span className="font-extralight">that earns its keep</span>
       </h2>

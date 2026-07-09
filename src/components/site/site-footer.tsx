@@ -54,12 +54,14 @@ function SiteFooter() {
           </Link>
         </div>
 
+        {/* soft = tertiary text (§2): footer links are the site's third text
+            level (owner note 3's pink family), hover still rose. */}
         <nav className="flex flex-col gap-2">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-ink/80 transition-colors hover:text-rose"
+              className="text-sm text-soft transition-colors hover:text-rose"
             >
               {link.label}
             </Link>
@@ -73,7 +75,7 @@ function SiteFooter() {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-ink/80 transition-colors hover:text-rose"
+              className="text-sm text-soft transition-colors hover:text-rose"
             >
               {link.label}
             </Link>

@@ -38,13 +38,18 @@ function Hero() {
 
   return (
     <section className="relative flex min-h-[90dvh] items-center overflow-hidden px-5 py-16 md:px-10 lg:px-16 xl:px-24">
-      {/* Always-present static warm gradient: reduced-motion / touch / SSR base. */}
+      {/* Always-present static warm gradient: reduced-motion / touch / SSR base.
+          EPIC-012 TASK-050: low-alpha multi-stop washes (§3 — "never a tight
+          two-stop ramp"). Full-strength accent-to-transparent ramps banded
+          visibly on the dark base; alphas now cap near the preview's ~10-14%
+          ceiling with an intermediate stop so the falloff is long and soft.
+          Same composition: caramel upper-left, rose lower-right, espresso base. */}
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10"
         style={{
           background:
-            "radial-gradient(120% 100% at 15% 10%, var(--color-caramel) 0%, transparent 55%), radial-gradient(120% 120% at 85% 90%, var(--color-rose) 0%, transparent 60%), var(--color-background)",
+            "radial-gradient(120% 100% at 15% 10%, color-mix(in srgb, var(--color-caramel) 14%, transparent) 0%, color-mix(in srgb, var(--color-caramel) 6%, transparent) 32%, transparent 62%), radial-gradient(120% 120% at 85% 90%, color-mix(in srgb, var(--color-rose) 12%, transparent) 0%, color-mix(in srgb, var(--color-rose) 5%, transparent) 34%, transparent 66%), var(--color-background)",
         }}
       />
       {/* Additive WebGL shader: only when motion is allowed and pointer is fine. */}
@@ -57,9 +62,10 @@ function Hero() {
         className="flex w-full flex-col gap-8 lg:gap-10"
       >
         {/* h1 sets the column width; everything below aligns to its ends. */}
+        {/* ink→soft gradient fill — the preview h1 signature (TASK-053). */}
         <motion.h1
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="text-display font-display text-ink"
+          className="text-display font-display display-gradient"
         >
           I build the software your business actually needs.
         </motion.h1>
@@ -90,7 +96,7 @@ function Hero() {
               variant={3}
               fill="var(--color-caramel)"
               opacity={0.16}
-              blur={2}
+              blur={8}
               className="-left-6 -top-8 w-[130%]"
             />
             {/* Portrait aspect (taller than square) cropped to the face. */}

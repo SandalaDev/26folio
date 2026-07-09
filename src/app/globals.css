@@ -165,6 +165,17 @@
   max-width: 70ch;
 }
 
+/* Display-heading gradient fill (EPIC-012 TASK-053, owner open-question #2):
+   the preview h1's ink→soft vertical fade. Both stops are AAA on background,
+   so the heading stays AA everywhere. One class — trivially removable if the
+   owner passes on the signature. */
+@utility display-gradient {
+  background: linear-gradient(180deg, var(--color-ink), var(--color-soft));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* ============================================================================
    Blob motif utilities (§Blob, EPIC-010). Masks pull from the --blob-* tokens;
    the morph slides between them slowly. Decorative only — every consumer is

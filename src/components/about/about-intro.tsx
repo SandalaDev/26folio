@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { Section } from "@/components/site/section";
 import { Blob } from "@/components/site/blob";
-import { FlashlightCursor } from "@/components/site/flashlight-cursor";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
@@ -19,13 +18,13 @@ function AboutIntro() {
 
   return (
     <Section className="relative overflow-hidden">
-      <FlashlightCursor />
+      {/* Flashlight is global chrome since EPIC-012 TASK-049 (site layout). */}
       {/* Blob accent behind the flashlight area (§Blob motif). */}
       <Blob
         variant={2}
         fill="var(--color-rose)"
-        opacity={0.06}
-        blur={6}
+        opacity={0.07}
+        blur={14}
         className="-right-20 -top-12 w-[28rem]"
       />
       <motion.div
@@ -34,9 +33,12 @@ function AboutIntro() {
         variants={shouldReduceMotion ? undefined : staggerContainer}
         className="relative z-10 flex flex-col gap-6"
       >
+        {/* Single-weight display h1 (owner note 1 → EPIC-012 TASK-053) with
+            the preview's ink→soft gradient fill. Copy unchanged. */}
+        {/* EPIC-014 copy with EPIC-012 TASK-053's ink→soft display gradient. */}
         <motion.h1
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="text-display font-display text-ink"
+          className="text-display font-display display-gradient"
         >
           Before I built software, I built networks.
         </motion.h1>

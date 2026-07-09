@@ -44,8 +44,8 @@ function CTACallout({
       <Blob
         variant={1}
         fill="var(--color-rose)"
-        opacity={0.07}
-        blur={8}
+        opacity={0.08}
+        blur={16}
         className="-z-10 left-1/2 top-1/2 w-[36rem] -translate-x-1/2 -translate-y-1/2"
       />
       <motion.div
