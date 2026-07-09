@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -41,18 +42,15 @@ function SiteFooter() {
       {/* Irregular masonry texture - the angular counterpart to the blob
           motif, whisper-quiet behind the footer columns. */}
       <MasonryPattern className="-z-10 inset-0 h-full w-full" opacity={0.16} />
-      <Section className="grid gap-10 py-12 md:grid-cols-3 md:py-16">
-        <div className="flex flex-col gap-2">
-          <span className="font-display text-lg font-bold text-muted">
-            Sandala
-          </span>
-          <Link
-            href="https://scrumtrulescent.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="eyebrow text-muted transition-colors hover:text-rose"
-          >
-            Scrumtrulescent Magazine
+      <Section className="grid gap-10 py-12 md:grid-cols-4 md:py-16">
+        <div>
+          <Link href="/" aria-label="Sandala" className="inline-block">
+            <Image
+              src="/images/logo/logo_combo-muted.svg"
+              alt=""
+              width={72}
+              height={72}
+            />
           </Link>
         </div>
 
@@ -83,6 +81,17 @@ function SiteFooter() {
             </Link>
           ))}
         </nav>
+
+        <div className="md:text-right">
+          <Link
+            href="https://scrumtrulescent.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="eyebrow text-muted transition-colors hover:text-rose"
+          >
+            Scrumtrulescent Magazine
+          </Link>
+        </div>
       </Section>
     </motion.footer>
   );

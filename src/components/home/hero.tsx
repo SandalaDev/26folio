@@ -32,7 +32,7 @@ function Hero() {
     }
     setCanAnimate(
       typeof window !== "undefined" &&
-        window.matchMedia("(pointer: fine)").matches,
+      window.matchMedia("(pointer: fine)").matches,
     );
   }, [shouldReduceMotion]);
 
@@ -102,7 +102,7 @@ function Hero() {
             {/* Portrait aspect (taller than square) cropped to the face. */}
             <div className="blob-mask-1 blob-morph relative aspect-[4/5] overflow-hidden bg-surface-2">
               <Image
-                src="/images/portrait.png"
+                src="/images/abe.png"
                 alt="Abe Sandala"
                 fill
                 sizes="(min-width: 1024px) 16rem, (min-width: 640px) 12rem, 10rem"

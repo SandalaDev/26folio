@@ -36,3 +36,10 @@ planning/content/.slop/
 
 # obsidian volatile UI state (per-machine; keeps re-appearing as modified)
 .obsidian/workspace.json
+
+# obsidian vault clutter — personal notes/screenshots, not project artifacts
+/Pasted image*.png
+/obsidian images/
+/ui plans/
+/meeting on techlife.md
+/00-inbox/
