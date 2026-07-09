@@ -1,14 +1,14 @@
 <!-- generated — do not edit; source: project-state/STATE.json -->
 ---
-updated: 2026-07-06T22:07:16.080Z
+updated: 2026-07-08T21:41:27.129Z
 updated_by: claude-code
 ---
 # Current State
 ## Active work
-Epic: EPIC-014   Slice: TBD   Task: TASK-XXX
-Branch: chore/repo-cleanup-obsidian-and-state   Actor: claude-code / claude-sonnet-5 (executor)
+Epic: EPIC-014   Slice: EPIC-014-SLICE-2   Task: TASK-060
+Branch: feature/EPIC-014   Actor: claude-code / claude-sonnet-5 (executor)
 ## Completion status
-Repo housekeeping pass (2026-07-07): local dev was stale (5 commits behind origin/dev, missing the already-merged EPIC-013 PR #14) — fast-forwarded. feature/EPIC-012 (design-system fidelity, all six tasks TASK-049..054 done) had never had a PR opened; pushed and opened PR #15 into dev, still pending owner review/merge. feature/EPIC-008 (old zod/Resend contact form, TASK-034) was superseded by EPIC-011 TASK-048's real contact page and was never merged or pushed to origin — deleted (local only, no remote copy existed). feature/EPIC-013 was already merged (PR #14) so its now-stale local branch was deleted. This chore branch also untracked Obsidian vault clutter (root Pasted-image screenshots, obsidian images/, ui plans/, meeting on techlife.md) via git rm --cached + .gitignore entries — files remain on disk, just stop polluting the repo. Next: EPIC-014 (about page content) is being scoped from a pasted content blueprint (three-epoch timeline, Who-I-Am/Way-I-Am modals, dual CTA band) — not yet branched as of this commit.
+EPIC-013 merged to dev (PR #14). EPIC-012 (design-system fidelity, all six tasks done) pushed and PR #15 opened into dev, pending owner review/merge. Repo housekeeping (chore/repo-cleanup-obsidian-and-state) merged to dev via PR #16: synced stale local dev, deleted feature/EPIC-008 (superseded, never merged) and merged local feature/EPIC-013, untracked obsidian vault clutter. feature/EPIC-014 then merged origin/dev to clear PR #17's conflict — the collision was only in the OS state files (STATE.json + generated CURRENT_STATE.md), both branches having edited the completion bookkeeping; resolved by keeping EPIC-014's superset and regenerating the view. No source/about-page conflicts. EPIC-014 (about page content) DONE on feature/EPIC-014: real biography/timeline/interests/closing-CTA content from the owner's pasted blueprint (2026-07-06), replacing every structural placeholder EPIC-004 shipped with. TASK-056 real hybrid intro (Variation C); TASK-057 three-epoch timeline (Foundation/Convergence/Awakening) with sticky epoch headers + a visually distinct final 'Now' card, plus the about-page grid reordered (timeline left, cards right); TASK-058 real six-section 'Who I Am' bio + card reorder (Who I Am first); TASK-059 'The Way I Am' chip-and-reveal restructure (6 real topics, no placeholder images); TASK-060 new DualCtaBand (client path -> /contact, teams path -> /work, no CV asset exists). All five tasks verified in-browser (scrolled full page, opened both modals, clicked interest chips, confirmed sticky headers and the closing band); lint/typecheck/build green; stop-slop scores 42-50/50 (threshold 35).
 ## What is done
 - EPIC-001 complete — merged to dev
 - EPIC-002 complete — merged to dev (PR #4); design tokens/typography/motion/base primitives live
@@ -33,20 +33,20 @@ Repo housekeeping pass (2026-07-07): local dev was stale (5 commits behind origi
 - EPIC-011 TASK-046: CTA hover unified - CTACallout uses MagneticButton site-wide; MagneticButton gained type/disabled
 - EPIC-011 TASK-047: featured-work card hover retuned to door-opening tilt (rotateY hinge) + synchronized spring zoom
 - EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside
-- EPIC-012 (feature/EPIC-012): TASK-049 global flashlight, TASK-050 smooth ramps + shader grain, TASK-051 SVG-space blob blur, TASK-052 palette redistribution (rose 42->27), TASK-053 single-weight h1s + display-gradient + sage success, TASK-054 TiltCard door-tilt on all cards — all six done, PR #15 opened into dev, pending owner review/merge
-- EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter + hero portrait + footer social-link restore
-- Repo housekeeping: fast-forwarded stale local dev (was 5 commits behind origin/dev); deleted feature/EPIC-008 (superseded contact-form work, never merged, local-only); deleted merged local feature/EPIC-013; untracked Obsidian vault clutter (root screenshots, obsidian images/, ui plans/, meeting notes) via git rm --cached + .gitignore
+- EPIC-012 (feature/EPIC-012): all six tasks done, PR #15 opened into dev, pending owner review/merge
+- EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter
+- Repo housekeeping merged to dev (PR #16, chore/repo-cleanup-obsidian-and-state): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked
+- EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder
 ## What remains
 - OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.
 - Owner-confirmed follow-up still outstanding: EPIC-005's full real project list; EPIC-006's TechGrid is a real-but-partial stack list
 - Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back
 - EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)
-- Owner: supply a real contact email for the contact details block (the spine does not specify one; it currently uses socials + a neutral line). Real Resend delivery (RESEND_API_KEY + wiring /api/contact past its 501 stub) is a separate epic per the no-stored-submissions charter.
-- Merge PR #15 (feature/EPIC-012 -> dev), pending owner review/merge — reviews waived to human (solo); tasks carry review_waiver.
-- OWNER REVIEW (EPIC-013, merged): confirm the muted combo-mark logo reads right in a real browser (header/footer) — a real eyeballed pass, not just DOM/network checks.
-- EPIC-014 (about page content) being scoped now from a pasted content blueprint: three-epoch timeline, Who-I-Am/Way-I-Am modals, dual CTA band — see backlog/epics/EPIC-014-about-page-content.md once written.
-- Merge this chore branch (chore/repo-cleanup-obsidian-and-state) into dev once pushed and PR'd.
+- Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.
+- Merge PR #15 (feature/EPIC-012 -> dev), pending owner review/merge.
+- No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.
+- OWNER REVIEW (EPIC-014): PR #17 open into dev, now conflict-free after merging origin/dev. Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right, then merge.
 ## Blocked
-none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email delivery deferred to a Resend epic.)
+none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)
 ## Assigned handoffs
 none

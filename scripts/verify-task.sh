@@ -38,14 +38,25 @@ bash scripts/skills.sh validate || FAIL=1
 section "scope (files_allowed)"
 CHANGED="$(git diff --name-only "$BASE"...HEAD 2>/dev/null || git diff --name-only || true)"
 if have_node && [[ -n "$CHANGED" ]]; then
+  # Collect the task files in play: the current task plus every task referenced
+  # in the branch's commit messages. `|| true` guards each step so a no-match
+  # grep or a trailing failed test can't trip `set -euo pipefail` and abort the
+  # gate before the scope check even runs.
   branch_task_files() {
     printf '%s\n' "$TASK"
-    git log --format=%s "$BASE"..HEAD 2>/dev/null | grep -oE 'TASK-[0-9]+' | sort -u | while IFS= read -r id; do
-      for d in backlog/tasks backlog/done; do [[ -f "$d/$id.md" ]] && echo "$d/$id.md"; done
-    done
+    local ids id d
+    ids="$(git log --format=%s "$BASE"..HEAD 2>/dev/null | grep -oE 'TASK-[0-9]+' | sort -u || true)"
+    while IFS= read -r id; do
+      [[ -z "$id" ]] && continue
+      for d in backlog/tasks backlog/done; do
+        [[ -f "$d/$id.md" ]] && echo "$d/$id.md"
+      done
+    done <<< "$ids"
+    return 0
   }
   ALLOWED="$(branch_task_files | sort -u | while IFS= read -r tf; do
-    node scripts/read-fm.mjs "$tf" files_allowed --list 2>/dev/null; done | sort -u)"
+    [[ -n "$tf" ]] && node scripts/read-fm.mjs "$tf" files_allowed --list 2>/dev/null
+  done | sort -u || true)"
   # OS-managed paths are written by os.sh/render/create-handoff, not by task
   # implementation, so they are never listed in files_allowed. Exclude them so
   # the scope gate judges real code/content, not the OS's own bookkeeping.
@@ -55,7 +66,7 @@ if have_node && [[ -n "$CHANGED" ]]; then
       [[ -z "$f" ]] && continue
       [[ "$f" =~ $OS_MANAGED ]] && continue
       ok=0
-      while IFS= read -r a; do [[ -n "$a" && "$f" == $a* ]] && ok=1; done <<< "$ALLOWED"
+      while IFS= read -r a; do [[ -n "$a" && "$f" == $a* ]] && ok=1; done <<< "$ALLOWED" || true
       if [[ "$ok" -eq 0 ]]; then echo "  SCOPE ESCAPE: $f not in files_allowed"; FAIL=1; fi
     done <<< "$CHANGED"
     [[ "$FAIL" -eq 0 ]] && echo "  all changed files are allowed"
