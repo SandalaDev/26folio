@@ -40,47 +40,13 @@ function AboutIntro() {
           variants={shouldReduceMotion ? undefined : fadeUp}
           className="text-display font-display display-gradient"
         >
-          Before I built software, I built networks.
+          Engineer. Designer. Builder.
         </motion.h1>
         <motion.p
           variants={shouldReduceMotion ? undefined : fadeUp}
           className="measure text-subhead text-muted"
         >
-          The physical kind. Cell towers, fiber backhaul, solar power systems
-          in places the grid doesn&apos;t reach. I worked my way up from
-          hands-on field artisan to Implementation Manager at Huawei,
-          delivering a national rollout of more than 1,500 towers. That
-          career taught me what redundancy, quality assurance, and
-          mission-critical actually mean: not slide-deck words, but things
-          you answer for.
-        </motion.p>
-        <motion.p
-          variants={shouldReduceMotion ? undefined : fadeUp}
-          className="measure text-subhead text-muted"
-        >
-          Running alongside that, quietly, was a second life: design.
-          I&apos;ve been making things look right since Macromedia Fireworks
-          in 2002, building sites and brands as a long-running side practice.
-          When every no-code tool eventually hit its ceiling, I learned to
-          code, and found the one craft that uses everything I have: the
-          systems thinking, the design eye, the stubborn attention to what
-          happens when things break.
-        </motion.p>
-        <motion.p
-          variants={shouldReduceMotion ? undefined : fadeUp}
-          className="measure text-subhead text-muted"
-        >
-          Today I operate as a one-person product team. Strategy, business
-          logic, UI/UX, architecture, development, deployment: one
-          accountable human, end to end, with no handoffs to lose your idea
-          in.
-        </motion.p>
-        <motion.p
-          variants={shouldReduceMotion ? undefined : fadeUp}
-          className="measure text-subhead text-soft"
-        >
-          The short version of how I got here is on the left. The longer,
-          more human version is on the right.
+          I&apos;m Abraham Sandala, a self-taught software engineer and designer based in Lusaka, Zambia. I build custom web systems for businesses that have outgrown templates, subscriptions and one-size-fits-all software. My goal isn&apos;t simply to deliver an application, but to create software that reflects how a business actually operates, remains understandable years later, and can be owned, extended and maintained without being locked into someone else&apos;s platform.
         </motion.p>
       </motion.div>
     </Section>

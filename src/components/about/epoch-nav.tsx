@@ -19,8 +19,8 @@ const EPOCHS = [
     numeral: "I",
     title: "Foundation",
     tagline: "Seeds, planted early",
-    activeBox: "rotate-45 border-caramel bg-caramel text-background",
-    activeTagline: "text-caramel",
+    activeBox: "rotate-45 border-amber bg-amber text-background",
+    activeTagline: "text-amber",
   },
   {
     id: "convergence",

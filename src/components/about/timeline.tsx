@@ -3,146 +3,209 @@
 import * as React from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, useReducedMotion } from "framer-motion";
+import { Desktop, Globe, PenNib, Sparkle } from "@phosphor-icons/react";
 
 import { prefersReducedMotion } from "@/lib/motion";
+import { EpochIconCycler, IconGlyph, type EpochTool } from "@/components/about/epoch-icon-cycler";
 
 /**
- * Timeline — three-epoch career narrative (12-ui-element-map.md §3 About #2b,
- * EPIC-014). Owner follow-up round: epochs are color-coded with the three
- * brand accents (Foundation = caramel for the early soil, Convergence = peach
- * because the design system defines peach as the rose↔caramel bridge — the
- * two-crafts-merging movement, Awakening = rose, the primary accent), beats
- * are cards hanging off a rail whose colored fill draws in with scroll
- * (GSAP scrub), and each card enters with a blur-dissolve rise. Every card
- * stays in normal document flow so reduced-motion / pre-hydration renders the
- * full content immediately; only the entrance choreography is gated.
- * `data-epoch` attributes drive the EpochNav scroll indicator.
+ * Timeline: three-epoch career narrative (12-ui-element-map.md §3 About #2b).
+ * EPIC-015 redesign: the timeline mirrors the biography's actual slicing
+ * instead of one card per employer. Eight beats across three epochs, each beat
+ * carrying its period, its primary and parallel focus (Convergence keeps the
+ * explicit two-track telecom/design split because living two careers at once
+ * IS that epoch's point), a one-line takeaway saying why the period matters,
+ * and a "What stayed with me" list of capabilities kept (owner review round 2:
+ * the Technical/Human split was false categorization, and chips should read
+ * as gains, not a tool inventory). One shared hairline spans all three epochs.
+ * Each epoch's sticky header card names the epoch, its circa range, and cycles
+ * through the era's most significant tools one icon at a time. Epoch accents:
+ * Foundation amber, Convergence peach, Awakening rose; amber (owner tweak,
+ * 2026-07-10) because caramel sat too close to peach to tell the first two
+ * epochs apart. Every card stays in normal document flow so reduced-motion /
+ * pre-hydration renders full content immediately; `data-epoch` attributes
+ * drive the EpochNav scroll indicator.
  */
 
 const ACCENTS = {
-  caramel: {
-    eyebrow: "text-caramel",
-    edge: "bg-caramel/70",
-    marker: "bg-caramel",
-    rail: "bg-caramel/50",
-    note: "text-caramel",
+  amber: {
+    eyebrow: "text-amber",
+    edge: "bg-amber/70",
+    marker: "bg-amber",
+    rail: "bg-amber/50",
+    icon: "text-amber",
+    humanPill: "border-amber/40 text-amber",
+    dualityBorder: "border-amber/50",
   },
   peach: {
     eyebrow: "text-peach",
     edge: "bg-peach/70",
     marker: "bg-peach",
     rail: "bg-peach/50",
-    note: "text-peach",
+    icon: "text-peach",
+    humanPill: "border-peach/40 text-peach",
+    dualityBorder: "border-peach/50",
   },
   rose: {
     eyebrow: "text-rose",
     edge: "bg-rose/70",
     marker: "bg-rose",
     rail: "bg-rose/50",
-    note: "text-rose",
+    icon: "text-rose",
+    humanPill: "border-rose/40 text-rose",
+    dualityBorder: "border-rose/50",
   },
 } as const;
 
 type Accent = (typeof ACCENTS)[keyof typeof ACCENTS];
 
-interface FoundationCard {
-  marker: string;
-  title: string;
-  description: string;
-  skills: string[];
-  seed: string;
+interface ChainStep {
+  name: string;
+  /** A tool that hit its ceiling and was left behind. */
+  dead?: boolean;
+  /** Where the chain resolved. */
+  now?: boolean;
 }
 
-interface ConvergenceCard {
-  marker: string;
-  primary: string;
-  parallel: string;
-  converging: string;
-}
-
-interface AwakeningCard {
-  marker: string;
-  milestone: string;
-  description: string;
-  pointsTo: string;
+interface Beat {
+  period: string;
+  /** Primary focus. Duality beats use the two-track fields instead. */
+  title?: string;
+  /** Parallel focus, one line, for single-track beats. */
+  meanwhile?: string;
+  /** Convergence duality: the day-job track. */
+  telecom?: string;
+  /** Convergence duality: the nights-and-weekends track. */
+  design?: string;
+  /** Why this period matters: one accent-colored sentence per card. */
+  takeaway: string;
+  /** What stayed: capabilities gained, not a tool inventory. */
+  kept: string[];
+  chain?: ChainStep[];
   current?: boolean;
 }
 
-const FOUNDATION_CARDS: FoundationCard[] = [
+const ICON = { size: 20, weight: "regular" } as const;
+
+/**
+ * Most significant tools per epoch, shown one at a time in the epoch header
+ * card. Restricted to software/design tooling that traces a direct line to
+ * today's skillset (owner note, 2026-07-10): telecom hardware and domain
+ * knowledge (GSM, microwave, 48V DC, solar) lived in that era but isn't
+ * tooling he still reaches for, so it stays out of the cycler (the epoch
+ * narrative still covers that era's domain work). Owner-supplied brand marks
+ * from `public/icons/` where they exist; Phosphor stand-ins where they don't
+ * yet (tracked as a follow-up list in EPIC-015).
+ */
+const FOUNDATION_TOOLS: EpochTool[] = [
+  { label: "Windows & PC hardware", icon: <Desktop {...ICON} /> },
+  { label: "Fireworks MX", icon: <PenNib {...ICON} /> },
+];
+
+const CONVERGENCE_TOOLS: EpochTool[] = [
+  { label: "Photoshop", icon: <IconGlyph src="/icons/photoshop.svg" /> },
+  { label: "Illustrator", icon: <IconGlyph src="/icons/illustrator.svg" /> },
+  { label: "InDesign", icon: <IconGlyph src="/icons/indesign.svg" /> },
+  { label: "WordPress & Elementor", icon: <Globe {...ICON} /> },
+];
+
+const AWAKENING_TOOLS: EpochTool[] = [
+  { label: "JavaScript", icon: <IconGlyph src="/icons/js.svg" /> },
+  { label: "TypeScript", icon: <IconGlyph src="/icons/ts.svg" /> },
+  { label: "React", icon: <IconGlyph src="/icons/react.svg" /> },
+  { label: "Next.js", icon: <IconGlyph src="/icons/next.svg" /> },
+  { label: "Node.js", icon: <IconGlyph src="/icons/node.svg" /> },
+  { label: "Payload CMS", icon: <IconGlyph src="/icons/payload.svg" /> },
+  { label: "PostgreSQL", icon: <IconGlyph src="/icons/postgres.svg" /> },
+  { label: "AI-assisted development", icon: <Sparkle {...ICON} /> },
+];
+
+const FOUNDATION_BEATS: Beat[] = [
   {
-    marker: "2002",
-    title: "First design tool",
-    description: "A teenager discovers Macromedia Fireworks and digital craft.",
-    skills: ["Visual composition", "Layout", "Obsessive pixel care"],
-    seed: "The design eye.",
+    period: "2002 - 2007",
+    title: "Student and explorer",
+    meanwhile: "Creative experimentation in every spare hour.",
+    takeaway: "Creative experimentation became my default way of learning.",
+    kept: ["Self-directed learning", "Visual composition", "Comfort with complex software"],
   },
   {
-    marker: "Telecom entry",
-    title: "Hands-on artisan",
-    description: "Enters the industry with tools, not titles.",
-    skills: ["Electrical and RF fundamentals", "Field discipline"],
-    seed: "Respect for physical systems.",
-  },
-  {
-    marker: "Field Operations Engineer",
-    title: "RAN, microwave, and fiber",
-    description:
-      "Radio access networks, microwave links, fiber backhaul, hybrid DC, solar, and generator power.",
-    skills: ["Fault diagnosis under pressure", "Redundancy thinking"],
-    seed: "Uptime instincts: the knowledge of what failure actually costs.",
+    period: "2007 - 2013",
+    title: "Assistant technician to technician, Celtel (Airtel)",
+    meanwhile:
+      "Around-the-clock fault response, learned from engineers generous with their knowledge.",
+    takeaway: "Fault response taught me to think in systems instead of components.",
+    kept: [
+      "Systems thinking",
+      "Infrastructure engineering",
+      "Diagnostic thinking",
+      "Learning from mentors",
+    ],
   },
 ];
 
-const CONVERGENCE_CARDS: ConvergenceCard[] = [
+const CONVERGENCE_BEATS: Beat[] = [
   {
-    marker: "Early years",
-    primary: "QA Engineer, largest telecom infrastructure provider in the country.",
-    parallel: "Graphic design side hustle: brands, print, client work.",
-    converging: "Quality as discipline meets craft as instinct.",
+    period: "2013 - 2017",
+    telecom: "QA Engineer at IHS Towers, learning solar directly from the deployment teams.",
+    design: "Founder of Dauntless Energy, the venture that forced me to become a designer.",
+    takeaway: "Running my own venture turned design from a hobby into a craft I could sell.",
+    kept: ["Typography", "Layout & hierarchy", "Identity design", "Design as a business tool"],
   },
   {
-    marker: "Scale",
-    primary: "Huawei QA Engineer, 1,000-tower turnkey off-grid solar project (state-backed).",
-    parallel: "The website-builder years: Adobe Muse, Elementor, Webflow client sites.",
-    converging: "Shipping at national scale by day, hitting no-code ceilings by night.",
+    period: "2014 - 2021",
+    telecom: "Telecom engineer by day, the whole stretch.",
+    design:
+      "Freelance brand and web designer: brands, company profiles and websites for clients across the country.",
+    takeaway:
+      "Webflow showed me the code underneath and shattered the belief that programming was out of reach.",
+    kept: ["UX/UI design", "Client discovery", "CMS thinking"],
+    chain: [
+      { name: "Adobe Muse", dead: true },
+      { name: "WordPress", dead: true },
+      { name: "Webflow" },
+      { name: "Elementor", dead: true },
+      { name: "code itself", now: true },
+    ],
   },
   {
-    marker: "Promotion",
-    primary: "Implementation Manager, delivers the remaining 500+ towers.",
-    parallel: "Every builder tool eventually says no.",
-    converging:
-      "Leading mission-critical delivery while realizing the bottleneck in the creative work was never the ideas. It was the tools.",
+    period: "2017 - 2019",
+    telecom:
+      "QA Engineer to Project Implementation Manager at Huawei: solar on more than 1,500 Zamtel towers.",
+    design: "Freelancing on hiatus while the rollout took me across the country.",
+    takeaway: "Delivering 1,500 towers taught me what quality means at national scale.",
+    kept: ["Project management", "QA at scale", "Multidisciplinary teams"],
+  },
+  {
+    period: "2019 - 2024",
+    telecom: "Field operations engineer, mobile network maintenance.",
+    design: "Freelance web designer again, meeting the same WordPress problems with new eyes.",
+    takeaway: "The same ceilings, met one more time, settled it: I would learn to code.",
+    kept: ["Modern front-end instincts", "The limits of no-code"],
   },
 ];
 
-const AWAKENING_CARDS: AwakeningCard[] = [
+const AWAKENING_BEATS: Beat[] = [
   {
-    marker: "2021",
-    milestone: "Self-taught, from scratch",
-    description:
-      "No bootcamp cohort, no safety net: the decision to stop being limited by other people's tools.",
-    pointsTo: "Everything after.",
+    period: "2021 - Present",
+    title: "Software engineer, self-taught",
+    meanwhile: "Full-stack JavaScript studied between around-the-clock telecom shifts.",
+    takeaway:
+      "Payload CMS answered a question I'd carried since Dauntless: how to build complex software without taking ownership away from the client.",
+    kept: [
+      "JavaScript & TypeScript",
+      "React & Next.js",
+      "Database design",
+      "Software architecture",
+    ],
   },
   {
-    marker: "The vindication",
-    milestone: "Payload CMS",
-    description:
-      "The framework that proves the thesis: custom, content-first applications, the kind of software builders could never quite deliver.",
-    pointsTo: "Code as the medium, not the obstacle.",
-  },
-  {
-    marker: "Professional practice",
-    milestone: "Full product ownership",
-    description:
-      "From full-stack work to full product ownership: strategy, business logic, UI/UX, architecture, deployment, delivered end to end for real clients.",
-    pointsTo: "The one-person product team.",
-  },
-  {
-    marker: "Now",
-    milestone: "Web Systems Developer",
-    description:
-      "Building AI-augmented, agentic development systems; studying what comes after SaaS and which business model replaces it.",
-    pointsTo: "Open. Deliberately.",
+    period: "Now",
+    title: "Founder, Cassandra OS",
+    meanwhile: "Writing at Scrumtrulescent when I want to think out loud.",
+    takeaway:
+      "Cassandra OS is the first project where I put my own opinions about where software is going into something real.",
+    kept: ["AI integration", "Agentic software", "Product strategy", "Software ownership"],
     current: true,
   },
 ];
@@ -150,26 +213,32 @@ const AWAKENING_CARDS: AwakeningCard[] = [
 function EpochHeader({
   numeral,
   title,
-  tagline,
+  circa,
   epigraph,
+  tools,
   accent,
 }: {
   numeral: string;
   title: string;
-  tagline: string;
+  circa: string;
   epigraph: string;
+  tools: EpochTool[];
   accent: Accent;
 }) {
   return (
     <div
       data-epoch-header
-      className="sticky top-24 z-10 mb-8 bg-background/85 py-3 backdrop-blur-sm"
+      className="border-border bg-background/90 sticky top-24 z-10 mb-8 border p-6 backdrop-blur-sm"
     >
-      <span className={`eyebrow ${accent.eyebrow}`}>
-        Epoch {numeral} — {title}
-      </span>
-      <h3 className="mt-1 font-display text-2xl font-semibold text-ink">{tagline}</h3>
-      <p className="mt-2 text-sm text-muted italic">{epigraph}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <span className={`eyebrow ${accent.eyebrow}`}>Epoch {numeral}</span>
+          <h3 className="font-display text-ink mt-1 text-3xl font-bold">{title}</h3>
+          <p className="text-soft mt-1 text-sm font-light tracking-wide">{circa}</p>
+        </div>
+        <EpochIconCycler tools={tools} className={`mt-1 ${accent.icon}`} />
+      </div>
+      <p className="text-muted mt-3 text-sm italic">{epigraph}</p>
     </div>
   );
 }
@@ -179,24 +248,141 @@ function RailMarker({ accent, pulse = false }: { accent: Accent; pulse?: boolean
   return (
     <span
       aria-hidden="true"
-      className={`absolute -left-7 top-8 size-2 -translate-x-1/2 rotate-45 ${accent.marker} ${
+      className={`absolute top-8 -left-7 size-2 -translate-x-1/2 rotate-45 ${accent.marker} ${
         pulse ? "animate-pulse" : ""
       }`}
     />
   );
 }
 
-/** Rail behind an epoch's cards: static hairline + color fill drawn on scroll. */
+/**
+ * Per-epoch color fill drawn over the shared continuous hairline as the
+ * reader scrolls through that epoch. The base hairline itself lives once on
+ * the wrapper around all three epochs so the line never breaks between them.
+ */
 function EpochRail({ accent }: { accent: Accent }) {
   return (
-    <>
-      <span aria-hidden="true" className="absolute bottom-2 left-0 top-2 w-px bg-border" />
-      <span
-        aria-hidden="true"
-        data-rail-fill
-        className={`absolute bottom-2 left-0 top-2 w-px origin-top ${accent.rail}`}
-      />
-    </>
+    <span
+      aria-hidden="true"
+      data-rail-fill
+      className={`absolute top-2 bottom-2 left-0 w-px origin-top ${accent.rail}`}
+    />
+  );
+}
+
+/** What a period contributed to the whole: capabilities kept, not tools used. */
+function KeptList({ items }: { items: string[] }) {
+  return (
+    <div className="mt-4 flex flex-col gap-2">
+      <span className="text-muted text-[10px] tracking-[0.14em] uppercase">
+        What stayed with me
+      </span>
+      <ul className="flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <li key={item} className="border-border text-soft border px-2.5 py-1 text-xs">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** The Convergence tool odyssey: each builder hit a ceiling until code didn't. */
+function ToolChain({ steps, accent }: { steps: ChainStep[]; accent: Accent }) {
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs">
+      <span className="text-muted basis-full text-[10px] tracking-[0.14em] uppercase">
+        The tool odyssey
+      </span>
+      {steps.map((step, i) => (
+        <React.Fragment key={step.name}>
+          {i > 0 ? (
+            <span aria-hidden="true" className="text-muted/50">
+              →
+            </span>
+          ) : null}
+          <span
+            className={`border px-2 py-0.5 ${
+              step.now
+                ? `${accent.humanPill} border`
+                : step.dead
+                  ? "border-border text-muted/70 decoration-muted/50 line-through"
+                  : "border-border-2 text-soft"
+            }`}
+          >
+            {step.name}
+          </span>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+function BeatCard({ beat, accent }: { beat: Beat; accent: Accent }) {
+  const duality = Boolean(beat.telecom && beat.design);
+  return (
+    <li
+      data-beat
+      className={`bg-surface relative border p-6 ${beat.current ? "border-rose" : "border-border"}`}
+    >
+      <RailMarker accent={accent} pulse={beat.current} />
+      {beat.current ? null : (
+        <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${accent.edge}`} />
+      )}
+
+      <span className={`eyebrow ${accent.eyebrow}`}>{beat.period}</span>
+
+      {duality ? (
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <div className="border-border-2 border-l-2 pl-4">
+            <span className="eyebrow text-muted">Telecom</span>
+            <p className="text-ink mt-1">{beat.telecom}</p>
+          </div>
+          <div className={`border-l-2 pl-4 ${accent.dualityBorder}`}>
+            <span className="eyebrow text-muted">Design</span>
+            <p className="text-ink mt-1">{beat.design}</p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <h4 className="font-display text-ink mt-1 text-xl font-semibold">{beat.title}</h4>
+          {beat.meanwhile ? <p className="text-muted mt-2 text-sm">{beat.meanwhile}</p> : null}
+        </>
+      )}
+
+      <p className={`mt-4 text-sm ${accent.icon}`}>{beat.takeaway}</p>
+
+      {beat.chain ? <ToolChain steps={beat.chain} accent={accent} /> : null}
+
+      <KeptList items={beat.kept} />
+    </li>
+  );
+}
+
+/** Dashed closing card: the biography's last line, cursor still blinking. */
+function NextEpoch() {
+  const shouldReduceMotion = useReducedMotion();
+  return (
+    <section
+      data-beat
+      aria-label="The next epoch"
+      className="border-border-2 border border-dashed p-8"
+    >
+      <span className="eyebrow text-muted">Epoch IV</span>
+      <h3 className="font-display text-ink mt-2 text-2xl font-semibold">
+        Everything before this was the training.
+      </h3>
+      <p className="text-muted mt-2">
+        The next epoch is being written
+        <motion.span
+          aria-hidden="true"
+          className="bg-rose ml-1.5 inline-block h-[1em] w-2 translate-y-[2px]"
+          animate={shouldReduceMotion ? undefined : { opacity: [1, 1, 0, 0] }}
+          transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
+        />
+      </p>
+    </section>
   );
 }
 
@@ -268,119 +454,81 @@ function Timeline() {
   }, []);
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-16">
+    <div ref={containerRef} className="flex min-w-0 flex-col gap-16">
       <div className="flex flex-col gap-4">
         <h2 className="font-display text-heading text-ink">How I Became a Web Systems Developer</h2>
         <p className="measure text-muted">
-          Every career has a shape. Mine has three movements. It starts with
-          curiosity: a kid opening Macromedia Fireworks in 2002, a young man
-          climbing his first tower, collecting skills with no master plan
-          connecting them. It deepens into a long stretch of divided years,
-          building national telecom infrastructure by day and designing
-          brands and websites in every spare hour, capable in both worlds and
-          quietly restless in each, increasingly certain that neither half
-          was the whole answer. And it resolves in 2021, when I taught myself
-          to code and found the one discipline that demands everything I had
-          been accumulating: the systems thinking, the design eye, the need
-          to be genuinely, relentlessly challenged. Three epochs. One
-          direction. Here is how it happened.
+          I think of my career in three distinct epochs, each naturally leading to what I do today.
+          It begins with curiosity. In 2002, I stumbled upon Macromedia Fireworks and my love for
+          design was born. It continues with the restlessness that characterised my time in
+          telecoms. As much as I enjoyed learning how those technologies worked and fit together, I
+          found myself constantly pulled back toward my creative side. I worked in telecom by day
+          and designed brands and websites by night. It culminates with my decision to learn to code
+          in 2021 after growing increasingly frustrated by the limitations of website builders. My
+          exposure to the complex systems of telecom, combined with my background in design and my
+          love for technology, turned out to be excellent preparation for navigating the fragmented,
+          ever changing landscape of the modern web.
         </p>
       </div>
 
-      <section data-epoch="foundation" className="scroll-mt-24">
-        <EpochHeader
-          numeral="I"
-          title="Foundation"
-          tagline="Seeds, planted early"
-          epigraph="Every skill in this era looked unrelated at the time. None of them were."
-          accent={ACCENTS.caramel}
-        />
-        <ol className="relative flex flex-col gap-6 pl-7">
-          <EpochRail accent={ACCENTS.caramel} />
-          {FOUNDATION_CARDS.map((card) => (
-            <li key={card.marker} data-beat className="relative border border-border bg-surface p-6">
-              <RailMarker accent={ACCENTS.caramel} />
-              <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${ACCENTS.caramel.edge}`} />
-              <span className={`eyebrow ${ACCENTS.caramel.eyebrow}`}>{card.marker}</span>
-              <h4 className="mt-1 font-display text-xl font-semibold text-ink">{card.title}</h4>
-              <p className="mt-2 text-muted">{card.description}</p>
-              <ul className="mt-3 flex flex-wrap gap-2">
-                {card.skills.map((skill) => (
-                  <li
-                    key={skill}
-                    className="border border-border px-2.5 py-1 text-xs text-soft"
-                  >
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-              <p className={`mt-3 text-sm ${ACCENTS.caramel.note}`}>Seed planted: {card.seed}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      {/* One shared hairline spans all three epochs so the timeline reads as
+          a single continuous journey; each epoch's colored fill draws over it. */}
+      <div className="relative flex flex-col gap-16">
+        <span aria-hidden="true" className="bg-border absolute top-2 bottom-2 left-0 w-px" />
 
-      <section data-epoch="convergence" className="scroll-mt-24">
-        <EpochHeader
-          numeral="II"
-          title="Convergence"
-          tagline="Two crafts, one person"
-          epigraph="Infrastructure by day, design by night: two full practices running in parallel, and a growing suspicion that neither one alone was the point."
-          accent={ACCENTS.peach}
-        />
-        <ol className="relative flex flex-col gap-6 pl-7">
-          <EpochRail accent={ACCENTS.peach} />
-          {CONVERGENCE_CARDS.map((card) => (
-            <li key={card.marker} data-beat className="relative border border-border bg-surface p-6">
-              <RailMarker accent={ACCENTS.peach} />
-              <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${ACCENTS.peach.edge}`} />
-              <span className={`eyebrow ${ACCENTS.peach.eyebrow}`}>{card.marker}</span>
-              <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                <div className="border-l-2 border-border-2 pl-4">
-                  <span className="eyebrow text-muted">Telecom</span>
-                  <p className="mt-1 text-ink">{card.primary}</p>
-                </div>
-                <div className="border-l-2 border-peach/50 pl-4">
-                  <span className="eyebrow text-muted">Design</span>
-                  <p className="mt-1 text-ink">{card.parallel}</p>
-                </div>
-              </div>
-              <p className={`mt-3 text-sm ${ACCENTS.peach.note}`}>Converging: {card.converging}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+        <section data-epoch="foundation" className="scroll-mt-24">
+          <EpochHeader
+            numeral="I"
+            title="Foundation"
+            circa="Circa 2002 - 2013"
+            epigraph="Every skill in this era looked unrelated at the time. None of them were."
+            tools={FOUNDATION_TOOLS}
+            accent={ACCENTS.amber}
+          />
+          <ol className="relative flex flex-col gap-6 pl-7">
+            <EpochRail accent={ACCENTS.amber} />
+            {FOUNDATION_BEATS.map((beat) => (
+              <BeatCard key={beat.period} beat={beat} accent={ACCENTS.amber} />
+            ))}
+          </ol>
+        </section>
 
-      <section data-epoch="awakening" className="scroll-mt-24">
-        <EpochHeader
-          numeral="III"
-          title="Awakening"
-          tagline="The path that demands all of it"
-          epigraph="In 2021 I stopped negotiating with my tools and taught myself to code. It's the most intellectually alive I've ever been."
-          accent={ACCENTS.rose}
-        />
-        <ol className="relative flex flex-col gap-6 pl-7">
-          <EpochRail accent={ACCENTS.rose} />
-          {AWAKENING_CARDS.map((card) => (
-            <li
-              key={card.marker}
-              data-beat
-              className={`relative border bg-surface p-6 ${
-                card.current ? "border-rose" : "border-border"
-              }`}
-            >
-              <RailMarker accent={ACCENTS.rose} pulse={card.current} />
-              {card.current ? null : (
-                <span aria-hidden="true" className={`absolute inset-y-0 left-0 w-[3px] ${ACCENTS.rose.edge}`} />
-              )}
-              <span className={`eyebrow ${ACCENTS.rose.eyebrow}`}>{card.marker}</span>
-              <h4 className="mt-1 font-display text-xl font-semibold text-ink">{card.milestone}</h4>
-              <p className="mt-2 text-muted">{card.description}</p>
-              <p className={`mt-3 text-sm ${ACCENTS.rose.note}`}>Points to: {card.pointsTo}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+        <section data-epoch="convergence" className="scroll-mt-24">
+          <EpochHeader
+            numeral="II"
+            title="Convergence"
+            circa="Circa 2013 - 2021"
+            epigraph="Infrastructure by day, design by night: two full practices running in parallel, and a growing suspicion that neither one alone was the point."
+            tools={CONVERGENCE_TOOLS}
+            accent={ACCENTS.peach}
+          />
+          <ol className="relative flex flex-col gap-6 pl-7">
+            <EpochRail accent={ACCENTS.peach} />
+            {CONVERGENCE_BEATS.map((beat) => (
+              <BeatCard key={beat.period} beat={beat} accent={ACCENTS.peach} />
+            ))}
+          </ol>
+        </section>
+
+        <section data-epoch="awakening" className="scroll-mt-24">
+          <EpochHeader
+            numeral="III"
+            title="Awakening"
+            circa="Circa 2021 - Present"
+            epigraph="In 2021 I stopped negotiating with my tools and taught myself to code. It's the most intellectually alive I've ever been."
+            tools={AWAKENING_TOOLS}
+            accent={ACCENTS.rose}
+          />
+          <ol className="relative flex flex-col gap-6 pl-7">
+            <EpochRail accent={ACCENTS.rose} />
+            {AWAKENING_BEATS.map((beat) => (
+              <BeatCard key={beat.period} beat={beat} accent={ACCENTS.rose} />
+            ))}
+          </ol>
+        </section>
+      </div>
+
+      <NextEpoch />
     </div>
   );
 }
