@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Guardrails</title>
+  <path fill="#111" d="M32 6 54 15v16c0 14-8 24-22 29C18 55 10 45 10 31V15l22-9z"/>
+  <path fill="none" stroke="#66cc33" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" d="m21 32 7 7 16-17"/>
+</svg>

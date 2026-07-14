@@ -1,19 +1,19 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-09T14:37:48.558Z",
+  "updated": "2026-07-10T14:59:43.537Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": "claude-code",
-    "model": "claude-sonnet-5",
-    "role": "executor"
+    "model": "claude-opus-4-8",
+    "role": "planner"
   },
   "current": {
-    "epic": "EPIC-014",
-    "slice": "EPIC-014-SLICE-2",
-    "task": "TASK-060",
+    "epic": "EPIC-015",
+    "slice": null,
+    "task": null,
     "agent": "claude-code",
-    "branch": "feature/EPIC-014",
-    "session_status": "review",
+    "branch": "feature/EPIC-015",
+    "session_status": "planning",
     "handoff_status": "none"
   },
   "completion": {
@@ -45,7 +45,8 @@
       "EPIC-012 (feature/EPIC-012): all six tasks done, PR #15 opened into dev, pending owner review/merge",
       "EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter",
       "Repo housekeeping merged to dev (PR #16, chore/repo-cleanup-obsidian-and-state): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked",
-      "EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder"
+      "EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder",
+      "EPIC-015 (feature/EPIC-015, in progress): about-page copy + timeline redesign against the owner's epoch-timeline HTML prototype (2026-07-10). Timeline rebuilt to mirror the biography's real period table instead of one card per employer (8 beats: Foundation x2, Convergence x4 keeping the explicit telecom/design duality, Awakening x2); epoch header cards show numeral/name/circa range and cycle the era's most significant SWE/design tools one icon at a time (owner's public/icons/ brand marks tinted via CSS mask, Phosphor stand-ins where no mark exists yet); Foundation accent moved caramel -> amber (caramel was indistinguishable from peach); a single continuous rail hairline now spans all three epochs instead of breaking per section; cards dropped the false Technical/Human split for a one-line 'why this matters' takeaway plus a 'What stayed with me' capability list (incorporated a second agent's review feedback); AccumulationChart was built then cut on owner review; SocialLinks now renders the owner's real icon marks and moved into the sticky right column, pinned to the viewport bottom under the epoch nav. AboutIntro and the timeline intro paragraph updated with the owner's supplied copy. All changes lint/typecheck/build clean and slop-scored 38-50/50 (threshold 35); in-browser verified at desktop and mobile widths. Not yet pushed/PR'd."
     ],
     "remaining": [
       "OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.",
@@ -60,7 +61,7 @@
     "blocked": "none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)"
   },
   "counts": {
-    "epics_total": 13,
+    "epics_total": 14,
     "tasks_open": 0,
     "tasks_in_progress": 0,
     "tasks_done": 58,

@@ -6,14 +6,64 @@ import {
 } from "@/components/ui/dialog";
 
 /**
- * BioModal — "Who I am" (12-ui-element-map.md §3 About #2a-ii). Six-section
- * biography from the owner's content blueprint (EPIC-014/TASK-058,
- * 2026-07-06): opening hook, design roots, telecom chapter, the turn, how I
- * work, the close.
+ * BioModal — "Who I am" (12-ui-element-map.md §3 About #2a-ii). Copy is the
+ * owner's canonical bio from planning/content/page-copy/About.md, structured
+ * as the intro plus the three epochs that drive the rest of the about page.
+ * The epoch accent colours mirror the Timeline (Foundation = caramel,
+ * Convergence = peach, Awakening = rose) so the modal shares the page's epoch
+ * language rather than inventing its own.
  */
+interface Epoch {
+  numeral: string;
+  title: string;
+  accent: string;
+  paragraphs: string[];
+}
+
+const EPOCHS: Epoch[] = [
+  {
+    numeral: "I",
+    title: "Foundation",
+    accent: "text-caramel",
+    paragraphs: [
+      "My fascination with technology goes back to 2002, when I first had access to a computer. It opened up a whole new world I couldn't stop exploring.",
+      "After studying electrical and electronics engineering, I joined Celtel in 2007 as an assistant technician. Celtel (Airtel today) was the largest mobile network operator in Zambia. I assisted the engineers, did tower rigging work, and planned and supervised the maintenance of diesel gensets carried out by contractors across Southern Province and parts of Western Province.",
+      "What made Celtel formative wasn't the job description. It was the engineers around me. They were generous with their knowledge and eager to teach, and the relationships I built with them exposed me to technologies far beyond my official responsibilities. That learning earned me a promotion to technician and a place on the roster of people who responded to faults and outages around the clock, on top of everything else I was doing.",
+      "It was also where I began noticing common threads running through seemingly unrelated technologies. I worked on remote controlled genset AMF panels, 48V DC rectifiers and battery banks, BSS hardware, microwave transmission, and the software needed to interact with all of it. To most people these are separate disciplines. The deeper I went, the more they revealed the same underlying principles. I didn't have a name for it then, but I was learning to think in systems.",
+      "Still, as much as I was growing, telecom was never enough. I was searching for work that could tap into everything I had in me. That search led me to build a music and video production studio. Work pressures meant I never recorded anything in it, but the studio was never really about music. It was another attempt to find work that tapped into more of my natural talents, like my creativity, and that restlessness never went away.",
+    ],
+  },
+  {
+    numeral: "II",
+    title: "Convergence",
+    accent: "text-peach",
+    paragraphs: [
+      "In 2013, I joined IHS Towers as one of its first quality assurance engineers. On the operator side, solar had been rolled out around us without any training or involvement for those of us in the field. IHS was different. The company invested heavily in solar training, and since the deployment teams reported to me as regional QA, I could join installations and learn directly from the contractors doing the work. That's where my interest in solar was born, and it eventually led me to start Dauntless Energy, exploring ways to make solar affordable and accessible to more people.",
+      "Ironically, the biggest lesson from that venture had nothing to do with solar. Trying to build the company showed me how hard it was to find quality branding, design and web development services, hard enough that I ended up doing the work myself. So I went deep into the craft: typography, layout, grids, visual hierarchy, color theory, identity systems. The work I produced for Dauntless started attracting requests from friends and acquaintances, and before long I was designing brands, company profiles and websites for people from all over the country.",
+      "The tools I used tell their own story. I started with Adobe Muse shortly after leaving IHS, hoping the familiar Adobe interface would ease me in, but its limitations pushed me to WordPress. I tried to build my portfolio and a family member's business website with it and found it clunky beyond tolerance. The final insult came from a backup plugin that advertised itself as free, then held both projects hostage behind a paywall the moment I tried to move them. I ripped both projects up and rebuilt them in Webflow.",
+      "Webflow changed the direction of my life more than any tool before it. Seeing the HTML and CSS behind everything I built shattered a belief I had carried for years, that programming was inaccessible without a computer science degree from a top US or European university. The developers publishing videos to test Webflow's claims deepened that shift, introducing me to coding bootcamps and full-stack courses. But Webflow had problems of its own. Clients pushed back hard on hosting costs, and there was no way to host the sites elsewhere. So I moved again, this time to WordPress with Elementor, which had just been released. It offered far more flexibility than traditional WordPress themes, but advanced functionality still meant wrestling with the same clunky plugin ecosystem.",
+      "Then telecom pulled me back. In 2017, I joined Huawei as a QA engineer on one of Zambia's largest rural connectivity projects, installing solar power systems on more than 1,500 Zamtel towers. The work took me across the country, routinely driving thousands of KMs, and freelancing went on hiatus. When I later returned to mobile network maintenance, a more conventional job, I took on a new client and reached for Elementor again. The same WordPress problems were waiting for me. But by then I had seen how accessible code really was. I paused freelancing entirely and, in 2021, enrolled in a full stack JavaScript developer course.",
+    ],
+  },
+  {
+    numeral: "III",
+    title: "Awakening",
+    accent: "text-rose",
+    paragraphs: [
+      "Learning software engineering while working a telecom job that kept me on call around the clock was one of the hardest things I've ever done. The hardest part wasn't JavaScript or React. It was believing that all the tutorials and practice projects would eventually translate into the work I actually wanted to do, and having no idea how many years it would take to get there. I burned out. I got disillusioned.",
+      "That changed the day I discovered Payload CMS.",
+      "Payload solved a problem I'd been running into for years. It finally gave me a way to build software as complex as the project demanded without taking ownership away from the client. Every ceiling I had hit as a designer, every compromise between flexibility and ownership, suddenly had an answer. It reinvigorated me. I filled the remaining gaps in my knowledge: database design, Next.js, deployment strategies, software architecture. Then I got to work.",
+      "Today my client work covers the full range: websites for businesses that need a clean presence online, Payload builds for content heavy projects, AI integrations and ecommerce. But the work I'm most excited about is Cassandra OS. It's the first project where I'm putting my own opinions about where the industry should go into something real.",
+      "I'm convinced the SaaS model is incompatible with the agentic age of software. As AI drives down the cost of building and maintaining custom software, the economics that made SaaS inevitable are coming apart. Cassandra OS is my answer to a future where AI makes custom software dramatically cheaper to build and maintain. It aims to combine the accessibility of SaaS with the ownership, flexibility and longevity of bespoke software.",
+      "When I want to think out loud, I write at Scrumtrulescent, my playground for sharing ideas with people who are curious about the same things I am.",
+      "Everything before this was the training. The next epoch is...",
+    ],
+  },
+];
+
 function BioModal() {
   return (
-    <DialogContent className="max-w-[min(90vw,40rem)]">
+    <DialogContent className="max-w-[min(90vw,44rem)]">
       <DialogHeader>
         <DialogTitle>Who I am</DialogTitle>
         <DialogDescription>
@@ -22,72 +72,35 @@ function BioModal() {
       </DialogHeader>
       <div className="flex flex-col gap-5 text-muted">
         <p>
-          Before I ever deployed an app, I deployed hardware. Cell towers in
-          places where the sun does the work a data center&apos;s cooling
-          system does everywhere else, where a generator failure at 2am is
-          not an abstraction: it is a village without signal until someone
-          drives out and fixes it. I learned what mission-critical costs
-          before I ever wrote a line of code, and that&apos;s the lens I
-          bring to every product I build now.
+          I&apos;m Abraham Sandala, a self-taught software engineer and designer
+          based in Lusaka, Zambia. I build custom software for businesses that
+          want the flexibility of bespoke applications without giving up the
+          ability to own and manage them themselves.
         </p>
         <p>
-          In 2002, long before &quot;UI/UX&quot; was a job title, I was
-          already obsessing over pixels in Macromedia Fireworks. That habit
-          turned into a decades-long side practice: brands, print, client
-          websites, built for real people who needed them to look right and
-          work. For years I shipped client sites with whatever the best
-          no-code tool of the era offered: Adobe Muse, then Elementor, then
-          Webflow. Design was never a line on my résumé. It was just the
-          thing I couldn&apos;t stop doing, chapter after chapter, tool after
-          tool.
+          I&apos;m interested in how software is changing in the age of AI, why
+          ownership matters more than ever, and how to build systems that
+          empower people instead of locking them into platforms.
         </p>
-        <p>
-          I entered telecom with my hands, not a title: an artisan on site
-          crews before I held any engineering credential. The climb went from
-          there. Field Operations Engineer, working radio access networks,
-          microwave links, fiber backhaul, and hybrid DC, solar, and
-          generator power. Then QA Engineer at the largest telecom
-          infrastructure provider in the country. Then Huawei, where I
-          helped deliver a 1,000-tower turnkey off-grid solar project,
-          state-backed, and was promoted mid-project to Implementation
-          Manager, running the remaining 500-plus towers to completion. When
-          a tower goes dark, there is no error log to read. There is a
-          drive, a diagnosis, and a fix that has to hold, because a real
-          community is waiting on the other side of it. That is where I
-          learned redundancy and quality assurance as disciplines, not
-          checkboxes.
-        </p>
-        <p>
-          Every website builder I ever loved eventually told me no. Some
-          layout, some interaction, some piece of logic the platform simply
-          would not allow. Learning to code in 2021 wasn&apos;t a career
-          move at first, it was the decision to stop negotiating with my
-          tools. Then I found Payload CMS, and the whole thing clicked:
-          finally able to build the custom, content-first applications
-          I&apos;d been trying to build through builders for years. Nothing
-          I&apos;ve done before uses all of me the way this does. The
-          systems brain, the design eye, and the plain nerdiness are all
-          load-bearing here, at the same time, for the first time.
-        </p>
-        <p>
-          When I say end-to-end, I mean it literally: raw business
-          requirements, strategy, business logic, UI/UX, system design,
-          development, deployment, running in production. One person,
-          accountable for all of it. That&apos;s not a boast about working
-          alone, it&apos;s a statement about where the responsibility sits.
-          No handoffs to lose your idea in, no &quot;that&apos;s the other
-          team&apos;s bug.&quot; On a team, this range shows up differently:
-          I&apos;m the developer who understands why the ticket exists, not
-          just how to close it.
-        </p>
-        <p>
-          If you&apos;re building something and want a partner who thinks
-          past the ticket, I&apos;d like to hear about it. And if
-          you&apos;re a team that values people who&apos;ve shipped in the
-          physical world before they shipped in the digital one, I think
-          you&apos;ll find the fit makes sense. Either way, I&apos;d
-          genuinely enjoy the conversation.
-        </p>
+        <p>My path here runs through three defining epochs.</p>
+        {EPOCHS.map((epoch) => (
+          <div
+            key={epoch.numeral}
+            className="flex flex-col gap-3 border-t border-border pt-5"
+          >
+            <div>
+              <span className={`eyebrow ${epoch.accent}`}>
+                Epoch {epoch.numeral}
+              </span>
+              <h4 className="mt-1 font-display text-lg font-semibold text-ink">
+                {epoch.title}
+              </h4>
+            </div>
+            {epoch.paragraphs.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
+        ))}
       </div>
     </DialogContent>
   );

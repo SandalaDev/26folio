@@ -12,9 +12,15 @@ import { DURATION, EASE_OUT } from "@/lib/motion";
  * StickyCard — opens a modal (12-ui-element-map.md §3 About #2a). The trigger
  * is the whole card, wrapped in EPIC-012 TASK-054's shared door-tilt primitive.
  * EPIC-014 follow-up moved stickiness off the individual card onto the column
- * wrapper in the about page (both cards pin together instead of staggering) and
- * grew an image header (cover for photos, contain for the logo lockup), so the
- * TiltCard here only owns the tilt — the sticky position lives on the column.
+ * wrapper in the about page (both cards pin together instead of staggering).
+ *
+ * Layout (horizontal split): on >= sm the trigger is a flex row with the text
+ * column on the left and the image panel on the right; on mobile it collapses
+ * back to a vertical stack (image above, text below) so the image keeps a
+ * readable size on narrow viewports. The image panel uses a fixed left-edge
+ * width on desktop instead of the old 16/9 header so the photo sits as a
+ * tall side panel beside the copy. The TiltCard only owns the tilt; the sticky
+ * position lives on the column wrapper in the about page.
  */
 function StickyCard({
   title,
@@ -43,10 +49,16 @@ function StickyCard({
             type="button"
             whileHover={{ y: -4 }}
             transition={{ duration: DURATION.micro, ease: EASE_OUT }}
-            className="group block h-full w-full overflow-hidden border border-border bg-surface text-left"
+            className="group flex h-full w-full flex-col overflow-hidden border border-border bg-surface text-left sm:flex-row"
           >
+            {/* Text column — left on >= sm, below the image on mobile. */}
+            <span className="flex flex-1 flex-col p-6">
+              <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
+              <p className="mt-2 text-sm text-muted">{description}</p>
+              {cta ? <p className="mt-3 eyebrow text-rose">{cta} →</p> : null}
+            </span>
             {imageSrc ? (
-              <span className="relative block aspect-[16/9] max-h-[18vh] w-full overflow-hidden border-b border-border bg-background">
+              <span className="relative block aspect-[16/9] w-full shrink-0 overflow-hidden border-border bg-background max-sm:border-b sm:aspect-auto sm:h-auto sm:w-2/5 sm:border-l">
                 <Image
                   src={imageSrc}
                   alt={imageAlt}
@@ -60,11 +72,6 @@ function StickyCard({
                 />
               </span>
             ) : null}
-            <span className="block p-6">
-              <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
-              <p className="mt-2 text-sm text-muted">{description}</p>
-              {cta ? <p className="mt-3 eyebrow text-rose">{cta} →</p> : null}
-            </span>
           </motion.button>
         </DialogTrigger>
       </TiltCard>

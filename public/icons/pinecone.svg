@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Pinecone vector search</title>
+  <rect width="64" height="64" rx="14" fill="#0b2f2a"/>
+  <path fill="#66cc33" d="M32 8c9 9 14 20 14 33 0 10-6 15-14 15S18 51 18 41C18 28 23 17 32 8z"/>
+  <path fill="#0b2f2a" d="M32 18c5 7 8 15 8 23 0 6-3 9-8 9s-8-3-8-9c0-8 3-16 8-23z"/>
+  <path fill="#66cc33" d="M32 22 21 40h22L32 22zm0 10 5 8H27l5-8z"/>
+</svg>

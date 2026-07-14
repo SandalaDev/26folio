@@ -21,8 +21,11 @@ export default function AboutPage() {
           <Timeline />
           {/* The whole column pins as one unit (EPIC-014 follow-up): both
               cards stay visible together instead of staggering past each
-              other, with the epoch scroll indicator beneath them. */}
-          <div className="flex flex-col gap-5 md:sticky md:top-20 md:self-start">
+              other, with the epoch scroll indicator beneath them. When
+              pinned, the column stretches to the viewport bottom (min-h
+              matches the md:top-20 offset) so the socials sit at the bottom
+              edge via mt-auto. */}
+          <div className="flex flex-col gap-5 md:sticky md:top-20 md:min-h-[calc(100dvh-6.5rem)] md:self-start">
             <StickyCard
               title="Who I am"
               description="From cell towers to codebases: the full story of why I build software the way I do."
@@ -41,16 +44,20 @@ export default function AboutPage() {
             >
               <InterestsModal />
             </StickyCard>
-            <EpochNav />
+            <div className="mt-6">
+              <EpochNav />
+            </div>
+            {/* Owner tweak (2026-07-10): socials live under the epoch
+                indicators, pushed to the viewport bottom while the column
+                is pinned. */}
+            <div className="mt-10 md:mt-auto">
+              <SocialLinks />
+            </div>
           </div>
         </div>
       </Section>
 
       <MagazineSection />
-
-      <Section className="flex flex-col gap-6">
-        <SocialLinks />
-      </Section>
 
       <DualCtaBand />
     </>
