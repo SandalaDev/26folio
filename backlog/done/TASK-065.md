@@ -1,7 +1,7 @@
 ---
 id: TASK-065
 title: "About page: retire InterestsModal, card links to /about/the-way-i-am"
-status: open
+status: done
 priority: P1
 risk_level: low
 preferred_executor: claude-code
@@ -48,7 +48,17 @@ files_allowed:
    superseded by the dedicated page's content).
 
 ## Acceptance criteria
-- [ ] Clicking "The way I am" on /about navigates to the new page.
-- [ ] "Who I am" modal still opens.
-- [ ] `interests-modal.tsx` deleted; no dangling imports.
-- [ ] lint / typecheck / build green; slop score >= 35/50.
+- [x] Clicking "The way I am" on /about navigates to the new page.
+- [x] "Who I am" modal still opens.
+- [x] `interests-modal.tsx` deleted; no dangling imports.
+- [x] lint / typecheck / build green; slop score >= 35/50.
+
+## Verified (2026-07-15)
+StickyCard gained an `href` link mode (motion.create(Link), same tilt +
+hover language); modal mode untouched. On /about the "The way I am" card
+renders as a single link to /about/the-way-i-am with the new "Walk through
+it" cta, and the "Who I am" card still opens its dialog (confirmed
+in-browser: role="dialog" mounts with the "Who I am" title).
+interests-modal.tsx removed via `git rm`; typecheck confirms no dangling
+imports. lint + typecheck + build green; sticky-card.tsx 42/50,
+about/page.tsx 46/50 on the slop gate.

@@ -1,6 +1,5 @@
 import { AboutIntro } from "@/components/about/about-intro";
 import { StickyCard } from "@/components/about/sticky-card";
-import { InterestsModal } from "@/components/about/interests-modal";
 import { BioModal } from "@/components/about/bio-modal";
 import { Timeline } from "@/components/about/timeline";
 import { MagazineSection } from "@/components/about/magazine-section";
@@ -35,15 +34,16 @@ export default function AboutPage() {
             >
               <BioModal />
             </StickyCard>
+            {/* EPIC-016 TASK-065: the modal became a page — the card now
+                walks visitors to /about/the-way-i-am. */}
             <StickyCard
               title="The way I am"
               description="The nerdiness, the design obsession, and everything I do when I'm not shipping."
-              cta="Poke around"
+              cta="Walk through it"
+              href="/about/the-way-i-am"
               imageSrc="/images/abe-about.png"
               imageAlt="Abe Sandala, off the clock"
-            >
-              <InterestsModal />
-            </StickyCard>
+            />
             <div className="mt-6">
               <EpochNav />
             </div>

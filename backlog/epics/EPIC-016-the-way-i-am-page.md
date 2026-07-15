@@ -1,7 +1,7 @@
 ---
 id: EPIC-016
 title: The Way I Am — dedicated page (museum walk, modal retired)
-status: in-progress   # ready -> in-progress -> done
+status: done          # ready -> in-progress -> done
 phase: 5
 priority: P1
 risk_level: medium
@@ -61,9 +61,14 @@ dark, rose/caramel/peach accents, Clash Display/General Sans, hard corners).
 
 ## Definition of done
 
-- [ ] Route renders all nine sections with the owner's real content.
-- [ ] Modal logic removed; about-page card navigates to the page.
-- [ ] Back nav, pager, progress indicator and floating TOC all work.
-- [ ] Reduced-motion path verified; animations transform/opacity only.
-- [ ] lint / typecheck / build green; slop >= 35/50 on changed src files;
-      in-browser verification at desktop and mobile widths.
+- [x] Route renders all nine sections with the owner's real content.
+- [x] Modal logic removed; about-page card navigates to the page.
+- [x] Back nav, pager, progress indicator and floating TOC all work.
+- [x] Reduced-motion path verified; animations transform/opacity only.
+- [x] lint / typecheck / build green; slop >= 35/50 on changed src files;
+      in-browser verification at desktop and mobile widths (DOM-level; see
+      TASK-064's verified note on the hidden-pane screenshot quirk).
+
+Done on feature/EPIC-016, 2026-07-15. Pending: owner eyeballs the page in a
+visible browser (museum feel is a taste call) and supplies album artwork
+for public/images/albums/ if the typographic sleeves shouldn't stay.
