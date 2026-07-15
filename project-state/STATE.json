@@ -1,19 +1,19 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-10T14:59:43.537Z",
+  "updated": "2026-07-14T23:54:57.498Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": "claude-code",
-    "model": "claude-opus-4-8",
-    "role": "planner"
+    "model": "claude-fable-5",
+    "role": "executor"
   },
   "current": {
-    "epic": "EPIC-015",
-    "slice": null,
-    "task": null,
+    "epic": "EPIC-016",
+    "slice": "EPIC-016-SLICE-1",
+    "task": "TASK-064",
     "agent": "claude-code",
-    "branch": "feature/EPIC-015",
-    "session_status": "planning",
+    "branch": "feature/EPIC-016",
+    "session_status": "building",
     "handoff_status": "none"
   },
   "completion": {
@@ -42,11 +42,12 @@
       "EPIC-011 TASK-046: CTA hover unified - CTACallout uses MagneticButton site-wide; MagneticButton gained type/disabled",
       "EPIC-011 TASK-047: featured-work card hover retuned to door-opening tilt (rotateY hinge) + synchronized spring zoom",
       "EPIC-011 TASK-048: contact page built - ContactForm (validation + states) + confirmation + contact-details aside",
-      "EPIC-012 (feature/EPIC-012): all six tasks done, PR #15 opened into dev, pending owner review/merge",
+      "EPIC-012 complete — merged to dev (PR #15): design-system fidelity, all six tasks",
       "EPIC-013 complete — merged to dev (PR #14): real combo-mark logo on SiteHeader/SiteFooter",
       "Repo housekeeping merged to dev (PR #16, chore/repo-cleanup-obsidian-and-state): stale dev fast-forwarded, feature/EPIC-008 deleted (superseded, never merged), merged feature/EPIC-013 pruned, obsidian vault clutter untracked",
       "EPIC-014 complete (feature/EPIC-014): TASK-056..060 — real about-page intro/timeline/bio/interests/closing-CTA content, replacing every EPIC-004 structural placeholder",
-      "EPIC-015 (feature/EPIC-015, in progress): about-page copy + timeline redesign against the owner's epoch-timeline HTML prototype (2026-07-10). Timeline rebuilt to mirror the biography's real period table instead of one card per employer (8 beats: Foundation x2, Convergence x4 keeping the explicit telecom/design duality, Awakening x2); epoch header cards show numeral/name/circa range and cycle the era's most significant SWE/design tools one icon at a time (owner's public/icons/ brand marks tinted via CSS mask, Phosphor stand-ins where no mark exists yet); Foundation accent moved caramel -> amber (caramel was indistinguishable from peach); a single continuous rail hairline now spans all three epochs instead of breaking per section; cards dropped the false Technical/Human split for a one-line 'why this matters' takeaway plus a 'What stayed with me' capability list (incorporated a second agent's review feedback); AccumulationChart was built then cut on owner review; SocialLinks now renders the owner's real icon marks and moved into the sticky right column, pinned to the viewport bottom under the epoch nav. AboutIntro and the timeline intro paragraph updated with the owner's supplied copy. All changes lint/typecheck/build clean and slop-scored 38-50/50 (threshold 35); in-browser verified at desktop and mobile widths. Not yet pushed/PR'd."
+      "EPIC-015 (feature/EPIC-015, in progress): about-page copy + timeline redesign against the owner's epoch-timeline HTML prototype (2026-07-10). Timeline rebuilt to mirror the biography's real period table instead of one card per employer (8 beats: Foundation x2, Convergence x4 keeping the explicit telecom/design duality, Awakening x2); epoch header cards show numeral/name/circa range and cycle the era's most significant SWE/design tools one icon at a time (owner's public/icons/ brand marks tinted via CSS mask, Phosphor stand-ins where no mark exists yet); Foundation accent moved caramel -> amber (caramel was indistinguishable from peach); a single continuous rail hairline now spans all three epochs instead of breaking per section; cards dropped the false Technical/Human split for a one-line 'why this matters' takeaway plus a 'What stayed with me' capability list (incorporated a second agent's review feedback); AccumulationChart was built then cut on owner review; SocialLinks now renders the owner's real icon marks and moved into the sticky right column, pinned to the viewport bottom under the epoch nav. AboutIntro and the timeline intro paragraph updated with the owner's supplied copy. All changes lint/typecheck/build clean and slop-scored 38-50/50 (threshold 35); in-browser verified at desktop and mobile widths. Merged to dev via PR #19 (2026-07-15); local branch cleaned up.",
+      "EPIC-016 opened (feature/EPIC-016, 2026-07-15): 'The Way I Am' promoted from about-page modal to a dedicated /about/the-way-i-am page per the owner's museum-walk brief; content source planning/content/page-copy/TheWay.md; TASK-064 (page build) + TASK-065 (modal retirement)."
     ],
     "remaining": [
       "OWNER REVIEW (drafted copy, EPIC-010): project descriptors/taglines for Provision Finance + OK Pharmacy (src/lib/projects.ts, incl. their /work/<slug> placeholder problem/outcome), and the two new services' copy + item lists (src/lib/services.ts: mobile-payments, e-commerce; custom-software items were redistributed). All neutral drafts, no invented claims — confirm or supply real lines.",
@@ -54,16 +55,16 @@
       "Deployment follow-up: set MAGAZINE_API_URL/MAGAZINE_API_KEY in the production environment once scrumtrulescent.com's Payload API is live, to bring the home page's magazine section back",
       "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)",
       "Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.",
-      "Merge PR #15 (feature/EPIC-012 -> dev): conflict resolved (origin/dev merged into feature/EPIC-012), now mergeable — pending owner review/merge.",
+      "Remote branch origin/feature/EPIC-015 still exists (merged via PR #19; the agent's delete was permission-blocked) — owner: delete it on GitHub or rerun branch.sh cleanup.",
       "No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.",
       "OWNER REVIEW (EPIC-014): merged to dev (PR #17). Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right in a real browser."
     ],
     "blocked": "none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)"
   },
   "counts": {
-    "epics_total": 14,
+    "epics_total": 15,
     "tasks_open": 0,
-    "tasks_in_progress": 0,
+    "tasks_in_progress": 1,
     "tasks_done": 58,
     "handoffs_pending": 0,
     "handoffs_consumed": 7
