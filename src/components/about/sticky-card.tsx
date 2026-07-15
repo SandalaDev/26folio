@@ -2,17 +2,22 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 
+const MotionLink = motion.create(Link);
+
 /**
- * StickyCard — opens a modal (12-ui-element-map.md §3 About #2a). The trigger
- * is the whole card, wrapped in EPIC-012 TASK-054's shared door-tilt primitive.
- * EPIC-014 follow-up moved stickiness off the individual card onto the column
- * wrapper in the about page (both cards pin together instead of staggering).
+ * StickyCard — opens a modal (12-ui-element-map.md §3 About #2a) or, with
+ * `href` (EPIC-016 TASK-065), navigates to a page with the same tilt/hover
+ * card. The trigger is the whole card, wrapped in EPIC-012 TASK-054's shared
+ * door-tilt primitive. EPIC-014 follow-up moved stickiness off the individual
+ * card onto the column wrapper in the about page (both cards pin together
+ * instead of staggering).
  *
  * Layout (horizontal split): on >= sm the trigger is a flex row with the text
  * column on the left and the image panel on the right; on mobile it collapses
@@ -26,6 +31,7 @@ function StickyCard({
   title,
   description,
   cta,
+  href,
   imageSrc,
   imageAlt = "",
   imageFit = "cover",
@@ -35,12 +41,59 @@ function StickyCard({
   title: string;
   description: string;
   cta?: string;
+  /** Link mode: navigate here instead of opening a modal. */
+  href?: string;
   imageSrc?: string;
   imageAlt?: string;
   imageFit?: "cover" | "contain";
-  children: React.ReactNode;
+  /** Modal mode: the DialogContent to open. Ignored when `href` is set. */
+  children?: React.ReactNode;
   className?: string;
 }) {
+  const cardBody = (
+    <>
+      {/* Text column — left on >= sm, below the image on mobile. */}
+      <span className="flex flex-1 flex-col p-6">
+        <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
+        <p className="mt-2 text-sm text-muted">{description}</p>
+        {cta ? <p className="mt-3 eyebrow text-rose">{cta} →</p> : null}
+      </span>
+      {imageSrc ? (
+        <span className="relative block aspect-[16/9] w-full shrink-0 overflow-hidden border-border bg-background max-sm:border-b sm:aspect-auto sm:h-auto sm:w-2/5 sm:border-l">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            sizes="(min-width: 768px) 42vw, 92vw"
+            className={
+              imageFit === "cover"
+                ? "object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                : "object-contain p-10"
+            }
+          />
+        </span>
+      ) : null}
+    </>
+  );
+
+  const cardClasses =
+    "group flex h-full w-full flex-col overflow-hidden border border-border bg-surface text-left sm:flex-row";
+
+  if (href) {
+    return (
+      <TiltCard tiltY={6} className={className}>
+        <MotionLink
+          href={href}
+          whileHover={{ y: -4 }}
+          transition={{ duration: DURATION.micro, ease: EASE_OUT }}
+          className={cardClasses}
+        >
+          {cardBody}
+        </MotionLink>
+      </TiltCard>
+    );
+  }
+
   return (
     <Dialog>
       <TiltCard tiltY={6} className={className}>
@@ -49,29 +102,9 @@ function StickyCard({
             type="button"
             whileHover={{ y: -4 }}
             transition={{ duration: DURATION.micro, ease: EASE_OUT }}
-            className="group flex h-full w-full flex-col overflow-hidden border border-border bg-surface text-left sm:flex-row"
+            className={cardClasses}
           >
-            {/* Text column — left on >= sm, below the image on mobile. */}
-            <span className="flex flex-1 flex-col p-6">
-              <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
-              <p className="mt-2 text-sm text-muted">{description}</p>
-              {cta ? <p className="mt-3 eyebrow text-rose">{cta} →</p> : null}
-            </span>
-            {imageSrc ? (
-              <span className="relative block aspect-[16/9] w-full shrink-0 overflow-hidden border-border bg-background max-sm:border-b sm:aspect-auto sm:h-auto sm:w-2/5 sm:border-l">
-                <Image
-                  src={imageSrc}
-                  alt={imageAlt}
-                  fill
-                  sizes="(min-width: 768px) 42vw, 92vw"
-                  className={
-                    imageFit === "cover"
-                      ? "object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                      : "object-contain p-10"
-                  }
-                />
-              </span>
-            ) : null}
+            {cardBody}
           </motion.button>
         </DialogTrigger>
       </TiltCard>
