@@ -1,7 +1,7 @@
 ---
 id: EPIC-017
 title: Who I Am modal — wide chaptered reading experience
-status: ready          # ready -> in-progress -> done
+status: done           # ready -> in-progress -> done
 phase: 5
 priority: P1
 risk_level: medium
@@ -95,13 +95,17 @@ same a11y contract.
 
 ## Definition of done
 
-- [ ] Modal opens at ~80vw on desktop; body measure stays <= ~70ch.
-- [ ] Story reads as chapters (Prologue + three epochs), each with its own
+- [x] Modal opens at ~80vw on desktop; body measure stays <= ~70ch.
+- [x] Story reads as chapters (Prologue + three epochs), each with its own
       typographic opening; pull quotes and ledes in place.
-- [ ] Chapter rail tracks scroll position and jumps on click; progress
+- [x] Chapter rail tracks scroll position and jumps on click; progress
       indicator works; mobile fallback works.
-- [ ] Parallax numerals + low-opacity logo watermark present and subtle;
+- [x] Parallax numerals + low-opacity logo watermark present and subtle;
       60fps (transform/opacity only); reduced-motion collapses to static.
-- [ ] Dialog a11y intact (focus trap, Esc, overlay close, close button).
-- [ ] lint / typecheck / build green; slop >= 35/50 on changed src files;
-      in-browser verification at desktop and mobile widths.
+- [x] Dialog a11y intact (focus trap, Esc, overlay close, close button).
+- [x] lint / typecheck / build green; slop >= 35/50 on changed src files;
+      in-browser verification at desktop and mobile widths (DOM-level; see
+      the tasks' verified notes on the hidden-pane rAF quirk).
+
+Done on feature/EPIC-017, 2026-07-15. Pending: owner eyeballs the chaptered
+reader in a visible browser (reading rhythm and motion feel are taste calls).

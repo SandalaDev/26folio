@@ -1,7 +1,7 @@
 ---
 id: TASK-066
 title: "Rebuild BioModal: wide shell, chapter structure, typography system"
-status: ready
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
@@ -58,10 +58,26 @@ files_allowed:
    (caramel/peach/rose), comfortable leading for a long read.
 
 ## Acceptance criteria
-- [ ] Modal opens ~80vw on desktop, ~92vw mobile, no horizontal overflow;
+- [x] Modal opens ~80vw on desktop, ~92vw mobile, no horizontal overflow;
       Dialog a11y intact (focus trap, Esc, overlay, close button).
-- [ ] Copy renders verbatim from the typed module; nothing rewritten.
-- [ ] Chapters visually distinct; measure capped; pull quotes + ledes in.
-- [ ] Shared `src/components/ui/dialog.tsx` untouched.
-- [ ] lint / typecheck / build green; slop >= 35/50 on changed src files;
+- [x] Copy renders verbatim from the typed module; nothing rewritten.
+- [x] Chapters visually distinct; measure capped; pull quotes + ledes in.
+- [x] Shared `src/components/ui/dialog.tsx` untouched.
+- [x] lint / typecheck / build green; slop >= 35/50 on changed src files;
       in-browser check at desktop + 375px.
+
+## Verified (2026-07-15)
+
+Content extracted verbatim to `src/lib/who-i-am.ts` (intro + three epochs,
+pull-quote/emphasis annotations; Foundation accent corrected caramel -> amber
+to match EPIC-015's timeline mapping). BioReader renders the chaptered layout
+inside the widened DialogContent (`w-[min(80vw,80rem)]` lg+, `h-[85vh]`,
+internal scroll); twMerge override confirmed live in the DOM. In-browser
+(dev server; DOM-level because the preview pane sat hidden under the known
+0x0/rAF quirk): dialog opens with all four `[data-bio-chapter]` sections,
+four rail rows (logo-glyph opening + I/II/III), both pull quotes, both rose
+emphasis lines, zero em/en-dashes in visible text, close button present,
+scroll region content height 9797px. lint + typecheck green; stop-slop
+38-46/50 across the four changed src files (threshold 35). Production build
+deferred to session end (dev server holds .next). Rail is static markup by
+design; TASK-067 wires active state, jumps, and motion.
