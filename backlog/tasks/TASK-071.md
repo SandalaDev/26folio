@@ -34,6 +34,7 @@ files_allowed:
   - src/lib/spotify-snapshot.json
   - src/lib/env.ts
   - env.example
+  - next.config.ts
   - planning/content/.slop/
   - planning/slices/EPIC-018-SLICE-1.md
   - backlog/tasks/TASK-071.md

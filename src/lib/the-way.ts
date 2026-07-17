@@ -72,86 +72,212 @@ export interface Album {
   cover: string;
 }
 
-/** Music - the chips and the wall. */
-export const MUSIC = {
-  artists: [
-    "Coldplay",
-    "Radiohead",
-    "Lana Del Rey",
-    "Norah Jones",
-    "Kanye West",
-    "Jay-Z",
-    "Pusha T",
-    "Drake",
-    "Charli xcx",
-    "Rosalía",
-    "Billie Eilish",
-    "Future",
-    "Frou Frou",
-    "Janelle Monáe",
-    "Run The Jewels",
-    "P!nk",
-    "The Notorious B.I.G.",
-  ],
-  /** Desert-island albums. The artwork folder is the list (owner,
-   *  2026-07-17): every cover in public/images/about/albums/ gets a tile,
-   *  and nothing renders without one. */
-  albums: [
-    { title: "A Rush of Blood to the Head", artist: "Coldplay", cover: "/images/about/albums/coldplay-a-rush-of-blood-to-the-head.jpg" },
-    { title: "Viva la Vida", artist: "Coldplay", cover: "/images/about/albums/coldplay-viva-la-vida.png" },
-    { title: "X&Y", artist: "Coldplay", cover: "/images/about/albums/coldplay-x-y.jpg" },
-    { title: "Come Away With Me", artist: "Norah Jones", cover: "/images/about/albums/norah-jones-come-away-with-me.jpg" },
-    { title: "The Fall", artist: "Norah Jones", cover: "/images/about/albums/norah-jones-the-fall.jpg" },
-    { title: "Feels Like Home", artist: "Norah Jones", cover: "/images/about/albums/norah-jones-feels-like-home.jpg" },
-    { title: "OK Computer", artist: "Radiohead", cover: "/images/about/albums/radiohead-ok-computer.jpg" },
-    { title: "Kid A", artist: "Radiohead", cover: "/images/about/albums/radiohead-kid-a.jpg" },
-    { title: "In Rainbows", artist: "Radiohead", cover: "/images/about/albums/radiohead-in-rainbows.jpg" },
-    { title: "Daytona", artist: "Pusha T", cover: "/images/about/albums/pusha-t-daytona.jpg" },
-    { title: "If You're Reading This It's Too Late", artist: "Drake", cover: "/images/about/albums/drake-if-you-re-reading-this-it-s-too-late.jpg" },
-    { title: "4:44", artist: "Jay-Z", cover: "/images/about/albums/jay-z-4-44.jpg" },
-    { title: "The Blueprint", artist: "Jay-Z", cover: "/images/about/albums/jay-z-the-blueprint.jpg" },
-    { title: "The Black Album", artist: "Jay-Z", cover: "/images/about/albums/jay-z-the-black-album.jpg" },
-    { title: "Ultraviolence", artist: "Lana Del Rey", cover: "/images/about/albums/lana-del-rey-ultraviolence.jpg" },
-    { title: "Norman Fucking Rockwell!", artist: "Lana Del Rey", cover: "/images/about/albums/lana-del-rey-norman-fucking-rockwell.jpg" },
-    { title: "Born To Die", artist: "Lana Del Rey", cover: "/images/about/albums/lana-del-rey-born-to-die.jpg" },
-    { title: "Chemtrails Over the Country Club", artist: "Lana Del Rey", cover: "/images/about/albums/lana-del-rey-chemtrails-over-the-country-club.jpg" },
-    { title: "Blue Banisters", artist: "Lana Del Rey", cover: "/images/about/albums/lana-del-rey-blue-banisters.jpg" },
-    { title: "brat", artist: "Charli xcx", cover: "/images/about/albums/charli-xcx-brat.jpg" },
-    { title: "How I'm Feeling Now", artist: "Charli xcx", cover: "/images/about/albums/charli-xcx-how-i-m-feeling-now.jpg" },
-    { title: "Charli", artist: "Charli xcx", cover: "/images/about/albums/charli-xcx-charli.jpg" },
-    { title: "Motomami", artist: "Rosalía", cover: "/images/about/albums/rosalia-motomami.jpg" },
-    { title: "ANTI", artist: "Rihanna", cover: "/images/about/albums/rihanna-anti.jpg" },
-    { title: "Dirty Computer", artist: "Janelle Monáe", cover: "/images/about/albums/janelle-monae-dirty-computer.jpg" },
-    { title: "RTJ3", artist: "Run The Jewels", cover: "/images/about/albums/run-the-jewels-rtj3.jpg" },
-    { title: "The Biggie Duets", artist: "The Notorious B.I.G.", cover: "/images/about/albums/the-notorious-b-i-g-the-biggie-duets.jpg" },
-    { title: "Happier Than Ever", artist: "Billie Eilish", cover: "/images/about/albums/billie-eilish-happier-than-ever.jpg" },
-    { title: "The WIZRD", artist: "Future", cover: "/images/about/albums/future-the-wizrd.jpg" },
-    { title: "Details", artist: "Frou Frou", cover: "/images/about/albums/frou-frou-details.jpg" },
-    { title: "Graduation", artist: "Kanye West", cover: "/images/about/albums/kanye-west-graduation.jpg" },
-    { title: "808s & Heartbreak", artist: "Kanye West", cover: "/images/about/albums/kanye-west-808s-heartbreak.jpg" },
-    { title: "The College Dropout", artist: "Kanye West", cover: "/images/about/albums/kanye-west-the-college-dropout.jpg" },
-    { title: "Late Registration", artist: "Kanye West", cover: "/images/about/albums/kanye-west-late-registration.jpg" },
-    { title: "Yeezus", artist: "Kanye West", cover: "/images/about/albums/kanye-west-yeezus.jpg" },
-    { title: "My Beautiful Dark Twisted Fantasy", artist: "Kanye West", cover: "/images/about/albums/kanye-west-my-beautiful-dark-twisted-fantasy.jpg" },
-    { title: "I'm Not Dead", artist: "P!nk", cover: "/images/about/albums/p-nk-i-m-not-dead.jpg" },
-    { title: "Funhouse", artist: "P!nk", cover: "/images/about/albums/p-nk-funhouse.jpg" },
-    { title: "The Money Store", artist: "Death Grips", cover: "/images/about/albums/death grips - the money store.jpg" },
-    { title: "Fallen", artist: "Evanescence", cover: "/images/about/albums/evanescence-fallen.webp" },
-    { title: "Blonde", artist: "Frank Ocean", cover: "/images/about/albums/frank ocean blonde.jpg" },
-    { title: "Father, Son, Holy Ghost", artist: "Girls", cover: "/images/about/albums/girls-father son holy ghost.jpg" },
-    { title: "Drastic Fantastic", artist: "KT Tunstall", cover: "/images/about/albums/kt tunstall - drastic fantastic.jpg" },
-    { title: "The Miseducation of Lauryn Hill", artist: "Lauryn Hill", cover: "/images/about/albums/lauryn hill - the miseducation of lauryn hill.jpg" },
-    { title: "Melodrama", artist: "Lorde", cover: "/images/about/albums/lorde melodrama.jpg" },
-    { title: "Punisher", artist: "Phoebe Bridgers", cover: "/images/about/albums/phoebe bridgers - punisher.jpg" },
-    { title: "11:11", artist: "Regina Spektor", cover: "/images/about/albums/regina spektor - 11-11.jpg" },
-    { title: "Far", artist: "Regina Spektor", cover: "/images/about/albums/regina spektor - far.jpg" },
-    { title: "What We Saw from the Cheap Seats", artist: "Regina Spektor", cover: "/images/about/albums/regina spektor - what we saw from the cheap seats.jpg" },
-    { title: "Royal Blood", artist: "Royal Blood", cover: "/images/about/albums/royal blood-royal blood.jpg" },
-    { title: "Prioritise Pleasure", artist: "Self Esteem", cover: "/images/about/albums/self esteem - prioritise pleasure.jpg" },
-    { title: "Titanic Rising", artist: "Weyes Blood", cover: "/images/about/albums/WeyesBlood_TitanicRising.webp" },
-    { title: "Fever to Tell", artist: "Yeah Yeah Yeahs", cover: "/images/about/albums/yeah yeah yeahs - fever to tell.png" },
-  ] satisfies Album[],
-};
+/** Desert-island albums. The artwork folder is the list (owner,
+ *  2026-07-17): every cover in public/images/about/albums/ gets a tile,
+ *  and nothing renders without one. */
+export const ALBUMS = [
+  {
+    title: "A Rush of Blood to the Head",
+    artist: "Coldplay",
+    cover: "/images/about/albums/coldplay-a-rush-of-blood-to-the-head.jpg",
+  },
+  {
+    title: "Viva la Vida",
+    artist: "Coldplay",
+    cover: "/images/about/albums/coldplay-viva-la-vida.png",
+  },
+  { title: "X&Y", artist: "Coldplay", cover: "/images/about/albums/coldplay-x-y.jpg" },
+  {
+    title: "Come Away With Me",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/norah-jones-come-away-with-me.jpg",
+  },
+  {
+    title: "The Fall",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/norah-jones-the-fall.jpg",
+  },
+  {
+    title: "Feels Like Home",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/norah-jones-feels-like-home.jpg",
+  },
+  {
+    title: "OK Computer",
+    artist: "Radiohead",
+    cover: "/images/about/albums/radiohead-ok-computer.jpg",
+  },
+  { title: "Kid A", artist: "Radiohead", cover: "/images/about/albums/radiohead-kid-a.jpg" },
+  {
+    title: "In Rainbows",
+    artist: "Radiohead",
+    cover: "/images/about/albums/radiohead-in-rainbows.jpg",
+  },
+  { title: "Daytona", artist: "Pusha T", cover: "/images/about/albums/pusha-t-daytona.jpg" },
+  {
+    title: "If You're Reading This It's Too Late",
+    artist: "Drake",
+    cover: "/images/about/albums/drake-if-you-re-reading-this-it-s-too-late.jpg",
+  },
+  { title: "4:44", artist: "Jay-Z", cover: "/images/about/albums/jay-z-4-44.jpg" },
+  {
+    title: "The Blueprint",
+    artist: "Jay-Z",
+    cover: "/images/about/albums/jay-z-the-blueprint.jpg",
+  },
+  {
+    title: "The Black Album",
+    artist: "Jay-Z",
+    cover: "/images/about/albums/jay-z-the-black-album.jpg",
+  },
+  {
+    title: "Ultraviolence",
+    artist: "Lana Del Rey",
+    cover: "/images/about/albums/lana-del-rey-ultraviolence.jpg",
+  },
+  {
+    title: "Norman Fucking Rockwell!",
+    artist: "Lana Del Rey",
+    cover: "/images/about/albums/lana-del-rey-norman-fucking-rockwell.jpg",
+  },
+  {
+    title: "Born To Die",
+    artist: "Lana Del Rey",
+    cover: "/images/about/albums/lana-del-rey-born-to-die.jpg",
+  },
+  {
+    title: "Chemtrails Over the Country Club",
+    artist: "Lana Del Rey",
+    cover: "/images/about/albums/lana-del-rey-chemtrails-over-the-country-club.jpg",
+  },
+  {
+    title: "Blue Banisters",
+    artist: "Lana Del Rey",
+    cover: "/images/about/albums/lana-del-rey-blue-banisters.jpg",
+  },
+  { title: "brat", artist: "Charli xcx", cover: "/images/about/albums/charli-xcx-brat.jpg" },
+  {
+    title: "How I'm Feeling Now",
+    artist: "Charli xcx",
+    cover: "/images/about/albums/charli-xcx-how-i-m-feeling-now.jpg",
+  },
+  { title: "Charli", artist: "Charli xcx", cover: "/images/about/albums/charli-xcx-charli.jpg" },
+  { title: "Motomami", artist: "Rosalía", cover: "/images/about/albums/rosalia-motomami.jpg" },
+  { title: "ANTI", artist: "Rihanna", cover: "/images/about/albums/rihanna-anti.jpg" },
+  {
+    title: "Dirty Computer",
+    artist: "Janelle Monáe",
+    cover: "/images/about/albums/janelle-monae-dirty-computer.jpg",
+  },
+  {
+    title: "RTJ3",
+    artist: "Run The Jewels",
+    cover: "/images/about/albums/run-the-jewels-rtj3.jpg",
+  },
+  {
+    title: "The Biggie Duets",
+    artist: "The Notorious B.I.G.",
+    cover: "/images/about/albums/the-notorious-b-i-g-the-biggie-duets.jpg",
+  },
+  {
+    title: "Happier Than Ever",
+    artist: "Billie Eilish",
+    cover: "/images/about/albums/billie-eilish-happier-than-ever.jpg",
+  },
+  { title: "The WIZRD", artist: "Future", cover: "/images/about/albums/future-the-wizrd.jpg" },
+  { title: "Details", artist: "Frou Frou", cover: "/images/about/albums/frou-frou-details.jpg" },
+  {
+    title: "Graduation",
+    artist: "Kanye West",
+    cover: "/images/about/albums/kanye-west-graduation.jpg",
+  },
+  {
+    title: "808s & Heartbreak",
+    artist: "Kanye West",
+    cover: "/images/about/albums/kanye-west-808s-heartbreak.jpg",
+  },
+  {
+    title: "The College Dropout",
+    artist: "Kanye West",
+    cover: "/images/about/albums/kanye-west-the-college-dropout.jpg",
+  },
+  {
+    title: "Late Registration",
+    artist: "Kanye West",
+    cover: "/images/about/albums/kanye-west-late-registration.jpg",
+  },
+  { title: "Yeezus", artist: "Kanye West", cover: "/images/about/albums/kanye-west-yeezus.jpg" },
+  {
+    title: "My Beautiful Dark Twisted Fantasy",
+    artist: "Kanye West",
+    cover: "/images/about/albums/kanye-west-my-beautiful-dark-twisted-fantasy.jpg",
+  },
+  { title: "I'm Not Dead", artist: "P!nk", cover: "/images/about/albums/p-nk-i-m-not-dead.jpg" },
+  { title: "Funhouse", artist: "P!nk", cover: "/images/about/albums/p-nk-funhouse.jpg" },
+  {
+    title: "The Money Store",
+    artist: "Death Grips",
+    cover: "/images/about/albums/death grips - the money store.jpg",
+  },
+  { title: "Fallen", artist: "Evanescence", cover: "/images/about/albums/evanescence-fallen.webp" },
+  { title: "Blonde", artist: "Frank Ocean", cover: "/images/about/albums/frank ocean blonde.jpg" },
+  {
+    title: "Father, Son, Holy Ghost",
+    artist: "Girls",
+    cover: "/images/about/albums/girls-father son holy ghost.jpg",
+  },
+  {
+    title: "Drastic Fantastic",
+    artist: "KT Tunstall",
+    cover: "/images/about/albums/kt tunstall - drastic fantastic.jpg",
+  },
+  {
+    title: "The Miseducation of Lauryn Hill",
+    artist: "Lauryn Hill",
+    cover: "/images/about/albums/lauryn hill - the miseducation of lauryn hill.jpg",
+  },
+  { title: "Melodrama", artist: "Lorde", cover: "/images/about/albums/lorde melodrama.jpg" },
+  {
+    title: "Punisher",
+    artist: "Phoebe Bridgers",
+    cover: "/images/about/albums/phoebe bridgers - punisher.jpg",
+  },
+  {
+    title: "11:11",
+    artist: "Regina Spektor",
+    cover: "/images/about/albums/regina spektor - 11-11.jpg",
+  },
+  {
+    title: "Far",
+    artist: "Regina Spektor",
+    cover: "/images/about/albums/regina spektor - far.jpg",
+  },
+  {
+    title: "What We Saw from the Cheap Seats",
+    artist: "Regina Spektor",
+    cover: "/images/about/albums/regina spektor - what we saw from the cheap seats.jpg",
+  },
+  {
+    title: "Royal Blood",
+    artist: "Royal Blood",
+    cover: "/images/about/albums/royal blood-royal blood.jpg",
+  },
+  {
+    title: "Prioritise Pleasure",
+    artist: "Self Esteem",
+    cover: "/images/about/albums/self esteem - prioritise pleasure.jpg",
+  },
+  {
+    title: "Titanic Rising",
+    artist: "Weyes Blood",
+    cover: "/images/about/albums/WeyesBlood_TitanicRising.webp",
+  },
+  {
+    title: "Fever to Tell",
+    artist: "Yeah Yeah Yeahs",
+    cover: "/images/about/albums/yeah yeah yeahs - fever to tell.png",
+  },
+] satisfies Album[];
 
 export interface WishlistItem {
   name: string;
@@ -267,14 +393,12 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Elektron Analog Rytm MKII",
-        image:
-          "/images/about/wishlist/music-studio/Elektron Analog Rytm MKII.webp",
+        image: "/images/about/wishlist/music-studio/Elektron Analog Rytm MKII.webp",
         note: "Analog drum machine, for drums that don't come from a sample pack.",
       },
       {
         name: "Akai MPC X Special Edition",
-        image:
-          "/images/about/wishlist/music-studio/Akai MPC X Special Edition.webp",
+        image: "/images/about/wishlist/music-studio/Akai MPC X Special Edition.webp",
         note: "The standalone sampler for chopping and sequencing off-screen.",
       },
       {
@@ -290,14 +414,12 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Universal Audio Apollo x16 Gen 2",
-        image:
-          "/images/about/wishlist/music-studio/Universal Audio Apollo x16 Gen 2.webp",
+        image: "/images/about/wishlist/music-studio/Universal Audio Apollo x16 Gen 2.webp",
         note: "Sixteen channels of conversion so the whole room patches in at once.",
       },
       {
         name: "Apogee Symphony Studio",
-        image:
-          "/images/about/wishlist/music-studio/Apogee Symphony Studio.jpg",
+        image: "/images/about/wishlist/music-studio/Apogee Symphony Studio.jpg",
         note: "Conversion and monitor control at the mix position.",
       },
       {
@@ -317,8 +439,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Dan Clark Audio Noire X",
-        image:
-          "/images/about/wishlist/music-studio/Dan Clark Audio Noire X.webp",
+        image: "/images/about/wishlist/music-studio/Dan Clark Audio Noire X.webp",
         note: "Closed planar headphones for tracking without bleed.",
       },
     ],
@@ -331,62 +452,52 @@ export const WISHLISTS: Wishlist[] = [
     items: [
       {
         name: "Panasonic Lumix S1 II",
-        image:
-          "/images/about/wishlist/video-studio/panasonic-lumix-s1-ii.jpg",
+        image: "/images/about/wishlist/video-studio/panasonic-lumix-s1-ii.jpg",
         note: "The full-frame body the whole list is built around.",
       },
       {
         name: "Sigma 14-24mm f/2.8 DG DN",
-        image:
-          "/images/about/wishlist/video-studio/sigma-14-24mm-f2-8-dg-dn.jpg",
+        image: "/images/about/wishlist/video-studio/sigma-14-24mm-f2-8-dg-dn.jpg",
         note: "Ultra-wide zoom for architecture and cramped rooms.",
       },
       {
         name: "Sigma 24-70mm f/2.8 DG DN II",
-        image:
-          "/images/about/wishlist/video-studio/sigma-24-70mm-f2-8-dg-dn-ii.png",
+        image: "/images/about/wishlist/video-studio/sigma-24-70mm-f2-8-dg-dn-ii.png",
         note: "The standard zoom that lives on the camera.",
       },
       {
         name: "Panasonic Lumix 70-200mm f/2.8",
-        image:
-          "/images/about/wishlist/video-studio/panasonic-lumix-70-200mm-f2-8.jpg",
+        image: "/images/about/wishlist/video-studio/panasonic-lumix-70-200mm-f2-8.jpg",
         note: "The telephoto end: compressed interviews and detail work.",
       },
       {
         name: "Sigma 35mm f/1.2 DG DN II",
-        image:
-          "/images/about/wishlist/video-studio/sigma-35mm-f1-2-dg-dn-ii.jpg",
+        image: "/images/about/wishlist/video-studio/sigma-35mm-f1-2-dg-dn-ii.jpg",
         note: "Fast prime for the wide-open cinematic look.",
       },
       {
         name: "Sigma 50mm f/1.2 DG DN",
-        image:
-          "/images/about/wishlist/video-studio/sigma-50mm-f1-2-dg-dn.jpg",
+        image: "/images/about/wishlist/video-studio/sigma-50mm-f1-2-dg-dn.jpg",
         note: "The normal prime for shallow, honest portraits.",
       },
       {
         name: "Sigma 85mm f/1.4 DG DN",
-        image:
-          "/images/about/wishlist/video-studio/sigma-85mm-f1-4-dg-dn.jpg",
+        image: "/images/about/wishlist/video-studio/sigma-85mm-f1-4-dg-dn.jpg",
         note: "Portrait prime for faces against melted backgrounds.",
       },
       {
         name: "Aputure LS 600c Pro II",
-        image:
-          "/images/about/wishlist/video-studio/aputure-ls-600c-pro-ii.jpg",
+        image: "/images/about/wishlist/video-studio/aputure-ls-600c-pro-ii.jpg",
         note: "Full-color key light with real punch through a softbox.",
       },
       {
         name: "Aputure Storm 1200x",
-        image:
-          "/images/about/wishlist/video-studio/aputure-storm-1200x.jpg",
+        image: "/images/about/wishlist/video-studio/aputure-storm-1200x.jpg",
         note: "The bi-color workhorse for lighting rooms, not just faces.",
       },
       {
         name: "Atomos Ninja Ultra",
-        image:
-          "/images/about/wishlist/video-studio/atomos-ninja-ultra.jpg",
+        image: "/images/about/wishlist/video-studio/atomos-ninja-ultra.jpg",
         note: "On-camera monitor-recorder for ProRes RAW and honest exposure.",
       },
       {
@@ -416,20 +527,17 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Manfrotto 645 FAST Twin",
-        image:
-          "/images/about/wishlist/video-studio/manfrotto-645-fast-twin.jpg",
+        image: "/images/about/wishlist/video-studio/manfrotto-645-fast-twin.jpg",
         note: "Video legs that go up and down fast between setups.",
       },
       {
         name: "Manfrotto Nitrotech 612",
-        image:
-          "/images/about/wishlist/video-studio/manfrotto-nitrotech-612-fluid-head.jpg",
+        image: "/images/about/wishlist/video-studio/manfrotto-nitrotech-612-fluid-head.jpg",
         note: "Fluid head for smooth pans with a loaded camera.",
       },
       {
         name: "Peak Design Travel Tripod",
-        image:
-          "/images/about/wishlist/video-studio/peak-design-travel-tripod-carbon.jpg",
+        image: "/images/about/wishlist/video-studio/peak-design-travel-tripod-carbon.jpg",
         note: "Carbon tripod for the days everything gets carried.",
       },
       {
@@ -442,37 +550,31 @@ export const WISHLISTS: Wishlist[] = [
   {
     id: "watches",
     title: "Watch wishlist",
-    description:
-      "Watches I'd wear for decades, not seasons. Hover one for why it made the list.",
+    description: "Watches I'd wear for decades, not seasons. Hover one for why it made the list.",
     items: [
       {
         name: "Grand Seiko Shunbun SBGA413",
-        image:
-          "/images/about/wishlist/watches/Grand Seiko Shunbun SBGA413.jpg",
+        image: "/images/about/wishlist/watches/Grand Seiko Shunbun SBGA413.jpg",
         note: "Spring Drive's perfect sweep under a dial that catches cherry-blossom season. Nobody does dials like Grand Seiko.",
       },
       {
         name: "Jaeger-LeCoultre Reverso",
-        image:
-          "/images/about/wishlist/watches/Jaeger-LeCoultre Reverso Classic Medium.webp",
+        image: "/images/about/wishlist/watches/Jaeger-LeCoultre Reverso Classic Medium.webp",
         note: "Art deco solved a polo problem a century ago and accidentally produced the most elegant case shape ever made.",
       },
       {
         name: "Nomos Tangente 38",
-        image:
-          "/images/about/wishlist/watches/Nomos Glashütte Tangente 38.webp",
+        image: "/images/about/wishlist/watches/Nomos Glashütte Tangente 38.webp",
         note: "The cleanest dial in watchmaking. Nothing to add, nothing to take away.",
       },
       {
         name: "Nomos Club Sport Neomatik",
-        image:
-          "/images/about/wishlist/watches/Nomos Glashütte Club Sport Neomatik.webp",
+        image: "/images/about/wishlist/watches/Nomos Glashütte Club Sport Neomatik.webp",
         note: "Bauhaus discipline that can still take a swim.",
       },
       {
         name: "Kurono Tokyo Anniversary Green",
-        image:
-          "/images/about/wishlist/watches/Kurono Tokyo Anniversary Green.jpg",
+        image: "/images/about/wishlist/watches/Kurono Tokyo Anniversary Green.jpg",
         note: "Hajime Asaoka's design language at a price mortals can reach. That green dial glows.",
       },
       {
@@ -497,8 +599,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Studio Underd0g Watermel0n",
-        image:
-          "/images/about/wishlist/watches/Studio Underd0g Watermel0n Chronograph.jpg",
+        image: "/images/about/wishlist/watches/Studio Underd0g Watermel0n Chronograph.jpg",
         note: "A watermelon chronograph. It makes people smile, which most watches forgot how to do.",
       },
       {
@@ -513,8 +614,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Casio G-Shock MRG-B5000",
-        image:
-          "/images/about/wishlist/watches/Casio G-Shock MRG-B5000.jpg",
+        image: "/images/about/wishlist/watches/Casio G-Shock MRG-B5000.jpg",
         note: "The G-Shock idea executed in titanium at its absolute ceiling. Indestructible and jewelry at the same time.",
       },
     ],
@@ -537,20 +637,17 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "JPG Le Male Elixir",
-        image:
-          "/images/about/wishlist/cologne/Jean Paul Gaultier Le Male Elixir.jpg",
+        image: "/images/about/wishlist/cologne/Jean Paul Gaultier Le Male Elixir.jpg",
         note: "Le Male grown up: honeyed, smoky, huge.",
       },
       {
         name: "Narciso Rodriguez for Him",
-        image:
-          "/images/about/wishlist/cologne/Narciso Rodriguez for Him.jpg",
+        image: "/images/about/wishlist/cologne/Narciso Rodriguez for Him.jpg",
         note: "The reference masculine musc, still at a mall price.",
       },
       {
         name: "Narciso Rodriguez Bleu Noir",
-        image:
-          "/images/about/wishlist/cologne/Narciso Rodriguez Bleu Noir.jpg",
+        image: "/images/about/wishlist/cologne/Narciso Rodriguez Bleu Noir.jpg",
         note: "Blue musk that reportedly outclasses every other designer blue.",
       },
       {
@@ -560,8 +657,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Van Cleef & Arpels Midnight in Paris",
-        image:
-          "/images/about/wishlist/cologne/Van Cleef & Arpels Midnight in Paris.jpg",
+        image: "/images/about/wishlist/cologne/Van Cleef & Arpels Midnight in Paris.jpg",
         note: "Discontinued leather-incense. The one that got away.",
       },
       {
@@ -576,20 +672,17 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Frederic Malle Portrait of a Lady",
-        image:
-          "/images/about/wishlist/cologne/Frederic Malle Portrait Of A Lady.jpg",
+        image: "/images/about/wishlist/cologne/Frederic Malle Portrait Of A Lady.jpg",
         note: "The modern rose benchmark. Every list ends up here eventually.",
       },
       {
         name: "Frederic Malle Musc Ravageur",
-        image:
-          "/images/about/wishlist/cologne/Frédéric Malle Musc Ravageur.jpg",
+        image: "/images/about/wishlist/cologne/Frédéric Malle Musc Ravageur.jpg",
         note: "The infamous musc. I want to see what the fuss is about.",
       },
       {
         name: "Marc-Antoine Barrois Ganymede",
-        image:
-          "/images/about/wishlist/cologne/Marc-Antoine Barrois Ganymede.jpg",
+        image: "/images/about/wishlist/cologne/Marc-Antoine Barrois Ganymede.jpg",
         note: "Mineral suede that half the internet calls the most futuristic scent of the decade.",
       },
       {
@@ -604,14 +697,12 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Initio Oud for Greatness",
-        image:
-          "/images/about/wishlist/cologne/Initio Oud for Greatness.jpg",
+        image: "/images/about/wishlist/cologne/Initio Oud for Greatness.jpg",
         note: "The club oud of the 2020s. Due diligence.",
       },
       {
         name: "Chris Collins Oud Galore",
-        image:
-          "/images/about/wishlist/cologne/Chris Collins Oud Galore.jpg",
+        image: "/images/about/wishlist/cologne/Chris Collins Oud Galore.jpg",
         note: "An oud built like a velvet room.",
       },
       {
@@ -621,8 +712,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Amouage Reflection Man",
-        image:
-          "/images/about/wishlist/cologne/Amouage Reflection Man.jpg",
+        image: "/images/about/wishlist/cologne/Amouage Reflection Man.jpg",
         note: "The polished one in the Amouage lineup. Effortless white florals.",
       },
       {
@@ -637,8 +727,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "BDK Parfums Tabac Rose",
-        image:
-          "/images/about/wishlist/cologne/BDK Parfums Tabac Rose.jpg",
+        image: "/images/about/wishlist/cologne/BDK Parfums Tabac Rose.jpg",
         note: "Rose and tobacco reads like a contradiction I need to smell.",
       },
       {
@@ -648,8 +737,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Lalique Encre Noire A L'Extreme",
-        image:
-          "/images/about/wishlist/cologne/Lalique Encre Noire A L'Extreme.jpg",
+        image: "/images/about/wishlist/cologne/Lalique Encre Noire A L'Extreme.jpg",
         note: "Ink-dark vetiver, deeper cut.",
       },
       {
@@ -664,14 +752,12 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Goldfield & Banks Bohemian Lime",
-        image:
-          "/images/about/wishlist/cologne/goldfield & banks bohemian lime.jpg",
+        image: "/images/about/wishlist/cologne/goldfield & banks bohemian lime.jpg",
         note: "Australian lime that supposedly smells like a holiday.",
       },
       {
         name: "Hermes Eau des Merveilles",
-        image:
-          "/images/about/wishlist/cologne/HERMÈS Eau des Merveilles.jpg",
+        image: "/images/about/wishlist/cologne/HERMÈS Eau des Merveilles.jpg",
         note: "Salty amber and orange, like skin after a beach day.",
       },
     ],
@@ -759,8 +845,7 @@ export const BOOKSHELF: { label: string; books: Book[] }[] = [
         title: "Capital in the Twenty-First Century",
         cover: "/images/about/books/capital-in-the-twenty-first-century.jpg",
         author: "Thomas Piketty",
-        takeaway:
-          "Capital and labour create wealth in fundamentally different ways.",
+        takeaway: "Capital and labour create wealth in fundamentally different ways.",
       },
       {
         title: "Basic Economics",

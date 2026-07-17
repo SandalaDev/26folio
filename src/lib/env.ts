@@ -7,4 +7,7 @@ export const env = {
   R2_PUBLIC_URL: process.env.R2_PUBLIC_URL ?? "",
   MAGAZINE_API_URL: process.env.MAGAZINE_API_URL ?? "",
   MAGAZINE_API_KEY: process.env.MAGAZINE_API_KEY ?? "",
+  SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID ?? "",
+  SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET ?? "",
+  SPOTIFY_PLAYLIST_ID: process.env.SPOTIFY_PLAYLIST_ID ?? "",
 } as const;

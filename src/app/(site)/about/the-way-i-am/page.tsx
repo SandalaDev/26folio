@@ -10,6 +10,7 @@ import { PrinciplesGallery } from "@/components/the-way/principles-gallery";
 import { Bookshelf } from "@/components/the-way/bookshelf";
 import { WayCta } from "@/components/the-way/way-cta";
 import { WayPager } from "@/components/the-way/way-pager";
+import { getTensPlaylist } from "@/lib/spotify";
 
 export const dynamic = "force-static";
 
@@ -27,14 +28,16 @@ export const metadata: Metadata = {
  * the Hobbies exhibit and gave the walk its real artifacts (portrait,
  * album art, covers, wishlists) per the owner's 2026-07-17 brief.
  */
-export default function TheWayIAmPage() {
+export default async function TheWayIAmPage() {
+  const playlist = await getTensPlaylist();
+
   return (
     <>
       <WayProgress />
       <WayToc />
       <WayHero />
       <CuriosityTable />
-      <MusicHall />
+      <MusicHall playlist={playlist} />
       <PracticeLine />
       <WishlistShelves />
       <PrinciplesGallery />
