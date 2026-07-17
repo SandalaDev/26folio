@@ -103,6 +103,21 @@ export const ALBUMS = [
     cover: "/images/about/albums/norah-jones-feels-like-home.jpg",
   },
   {
+    title: "Little Broken Hearts",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/norah jones- little broken hearts.jpg",
+  },
+  {
+    title: "Day Breaks",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/Norah Jones- Day Breaks.jpg",
+  },
+  {
+    title: "Begin Again",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/Norah-Jones-Begin-Again.webp",
+  },
+  {
     title: "OK Computer",
     artist: "Radiohead",
     cover: "/images/about/albums/radiohead-ok-computer.jpg",
@@ -129,6 +144,11 @@ export const ALBUMS = [
     title: "The Black Album",
     artist: "Jay-Z",
     cover: "/images/about/albums/jay-z-the-black-album.jpg",
+  },
+  {
+    title: "Watch the Throne",
+    artist: "Jay-Z & Kanye West",
+    cover: "/images/about/albums/watch-the-throne.jpg",
   },
   {
     title: "Ultraviolence",
@@ -413,6 +433,16 @@ export const WISHLISTS: Wishlist[] = [
         note: "Weighted 88 keys for playing parts in, not programming them.",
       },
       {
+        name: "Neumann U 87 Ai",
+        image: "/images/about/wishlist/music-studio/neumann U 87 ai.jpg",
+        note: "The vocal mic. Fifty years of records were cut on this capsule.",
+      },
+      {
+        name: "Avalon VT-737sp",
+        image: "/images/about/wishlist/music-studio/Avalon VT-737sp.jpg",
+        note: "Tube channel strip between the mic and the converter: preamp, EQ and compression on the way in.",
+      },
+      {
         name: "Universal Audio Apollo x16 Gen 2",
         image: "/images/about/wishlist/music-studio/Universal Audio Apollo x16 Gen 2.webp",
         note: "Sixteen channels of conversion so the whole room patches in at once.",
@@ -441,6 +471,31 @@ export const WISHLISTS: Wishlist[] = [
         name: "Dan Clark Audio Noire X",
         image: "/images/about/wishlist/music-studio/Dan Clark Audio Noire X.webp",
         note: "Closed planar headphones for tracking without bleed.",
+      },
+      {
+        name: "Ableton Live 12",
+        image: "/images/about/wishlist/music-studio/ableton live 12.jpg",
+        note: "The DAW. Every track starts and ends in a Live set.",
+      },
+      {
+        name: "Komplete 15",
+        image: "/images/about/wishlist/music-studio/Komplete-15.png",
+        note: "The Native Instruments library: pianos, drums and a decade of sounds in one install.",
+      },
+      {
+        name: "Omnisphere 2",
+        image: "/images/about/wishlist/music-studio/Omnisphere 2.jpg",
+        note: "The deep software synth, for pads and textures no hardware makes.",
+      },
+      {
+        name: "FabFilter Total Bundle",
+        image: "/images/about/wishlist/music-studio/FabFilter Total Bundle.webp",
+        note: "The mixing plugins: surgical EQ, compression and limiting with interfaces that teach you.",
+      },
+      {
+        name: "Valhalla DSP bundle",
+        image: "/images/about/wishlist/music-studio/Valhalla-dsp.webp",
+        note: "The reverbs and delays behind half of modern ambient. Fifty dollars each, absurdly.",
       },
     ],
   },
