@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Section } from "@/components/site/section";
@@ -7,20 +8,12 @@ import { MUSIC } from "@/lib/the-way";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
- * MusicHall - exhibit three (EPIC-016/TASK-064, trimmed in
- * EPIC-018/TASK-068: the now-playing and studio cards are gone per the
- * owner's brief). Two movements remain: favorite-artist chips, then the
- * desert-island wall of typographic sleeves cycling the brand accents.
+ * MusicHall - exhibit three (EPIC-016/TASK-064; EPIC-018 removed the
+ * now-playing and studio cards and gave the wall real artwork). Two
+ * movements: favorite-artist chips, then the desert-island wall, a hard-
+ * cornered grid of real sleeves. Hovering a sleeve lifts it off the wall
+ * and slides the title/artist caption up over the artwork's lower edge.
  */
-
-/** Literal class strings so Tailwind's scanner keeps every tone. */
-const SLEEVE_TONES = [
-  "bg-rose/10 group-hover:bg-rose/15",
-  "bg-caramel/10 group-hover:bg-caramel/15",
-  "bg-peach/10 group-hover:bg-peach/15",
-  "bg-amber/10 group-hover:bg-amber/15",
-  "bg-soft/10 group-hover:bg-soft/15",
-] as const;
 
 function MusicHall() {
   const shouldReduceMotion = useReducedMotion();
@@ -68,19 +61,25 @@ function MusicHall() {
             Desert-island albums
           </h3>
           <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {MUSIC.albums.map((album, index) => (
+            {MUSIC.albums.map((album) => (
               <li
                 key={`${album.artist}-${album.title}`}
-                className="group relative aspect-square border border-border transition-all duration-300 ease-out hover:-translate-y-1 hover:border-border-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group relative aspect-square overflow-hidden border border-border transition-all duration-300 ease-out hover:-translate-y-1 hover:border-border-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
-                <span
-                  aria-hidden="true"
-                  className={`absolute inset-0 transition-colors duration-300 ${SLEEVE_TONES[index % SLEEVE_TONES.length]}`}
+                <Image
+                  src={album.cover}
+                  alt={`${album.title} by ${album.artist}`}
+                  fill
+                  sizes="(min-width: 1280px) 15vw, (min-width: 768px) 22vw, 45vw"
+                  className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <span className="relative flex h-full flex-col justify-between p-4">
-                  <span className="text-xs text-muted">{album.artist}</span>
-                  <span className="font-display font-semibold leading-snug text-ink">
+                {/* Caption drawer: rides up over the sleeve's lower edge. */}
+                <span className="absolute inset-x-0 bottom-0 flex translate-y-2 flex-col gap-0.5 bg-background/85 p-3 opacity-0 backdrop-blur-sm transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
+                  <span className="truncate font-display text-sm font-semibold leading-snug text-ink">
                     {album.title}
+                  </span>
+                  <span className="truncate text-xs text-muted">
+                    {album.artist}
                   </span>
                 </span>
               </li>

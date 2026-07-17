@@ -1,140 +1,92 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X } from "@phosphor-icons/react";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 
 import { Section } from "@/components/site/section";
 import { BOOKSHELF, type Book } from "@/lib/the-way";
-import { DURATION, EASE_OUT, fadeUp, staggerContainer } from "@/lib/motion";
+import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
- * Bookshelf - exhibit seven (EPIC-016/TASK-064). Sources of inspiration as
- * physical books: spines stand upright on a shelf board, heights and accent
- * bands varied so the shelf reads collected rather than manufactured.
- * Clicking a spine opens an editorial spread under the shelf (cover, title,
- * author, personal takeaway; never a review) with an animated height reveal
- * that collapses to an instant swap under prefers-reduced-motion.
+ * Bookshelf - exhibit seven (EPIC-016/TASK-064, rebuilt cover-forward in
+ * EPIC-018/TASK-069). Real covers stand on the shelf board in a hard-
+ * cornered grid. Hovering or focusing a book slides its takeaway up over
+ * the cover; on touch screens a tap toggles the same drawer (one open per
+ * shelf, aria-expanded). All motion is transform/opacity and collapses to
+ * an instant swap under prefers-reduced-motion.
  */
 
-const SPINE_HEIGHTS = ["h-44", "h-52", "h-48", "h-56", "h-40"] as const;
-const SPINE_BANDS = [
-  "bg-rose/50",
-  "bg-caramel/50",
-  "bg-peach/50",
-  "bg-amber/50",
-] as const;
-const COVER_WASHES = [
-  "bg-rose/10",
-  "bg-caramel/10",
-  "bg-peach/10",
-  "bg-amber/10",
-] as const;
-
-function Spread({
+function BookCase({
   book,
-  washClass,
-  onClose,
+  isOpen,
+  onToggle,
 }: {
   book: Book;
-  washClass: string;
-  onClose: () => void;
+  isOpen: boolean;
+  onToggle: () => void;
 }) {
   return (
-    <div className="relative grid gap-8 border border-t-0 border-border bg-surface p-8 md:grid-cols-12 md:p-10">
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label={`Close ${book.title}`}
-        className="absolute right-4 top-4 p-2 text-muted transition-colors hover:text-ink"
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={isOpen}
+      className="group flex w-full flex-col text-left"
+    >
+      <span
+        className={`relative block aspect-[2/3] w-full overflow-hidden border transition-all duration-300 ease-out group-hover:-translate-y-1.5 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0 ${
+          isOpen
+            ? "-translate-y-1.5 border-rose"
+            : "border-border group-hover:border-border-2"
+        }`}
       >
-        <X aria-hidden="true" className="size-4" />
-      </button>
-      <div className="md:col-span-3">
-        <div
-          className={`flex aspect-[2/3] max-w-44 flex-col justify-between border border-border-2 p-5 ${washClass}`}
+        <Image
+          src={book.cover}
+          alt={`${book.title} by ${book.author}`}
+          fill
+          sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 45vw"
+          className="object-cover"
+        />
+        {/* Takeaway drawer: rises over the cover on hover, focus or tap. */}
+        <span
+          className={`absolute inset-0 flex flex-col justify-end overflow-y-auto bg-background/90 p-4 backdrop-blur-sm transition-all duration-300 ease-out motion-reduce:transition-none ${
+            isOpen
+              ? "translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-3 opacity-0 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+          }`}
         >
-          <span className="font-display text-lg font-semibold leading-snug text-ink">
-            {book.title}
+          <span className="text-sm leading-relaxed text-soft">
+            {book.takeaway}
           </span>
-          <span className="text-xs text-muted">{book.author}</span>
-        </div>
-      </div>
-      <div className="md:col-span-8 md:col-start-5">
-        <h4 className="font-display text-2xl font-semibold text-ink md:text-3xl">
-          {book.title}
-        </h4>
-        <p className="mt-2 text-muted">{book.author}</p>
-        <p className="measure mt-8 text-lg text-soft">{book.takeaway}</p>
-      </div>
-    </div>
+        </span>
+      </span>
+      <span className="mt-3 block truncate font-display text-sm font-semibold text-ink">
+        {book.title}
+      </span>
+      <span className="mt-0.5 block truncate text-xs text-muted">
+        {book.author}
+      </span>
+    </button>
   );
 }
 
 function ShelfRow({ label, books }: { label: string; books: Book[] }) {
-  const shouldReduceMotion = useReducedMotion();
   const [open, setOpen] = React.useState<number | null>(null);
-  const spreadId = `${label.toLowerCase().replace(/\W+/g, "-")}-spread`;
 
   return (
     <div>
       <h3 className="font-display text-xl font-semibold text-ink">{label}</h3>
-      <ul className="mt-8 flex flex-wrap items-end gap-1.5 border-b-2 border-border-2">
-        {books.map((book, index) => {
-          const isOpen = open === index;
-          return (
-            <li key={book.title}>
-              <button
-                type="button"
-                onClick={() => setOpen(isOpen ? null : index)}
-                aria-expanded={isOpen}
-                aria-controls={spreadId}
-                className={`flex w-11 flex-col items-stretch border transition-all duration-300 ease-out hover:-translate-y-2 md:w-12 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${
-                  SPINE_HEIGHTS[index % SPINE_HEIGHTS.length]
-                } ${
-                  isOpen
-                    ? "-translate-y-2 border-rose bg-surface-2"
-                    : "border-border bg-surface-2 hover:border-border-2"
-                }`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`h-5 w-full shrink-0 ${SPINE_BANDS[index % SPINE_BANDS.length]}`}
-                />
-                <span className="flex min-h-0 flex-1 items-center justify-center overflow-hidden px-1 py-3">
-                  <span className="truncate font-display text-sm font-semibold text-ink [writing-mode:vertical-rl]">
-                    {book.title}
-                  </span>
-                </span>
-              </button>
-            </li>
-          );
-        })}
+      <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 border-b-2 border-border-2 pb-8 sm:grid-cols-3 md:gap-x-5 lg:grid-cols-5">
+        {books.map((book, index) => (
+          <li key={book.title}>
+            <BookCase
+              book={book}
+              isOpen={open === index}
+              onToggle={() => setOpen(open === index ? null : index)}
+            />
+          </li>
+        ))}
       </ul>
-      <div id={spreadId}>
-        <AnimatePresence initial={false}>
-          {open !== null ? (
-            <motion.div
-              key={books[open].title}
-              initial={
-                shouldReduceMotion ? undefined : { height: 0, opacity: 0 }
-              }
-              animate={
-                shouldReduceMotion ? undefined : { height: "auto", opacity: 1 }
-              }
-              exit={shouldReduceMotion ? undefined : { height: 0, opacity: 0 }}
-              transition={{ duration: DURATION.component, ease: EASE_OUT }}
-              className="overflow-hidden"
-            >
-              <Spread
-                book={books[open]}
-                washClass={COVER_WASHES[open % COVER_WASHES.length]}
-                onClose={() => setOpen(null)}
-              />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </div>
     </div>
   );
 }
