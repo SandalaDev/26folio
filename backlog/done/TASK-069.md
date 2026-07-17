@@ -1,7 +1,7 @@
 ---
 id: TASK-069
 title: "Imagery galleries: album wall from the folder, bookshelf rebuilt around covers"
-status: open
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
@@ -62,3 +62,11 @@ files_allowed:
       focus and tap; motion is smooth and reduced-motion safe.
 - [ ] No horizontal overflow at 375px; images sized, no CLS.
 - [ ] lint / typecheck / build green; slop >= 35/50 on changed src files.
+
+## Verified (2026-07-17)
+53 album tiles render real artwork (tile count equals the folder's cover
+count); 14 book covers render; every img URL on the page fetches 200 (154
+unique, after the TASK-070 ascii rename fix); book tap sets aria-expanded
+and reveals the takeaway drawer, second tap closes; hover/focus reveal via
+CSS on transform/opacity with motion-reduce fallbacks; zero horizontal
+overflow at 375px. lint/typecheck/build green; slop 50/50.

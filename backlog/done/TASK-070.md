@@ -1,7 +1,7 @@
 ---
 id: TASK-070
 title: "Wishlist section: five image-backed wishlists with intro, descriptions, per-item hover copy"
-status: open
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
@@ -65,3 +65,12 @@ files_allowed:
 - [ ] Personal-voice drafts flagged for owner review in the PR body.
 - [ ] No horizontal overflow at 375px; reduced-motion safe.
 - [ ] lint / typecheck / build green; slop >= 35/50 on changed src files.
+
+## Verified (2026-07-17)
+Intro plus five wishlists render (Audiophile gear, Dream home music studio,
+Planned video equipment, Watch wishlist, Colognes), 84 item cases with
+resolved images; tap toggles the note drawer with one open per list
+(aria-expanded verified), hover/focus reveal on transform/opacity. Four
+unicode filenames 400'd in the Next image optimizer and were renamed to
+ascii slugs (follow-up commit). Personal-voice watch/cologne lines are
+drafts for owner review at the PR. lint/typecheck/build green; slop 50/50.

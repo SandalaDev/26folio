@@ -1,7 +1,7 @@
 ---
 id: TASK-068
 title: "Recompose /about/the-way-i-am: hero blob portrait, section removals, Creative Pursuits, nav"
-status: in-progress
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
@@ -69,3 +69,12 @@ files_allowed:
       data; TOC matches the remaining sections.
 - [ ] Creative Pursuits renders with Music Production in the line.
 - [ ] lint / typecheck / build green; slop >= 35/50 on changed src files.
+
+## Verified (2026-07-17)
+Dev-server DOM verification (hidden-pane rAF quirk: screenshots stall, DOM
+checks used instead, same as EPIC-016/017). Eight [data-way-section]
+anchors, hobbies gone from DOM, data and TOC; abe2.jpg renders centered in
+the blob mask (224px wide and centered at 375px, col-span-6 center column
+at desktop); Creative Pursuits heading with Music Production in the line;
+no now-playing or studio cards. lint + typecheck + next build (14 routes)
+green; stop-slop 50/50 on all changed src files.

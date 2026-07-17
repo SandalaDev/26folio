@@ -1,7 +1,7 @@
 ---
 id: EPIC-018
 title: The Way I Am — real imagery, wishlists, Spotify 10s playlist
-status: in-progress   # ready -> in-progress -> done
+status: done          # ready -> in-progress -> done
 phase: 5
 priority: P1
 risk_level: medium
@@ -64,17 +64,22 @@ in EPIC-016 gets its real imagery and a content restructure. Eight items:
 
 ## Definition of done
 
-- [ ] Album wall renders real artwork for every cover in the folder; no
+- [x] Album wall renders real artwork for every cover in the folder; no
       coverless albums remain.
-- [ ] Hero blob sits centered with abe2.jpg masked inside it.
-- [ ] Bookshelf uses real covers; hover (desktop) and tap (mobile) reveal
+- [x] Hero blob sits centered with abe2.jpg masked inside it.
+- [x] Bookshelf uses real covers; hover (desktop) and tap (mobile) reveal
       the takeaway with smooth motion.
-- [ ] Favorite Artists replaced by the interactive 10s playlist section;
+- [x] Favorite Artists replaced by the interactive 10s playlist section;
       graceful fallback when env/creds are absent.
-- [ ] Recently listening + In the studio cards gone; Hobbies section gone;
+- [x] Recently listening + In the studio cards gone; Hobbies section gone;
       TOC/anchors consistent.
-- [ ] Creative Pursuits (renamed) includes Music Production.
-- [ ] Wishlist section: intro + five described wishlists, imagery, hover
+- [x] Creative Pursuits (renamed) includes Music Production.
+- [x] Wishlist section: intro + five described wishlists, imagery, hover
       copy per item (personal-voice lines flagged for owner review).
-- [ ] lint / typecheck / build green; slop >= 35/50 on changed src files;
+- [x] lint / typecheck / build green; slop >= 35/50 on changed src files;
       in-browser verification at desktop and mobile widths.
+
+Done on feature/EPIC-018, 2026-07-17. Pending: owner eyeballs the page
+visually (hidden-pane quirk blocked screenshots again), reviews the drafted
+watch/cologne lines, and supplies Spotify creds (.env.local) plus the
+public 10s playlist ID so the kiosk's live path can be exercised.
