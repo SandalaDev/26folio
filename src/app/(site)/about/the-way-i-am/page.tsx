@@ -5,7 +5,7 @@ import { WayHero } from "@/components/the-way/way-hero";
 import { CuriosityTable } from "@/components/the-way/curiosity-table";
 import { MusicHall } from "@/components/the-way/music-hall";
 import { PracticeLine } from "@/components/the-way/practice-line";
-import { CollectionShelves } from "@/components/the-way/collection-shelves";
+import { WishlistShelves } from "@/components/the-way/wishlist-shelves";
 import { PrinciplesGallery } from "@/components/the-way/principles-gallery";
 import { Bookshelf } from "@/components/the-way/bookshelf";
 import { WayCta } from "@/components/the-way/way-cta";
@@ -36,7 +36,7 @@ export default function TheWayIAmPage() {
       <CuriosityTable />
       <MusicHall />
       <PracticeLine />
-      <CollectionShelves />
+      <WishlistShelves />
       <PrinciplesGallery />
       <Bookshelf />
       <WayCta />
