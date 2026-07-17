@@ -564,12 +564,12 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Nomos Tangente 38",
-        image: "/images/about/wishlist/watches/Nomos Glashütte Tangente 38.webp",
+        image: "/images/about/wishlist/watches/nomos-tangente-38.webp",
         note: "The cleanest dial in watchmaking. Nothing to add, nothing to take away.",
       },
       {
         name: "Nomos Club Sport Neomatik",
-        image: "/images/about/wishlist/watches/Nomos Glashütte Club Sport Neomatik.webp",
+        image: "/images/about/wishlist/watches/nomos-club-sport-neomatik.jpg",
         note: "Bauhaus discipline that can still take a swim.",
       },
       {
@@ -677,7 +677,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Frederic Malle Musc Ravageur",
-        image: "/images/about/wishlist/cologne/Frédéric Malle Musc Ravageur.jpg",
+        image: "/images/about/wishlist/cologne/frederic-malle-musc-ravageur.jpg",
         note: "The infamous musc. I want to see what the fuss is about.",
       },
       {
@@ -757,7 +757,7 @@ export const WISHLISTS: Wishlist[] = [
       },
       {
         name: "Hermes Eau des Merveilles",
-        image: "/images/about/wishlist/cologne/HERMÈS Eau des Merveilles.jpg",
+        image: "/images/about/wishlist/cologne/hermes-eau-des-merveilles.jpg",
         note: "Salty amber and orange, like skin after a beach day.",
       },
     ],
