@@ -6,11 +6,12 @@ import { PRACTICE } from "@/lib/the-way";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
- * PracticeLine - exhibit four (EPIC-016/TASK-064). Creative practice as one
- * flowing line of display words with hairline separators, a deliberate
- * counterpoint to the plaque wall and the album grid around it. Full-bleed
- * band on surface so the room changes tone without flipping theme. Hovering
- * a word inks it in; the italic shift is the only flourish.
+ * PracticeLine - exhibit four (EPIC-016/TASK-064; renamed Creative Pursuits
+ * and given Music Production in EPIC-018/TASK-068). One flowing line of
+ * display words with hairline separators, a deliberate counterpoint to the
+ * album grid around it. Full-bleed band on surface so the room changes tone
+ * without flipping theme. Hovering a word inks it in; the italic shift is
+ * the only flourish.
  */
 function PracticeLine() {
   const shouldReduceMotion = useReducedMotion();
@@ -31,7 +32,7 @@ function PracticeLine() {
           variants={shouldReduceMotion ? undefined : fadeUp}
           className="font-display text-heading text-ink"
         >
-          Creative Practice
+          Creative Pursuits
         </motion.h2>
         <motion.ul
           variants={shouldReduceMotion ? undefined : fadeUp}
