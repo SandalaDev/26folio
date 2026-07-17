@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   motion,
@@ -10,14 +11,16 @@ import {
 } from "framer-motion";
 import { ArrowLeft } from "@phosphor-icons/react";
 
+import { Blob } from "@/components/site/blob";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
- * WayHero - the museum entrance (EPIC-016/TASK-064). Editorial manifesto:
- * oversized display type, no portrait (the about page owns the photo; this
- * page opens with words). The heading block drifts up a touch slower than
- * the scroll (soft parallax, transform-only) and a blob wash breathes behind
- * the right edge, both disabled under prefers-reduced-motion. The staggered
+ * WayHero - the museum entrance (EPIC-016/TASK-064, recomposed in
+ * EPIC-018/TASK-068). Editorial manifesto with the page's one artifact: the
+ * blob motif moved from a right-edge wash to the center of the hero, now
+ * masking the owner's portrait (abe2.jpg) with a soft rose echo behind it.
+ * The heading block drifts up a touch slower than the scroll (soft parallax,
+ * transform-only), disabled under prefers-reduced-motion. The staggered
  * entrance on mount doubles as the page transition from About.
  */
 function WayHero() {
@@ -36,12 +39,6 @@ function WayHero() {
       data-way-section="intro"
       className="relative overflow-hidden px-5 pb-24 pt-14 md:px-10 md:pb-32 lg:px-16 xl:px-24"
     >
-      {/* Decorative wash behind the right edge - the brand blob motif. */}
-      <div
-        aria-hidden="true"
-        className="blob-mask-2 blob-morph absolute -right-24 top-8 -z-10 size-72 bg-rose/10 md:size-96"
-      />
-
       <motion.div
         initial={shouldReduceMotion ? undefined : "hidden"}
         animate={shouldReduceMotion ? undefined : "show"}
@@ -68,14 +65,37 @@ function WayHero() {
           The Way I Am
         </motion.h1>
 
+        {/* The portrait sits dead-center; the two intro lines flank it at
+            md+ and stack under it on mobile. */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="mt-12 grid gap-6 md:grid-cols-12 lg:mt-16"
+          className="mt-12 grid gap-10 md:grid-cols-12 md:items-center lg:mt-16"
         >
-          <p className="text-subhead text-soft md:col-span-4">
+          <p className="order-2 text-subhead text-soft md:order-none md:col-span-3">
             The person behind the projects.
           </p>
-          <p className="measure text-muted md:col-span-6 md:col-start-6">
+
+          <div className="relative mx-auto w-56 sm:w-64 md:col-span-6 md:w-72 lg:w-80">
+            <Blob
+              variant={2}
+              fill="var(--color-rose)"
+              opacity={0.12}
+              blur={8}
+              className="-left-8 -top-8 w-[135%]"
+            />
+            <div className="blob-mask-2 blob-morph relative aspect-square overflow-hidden bg-surface-2">
+              <Image
+                src="/images/abe2.jpg"
+                alt="Abe Sandala"
+                fill
+                sizes="(min-width: 1024px) 20rem, (min-width: 768px) 18rem, 14rem"
+                priority
+                className="object-cover object-[50%_30%]"
+              />
+            </div>
+          </div>
+
+          <p className="order-3 measure text-muted md:order-none md:col-span-3">
             This page isn&apos;t about what I do for work. It&apos;s about the
             things that shape how I think, what keeps me curious, and the ideas
             I keep coming back to.

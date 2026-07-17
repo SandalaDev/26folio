@@ -54,22 +54,13 @@ export const CURIOSITY: CuriosityRow[] = [
   },
 ];
 
-/** Hobbies - museum wall plaques. Icons live with the component. */
-export const HOBBIES = [
-  "Photography & Video",
-  "Music Production",
-  "Walking",
-  "TV & Movies",
-  "Gaming",
-  "DIY",
-] as const;
-
-/** Creative practice - one flowing line of display words. */
+/** Creative pursuits - one flowing line of display words. */
 export const PRACTICE = [
   "Logo Design",
   "Motion Graphics",
   "Photography",
   "Film & Video",
+  "Music Production",
   "Writing",
   "Poetry",
 ] as const;
@@ -79,22 +70,8 @@ export interface Album {
   artist: string;
 }
 
-/** Music - production corner, the now-playing card, chips and the wall. */
+/** Music - the chips and the wall. */
 export const MUSIC = {
-  production: {
-    daw: "Ableton Live",
-    since: "2011 to present",
-    plugins: [
-      "Arturia",
-      "Native Instruments",
-      "Valhalla DSP",
-      "Spectrasonics Omnisphere",
-    ],
-  },
-  recentlyListening: {
-    artist: "Clipse",
-    album: "Let God Sort Em Out",
-  },
   artists: [
     "Coldplay",
     "Radiohead",
@@ -325,9 +302,8 @@ export const BOOKSHELF: { label: string; books: Book[] }[] = [
 export const WAY_SECTIONS = [
   { id: "intro", label: "Intro" },
   { id: "curiosity", label: "Curiosity" },
-  { id: "hobbies", label: "Hobbies" },
   { id: "music", label: "Music" },
-  { id: "practice", label: "Creative Practice" },
+  { id: "practice", label: "Creative Pursuits" },
   { id: "collections", label: "Collections" },
   { id: "principles", label: "Principles" },
   { id: "inspiration", label: "Inspiration" },

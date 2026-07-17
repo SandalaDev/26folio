@@ -3,21 +3,14 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Section } from "@/components/site/section";
-import { TiltCard } from "@/components/motion/tilt-card";
 import { MUSIC } from "@/lib/the-way";
 import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
- * MusicHall - exhibit three (EPIC-016/TASK-064), in three movements:
- *
- * 1. Now playing: the recently-listening record on a pointer-reactive
- *    TiltCard with a slowly spinning vinyl (the one rounded element in the
- *    room; it is a record). Spin pauses under prefers-reduced-motion.
- * 2. The studio corner: DAW tenure plus instrument/plugin chips.
- * 3. Favorite artists as chips, then the desert-island wall: a responsive
- *    grid of typographic sleeves. No licensed artwork exists in the repo,
- *    so each sleeve gets a palette wash cycled from the brand accents;
- *    drop real art into public/images/albums/ in a later pass.
+ * MusicHall - exhibit three (EPIC-016/TASK-064, trimmed in
+ * EPIC-018/TASK-068: the now-playing and studio cards are gone per the
+ * owner's brief). Two movements remain: favorite-artist chips, then the
+ * desert-island wall of typographic sleeves cycling the brand accents.
  */
 
 /** Literal class strings so Tailwind's scanner keeps every tone. */
@@ -47,61 +40,10 @@ function MusicHall() {
           Music
         </motion.h2>
 
+        {/* Movement one - the people. */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="mt-14 grid gap-5 lg:grid-cols-12"
-        >
-          {/* Movement one - the record on the platter right now. */}
-          <TiltCard tiltY={5} className="lg:col-span-7">
-            <div className="flex h-full items-center gap-8 border border-border bg-surface p-8">
-              <div
-                aria-hidden="true"
-                className="relative size-24 shrink-0 animate-[spin_9s_linear_infinite] rounded-full border border-border-2 bg-background motion-reduce:animate-none md:size-32"
-              >
-                <span className="absolute inset-3 rounded-full border border-border" />
-                <span className="absolute inset-6 rounded-full border border-border" />
-                <span className="absolute left-1/2 top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose" />
-              </div>
-              <div className="min-w-0">
-                <p className="eyebrow text-rose">Recently listening</p>
-                <p className="mt-3 font-display text-2xl font-semibold text-ink md:text-3xl">
-                  {MUSIC.recentlyListening.album}
-                </p>
-                <p className="mt-1 text-muted">
-                  {MUSIC.recentlyListening.artist}
-                </p>
-              </div>
-            </div>
-          </TiltCard>
-
-          {/* Movement two - the studio corner. */}
-          <div className="flex flex-col justify-between gap-8 border border-border bg-surface p-8 lg:col-span-5">
-            <div>
-              <h3 className="font-display text-xl font-semibold text-ink">
-                In the studio
-              </h3>
-              <p className="mt-3 text-muted">
-                {MUSIC.production.daw},{" "}
-                <span className="text-soft">{MUSIC.production.since}</span>
-              </p>
-            </div>
-            <ul className="flex flex-wrap gap-2">
-              {MUSIC.production.plugins.map((plugin) => (
-                <li
-                  key={plugin}
-                  className="border border-border px-3 py-1.5 text-sm text-muted"
-                >
-                  {plugin}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </motion.div>
-
-        {/* Movement three - the people, then the wall. */}
-        <motion.div
-          variants={shouldReduceMotion ? undefined : fadeUp}
-          className="mt-16"
+          className="mt-14"
         >
           <h3 className="font-display text-xl font-semibold text-ink">
             Favorite artists
