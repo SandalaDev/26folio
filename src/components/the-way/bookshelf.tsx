@@ -10,11 +10,14 @@ import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
  * Bookshelf - exhibit seven (EPIC-016/TASK-064, rebuilt cover-forward in
- * EPIC-018/TASK-069). Real covers stand on the shelf board in a hard-
- * cornered grid. Hovering or focusing a book slides its takeaway up over
- * the cover; on touch screens a tap toggles the same drawer (one open per
- * shelf, aria-expanded). All motion is transform/opacity and collapses to
- * an instant swap under prefers-reduced-motion.
+ * EPIC-018/TASK-069; laid on its side in TASK-072). Each shelf is now a
+ * single horizontal scroll-snap row, so the covers slide along the board
+ * instead of stacking the page taller: the third hiding technique on the
+ * walk, next to the album wall's capped preview and the wishlist accordion.
+ * Hovering or focusing a book slides its takeaway up over the cover; on
+ * touch screens a tap toggles the same drawer (one open per shelf,
+ * aria-expanded). All motion is transform/opacity and collapses to an
+ * instant swap under prefers-reduced-motion.
  */
 
 function BookCase({
@@ -76,9 +79,11 @@ function ShelfRow({ label, books }: { label: string; books: Book[] }) {
   return (
     <div>
       <h3 className="font-display text-xl font-semibold text-ink">{label}</h3>
-      <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 border-b-2 border-border-2 pb-8 sm:grid-cols-3 md:gap-x-5 lg:grid-cols-5">
+      {/* One sliding row per shelf; the cut-off cover at the edge is the
+          scroll affordance. */}
+      <ul className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto border-b-2 border-border-2 pb-8 md:gap-5 [scrollbar-width:thin]">
         {books.map((book, index) => (
-          <li key={book.title}>
+          <li key={book.title} className="w-36 shrink-0 snap-start sm:w-40 lg:w-44">
             <BookCase
               book={book}
               isOpen={open === index}

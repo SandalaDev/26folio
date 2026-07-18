@@ -16,12 +16,14 @@ import { fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
  * WayHero - the museum entrance (EPIC-016/TASK-064, recomposed in
- * EPIC-018/TASK-068). Editorial manifesto with the page's one artifact: the
- * blob motif moved from a right-edge wash to the center of the hero, now
- * masking the owner's portrait (abe2.jpg) with a soft rose echo behind it.
- * The heading block drifts up a touch slower than the scroll (soft parallax,
- * transform-only), disabled under prefers-reduced-motion. The staggered
- * entrance on mount doubles as the page transition from About.
+ * EPIC-018/TASK-068, rebalanced in TASK-072). Centered editorial manifesto:
+ * title, then the blob-masked portrait (abe2.jpg, soft rose echo behind),
+ * then the two intro lines stacked in a measured column. The previous
+ * 3/6/3 flanking grid ran the right-hand line into the fixed TOC rail at
+ * lg+; the centered column leaves both gutters clear. The heading block
+ * drifts up a touch slower than the scroll (soft parallax, transform-only),
+ * disabled under prefers-reduced-motion. The staggered entrance on mount
+ * doubles as the page transition from About.
  */
 function WayHero() {
   const shouldReduceMotion = useReducedMotion();
@@ -60,22 +62,19 @@ function WayHero() {
 
         <motion.h1
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="display-gradient mt-10 max-w-[12ch] font-display text-display lg:mt-16"
+          className="display-gradient mx-auto mt-10 text-center font-display text-display lg:mt-14"
         >
           The Way I Am
         </motion.h1>
 
-        {/* The portrait sits dead-center; the two intro lines flank it at
-            md+ and stack under it on mobile. */}
+        {/* Centered manifesto stack: portrait under the title, intro lines
+            under the portrait. Keeps every line clear of the fixed TOC rail
+            on the right edge. */}
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="mt-12 grid gap-10 md:grid-cols-12 md:items-center lg:mt-16"
+          className="mx-auto mt-12 flex max-w-2xl flex-col items-center text-center lg:mt-14"
         >
-          <p className="order-2 text-subhead text-soft md:order-none md:col-span-3">
-            The person behind the projects.
-          </p>
-
-          <div className="relative mx-auto w-56 sm:w-64 md:col-span-6 md:w-72 lg:w-80">
+          <div className="relative w-56 sm:w-64 md:w-72 lg:w-80">
             <Blob
               variant={2}
               fill="var(--color-rose)"
@@ -95,7 +94,9 @@ function WayHero() {
             </div>
           </div>
 
-          <p className="order-3 measure text-muted md:order-none md:col-span-3">
+          <p className="mt-10 text-subhead text-soft">The person behind the projects.</p>
+
+          <p className="measure mt-4 text-muted">
             This page isn&apos;t about what I do for work. It&apos;s about the
             things that shape how I think, what keeps me curious, and the ideas
             I keep coming back to.

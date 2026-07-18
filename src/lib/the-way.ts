@@ -65,6 +65,22 @@ export const PRACTICE = [
   "Poetry",
 ] as const;
 
+/** Music - the exhibit's opening line (owner copy, 2026-07-18). */
+export const MUSIC_INTRO =
+  "The biggest impact music streaming apps have had on me is exposing the massive delta between what I would tell you if you asked me what kind of music I like and what I actually listen to. I've recently had to make peace with the reality that I might have the taste of a 12-year-old American white girl. Alas, it is what it is. Look around and see if you agree.";
+
+/** The 10s - kiosk intro paragraphs (owner copy, 2026-07-18). */
+export const TENS_INTRO = [
+  "I don't just listen to music; I am constantly imagining what I would change if I had made it. The timbre of the bass is wrong, that note should have been a whole step higher, there are too many holes in the flow, the rap should have a tighter subdivision, and my favorite is hating on drum breaks, which are almost always wrong except, of course, on Black Sabbath's Iron Man.",
+  "This playlist is just songs that I enjoy. No notes.",
+] as const;
+
+/** Desert-island albums - wall intro paragraphs (owner copy, 2026-07-18). */
+export const ALBUMS_INTRO = [
+  "I'm not much of an album person in the traditional sense. I don't spend much time decoding themes or trying to figure out what an artist was really trying to say. Half the time, I can't even hear the lyrics unless they are particularly clever or funny.",
+  "For me, a great album is much simpler than that: if I like almost every song on it, it's a great album.",
+] as const;
+
 export interface Album {
   title: string;
   artist: string;
@@ -299,6 +315,44 @@ export const ALBUMS = [
   },
 ] satisfies Album[];
 
+/** Deterministic PRNG: the wall order must match between the server render
+ *  and client hydration, so Math.random is off the table. */
+function mulberry32(seed: number): () => number {
+  let state = seed;
+  return () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Fixed shuffle of the wall (owner, 2026-07-18: mix the covers; one
+ *  artist's sleeves must not sit together). A seeded Fisher-Yates does the
+ *  mixing; the follow-up pass breaks any same-artist neighbors it left. */
+function spreadArtists(albums: Album[]): Album[] {
+  const random = mulberry32(20260718);
+  const wall = [...albums];
+  for (let i = wall.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [wall[i], wall[j]] = [wall[j], wall[i]];
+  }
+  for (let i = 1; i < wall.length; i++) {
+    if (wall[i].artist !== wall[i - 1].artist) continue;
+    for (let j = i + 1; j < wall.length; j++) {
+      if (wall[j].artist !== wall[i - 1].artist && wall[j].artist !== wall[i + 1]?.artist) {
+        [wall[i], wall[j]] = [wall[j], wall[i]];
+        break;
+      }
+    }
+  }
+  return wall;
+}
+
+/** The album wall in display order. ALBUMS above stays grouped by artist so
+ *  the data is maintainable; the wall renders this spread instead. */
+export const ALBUM_WALL: Album[] = spreadArtists(ALBUMS);
+
 export interface WishlistItem {
   name: string;
   /** Product shot under public/images/about/wishlist/. */
@@ -316,9 +370,9 @@ export interface Wishlist {
   items: WishlistItem[];
 }
 
-/** Collections - the wishlist wing intro. */
+/** Collections - the wishlist wing intro (owner copy, 2026-07-18). */
 export const WISHLIST_INTRO =
-  "I keep wishlists the way other people keep journals. Most of this I don't own yet, and some of it I never will. The list itself is the hobby: researching, comparing, and slowly working out what the dream version of each setup looks like.";
+  "These collections are a tour through the things I find interesting. I like products that solve problems well, look beautiful doing it, or represent exceptional engineering. Every item is here because I think there's something worth appreciating about it.";
 
 /** The five wishlists, images from public/images/about/wishlist/. */
 export const WISHLISTS: Wishlist[] = [
@@ -326,7 +380,7 @@ export const WISHLISTS: Wishlist[] = [
     id: "audiophile",
     title: "Audiophile gear",
     description:
-      "The listening chain I'm building toward. Headphones, in-ears, DACs and speakers picked for how they serve the music.",
+      "I consider myself an aspiring audiophile. Here's the headphones, IEMs, DACs, amps and speakers that have caught my attention and I'd like to hear for myself. This collection changes constantly as I learn more and discover new gear.",
     items: [
       {
         name: "Sennheiser HD 800 S",
@@ -394,7 +448,7 @@ export const WISHLISTS: Wishlist[] = [
     id: "music-studio",
     title: "Dream home music studio",
     description:
-      "If the house ever gets a purpose-built room, this is what lives in it. Instruments, monitoring and conversion for finishing tracks, not just starting them.",
+      "The studio is coming back, and when it does, it'll look something like this. Instruments, studio monitors, recording gear and everything else I'd need to bring the ideas trapped in my head to life.",
     items: [
       {
         name: "Sequential Prophet-10",
@@ -501,9 +555,9 @@ export const WISHLISTS: Wishlist[] = [
   },
   {
     id: "video-studio",
-    title: "Planned video equipment",
+    title: "Video studio",
     description:
-      "The kit list for the video work I want to shoot. One body, glass worth keeping for a decade, and the light, sound and support to match.",
+      "The camera kit I'm building toward. I'll be launching a YouTube channel later this year, and even though I'll be starting with my phone, this is where I want the studio to end up.",
     items: [
       {
         name: "Panasonic Lumix S1 II",
@@ -605,7 +659,8 @@ export const WISHLISTS: Wishlist[] = [
   {
     id: "watches",
     title: "Watch wishlist",
-    description: "Watches I'd wear for decades, not seasons. Hover one for why it made the list.",
+    description:
+      "I'm not a horology buff. I know the difference between quartz, automatic and manual movements, but the internal mechanics aren't where my interest lies. What draws me to a watch is its industrial design, choice of materials, proportions, brand, aesthetics, and the way the dial, case and bracelet come together.",
     items: [
       {
         name: "Grand Seiko Shunbun SBGA413",
@@ -672,13 +727,18 @@ export const WISHLISTS: Wishlist[] = [
         image: "/images/about/wishlist/watches/Casio G-Shock MRG-B5000.jpg",
         note: "The G-Shock idea executed in titanium at its absolute ceiling. Indestructible and jewelry at the same time.",
       },
+      {
+        name: "M.A.D.2 World Tour",
+        image: "/images/about/wishlist/watches/M.A.D Editions World Tour.webp",
+        note: "Max Busser making high watchmaking playful at a price real people can chase. Spinning discs instead of hands, and the ice-blue dial grins at you.",
+      },
     ],
   },
   {
     id: "colognes",
     title: "Colognes",
     description:
-      "Part nostalgia, part curiosity. Scents I've worn and want back, next to bottles I want to try at least once.",
+      "Part nostalgia, part curiosity. Some are fragrances I've owned and want to wear again. Others are bottles I'm simply curious enough to experience at least once.",
     items: [
       {
         name: "YSL La Nuit de L'Homme",

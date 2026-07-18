@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowSquareOut, Shuffle } from "@phosphor-icons/react";
 
 import { DURATION, EASE_OUT } from "@/lib/motion";
+import { TENS_INTRO } from "@/lib/the-way";
 import type { TensPlaylist, TensTrack } from "@/lib/spotify";
 
 /**
@@ -140,10 +141,11 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
           </a>
         ) : null}
       </div>
-      <p className="measure text-muted mt-3">
-        My working definition of a perfect song. Everything on this playlist is a 10 out of 10 to
-        me, and all of it stays in rotation.
-      </p>
+      {TENS_INTRO.map((paragraph) => (
+        <p key={paragraph.slice(0, 24)} className="measure text-muted mt-3">
+          {paragraph}
+        </p>
+      ))}
 
       {playlist.tracks.length === 0 ? (
         <div className="border-border bg-surface mt-8 border p-8">

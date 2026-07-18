@@ -2,20 +2,25 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { CaretDown } from "@phosphor-icons/react";
 
 import { Section } from "@/components/site/section";
-import { WISHLISTS, WISHLIST_INTRO, type WishlistItem } from "@/lib/the-way";
-import { fadeUp, staggerContainer } from "@/lib/motion";
+import { WISHLISTS, WISHLIST_INTRO, type Wishlist, type WishlistItem } from "@/lib/the-way";
+import { DURATION, EASE_OUT, fadeUp, staggerContainer } from "@/lib/motion";
 
 /**
- * WishlistShelves - exhibit five (EPIC-018/TASK-070, replacing EPIC-016's
- * icon shelves). Collections as a wishlist wing: an intro, then five
- * described lists whose items stand in bright display cases against the
- * dark wall. Hover or focus slides each item's line up over the case;
- * on touch screens a tap toggles the same drawer (one open per list,
- * aria-expanded). Personal-voice lines are drafts pending owner review.
+ * WishlistShelves - exhibit five (EPIC-018/TASK-070; collapsed into an
+ * accordion in TASK-072 to shorten the walk). Collections as a wishlist
+ * wing: an intro, then five lists that rest as closed display cases. Each
+ * closed row shows its title, description and a teaser strip of small
+ * thumbnails; opening it (height auto animation, static under reduced
+ * motion) reveals the full grid of bright cases against the dark wall.
+ * Hover or focus slides each item's line up over its case; on touch a tap
+ * toggles the same drawer (one open per list, aria-expanded).
  */
+
+const TEASER_COUNT = 6;
 
 function ItemCase({
   item,
@@ -64,32 +69,89 @@ function ItemCase({
   );
 }
 
-function WishlistRow({
-  title,
-  description,
-  items,
-}: {
-  title: string;
-  description: string;
-  items: WishlistItem[];
-}) {
+function WishlistRow({ wishlist }: { wishlist: Wishlist }) {
+  const shouldReduceMotion = useReducedMotion();
+  const [expanded, setExpanded] = React.useState(false);
   const [open, setOpen] = React.useState<number | null>(null);
+  const teaser = wishlist.items.slice(0, TEASER_COUNT);
 
   return (
-    <div>
-      <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
-      <p className="measure mt-3 text-muted">{description}</p>
-      <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 border-b-2 border-border-2 pb-8 sm:grid-cols-3 md:grid-cols-4 md:gap-x-5 xl:grid-cols-5">
-        {items.map((item, index) => (
-          <li key={item.name}>
-            <ItemCase
-              item={item}
-              isOpen={open === index}
-              onToggle={() => setOpen(open === index ? null : index)}
+    <div className="border-border-2 border-b-2 pb-10">
+      <button
+        type="button"
+        onClick={() => {
+          setExpanded((value) => !value);
+          setOpen(null);
+        }}
+        aria-expanded={expanded}
+        className="group flex w-full flex-col text-left"
+      >
+        <span className="flex items-baseline justify-between gap-4">
+          <span className="font-display text-xl font-semibold text-ink">{wishlist.title}</span>
+          <span className="text-muted group-hover:text-ink flex shrink-0 items-center gap-2 text-sm transition-colors">
+            {expanded ? "Close the case" : `Open the case (${wishlist.items.length})`}
+            <CaretDown
+              aria-hidden="true"
+              className={`size-3.5 transition-transform duration-300 motion-reduce:transition-none ${
+                expanded ? "rotate-180" : ""
+              }`}
             />
-          </li>
-        ))}
-      </ul>
+          </span>
+        </span>
+        <span className="measure mt-3 block text-muted">{wishlist.description}</span>
+
+        {/* Closed state: a teaser strip of small cases hints at what's
+            inside without paying for the full grid. */}
+        {!expanded ? (
+          <span className="mt-6 flex items-center gap-2">
+            {teaser.map((item, index) => (
+              <span
+                key={item.name}
+                className={`border-border relative block size-12 shrink-0 overflow-hidden border sm:size-14 ${
+                  index >= 4 ? "hidden sm:block" : ""
+                }`}
+              >
+                <span className="absolute inset-0 bg-white/95" aria-hidden="true" />
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  sizes="3.5rem"
+                  className="object-contain p-1.5"
+                />
+              </span>
+            ))}
+            <span className="text-muted ml-1 text-sm">
+              +{wishlist.items.length - teaser.length} more
+            </span>
+          </span>
+        ) : null}
+      </button>
+
+      <AnimatePresence initial={false}>
+        {expanded ? (
+          <motion.div
+            key={`${wishlist.id}-grid`}
+            initial={shouldReduceMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={shouldReduceMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: DURATION.page, ease: EASE_OUT }}
+            className="overflow-hidden"
+          >
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-8 pt-8 sm:grid-cols-3 md:grid-cols-4 md:gap-x-5 xl:grid-cols-5">
+              {wishlist.items.map((item, index) => (
+                <li key={item.name}>
+                  <ItemCase
+                    item={item}
+                    isOpen={open === index}
+                    onToggle={() => setOpen(open === index ? null : index)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }
@@ -119,15 +181,10 @@ function WishlistShelves() {
         </motion.p>
         <motion.div
           variants={shouldReduceMotion ? undefined : fadeUp}
-          className="mt-14 flex flex-col gap-20"
+          className="mt-14 flex flex-col gap-12"
         >
           {WISHLISTS.map((wishlist) => (
-            <WishlistRow
-              key={wishlist.id}
-              title={wishlist.title}
-              description={wishlist.description}
-              items={wishlist.items}
-            />
+            <WishlistRow key={wishlist.id} wishlist={wishlist} />
           ))}
         </motion.div>
       </motion.div>
