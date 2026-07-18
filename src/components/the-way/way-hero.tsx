@@ -94,7 +94,9 @@ function WayHero() {
             </div>
           </div>
 
-          <p className="mt-10 text-subhead text-soft">The person behind the projects.</p>
+          <p className="font-display mt-10 text-2xl font-semibold text-ink md:text-3xl">
+            The person behind the projects.
+          </p>
 
           <p className="measure mt-4 text-muted">
             This page isn&apos;t about what I do for work. It&apos;s about the

@@ -19,6 +19,16 @@ import snapshot from "@/lib/spotify-snapshot.json";
  *
  * Client-credentials flow: the playlist must be public. Secrets live in
  * .env.local / the production environment only.
+ *
+ * Track-list detour (2026-07-18): Spotify now strips playlist tracks from
+ * client-credentials responses for development-mode apps (the /tracks
+ * sub-endpoint 403s and the playlist object arrives without its tracks
+ * field; batch /v1/tracks?ids= is closed too). Playlist metadata and
+ * single-track lookups still work, so the track IDs come from the public
+ * embed page's __NEXT_DATA__ JSON (open.spotify.com/embed/playlist/<id>,
+ * no auth, capped at 100 rows) and per-track /v1/tracks/<id> calls fill in
+ * album, art, year and links. If Spotify restores playlist reads for this
+ * app, fetchTrackIds can collapse back into a /playlists/<id>/tracks walk.
  */
 
 export interface TensTrack {
@@ -43,19 +53,17 @@ export interface TensPlaylist {
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const API_BASE = "https://api.spotify.com/v1";
 
-interface SpotifyTrackItem {
-  track: {
+interface SpotifyTrack {
+  name?: string;
+  duration_ms?: number;
+  external_urls?: { spotify?: string };
+  artists?: { name?: string }[];
+  album?: {
     name?: string;
-    duration_ms?: number;
-    external_urls?: { spotify?: string };
-    artists?: { name?: string }[];
-    album?: {
-      name?: string;
-      release_date?: string;
-      images?: { url?: string; width?: number }[];
-    };
-    is_local?: boolean;
-  } | null;
+    release_date?: string;
+    images?: { url?: string; width?: number }[];
+  };
+  is_local?: boolean;
 }
 
 async function getAccessToken(): Promise<string> {
@@ -77,8 +85,7 @@ async function getAccessToken(): Promise<string> {
   return json.access_token;
 }
 
-function mapTrack(item: SpotifyTrackItem): TensTrack | null {
-  const track = item.track;
+function mapTrack(track: SpotifyTrack | null): TensTrack | null {
   if (!track || track.is_local || !track.name) return null;
   const releaseDate = track.album?.release_date ?? "";
   const year = Number.parseInt(releaseDate.slice(0, 4), 10);
@@ -100,6 +107,32 @@ function mapTrack(item: SpotifyTrackItem): TensTrack | null {
   };
 }
 
+/** Track IDs in playlist order, harvested from the public embed page (see
+ *  the module comment for why the API's own playlist reads are closed). */
+async function fetchTrackIds(playlistId: string): Promise<string[]> {
+  const res = await fetch(`https://open.spotify.com/embed/playlist/${playlistId}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`spotify embed: ${res.status}`);
+  const html = await res.text();
+  const match = html.match(
+    /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/,
+  );
+  if (!match) throw new Error("spotify embed: no __NEXT_DATA__");
+  const data = JSON.parse(match[1]) as {
+    props?: {
+      pageProps?: { state?: { data?: { entity?: { trackList?: { uri?: string }[] } } } };
+    };
+  };
+  const trackList = data.props?.pageProps?.state?.data?.entity?.trackList ?? [];
+  const ids = trackList
+    .map((row) => row.uri ?? "")
+    .filter((uri) => uri.startsWith("spotify:track:"))
+    .map((uri) => uri.slice("spotify:track:".length));
+  if (!ids.length) throw new Error("spotify embed: empty track list");
+  return ids;
+}
+
 async function fetchPlaylist(): Promise<TensPlaylist> {
   const token = await getAccessToken();
   const headers = { Authorization: `Bearer ${token}` };
@@ -115,21 +148,21 @@ async function fetchPlaylist(): Promise<TensPlaylist> {
     external_urls?: { spotify?: string };
   };
 
+  const ids = await fetchTrackIds(id);
   const tracks: TensTrack[] = [];
-  let next: string | null =
-    `${API_BASE}/playlists/${id}/tracks?limit=100&fields=next,items(track(name,duration_ms,is_local,external_urls.spotify,artists(name),album(name,release_date,images)))`;
-  while (next) {
-    const pageRes: Response = await fetch(next, { headers, cache: "no-store" });
-    if (!pageRes.ok) throw new Error(`spotify tracks: ${pageRes.status}`);
-    const page = (await pageRes.json()) as {
-      next: string | null;
-      items?: SpotifyTrackItem[];
-    };
-    for (const item of page.items ?? []) {
+  for (let start = 0; start < ids.length; start += 10) {
+    const chunk = ids.slice(start, start + 10);
+    const results = await Promise.all(
+      chunk.map(async (trackId) => {
+        const res = await fetch(`${API_BASE}/tracks/${trackId}`, { headers, cache: "no-store" });
+        if (!res.ok) throw new Error(`spotify track ${trackId}: ${res.status}`);
+        return (await res.json()) as SpotifyTrack;
+      }),
+    );
+    for (const item of results) {
       const track = mapTrack(item);
       if (track) tracks.push(track);
     }
-    next = page.next;
   }
 
   return {

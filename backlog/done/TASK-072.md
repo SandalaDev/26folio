@@ -1,7 +1,7 @@
 ---
 id: TASK-072
 title: "Owner revision pass 2: live Spotify creds, hero rebalance, music + collections copy, album shuffle, collapsible image walls"
-status: in_progress
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

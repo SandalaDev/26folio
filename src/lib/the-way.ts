@@ -119,6 +119,11 @@ export const ALBUMS = [
     cover: "/images/about/albums/norah-jones-feels-like-home.jpg",
   },
   {
+    title: "Not Too Late",
+    artist: "Norah Jones",
+    cover: "/images/about/albums/Norah Jones- Not too Late.jpg",
+  },
+  {
     title: "Little Broken Hearts",
     artist: "Norah Jones",
     cover: "/images/about/albums/norah jones- little broken hearts.jpg",
@@ -315,43 +320,66 @@ export const ALBUMS = [
   },
 ] satisfies Album[];
 
-/** Deterministic PRNG: the wall order must match between the server render
- *  and client hydration, so Math.random is off the table. */
-function mulberry32(seed: number): () => number {
-  let state = seed;
-  return () => {
-    state = (state + 0x6d2b79f5) | 0;
-    let t = Math.imul(state ^ (state >>> 15), 1 | state);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+/** The wall's opening row, in the owner's exact order (2026-07-18). */
+const WALL_FAVORITES = [
+  "Not Too Late",
+  "If You're Reading This It's Too Late",
+  "What We Saw from the Cheap Seats",
+  "Dirty Computer",
+  "In Rainbows",
+  "Blue Banisters",
+  "4:44",
+  "Charli",
+];
 
-/** Fixed shuffle of the wall (owner, 2026-07-18: mix the covers; one
- *  artist's sleeves must not sit together). A seeded Fisher-Yates does the
- *  mixing; the follow-up pass breaks any same-artist neighbors it left. */
-function spreadArtists(albums: Album[]): Album[] {
-  const random = mulberry32(20260718);
-  const wall = [...albums];
-  for (let i = wall.length - 1; i > 0; i--) {
-    const j = Math.floor(random() * (i + 1));
-    [wall[i], wall[j]] = [wall[j], wall[i]];
+/** One sleeve for each multi-album artist the favorites don't already
+ *  cover, in descending order of how many albums they hold on the wall
+ *  (Kanye 6, Coldplay 3, P!nk 2). Owner delegated these picks. */
+const WALL_ARTIST_PICKS = [
+  "My Beautiful Dark Twisted Fantasy",
+  "A Rush of Blood to the Head",
+  "Funhouse",
+];
+
+/** Wall order (owner, 2026-07-18): favorites first in their given order,
+ *  then a pick per remaining multi-album artist by representation, then
+ *  the rest dealt greedily: always the artist with the most sleeves left,
+ *  never repeating the previous tile's artist. Heavily represented artists
+ *  surface early and keep resurfacing without ever clustering. */
+function buildWall(albums: Album[]): Album[] {
+  const byTitle = new Map(albums.map((album) => [album.title, album]));
+  const wall: Album[] = [];
+  for (const title of [...WALL_FAVORITES, ...WALL_ARTIST_PICKS]) {
+    const album = byTitle.get(title);
+    if (album) wall.push(album);
   }
-  for (let i = 1; i < wall.length; i++) {
-    if (wall[i].artist !== wall[i - 1].artist) continue;
-    for (let j = i + 1; j < wall.length; j++) {
-      if (wall[j].artist !== wall[i - 1].artist && wall[j].artist !== wall[i + 1]?.artist) {
-        [wall[i], wall[j]] = [wall[j], wall[i]];
-        break;
-      }
+
+  const used = new Set(wall.map((album) => album.title));
+  const remaining = new Map<string, Album[]>();
+  for (const album of albums) {
+    if (used.has(album.title)) continue;
+    const list = remaining.get(album.artist) ?? [];
+    list.push(album);
+    remaining.set(album.artist, list);
+  }
+
+  while (remaining.size > 0) {
+    const previous = wall[wall.length - 1]?.artist;
+    let pick = "";
+    for (const [artist, list] of remaining) {
+      if (artist === previous && remaining.size > 1) continue;
+      if (!pick || list.length > (remaining.get(pick)?.length ?? 0)) pick = artist;
     }
+    const list = remaining.get(pick)!;
+    wall.push(list.shift()!);
+    if (list.length === 0) remaining.delete(pick);
   }
   return wall;
 }
 
 /** The album wall in display order. ALBUMS above stays grouped by artist so
- *  the data is maintainable; the wall renders this spread instead. */
-export const ALBUM_WALL: Album[] = spreadArtists(ALBUMS);
+ *  the data is maintainable; the wall renders this ordering instead. */
+export const ALBUM_WALL: Album[] = buildWall(ALBUMS);
 
 export interface WishlistItem {
   name: string;
@@ -731,6 +759,11 @@ export const WISHLISTS: Wishlist[] = [
         name: "M.A.D.2 World Tour",
         image: "/images/about/wishlist/watches/M.A.D Editions World Tour.webp",
         note: "Max Busser making high watchmaking playful at a price real people can chase. Spinning discs instead of hands, and the ice-blue dial grins at you.",
+      },
+      {
+        name: "TAG Heuer Monaco",
+        image: "/images/about/wishlist/watches/tag heuer monaco.webp",
+        note: "The square case that made motorsport chic. McQueen wore it in 1971 and nothing else has looked like it since.",
       },
     ],
   },

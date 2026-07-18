@@ -197,8 +197,9 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
           ) : null}
 
           <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-1 sm:grid-cols-2 xl:grid-cols-3">
-            {visible.map((track) => (
-              <li key={`${track.title}-${track.artists}`}>
+            {/* Index in the key: the playlist can hold the same track twice. */}
+            {visible.map((track, index) => (
+              <li key={`${index}-${track.url || track.title}`}>
                 <a
                   href={track.url || playlist.url}
                   target="_blank"

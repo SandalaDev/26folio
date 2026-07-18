@@ -3,21 +3,22 @@
 import * as React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 
 import { Section } from "@/components/site/section";
 import { BOOKSHELF, type Book } from "@/lib/the-way";
-import { fadeUp, staggerContainer } from "@/lib/motion";
+import { fadeUp, prefersReducedMotion, staggerContainer } from "@/lib/motion";
 
 /**
  * Bookshelf - exhibit seven (EPIC-016/TASK-064, rebuilt cover-forward in
- * EPIC-018/TASK-069; laid on its side in TASK-072). Each shelf is now a
- * single horizontal scroll-snap row, so the covers slide along the board
- * instead of stacking the page taller: the third hiding technique on the
- * walk, next to the album wall's capped preview and the wishlist accordion.
- * Hovering or focusing a book slides its takeaway up over the cover; on
- * touch screens a tap toggles the same drawer (one open per shelf,
- * aria-expanded). All motion is transform/opacity and collapses to an
- * instant swap under prefers-reduced-motion.
+ * EPIC-018/TASK-069; laid on its side in TASK-072). Each shelf is a single
+ * horizontal row paged by paddle arrows in the shelf header (scroll-snap
+ * with the scrollbar hidden, so touch swiping still works): the third
+ * hiding technique on the walk, next to the album wall's capped preview
+ * and the wishlist accordion. Hovering or focusing a book slides its
+ * takeaway up over the cover; on touch screens a tap toggles the same
+ * drawer (one open per shelf, aria-expanded). All motion is transform/
+ * opacity and collapses to an instant swap under prefers-reduced-motion.
  */
 
 function BookCase({
@@ -75,13 +76,63 @@ function BookCase({
 
 function ShelfRow({ label, books }: { label: string; books: Book[] }) {
   const [open, setOpen] = React.useState<number | null>(null);
+  const railRef = React.useRef<HTMLUListElement>(null);
+  const [canPageLeft, setCanPageLeft] = React.useState(false);
+  const [canPageRight, setCanPageRight] = React.useState(true);
+
+  const updatePaddles = React.useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    setCanPageLeft(rail.scrollLeft > 4);
+    setCanPageRight(rail.scrollLeft < rail.scrollWidth - rail.clientWidth - 4);
+  }, []);
+
+  React.useEffect(() => {
+    updatePaddles();
+  }, [updatePaddles]);
+
+  const page = (direction: 1 | -1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollBy({
+      left: direction * rail.clientWidth * 0.85,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  };
 
   return (
     <div>
-      <h3 className="font-display text-xl font-semibold text-ink">{label}</h3>
-      {/* One sliding row per shelf; the cut-off cover at the edge is the
-          scroll affordance. */}
-      <ul className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto border-b-2 border-border-2 pb-8 md:gap-5 [scrollbar-width:thin]">
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="font-display text-xl font-semibold text-ink">{label}</h3>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => page(-1)}
+            disabled={!canPageLeft}
+            aria-label={`Slide the ${label} shelf back`}
+            className="border-border text-muted enabled:hover:border-border-2 enabled:hover:text-ink border p-2 transition-colors disabled:opacity-30"
+          >
+            <CaretLeft aria-hidden="true" className="size-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => page(1)}
+            disabled={!canPageRight}
+            aria-label={`Slide the ${label} shelf forward`}
+            className="border-border text-muted enabled:hover:border-border-2 enabled:hover:text-ink border p-2 transition-colors disabled:opacity-30"
+          >
+            <CaretRight aria-hidden="true" className="size-4" />
+          </button>
+        </div>
+      </div>
+      {/* One sliding row per shelf, paged by the paddles above; the cut-off
+          cover at the edge is the affordance. The scrollbar stays hidden
+          (touch swipe and the paddles cover the interaction). */}
+      <ul
+        ref={railRef}
+        onScroll={updatePaddles}
+        className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto border-b-2 border-border-2 pb-8 md:gap-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
         {books.map((book, index) => (
           <li key={book.title} className="w-36 shrink-0 snap-start sm:w-40 lg:w-44">
             <BookCase

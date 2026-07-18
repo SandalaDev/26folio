@@ -1,6 +1,907 @@
 {
-  "name": "The 10s",
-  "url": "",
-  "fetchedAt": null,
-  "tracks": []
+  "name": "tHe 10s",
+  "url": "https://open.spotify.com/playlist/4WbruCRR0Ys5fLxoxGQq72",
+  "fetchedAt": "2026-07-18T01:44:33.095Z",
+  "tracks": [
+    {
+      "title": "Fantastic (from the series Arcane League of Legends)",
+      "artists": "Arcane, King Princess",
+      "album": "Arcane League of Legends: Season 2 (Soundtrack from the Animated Series)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024aaf2413384c1efcc38353c6",
+      "releaseYear": 2024,
+      "durationMs": 184960,
+      "url": "https://open.spotify.com/track/071uK6V3dKj3BMNNzTEyRu"
+    },
+    {
+      "title": "Lemon Glow",
+      "artists": "Beach House",
+      "album": "7",
+      "cover": "https://i.scdn.co/image/ab67616d00001e020af2276ae66a42e73eb07683",
+      "releaseYear": 2018,
+      "durationMs": 244946,
+      "url": "https://open.spotify.com/track/6NLRMu1qF1kJQnntDNWDmy"
+    },
+    {
+      "title": "Moonlight",
+      "artists": "XXXTENTACION",
+      "album": "?",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02806c160566580d6335d1f16c",
+      "releaseYear": 2018,
+      "durationMs": 135090,
+      "url": "https://open.spotify.com/track/0JP9xo3adEtGSdUEISiszL"
+    },
+    {
+      "title": "UNAVAILABLE (feat. Musa Keys)",
+      "artists": "Davido, Musa Keys",
+      "album": "Timeless",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02adfc1ac5836f96adac580271",
+      "releaseYear": 2023,
+      "durationMs": 169911,
+      "url": "https://open.spotify.com/track/2kaH2Z8ezDUKf6fNw250rZ"
+    },
+    {
+      "title": "Young Blood",
+      "artists": "Norah Jones",
+      "album": "The Fall",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02e4ed793513703dddf0308101",
+      "releaseYear": 2009,
+      "durationMs": 218120,
+      "url": "https://open.spotify.com/track/0HVnaML1M41ACk570JuGK8"
+    },
+    {
+      "title": "Magic",
+      "artists": "Coldplay",
+      "album": "Ghost Stories",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02e5a95573f1b91234630fd2cf",
+      "releaseYear": 2014,
+      "durationMs": 285014,
+      "url": "https://open.spotify.com/track/23khhseCLQqVMCIT1WMAns"
+    },
+    {
+      "title": "Let Down",
+      "artists": "Radiohead",
+      "album": "OK Computer",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02c8b444df094279e70d0ed856",
+      "releaseYear": 1997,
+      "durationMs": 299560,
+      "url": "https://open.spotify.com/track/2fuYa3Lx06QQJAm0MjztKr"
+    },
+    {
+      "title": "All I Need",
+      "artists": "Radiohead",
+      "album": "In Rainbows",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02de3c04b5fc750b68899b20a9",
+      "releaseYear": 2007,
+      "durationMs": 228746,
+      "url": "https://open.spotify.com/track/5Qv2Nby1xTr9pQyjkrc94J"
+    },
+    {
+      "title": "High and Dry",
+      "artists": "Radiohead",
+      "album": "The Bends",
+      "cover": "https://i.scdn.co/image/ab67616d00001e029293c743fa542094336c5e12",
+      "releaseYear": 1995,
+      "durationMs": 257480,
+      "url": "https://open.spotify.com/track/2a1iMaoWQ5MnvLFBDv4qkf"
+    },
+    {
+      "title": "Codex",
+      "artists": "Radiohead",
+      "album": "The King Of Limbs",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02a9be6a9b8b5831a4c431ab9f",
+      "releaseYear": 2011,
+      "durationMs": 287066,
+      "url": "https://open.spotify.com/track/6ttYF5VadzTssGV2i1Q08T"
+    },
+    {
+      "title": "Wintertime",
+      "artists": "Norah Jones",
+      "album": "Begin Again",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02b2118e4b4298d25086cf55b2",
+      "releaseYear": 2019,
+      "durationMs": 228234,
+      "url": "https://open.spotify.com/track/1HWEOHLnFbRqgSVEK59gEq"
+    },
+    {
+      "title": "Without Me",
+      "artists": "Halsey",
+      "album": "Manic",
+      "cover": "https://i.scdn.co/image/ab67616d00001e027636e1c9e67eaafc9f49aefd",
+      "releaseYear": 2020,
+      "durationMs": 201660,
+      "url": "https://open.spotify.com/track/6FZDfxM3a3UCqtzo5pxSLZ"
+    },
+    {
+      "title": "Ultraviolence",
+      "artists": "Lana Del Rey",
+      "album": "Ultraviolence (Deluxe)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e021624590458126fc8b8c64c2f",
+      "releaseYear": 2014,
+      "durationMs": 251480,
+      "url": "https://open.spotify.com/track/1y3r6RXiJZNBV1EI0NggpS"
+    },
+    {
+      "title": "Kevin's",
+      "artists": "Sharon Van Etten",
+      "album": "Tramp",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02f175274ca503e74b34851784",
+      "releaseYear": 2012,
+      "durationMs": 242546,
+      "url": "https://open.spotify.com/track/7tglqXirZ8WzZA9TeFy4YX"
+    },
+    {
+      "title": "Quicksand",
+      "artists": "Hatchie",
+      "album": "Giving The World Away",
+      "cover": "https://i.scdn.co/image/ab67616d00001e023cc9d7eea8dbb6302aa07f02",
+      "releaseYear": 2022,
+      "durationMs": 251999,
+      "url": "https://open.spotify.com/track/6LhSsOUN9BRqiXKfGBkNp6"
+    },
+    {
+      "title": "Love Lost",
+      "artists": "The Temper Trap",
+      "album": "Conditions",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02752b549c65bf5333612f554a",
+      "releaseYear": 2009,
+      "durationMs": 216066,
+      "url": "https://open.spotify.com/track/1HkowL1y4k4aLEUt5yF9wT"
+    },
+    {
+      "title": "Levitation",
+      "artists": "Let's Eat Grandma",
+      "album": "Two Ribbons",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02a2973d610b106fa270a043b4",
+      "releaseYear": 2022,
+      "durationMs": 240586,
+      "url": "https://open.spotify.com/track/3haKbJ7pxyew1i3VEOqwaB"
+    },
+    {
+      "title": "Dreams Tonite",
+      "artists": "Alvvays",
+      "album": "Antisocialites",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0291390d24abb65f6fae0323f0",
+      "releaseYear": 2017,
+      "durationMs": 196026,
+      "url": "https://open.spotify.com/track/6TcxxINfeaBEQ35sHMldTD"
+    },
+    {
+      "title": "First Time",
+      "artists": "Kygo, Ellie Goulding",
+      "album": "First Time",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02b6d86ca196b697ee0f640118",
+      "releaseYear": 2017,
+      "durationMs": 193511,
+      "url": "https://open.spotify.com/track/2Gl0FzuLxflY6nPifJp5Dr"
+    },
+    {
+      "title": "First Time",
+      "artists": "M-22, Medina",
+      "album": "First Time",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02202d924ae3ea11a8246f9957",
+      "releaseYear": 2017,
+      "durationMs": 188918,
+      "url": "https://open.spotify.com/track/25Mf35cnnFalpVNFp0g3hW"
+    },
+    {
+      "title": "Gold",
+      "artists": "Kiiara",
+      "album": "Gold",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02bdb4de8c6db74044aabe6047",
+      "releaseYear": 2015,
+      "durationMs": 225882,
+      "url": "https://open.spotify.com/track/6WhzFzROw3aq3rPWjgYlxr"
+    },
+    {
+      "title": "Adorn",
+      "artists": "Miguel",
+      "album": "Kaleidoscope Dream (Deluxe Version)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0225c5ef1f91a7c42310842be1",
+      "releaseYear": 2012,
+      "durationMs": 193149,
+      "url": "https://open.spotify.com/track/5hJFhO9dvhJoDvUZZ9iWSw"
+    },
+    {
+      "title": "Thank U",
+      "artists": "Alanis Morissette",
+      "album": "Supposed Former Infatuation Junkie",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02c694da863eeeae3149c5c590",
+      "releaseYear": 1998,
+      "durationMs": 258773,
+      "url": "https://open.spotify.com/track/3CVDronuSnhguSUguPoseM"
+    },
+    {
+      "title": "Roaches Don't Fly",
+      "artists": "Armand Hammer, The Alchemist",
+      "album": "Haram",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024c653eeb14aa891c60797040",
+      "releaseYear": 2021,
+      "durationMs": 88160,
+      "url": "https://open.spotify.com/track/1vtaGKHw4TU1VFOnzT9TC4"
+    },
+    {
+      "title": "Consideration",
+      "artists": "Rihanna, SZA",
+      "album": "ANTI (Deluxe)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e026be9bac15995f089579074de",
+      "releaseYear": 2016,
+      "durationMs": 161066,
+      "url": "https://open.spotify.com/track/6t90Z9XkdsHD8xMxro6KRP"
+    },
+    {
+      "title": "Needed Me",
+      "artists": "Rihanna",
+      "album": "ANTI (Deluxe)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e026be9bac15995f089579074de",
+      "releaseYear": 2016,
+      "durationMs": 191600,
+      "url": "https://open.spotify.com/track/4pAl7FkDMNBsjykPXo91B3"
+    },
+    {
+      "title": "BIRDS OF A FEATHER",
+      "artists": "Billie Eilish",
+      "album": "HIT ME HARD AND SOFT",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62",
+      "releaseYear": 2024,
+      "durationMs": 210373,
+      "url": "https://open.spotify.com/track/6dOtVTDdiauQNBQEDOtlAB"
+    },
+    {
+      "title": "Capsize",
+      "artists": "FRENSHIP, Emily Warren",
+      "album": "Truce - EP",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02670048174db73ef55039c7bf",
+      "releaseYear": 2016,
+      "durationMs": 237706,
+      "url": "https://open.spotify.com/track/2XMTqoHHSH0lvuXrvIEdco"
+    },
+    {
+      "title": "HEATED",
+      "artists": "Beyoncé",
+      "album": "RENAISSANCE",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0269a3c061676c2020adfe8315",
+      "releaseYear": 2022,
+      "durationMs": 260770,
+      "url": "https://open.spotify.com/track/1w7cgGZR86yWz1pA2puVJD"
+    },
+    {
+      "title": "Jungle",
+      "artists": "Drake",
+      "album": "If You're Reading This It's Too Late",
+      "cover": "https://i.scdn.co/image/ab67616d00001e022090f4f6cc406e6d3c306733",
+      "releaseYear": 2015,
+      "durationMs": 320400,
+      "url": "https://open.spotify.com/track/7JXZq0JgG2zTrSOAgY8VMC"
+    },
+    {
+      "title": "Do Not Disturb",
+      "artists": "Drake",
+      "album": "More Life",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024f0fd9dad63977146e685700",
+      "releaseYear": 2017,
+      "durationMs": 283550,
+      "url": "https://open.spotify.com/track/2KvHC9z14GSl4YpkNMX384"
+    },
+    {
+      "title": "4th Of July (Fireworks)",
+      "artists": "Kelis",
+      "album": "Voces De Divas",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02c7350dee9b7d2380dc6f9e71",
+      "releaseYear": 2025,
+      "durationMs": 328040,
+      "url": "https://open.spotify.com/track/5n4ZDHaVSr0YX88nLsHKpk"
+    },
+    {
+      "title": "Waves",
+      "artists": "Kanye West",
+      "album": "The Life Of Pablo",
+      "cover": "https://i.scdn.co/image/ab67616d00001e022a7db835b912dc5014bd37f4",
+      "releaseYear": 2016,
+      "durationMs": 181573,
+      "url": "https://open.spotify.com/track/3nAq2hCr1oWsIU54tS98pL"
+    },
+    {
+      "title": "Sorry",
+      "artists": "Beyoncé",
+      "album": "Lemonade",
+      "cover": "https://i.scdn.co/image/ab67616d00001e028db37bc9a58543471bee78c5",
+      "releaseYear": 2016,
+      "durationMs": 232560,
+      "url": "https://open.spotify.com/track/0lnIJmgcUpEpe4AZACjayW"
+    },
+    {
+      "title": "Nights",
+      "artists": "Frank Ocean",
+      "album": "Blonde",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02c5649add07ed3720be9d5526",
+      "releaseYear": 2016,
+      "durationMs": 307151,
+      "url": "https://open.spotify.com/track/7eqoqGkKwgOaWNNHx90uEZ"
+    },
+    {
+      "title": "Alaska",
+      "artists": "Maggie Rogers",
+      "album": "Heard It In A Past Life",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02d658a02ba8931985bdc4e0da",
+      "releaseYear": 2019,
+      "durationMs": 188000,
+      "url": "https://open.spotify.com/track/4HfLQJtVT1KiX1eVedDyTm"
+    },
+    {
+      "title": "Pick Up Your Feelings",
+      "artists": "Jazmine Sullivan",
+      "album": "Heaux Tales",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0207e479ed78e5f7dde49c44a5",
+      "releaseYear": 2021,
+      "durationMs": 229412,
+      "url": "https://open.spotify.com/track/2I7CJZLo2nDqGuzZJA1XlZ"
+    },
+    {
+      "title": "Chocolate",
+      "artists": "Snow Patrol",
+      "album": "Final Straw",
+      "cover": "https://i.scdn.co/image/ab67616d00001e023da246ae81087859a89fe42a",
+      "releaseYear": 2004,
+      "durationMs": 181773,
+      "url": "https://open.spotify.com/track/3Kh58CfPsfIl8XkCEKWbNf"
+    },
+    {
+      "title": "Charlie Brown",
+      "artists": "Coldplay",
+      "album": "Mylo Xyloto",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02de0cd11d7b31c3bd1fd5983d",
+      "releaseYear": 2011,
+      "durationMs": 285159,
+      "url": "https://open.spotify.com/track/1yqMgZNrevsWMLWfO2PRp5"
+    },
+    {
+      "title": "Seasons (Waiting on You)",
+      "artists": "Future Islands",
+      "album": "Singles",
+      "cover": "https://i.scdn.co/image/ab67616d00001e020896bc513dc78701474ecc03",
+      "releaseYear": 2014,
+      "durationMs": 226440,
+      "url": "https://open.spotify.com/track/522YBf6WqBwJVAe7oHLymu"
+    },
+    {
+      "title": "Blueprint 2",
+      "artists": "JAŸ-Z",
+      "album": "The Blueprint 2: The Gift & The Curse",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02b7c45af95aaf599cee3acf08",
+      "releaseYear": 2002,
+      "durationMs": 289400,
+      "url": "https://open.spotify.com/track/5zkMLiZLve4jFLGyqoKFMt"
+    },
+    {
+      "title": "Crazy, Classic, Life",
+      "artists": "Janelle Monáe",
+      "album": "Dirty Computer",
+      "cover": "https://i.scdn.co/image/ab67616d00001e020a60fb0deda858270cca82ee",
+      "releaseYear": 2018,
+      "durationMs": 286626,
+      "url": "https://open.spotify.com/track/06EAtSDu3KSoi4fbA3ZjoB"
+    },
+    {
+      "title": "Q.U.E.E.N. (feat. Erykah Badu)",
+      "artists": "Janelle Monáe, Erykah Badu",
+      "album": "The Electric Lady",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0257cc241e3fc4e95eea8c4b20",
+      "releaseYear": 2013,
+      "durationMs": 310480,
+      "url": "https://open.spotify.com/track/3HW030T8eqPs8wpsgZqCGM"
+    },
+    {
+      "title": "Primetime (feat. Miguel)",
+      "artists": "Janelle Monáe, Miguel",
+      "album": "The Electric Lady",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0257cc241e3fc4e95eea8c4b20",
+      "releaseYear": 2013,
+      "durationMs": 280080,
+      "url": "https://open.spotify.com/track/5dzV75f9qVXVvdXLTqIG4L"
+    },
+    {
+      "title": "Breakeven",
+      "artists": "The Script",
+      "album": "The Script",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02f33a9f529c12f79b116eb218",
+      "releaseYear": 2008,
+      "durationMs": 261426,
+      "url": "https://open.spotify.com/track/285hMzLhJwHVLe9QT9qilk"
+    },
+    {
+      "title": "Quiet On Set",
+      "artists": "Remi Wolf",
+      "album": "Juno",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0216a6cb93e32bf2ae66b1f5b2",
+      "releaseYear": 2021,
+      "durationMs": 195038,
+      "url": "https://open.spotify.com/track/1MayFYhQQvVD4IzD7dqBBj"
+    },
+    {
+      "title": "Run The Jewels",
+      "artists": "Run The Jewels, El-P, Killer Mike",
+      "album": "Run The Jewels",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0243c27e535cefe3f389fff437",
+      "releaseYear": 2013,
+      "durationMs": 210626,
+      "url": "https://open.spotify.com/track/0C0OKMDnOvUyccUmwZO8AW"
+    },
+    {
+      "title": "Pop Out (feat. Lil Tjay)",
+      "artists": "Polo G, Lil Tjay",
+      "album": "Die A Legend",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02ae8b07ecdcf7aadefe00264f",
+      "releaseYear": 2019,
+      "durationMs": 166560,
+      "url": "https://open.spotify.com/track/6uFn47ACjqYkc0jADwEdj1"
+    },
+    {
+      "title": "Trap [Feat. Lil Baby]",
+      "artists": "SAINt JHN, Lil Baby",
+      "album": "Ghetto Lenny's Love Songs",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02965914632a8d25ecd5f9f242",
+      "releaseYear": 2019,
+      "durationMs": 184699,
+      "url": "https://open.spotify.com/track/46KjZQkVOB5rvzSCGKJrIO"
+    },
+    {
+      "title": "If You Know You Know",
+      "artists": "Pusha T",
+      "album": "DAYTONA",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02263555eebbe2b375593aa31e",
+      "releaseYear": 2018,
+      "durationMs": 202120,
+      "url": "https://open.spotify.com/track/6bGwKHXHNLmTy6yt147FPh"
+    },
+    {
+      "title": "Depreston",
+      "artists": "Courtney Barnett",
+      "album": "Sometimes I Sit And Think, And Sometimes I Just Sit",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02f16fdab2964e21d427f7c156",
+      "releaseYear": 2015,
+      "durationMs": 292853,
+      "url": "https://open.spotify.com/track/67927kDLEGZ64BWET2R6g2"
+    },
+    {
+      "title": "Losing My Religion",
+      "artists": "R.E.M.",
+      "album": "Out Of Time (25th Anniversary Edition)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02e2dd4e821bcc3f70dc0c8ffd",
+      "releaseYear": 1991,
+      "durationMs": 268426,
+      "url": "https://open.spotify.com/track/31AOj9sFz2gM0O3hMARRBx"
+    },
+    {
+      "title": "Spit Your Game (feat. Twista & Bone Thugs-n-Harmony) - 2005 Remaster",
+      "artists": "The Notorious B.I.G., Bone Thugs-N-Harmony, Twista",
+      "album": "Duets: The Final Chapter",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02373970875cab6dc30b36f10c",
+      "releaseYear": 2005,
+      "durationMs": 249880,
+      "url": "https://open.spotify.com/track/7aEjUdVMgHPQQdIIcaWnyt"
+    },
+    {
+      "title": "Say Won't You Say",
+      "artists": "Jennifer Knapp",
+      "album": "The Way I Am",
+      "cover": "https://i.scdn.co/image/ab67616d00001e027218c1bb3893a496a8aefd52",
+      "releaseYear": 2001,
+      "durationMs": 238733,
+      "url": "https://open.spotify.com/track/3o9BcAaRyw9A6G027OrmTX"
+    },
+    {
+      "title": "Seventeen",
+      "artists": "Sharon Van Etten",
+      "album": "Remind Me Tomorrow",
+      "cover": "https://i.scdn.co/image/ab67616d00001e023ba1f72fb3bf152db4547435",
+      "releaseYear": 2019,
+      "durationMs": 265920,
+      "url": "https://open.spotify.com/track/5jZoYp0P8ML7AxkS3tQz3j"
+    },
+    {
+      "title": "Every Time the Sun Comes Up",
+      "artists": "Sharon Van Etten",
+      "album": "Are We There",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0221e7e202974e7d0ee0ec4e60",
+      "releaseYear": 2014,
+      "durationMs": 262520,
+      "url": "https://open.spotify.com/track/61qxP4Vs5DVX0Ic4GnBklu"
+    },
+    {
+      "title": "Two Weeks",
+      "artists": "FKA twigs",
+      "album": "LP1",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0277a39a4e1d5d0f24dac1130a",
+      "releaseYear": 2014,
+      "durationMs": 247547,
+      "url": "https://open.spotify.com/track/6V0LX0hP1S0qH513CChAKt"
+    },
+    {
+      "title": "yellow is the color of her eyes",
+      "artists": "Soccer Mommy",
+      "album": "color theory",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02c330e261afcd6e0ae256f3aa",
+      "releaseYear": 2020,
+      "durationMs": 435080,
+      "url": "https://open.spotify.com/track/5EDBVVqd2ogoG89XVQOvsn"
+    },
+    {
+      "title": "Wild Fire",
+      "artists": "Laura Marling",
+      "album": "Semper Femina (Deluxe Edition)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024bf8ca5dff91e320604f5fb3",
+      "releaseYear": 2017,
+      "durationMs": 290742,
+      "url": "https://open.spotify.com/track/6tPmWdEG490RaoMwdJJUHI"
+    },
+    {
+      "title": "Do Not Disturb",
+      "artists": "Drake",
+      "album": "More Life",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024f0fd9dad63977146e685700",
+      "releaseYear": 2017,
+      "durationMs": 283550,
+      "url": "https://open.spotify.com/track/2KvHC9z14GSl4YpkNMX384"
+    },
+    {
+      "title": "Fallen Leaves",
+      "artists": "Billy Talent",
+      "album": "Billy Talent II",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0260cf6b9e0fc314a1ece15239",
+      "releaseYear": 2006,
+      "durationMs": 199200,
+      "url": "https://open.spotify.com/track/3jUTjCISntIUFL8jnAjzgc"
+    },
+    {
+      "title": "N.Y. State of Mind",
+      "artists": "Nas",
+      "album": "Illmatic",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0271d840defb002ed3b180f7cd",
+      "releaseYear": 1994,
+      "durationMs": 294081,
+      "url": "https://open.spotify.com/track/0trHOzAhNpGCsGBEu7dOJo"
+    },
+    {
+      "title": "Be Yourself",
+      "artists": "Audioslave",
+      "album": "Out of Exile",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0207301dd5fedf5ad64cde4882",
+      "releaseYear": 2005,
+      "durationMs": 278973,
+      "url": "https://open.spotify.com/track/3zwmW1gM4E8FlHXV5nE16u"
+    },
+    {
+      "title": "Team",
+      "artists": "Lorde",
+      "album": "Pure Heroine",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02187331e276c898d39764cc98",
+      "releaseYear": 2013,
+      "durationMs": 193058,
+      "url": "https://open.spotify.com/track/3G6hD9B2ZHOsgf4WfNu7X1"
+    },
+    {
+      "title": "Pick Up Your Feelings",
+      "artists": "Jazmine Sullivan",
+      "album": "Heaux Tales",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0207e479ed78e5f7dde49c44a5",
+      "releaseYear": 2021,
+      "durationMs": 229412,
+      "url": "https://open.spotify.com/track/2I7CJZLo2nDqGuzZJA1XlZ"
+    },
+    {
+      "title": "Misery Business",
+      "artists": "Paramore",
+      "album": "Riot!",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0269966efa45b125ed6711b43c",
+      "releaseYear": 2007,
+      "durationMs": 211520,
+      "url": "https://open.spotify.com/track/3l9CW99AHtExIRV4hW2N5m"
+    },
+    {
+      "title": "No Love",
+      "artists": "August Alsina, Nicki Minaj",
+      "album": "No Love (Remix)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02296383d1547f50c77f08bab5",
+      "releaseYear": 2014,
+      "durationMs": 276080,
+      "url": "https://open.spotify.com/track/7ewfvLrlI0VNht4vEnoTMh"
+    },
+    {
+      "title": "Blue Strips",
+      "artists": "Jessie Murph",
+      "album": "Blue Strips",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02e0fbf6a385b20094a1898863",
+      "releaseYear": 2025,
+      "durationMs": 147209,
+      "url": "https://open.spotify.com/track/7u7IqryLFAygWFz6bsEB7y"
+    },
+    {
+      "title": "Read My Mind",
+      "artists": "The Killers",
+      "album": "Sam's Town",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024f87f14089217e3f70a5f39e",
+      "releaseYear": 2006,
+      "durationMs": 246840,
+      "url": "https://open.spotify.com/track/7cX4PJz1old9fyFI8RlfgW"
+    },
+    {
+      "title": "Fukk Sleep (feat. FKA twigs)",
+      "artists": "A$AP Rocky, FKA twigs",
+      "album": "TESTING",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02bfcb8d00cee4f8257a6b7fe1",
+      "releaseYear": 2018,
+      "durationMs": 192979,
+      "url": "https://open.spotify.com/track/1AqemxWsT0iGg5Lvkm16Bt"
+    },
+    {
+      "title": "Drew Barrymore",
+      "artists": "SZA",
+      "album": "Ctrl",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0206d56b057cce5797538a16d5",
+      "releaseYear": 2017,
+      "durationMs": 231412,
+      "url": "https://open.spotify.com/track/06u5LrUpbosQlQ1QJFhPpG"
+    },
+    {
+      "title": "NGL (feat. Ty Dolla $Ign)",
+      "artists": "Lupe Fiasco, Ty Dolla $ign",
+      "album": "DROGAS Light",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0243b652dce6a840cf257f68c9",
+      "releaseYear": 2017,
+      "durationMs": 243050,
+      "url": "https://open.spotify.com/track/3jba00RrUxZASfXl1fVuG0"
+    },
+    {
+      "title": "Never Change",
+      "artists": "JAŸ-Z",
+      "album": "The Blueprint (Explicit Version)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e021b3f6f34954118500ed3e7a7",
+      "releaseYear": 2001,
+      "durationMs": 237066,
+      "url": "https://open.spotify.com/track/1ygITaWckccPnbVE2nadrz"
+    },
+    {
+      "title": "LoveHate Thing (feat. Sam Dew)",
+      "artists": "Wale, Sam Dew",
+      "album": "The Gifted",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02af4a0e9eaf7a6f4ecaed385f",
+      "releaseYear": 2013,
+      "durationMs": 267400,
+      "url": "https://open.spotify.com/track/6kx16R0LMAyoXDvGqddZFy"
+    },
+    {
+      "title": "First Day Out",
+      "artists": "Kodak Black",
+      "album": "First Day Out",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02ac113cc39bee4f35fdb48f88",
+      "releaseYear": 2017,
+      "durationMs": 180000,
+      "url": "https://open.spotify.com/track/7AAnFzBtOlgoYceCQoLRUR"
+    },
+    {
+      "title": "Holy",
+      "artists": "King Princess",
+      "album": "Make My Bed",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02f379fc9f6a7ad7c248035243",
+      "releaseYear": 2018,
+      "durationMs": 174666,
+      "url": "https://open.spotify.com/track/7FVGIPgLMDChTffvG2LuHV"
+    },
+    {
+      "title": "Blue Strips",
+      "artists": "Jessie Murph",
+      "album": "Sex Hysteria",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024650af8d56dee61e8fd3dff3",
+      "releaseYear": 2025,
+      "durationMs": 147209,
+      "url": "https://open.spotify.com/track/5kUXTPwxC6ZkduukaukCRT"
+    },
+    {
+      "title": "Anywhere Away from Here (Rag’n’Bone Man & P!nk)",
+      "artists": "Rag'n'Bone Man, P!nk",
+      "album": "Life By Misadventure",
+      "cover": "https://i.scdn.co/image/ab67616d00001e024c65700ce946c07553570483",
+      "releaseYear": 2021,
+      "durationMs": 238639,
+      "url": "https://open.spotify.com/track/5gjATWO1EIhrCP1CQ2GWg8"
+    },
+    {
+      "title": "The Cure",
+      "artists": "Lady Gaga",
+      "album": "The Cure",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0231cc5716a5c922b0482787b7",
+      "releaseYear": 2017,
+      "durationMs": 211363,
+      "url": "https://open.spotify.com/track/34oB5r0lcN3fYWCs2uA1k5"
+    },
+    {
+      "title": "Rollin Stone",
+      "artists": "Little Simz",
+      "album": "Sometimes I Might Be Introvert",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02aede85ed28c2237a33b63dba",
+      "releaseYear": 2021,
+      "durationMs": 219400,
+      "url": "https://open.spotify.com/track/5NkxESv4CFEBsRLAdqboGT"
+    },
+    {
+      "title": "Missing U",
+      "artists": "Robyn",
+      "album": "Honey",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0252426e8cc612c20fc7b1aad3",
+      "releaseYear": 2018,
+      "durationMs": 297268,
+      "url": "https://open.spotify.com/track/11u6Qkl4ri0fMWZIQDmFUJ"
+    },
+    {
+      "title": "Shook Ones, Pt. II",
+      "artists": "Mobb Deep",
+      "album": "The Infamous",
+      "cover": "https://i.scdn.co/image/ab67616d00001e023789f564b75140c1fd2228cc",
+      "releaseYear": 1995,
+      "durationMs": 325506,
+      "url": "https://open.spotify.com/track/33ZXjLCpiINn8eQIDYEPTD"
+    },
+    {
+      "title": "Feel It Still",
+      "artists": "Portugal. The Man",
+      "album": "Woodstock",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02af52c228c9619ff6298b08cd",
+      "releaseYear": 2017,
+      "durationMs": 163253,
+      "url": "https://open.spotify.com/track/6QgjcU0zLnzq5OrUoSZ3OK"
+    },
+    {
+      "title": "Say Something Loving",
+      "artists": "The xx",
+      "album": "I See You",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02fa132d6237850ac3f29e3af3",
+      "releaseYear": 2017,
+      "durationMs": 238373,
+      "url": "https://open.spotify.com/track/2C5YDhSJqLFCHrymIBzNSg"
+    },
+    {
+      "title": "Heavyweight Champion of the Year",
+      "artists": "Nilüfer Yanya",
+      "album": "Miss Universe",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02681430bd9bfa660629d78cef",
+      "releaseYear": 2019,
+      "durationMs": 282097,
+      "url": "https://open.spotify.com/track/7Gwa1y90Qsjr5r2utO3QU0"
+    },
+    {
+      "title": "Black Bathing Suit",
+      "artists": "Lana Del Rey",
+      "album": "Blue Banisters",
+      "cover": "https://i.scdn.co/image/ab67616d00001e026946deb6f548e464b385ee0e",
+      "releaseYear": 2021,
+      "durationMs": 318040,
+      "url": "https://open.spotify.com/track/2LQGoKFKkZ9yk3UeYFj2xo"
+    },
+    {
+      "title": "Blue Banisters",
+      "artists": "Lana Del Rey",
+      "album": "Blue Banisters",
+      "cover": "https://i.scdn.co/image/ab67616d00001e026946deb6f548e464b385ee0e",
+      "releaseYear": 2021,
+      "durationMs": 293692,
+      "url": "https://open.spotify.com/track/4U9ACZETPOqGuJkWtjkjLF"
+    },
+    {
+      "title": "Power",
+      "artists": "Young Thug",
+      "album": "Slime Season",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0270d17ff1637f906dfabdfea4",
+      "releaseYear": 2024,
+      "durationMs": 195373,
+      "url": "https://open.spotify.com/track/2KztZVOEdCkJJHIXcdy6lM"
+    },
+    {
+      "title": "Other Side Of The World",
+      "artists": "KT Tunstall",
+      "album": "Eye To The Telescope",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02183730e8038fa632b2c227da",
+      "releaseYear": 2005,
+      "durationMs": 214560,
+      "url": "https://open.spotify.com/track/4A9E08l34BkPsCDAmOpHxb"
+    },
+    {
+      "title": "OTW",
+      "artists": "Khalid, 6LACK, Ty Dolla $ign",
+      "album": "OTW",
+      "cover": "https://i.scdn.co/image/ab67616d00001e029766f79668e76238a1c13e2c",
+      "releaseYear": 2018,
+      "durationMs": 263013,
+      "url": "https://open.spotify.com/track/6Hgh47WXVKtXN5zGOu0hjI"
+    },
+    {
+      "title": "Better",
+      "artists": "Khalid",
+      "album": "Suncity",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02c243500e164150d229750c91",
+      "releaseYear": 2018,
+      "durationMs": 229319,
+      "url": "https://open.spotify.com/track/2OpBganfGk2GVdSlRdxzaX"
+    },
+    {
+      "title": "Love Me Not",
+      "artists": "Ravyn Lenae",
+      "album": "Love Me Not / Love Is Blind",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0233b05d358247bbe9971370f2",
+      "releaseYear": 2024,
+      "durationMs": 213466,
+      "url": "https://open.spotify.com/track/1UNEuG9DYOWiikf00ayr52"
+    },
+    {
+      "title": "Push",
+      "artists": "Matchbox Twenty",
+      "album": "Yourself or Someone Like You",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0223dbfb8b3b1be429587f5380",
+      "releaseYear": 1996,
+      "durationMs": 238666,
+      "url": "https://open.spotify.com/track/2KVwlelhxKUy8LVV6JypH3"
+    },
+    {
+      "title": "Off To The Races",
+      "artists": "Lana Del Rey",
+      "album": "Born To Die - The Paradise Edition",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02ebc8cfac8b586bc475b04918",
+      "releaseYear": 2012,
+      "durationMs": 299933,
+      "url": "https://open.spotify.com/track/3uUCgL0cbSd0isnqhHCm1f"
+    },
+    {
+      "title": "Radio",
+      "artists": "Lana Del Rey",
+      "album": "Born To Die - The Paradise Edition",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02ebc8cfac8b586bc475b04918",
+      "releaseYear": 2012,
+      "durationMs": 214573,
+      "url": "https://open.spotify.com/track/3taCbWWTilb7eNMsAzOBq4"
+    },
+    {
+      "title": "Brooklyn Baby",
+      "artists": "Lana Del Rey",
+      "album": "Ultraviolence (Deluxe)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e021624590458126fc8b8c64c2f",
+      "releaseYear": 2014,
+      "durationMs": 351640,
+      "url": "https://open.spotify.com/track/1NZs6n6hl8UuMaX0UC0YTz"
+    },
+    {
+      "title": "Old Money",
+      "artists": "Lana Del Rey",
+      "album": "Ultraviolence (Deluxe)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e021624590458126fc8b8c64c2f",
+      "releaseYear": 2014,
+      "durationMs": 271480,
+      "url": "https://open.spotify.com/track/6IfPyMb0Sxptpx6jBUATOS"
+    },
+    {
+      "title": "My Love Is Your Love",
+      "artists": "Whitney Houston",
+      "album": "My Love Is Your Love",
+      "cover": "https://i.scdn.co/image/ab67616d00001e0284b84d08fdbaebb99098890c",
+      "releaseYear": 1998,
+      "durationMs": 261573,
+      "url": "https://open.spotify.com/track/1ckU1EhAO0Nr73QYw24SWJ"
+    },
+    {
+      "title": "Like Glue",
+      "artists": "Sean Paul",
+      "album": "Dutty Rock (20th Anniversary)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02b85a43ff52cecb0ab0a49677",
+      "releaseYear": 2022,
+      "durationMs": 232506,
+      "url": "https://open.spotify.com/track/56m8Wv3qRBfwLuO08GtfHs"
+    },
+    {
+      "title": "Carrion Flowers",
+      "artists": "Chelsea Wolfe",
+      "album": "Abyss",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02f5ac7805eb1da28e2e9dd2e9",
+      "releaseYear": 2015,
+      "durationMs": 290736,
+      "url": "https://open.spotify.com/track/1CxQcw6AI6zjV01dN4NSfp"
+    }
+  ]
 }
