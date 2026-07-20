@@ -269,8 +269,12 @@ export async function getTensPlaylist(): Promise<TensPlaylist> {
     const meta = await fetchMeta(headers, id);
     if (meta.snapshotId && meta.snapshotId === cached.snapshotId) return cached;
 
+    // The full read needs an app grandfathered into playlist-tracks access;
+    // newer dev-mode apps 403 here even with a scoped user token (probed
+    // 2026-07-20). Fall back to the capped path so playlist edits keep
+    // flowing either way.
     const tracks = env.SPOTIFY_REFRESH_TOKEN
-      ? await fetchAllTracks(headers, id)
+      ? await fetchAllTracks(headers, id).catch(() => fetchCappedTracks(headers, id))
       : await fetchCappedTracks(headers, id);
     const playlist: TensPlaylist = {
       name: meta.name,

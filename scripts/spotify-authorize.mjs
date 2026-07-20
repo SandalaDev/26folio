@@ -56,12 +56,18 @@ if (!env.SPOTIFY_CLIENT_ID || !env.SPOTIFY_CLIENT_SECRET) {
   process.exit(1);
 }
 
+// Scopes: reading a public playlist should need none, but development-mode
+// apps get the tracks field stripped from scopeless tokens (verified
+// 2026-07-20), so ask for the playlist read scopes explicitly.
+const SCOPES = "playlist-read-private playlist-read-collaborative";
+
 const state = crypto.randomBytes(16).toString("hex");
 const authorizeUrl =
   "https://accounts.spotify.com/authorize" +
   `?client_id=${encodeURIComponent(env.SPOTIFY_CLIENT_ID)}` +
   "&response_type=code" +
   `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
+  `&scope=${encodeURIComponent(SCOPES)}` +
   `&state=${state}`;
 
 const server = http.createServer(async (req, res) => {
