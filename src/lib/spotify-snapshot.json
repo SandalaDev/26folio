@@ -1,7 +1,7 @@
 {
   "name": "tHe 10s",
   "url": "https://open.spotify.com/playlist/4WbruCRR0Ys5fLxoxGQq72",
-  "fetchedAt": "2026-07-18T01:44:33.095Z",
+  "fetchedAt": "2026-07-20T02:22:45.585Z",
   "tracks": [
     {
       "title": "Fantastic (from the series Arcane League of Legends)",
@@ -607,15 +607,6 @@
       "url": "https://open.spotify.com/track/7ewfvLrlI0VNht4vEnoTMh"
     },
     {
-      "title": "Blue Strips",
-      "artists": "Jessie Murph",
-      "album": "Blue Strips",
-      "cover": "https://i.scdn.co/image/ab67616d00001e02e0fbf6a385b20094a1898863",
-      "releaseYear": 2025,
-      "durationMs": 147209,
-      "url": "https://open.spotify.com/track/7u7IqryLFAygWFz6bsEB7y"
-    },
-    {
       "title": "Read My Mind",
       "artists": "The Killers",
       "album": "Sam's Town",
@@ -902,6 +893,15 @@
       "releaseYear": 2015,
       "durationMs": 290736,
       "url": "https://open.spotify.com/track/1CxQcw6AI6zjV01dN4NSfp"
+    },
+    {
+      "title": "Ali Bomaye",
+      "artists": "The Game, 2 Chainz, Rick Ross",
+      "album": "Jesus Piece (Deluxe)",
+      "cover": "https://i.scdn.co/image/ab67616d00001e02a65779c8c92dff73f8189800",
+      "releaseYear": 2012,
+      "durationMs": 372706,
+      "url": "https://open.spotify.com/track/0LFcFGLYTX6UmeIdO7NVd7"
     }
   ]
 }

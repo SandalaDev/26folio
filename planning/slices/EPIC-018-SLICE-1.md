@@ -73,3 +73,24 @@ washes stay quiet, hover reveals carry the personal voice.
 - `src/components/the-way/*` (hero, music hall, playlist, wishlists,
   bookshelf, practice line, nav; hobbies-wall deleted)
 - `env.example`, `public/images/abe2.jpg`, `public/images/about/**`
+
+## Owner revision pass 3 (TASK-073, 2026-07-20 prompt.md + textcontent.md)
+
+1. **Spotify freshness** — the route goes dynamic; every load re-reads the
+   public embed track list (one fetch) and only re-pulls track detail when
+   the list changed, then rewrites the snapshot best-effort.
+2. **Platter kiosk** — centered column (max-w-xl, art on top) instead of a
+   full-width row.
+3. **Folder sync** — every image section again mirrors its source folder
+   (61 albums, 24 books, 13 audiophile, 17 watches, 29 fragrances); new
+   images without owner copy get flagged agent drafts.
+4. **Books** — `Book` gains `review: string[]` + optional `quote`; all
+   reviews are the owner's textcontent.md copy, grammar-cleaned per his
+   embedded instructions.
+5. **Watches + fragrances** — owner intros (multi-paragraph
+   `description: string[]`) and per-item lines replace the agent drafts.
+6. **Bookshelf mechanism** — click a cover to open a reading panel under
+   the shelf (height-auto reveal, keyed crossfade between books, one per
+   shelf, reduced-motion static).
+7. **Walk order** — music, creative pursuits, inspiration, collections;
+   principles follow, then the CTA.

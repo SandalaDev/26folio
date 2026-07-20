@@ -98,7 +98,11 @@ function WishlistRow({ wishlist }: { wishlist: Wishlist }) {
             />
           </span>
         </span>
-        <span className="measure mt-3 block text-muted">{wishlist.description}</span>
+        {wishlist.description.map((paragraph) => (
+          <span key={paragraph.slice(0, 32)} className="measure text-muted mt-3 block">
+            {paragraph}
+          </span>
+        ))}
 
         {/* Closed state: a teaser strip of small cases hints at what's
             inside without paying for the full grid. */}

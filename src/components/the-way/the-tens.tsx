@@ -36,7 +36,9 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="border-border bg-surface border p-6 md:p-8">
+    // Centered kiosk (owner, 2026-07-20): the platter sits mid-page as a
+    // column with the art on top, instead of stretching the section width.
+    <div className="border-border bg-surface mx-auto max-w-xl border p-6 md:p-8">
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={track.url || track.title}
@@ -44,22 +46,22 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
           animate={{ opacity: 1, y: 0 }}
           exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
           transition={{ duration: DURATION.component, ease: EASE_OUT }}
-          className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8"
+          className="flex flex-col items-center gap-6 text-center"
         >
-          <div className="border-border-2 bg-surface-2 relative size-32 shrink-0 overflow-hidden border md:size-40">
+          <p className="eyebrow text-rose">On the platter</p>
+          <div className="border-border-2 bg-surface-2 relative size-40 shrink-0 overflow-hidden border md:size-48">
             {track.cover ? (
               <Image
                 src={track.cover}
                 alt={`${track.album} cover art`}
                 fill
-                sizes="10rem"
+                sizes="12rem"
                 className="object-cover"
               />
             ) : null}
           </div>
-          <div className="min-w-0">
-            <p className="eyebrow text-rose">On the platter</p>
-            <p className="font-display text-ink mt-3 truncate text-2xl font-semibold md:text-3xl">
+          <div className="w-full min-w-0">
+            <p className="font-display text-ink truncate text-2xl font-semibold md:text-3xl">
               {track.title}
             </p>
             <p className="text-muted mt-1 truncate">{track.artists}</p>
@@ -85,7 +87,7 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
       <button
         type="button"
         onClick={onShuffle}
-        className="border-border text-muted hover:border-border-2 hover:text-ink mt-6 inline-flex items-center gap-2 border px-3 py-1.5 text-sm transition-colors"
+        className="border-border text-muted hover:border-border-2 hover:text-ink mx-auto mt-6 flex items-center gap-2 border px-3 py-1.5 text-sm transition-colors"
       >
         <Shuffle aria-hidden="true" className="size-3.5" />
         Deal me another

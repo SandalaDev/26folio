@@ -6,15 +6,21 @@ import snapshot from "@/lib/spotify-snapshot.json";
 
 /**
  * Spotify integration for "The 10s" playlist on /about/the-way-i-am
- * (EPIC-018/TASK-071). Server-only: the page's server component calls
- * getTensPlaylist() at build time, mirroring magazine.ts's
- * graceful-degradation contract:
+ * (EPIC-018/TASK-071; per-request freshness in TASK-073). Server-only:
+ * the page's server component calls getTensPlaylist() on every request
+ * (the route is dynamic), mirroring magazine.ts's graceful-degradation
+ * contract:
  *
- * - Missing env or any fetch failure NEVER throws the build. The committed
- *   snapshot (spotify-snapshot.json) renders instead, and an empty snapshot
- *   renders the section's honest placeholder state.
- * - When a fetch succeeds, the snapshot is rewritten best-effort so the
- *   repo carries the last known data for env-less builds. A read-only
+ * - Missing env or any fetch failure NEVER throws the build or a request.
+ *   The last good playlist (module cache, seeded from the committed
+ *   spotify-snapshot.json) renders instead, and an empty snapshot renders
+ *   the section's honest placeholder state.
+ * - Each request costs one embed-page fetch to read the current track
+ *   list. Track detail is only re-pulled when that list differs from the
+ *   cached playlist, so playlist edits land on the next load without
+ *   every load paying for a hundred track lookups.
+ * - When a full fetch succeeds, the snapshot is rewritten best-effort so
+ *   the repo carries the last known data for env-less builds. A read-only
  *   filesystem (CI, some hosts) skips the write without complaint.
  *
  * Client-credentials flow: the playlist must be public. Secrets live in
@@ -133,7 +139,7 @@ async function fetchTrackIds(playlistId: string): Promise<string[]> {
   return ids;
 }
 
-async function fetchPlaylist(): Promise<TensPlaylist> {
+async function fetchPlaylist(ids: string[]): Promise<TensPlaylist> {
   const token = await getAccessToken();
   const headers = { Authorization: `Bearer ${token}` };
   const id = env.SPOTIFY_PLAYLIST_ID;
@@ -148,7 +154,6 @@ async function fetchPlaylist(): Promise<TensPlaylist> {
     external_urls?: { spotify?: string };
   };
 
-  const ids = await fetchTrackIds(id);
   const tracks: TensTrack[] = [];
   for (let start = 0; start < ids.length; start += 10) {
     const chunk = ids.slice(start, start + 10);
@@ -183,16 +188,32 @@ function writeSnapshot(playlist: TensPlaylist): void {
   }
 }
 
-/** The playlist for the page, live when env allows, snapshot otherwise. */
+/** Last good playlist, seeded from the committed snapshot. Reused whenever
+ *  the embed's track list still matches, and on any fetch failure. */
+let cached = snapshot as TensPlaylist;
+
+/** True when the cached playlist already holds exactly these tracks, in
+ *  this order. Track identity comes from the open.spotify.com URLs. */
+function cacheMatches(ids: string[]): boolean {
+  if (cached.tracks.length !== ids.length) return false;
+  return cached.tracks.every((track, index) => track.url.endsWith(`/track/${ids[index]}`));
+}
+
+/** The playlist for the page: checked against Spotify on every request,
+ *  re-fetched only when it changed, snapshot/cache when env or the network
+ *  says no. */
 export async function getTensPlaylist(): Promise<TensPlaylist> {
   const configured = env.SPOTIFY_CLIENT_ID && env.SPOTIFY_CLIENT_SECRET && env.SPOTIFY_PLAYLIST_ID;
-  if (!configured) return snapshot as TensPlaylist;
+  if (!configured) return cached;
 
   try {
-    const playlist = await fetchPlaylist();
+    const ids = await fetchTrackIds(env.SPOTIFY_PLAYLIST_ID);
+    if (cacheMatches(ids)) return cached;
+    const playlist = await fetchPlaylist(ids);
+    cached = playlist;
     writeSnapshot(playlist);
     return playlist;
   } catch {
-    return snapshot as TensPlaylist;
+    return cached;
   }
 }
