@@ -16,10 +16,26 @@ import type { TensPlaylist, TensTrack } from "@/lib/spotify";
  *
  * Interaction: a featured track sits on the kiosk with its art and a link
  * out to Spotify; the shuffle control deals a new one (AnimatePresence
- * crossfade, transform/opacity only). Decade chips filter the wall of
- * tracks below, since a list spanning eras reads better as eras. With an
+ * crossfade, transform/opacity only). Era chips filter the wall of tracks
+ * below, since a list spanning eras reads better as eras; every era is
+ * derived per track from the live playlist data, with everything released
+ * before 2000 pooled into one Classics era (owner, 2026-07-20). With an
  * empty snapshot and no env the section renders an honest placeholder.
  */
+
+/** A decade (2000, 2010, ...) or the pre-2000 pool. */
+type Era = number | "classics";
+
+/** The era a track files under; null when Spotify gave no release year. */
+function eraOf(track: TensTrack): Era | null {
+  if (!track.releaseYear) return null;
+  if (track.releaseYear < 2000) return "classics";
+  return Math.floor(track.releaseYear / 10) * 10;
+}
+
+function eraLabel(era: Era): string {
+  return era === "classics" ? "Classics" : `${era}s`;
+}
 
 function formatRuntime(totalMs: number): string {
   const minutes = Math.round(totalMs / 60000);
@@ -92,28 +108,35 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
         <Shuffle aria-hidden="true" className="size-3.5" />
         Deal me another
       </button>
+      <p className="text-muted mx-auto mt-5 max-w-sm text-center text-xs leading-relaxed">
+        These songs are pulled live from my 10s playlist on Spotify. Whatever I add over there
+        shows up here.
+      </p>
     </div>
   );
 }
 
 function TheTens({ playlist }: { playlist: TensPlaylist }) {
   const [featured, setFeatured] = React.useState(0);
-  const [decade, setDecade] = React.useState<number | null>(null);
+  const [era, setEra] = React.useState<Era | null>(null);
 
-  const decades = React.useMemo(() => {
-    const set = new Set<number>();
+  // Eras recomputed from whatever the playlist holds right now: Classics
+  // first when any pre-2000 track exists, then the decades ascending.
+  const eras = React.useMemo<Era[]>(() => {
+    const decades = new Set<number>();
+    let hasClassics = false;
     for (const track of playlist.tracks) {
-      if (track.releaseYear) set.add(Math.floor(track.releaseYear / 10) * 10);
+      const trackEra = eraOf(track);
+      if (trackEra === "classics") hasClassics = true;
+      else if (trackEra !== null) decades.add(trackEra);
     }
-    return [...set].sort((a, b) => a - b);
+    const sorted = [...decades].sort((a, b) => a - b);
+    return hasClassics ? ["classics", ...sorted] : sorted;
   }, [playlist.tracks]);
 
   const visible = React.useMemo(
-    () =>
-      decade === null
-        ? playlist.tracks
-        : playlist.tracks.filter((track) => Math.floor(track.releaseYear / 10) * 10 === decade),
-    [playlist.tracks, decade],
+    () => (era === null ? playlist.tracks : playlist.tracks.filter((track) => eraOf(track) === era)),
+    [playlist.tracks, era],
   );
 
   const shuffle = () => {
@@ -166,33 +189,33 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
             <FeaturedTrack track={playlist.tracks[featured]} onShuffle={shuffle} />
           </div>
 
-          {decades.length > 1 ? (
+          {eras.length > 1 ? (
             <div className="mt-10 flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => setDecade(null)}
-                aria-pressed={decade === null}
+                onClick={() => setEra(null)}
+                aria-pressed={era === null}
                 className={`border px-3 py-1.5 text-sm transition-colors ${
-                  decade === null
+                  era === null
                     ? "border-rose text-ink"
                     : "border-border text-muted hover:border-border-2 hover:text-ink"
                 }`}
               >
                 All eras
               </button>
-              {decades.map((era) => (
+              {eras.map((chip) => (
                 <button
-                  key={era}
+                  key={chip}
                   type="button"
-                  onClick={() => setDecade(era)}
-                  aria-pressed={decade === era}
+                  onClick={() => setEra(chip)}
+                  aria-pressed={era === chip}
                   className={`border px-3 py-1.5 text-sm transition-colors ${
-                    decade === era
+                    era === chip
                       ? "border-rose text-ink"
                       : "border-border text-muted hover:border-border-2 hover:text-ink"
                   }`}
                 >
-                  {era}s
+                  {eraLabel(chip)}
                 </button>
               ))}
             </div>

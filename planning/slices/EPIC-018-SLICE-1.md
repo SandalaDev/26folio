@@ -94,3 +94,22 @@ washes stay quiet, hover reveals carry the personal voice.
    shelf, reduced-motion static).
 7. **Walk order** — music, creative pursuits, inspiration, collections;
    principles follow, then the CTA.
+
+## Spotify list follow-up (TASK-074, 2026-07-20 chat)
+
+Probed findings: the public embed feed hard-caps at 100 rows (no total
+field), client-credentials /tracks still 403s for dev-mode apps, and the
+embed's anonymous token 429s with a ~19h Retry-After. Changes:
+
+- Change detection moved to the playlist's snapshot_id (readable with
+  client credentials, changes on any edit including past row 100); bearer
+  token cached until expiry, so an unchanged playlist costs one metadata
+  call per load.
+- `SPOTIFY_REFRESH_TOKEN` (one-time owner OAuth via
+  `scripts/spotify-authorize.mjs`, no scopes) unlocks the paged /tracks
+  read with no row cap; without it the embed + per-track fallback still
+  applies, capped at 100.
+- Era chips derive per track from live data; everything pre-2000 pools
+  into a Classics era.
+- The platter kiosk carries a provenance note: songs come live from the
+  10s playlist on Spotify.
