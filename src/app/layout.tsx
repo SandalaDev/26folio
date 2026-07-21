@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   // Placeholder metadata — real SEO/OG handled in EPIC-010.
   title: "sandala.dev",
   description: "Portfolio of Abe Sandala — strategic engineering partner.",
+  icons: { icon: "/images/logo/favicon.svg" },
 };
 
 export default function RootLayout({

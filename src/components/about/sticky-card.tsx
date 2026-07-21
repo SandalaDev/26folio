@@ -53,10 +53,20 @@ function StickyCard({
   const cardBody = (
     <>
       {/* Text column — left on >= sm, below the image on mobile. */}
-      <span className="flex flex-1 flex-col p-6">
-        <h3 className="font-display text-xl font-semibold text-ink">{title}</h3>
-        <p className="mt-2 text-sm text-muted">{description}</p>
-        {cta ? <p className="mt-3 eyebrow text-rose">{cta} →</p> : null}
+      <span className="flex flex-1 flex-col p-6 md:p-7">
+        <h3 className="font-display text-ink text-2xl font-semibold tracking-tight">{title}</h3>
+        <p className="text-soft mt-2.5 text-sm leading-relaxed">{description}</p>
+        {cta ? (
+          <span className="eyebrow text-rose mt-5 inline-flex items-center gap-1.5">
+            {cta}
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+            >
+              →
+            </span>
+          </span>
+        ) : null}
       </span>
       {imageSrc ? (
         <span className="relative block aspect-[16/9] w-full shrink-0 overflow-hidden border-border bg-background max-sm:border-b sm:aspect-auto sm:h-auto sm:w-2/5 sm:border-l">
@@ -77,7 +87,7 @@ function StickyCard({
   );
 
   const cardClasses =
-    "group flex h-full w-full flex-col overflow-hidden border border-border bg-surface text-left sm:flex-row";
+    "group flex h-full w-full flex-col overflow-hidden border border-border bg-surface text-left transition-colors duration-300 hover:border-border-2 sm:flex-row";
 
   if (href) {
     return (

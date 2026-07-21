@@ -27,8 +27,8 @@ export default function AboutPage() {
           <div className="flex flex-col gap-5 md:sticky md:top-20 md:min-h-[calc(100dvh-6.5rem)] md:self-start">
             <StickyCard
               title="Who I am"
-              description="From cell towers to codebases: the full story of why I build software the way I do."
-              cta="Read the full story"
+              description="Learn more about my background, interests, values and the experiences that shaped who I am today."
+              cta="Read my biography"
               imageSrc="/images/logo/logo_combo-peach.svg"
               imageFit="contain"
             >
@@ -38,8 +38,8 @@ export default function AboutPage() {
                 walks visitors to /about/the-way-i-am. */}
             <StickyCard
               title="The way I am"
-              description="The nerdiness, the design obsession, and everything I do when I'm not shipping."
-              cta="Walk through it"
+              description="My principles, inspirations, creative pursuits, and the things I care about outside of work."
+              cta="Explore my interests"
               href="/about/the-way-i-am"
               imageSrc="/images/abe-about.png"
               imageAlt="Abe Sandala, off the clock"
