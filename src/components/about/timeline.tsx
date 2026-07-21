@@ -4,10 +4,10 @@ import * as React from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
-import { Desktop, Globe, PenNib, Sparkle } from "@phosphor-icons/react";
+import { Globe, Sparkle } from "@phosphor-icons/react";
 
 import { prefersReducedMotion } from "@/lib/motion";
-import { EpochIconCycler, IconGlyph, type EpochTool } from "@/components/about/epoch-icon-cycler";
+import { EpochWatermark, type EpochTool } from "@/components/about/epoch-icon-cycler";
 
 /**
  * Timeline: three-epoch career narrative (12-ui-element-map.md §3 About #2b).
@@ -96,29 +96,39 @@ const ICON = { size: 20, weight: "regular" } as const;
  * tooling he still reaches for, so it stays out of the cycler (the epoch
  * narrative still covers that era's domain work). Owner-supplied brand marks
  * from `public/icons/` where they exist; Phosphor stand-ins where they don't
- * yet (tracked as a follow-up list in EPIC-015).
+ * yet (tracked as a follow-up list in EPIC-015). EPIC-019/TASK-076: the
+ * owner supplied the Foundation set (wordpress/elementor/electronics plus
+ * Fireworks — the era's origin tool — standing in for the "muse.svg" the
+ * brief named, which isn't in public/icons), added Webflow to Convergence,
+ * and asked for a tasteful platform/devops pair on Awakening (Docker +
+ * Prometheus).
  */
 const FOUNDATION_TOOLS: EpochTool[] = [
-  { label: "Windows & PC hardware", icon: <Desktop {...ICON} /> },
-  { label: "Fireworks MX", icon: <PenNib {...ICON} /> },
+  { label: "WordPress", src: "/icons/wordpress.svg" },
+  { label: "Elementor", src: "/icons/elementor.svg" },
+  { label: "Fireworks", src: "/icons/fireworks.svg" },
+  { label: "Electronics", src: "/icons/electronics.svg" },
 ];
 
 const CONVERGENCE_TOOLS: EpochTool[] = [
-  { label: "Photoshop", icon: <IconGlyph src="/icons/photoshop.svg" /> },
-  { label: "Illustrator", icon: <IconGlyph src="/icons/illustrator.svg" /> },
-  { label: "InDesign", icon: <IconGlyph src="/icons/indesign.svg" /> },
-  { label: "WordPress & Elementor", icon: <Globe {...ICON} /> },
+  { label: "Photoshop", src: "/icons/photoshop.svg" },
+  { label: "Illustrator", src: "/icons/illustrator.svg" },
+  { label: "InDesign", src: "/icons/indesign.svg" },
+  { label: "WordPress & Elementor", node: <Globe {...ICON} /> },
+  { label: "Webflow", src: "/icons/webflow.svg" },
 ];
 
 const AWAKENING_TOOLS: EpochTool[] = [
-  { label: "JavaScript", icon: <IconGlyph src="/icons/js.svg" /> },
-  { label: "TypeScript", icon: <IconGlyph src="/icons/ts.svg" /> },
-  { label: "React", icon: <IconGlyph src="/icons/react.svg" /> },
-  { label: "Next.js", icon: <IconGlyph src="/icons/next.svg" /> },
-  { label: "Node.js", icon: <IconGlyph src="/icons/node.svg" /> },
-  { label: "Payload CMS", icon: <IconGlyph src="/icons/payload.svg" /> },
-  { label: "PostgreSQL", icon: <IconGlyph src="/icons/postgres.svg" /> },
-  { label: "AI-assisted development", icon: <Sparkle {...ICON} /> },
+  { label: "JavaScript", src: "/icons/js.svg" },
+  { label: "TypeScript", src: "/icons/ts.svg" },
+  { label: "React", src: "/icons/react.svg" },
+  { label: "Next.js", src: "/icons/next.svg" },
+  { label: "Node.js", src: "/icons/node.svg" },
+  { label: "Payload CMS", src: "/icons/payload.svg" },
+  { label: "PostgreSQL", src: "/icons/postgres.svg" },
+  { label: "Docker", src: "/icons/docker.svg" },
+  { label: "Prometheus", src: "/icons/prometheus.svg" },
+  { label: "AI-assisted development", node: <Sparkle {...ICON} /> },
 ];
 
 const FOUNDATION_BEATS: Beat[] = [
@@ -228,17 +238,17 @@ function EpochHeader({
   return (
     <div
       data-epoch-header
-      className="border-border bg-background/90 sticky top-24 z-10 mb-8 border p-6 backdrop-blur-sm"
+      className="border-border bg-background/90 sticky top-24 z-10 mb-8 overflow-hidden border p-6 backdrop-blur-sm"
     >
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <span className={`eyebrow ${accent.eyebrow}`}>Epoch {numeral}</span>
-          <h3 className="font-display text-ink mt-1 text-3xl font-bold">{title}</h3>
-          <p className="text-soft mt-1 text-sm font-light tracking-wide">{circa}</p>
-        </div>
-        <EpochIconCycler tools={tools} className={`mt-1 ${accent.icon}`} />
+      {/* The era's tools cycle as a large glyph watermark behind the copy;
+          the current tool's name rides top-right, clear of the text. */}
+      <EpochWatermark tools={tools} accentClassName={accent.icon} />
+      <div className="relative z-10">
+        <span className={`eyebrow ${accent.eyebrow}`}>Epoch {numeral}</span>
+        <h3 className="font-display text-ink mt-1 text-3xl font-bold">{title}</h3>
+        <p className="text-soft mt-1 text-sm font-light tracking-wide">{circa}</p>
+        <p className="text-muted mt-3 text-sm italic">{epigraph}</p>
       </div>
-      <p className="text-muted mt-3 text-sm italic">{epigraph}</p>
     </div>
   );
 }

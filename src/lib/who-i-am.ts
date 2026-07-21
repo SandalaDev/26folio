@@ -36,7 +36,7 @@ interface BioChapter {
 
 /** Masthead copy (mirrors the about card and the old modal header). */
 const BIO_TITLE = "Who I am";
-const BIO_TAGLINE = "From cell towers to codebases: the full story.";
+const BIO_TAGLINE = "“There's no knowledge that is not power.” ~ Ultimate Mortal Kombat 3";
 
 /** Opening section, before the epochs. */
 const BIO_INTRO: string[] = [
