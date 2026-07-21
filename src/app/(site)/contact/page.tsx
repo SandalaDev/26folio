@@ -1,4 +1,5 @@
 import { Section } from "@/components/site/section";
+import { PageHero } from "@/components/site/page-hero";
 import { Blob } from "@/components/site/blob";
 import { ContactForm } from "@/components/site/contact-form";
 import { SocialLinks } from "@/components/about/social-links";
@@ -14,25 +15,25 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <>
-      {/* Page head: display h1 + subhead, with a quiet blob accent. */}
-      <Section className="relative overflow-hidden pb-0 md:pb-0">
-        <Blob
-          variant={2}
-          fill="var(--color-rose)"
-          opacity={0.07}
-          blur={14}
-          className="-right-20 -top-12 w-[28rem]"
-        />
-        {/* ink→soft gradient fill — the preview h1 signature (TASK-053). */}
-        <h1 className="text-display font-display display-gradient">
-          Let&apos;s talk.
-        </h1>
-        <p className="measure mt-6 text-subhead text-muted">
-          Tell me what you are trying to build and I will tell you straight
-          whether I am the right fit. The more concrete the message, the faster
-          the reply.
+      {/* EPIC-020: shared centered manifesto opener. */}
+      <PageHero
+        title="Let's talk."
+        className="pb-0 md:pb-0"
+        backdrop={
+          <Blob
+            variant={2}
+            fill="var(--color-rose)"
+            opacity={0.07}
+            blur={14}
+            className="-right-20 -top-12 w-[28rem]"
+          />
+        }
+      >
+        <p className="measure text-subhead text-muted">
+          Tell me what you are trying to build and I will tell you straight whether I am the right
+          fit. The more concrete the message, the faster the reply.
         </p>
-      </Section>
+      </PageHero>
 
       {/* Form + contact details. */}
       <Section className="grid gap-16 pt-10 md:grid-cols-12 md:pt-16">
