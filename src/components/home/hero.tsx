@@ -37,7 +37,7 @@ function Hero() {
   }, [shouldReduceMotion]);
 
   return (
-    <section className="relative flex min-h-[90dvh] items-center overflow-hidden px-5 py-16 md:px-10 lg:px-16 xl:px-24">
+    <section className="relative flex min-h-[90dvh] items-center overflow-hidden px-5 py-8 md:px-10 lg:px-16 xl:px-24">
       {/* Always-present static warm gradient: reduced-motion / touch / SSR base.
           EPIC-012 TASK-050: low-alpha multi-stop washes (§3 — "never a tight
           two-stop ramp"). Full-strength accent-to-transparent ramps banded
@@ -55,13 +55,16 @@ function Hero() {
       {/* Additive WebGL shader: only when motion is allowed and pointer is fine. */}
       {canAnimate && <ShaderBackground className="-z-10" />}
 
+      {/* EPIC-020: centered editorial manifesto matching the /about/the-way-i-am
+          hero. Title, then the blob-masked portrait, the subhead, and the CTA
+          all stacked centered. The h1 spans the full width so a long headline
+          stays two lines; the supporting column stays measured. */}
       <motion.div
         initial={shouldReduceMotion ? undefined : "hidden"}
         animate={shouldReduceMotion ? undefined : "show"}
         variants={shouldReduceMotion ? undefined : staggerContainer}
-        className="flex w-full flex-col gap-8 lg:gap-10"
+        className="relative z-10 flex w-full flex-col items-center gap-5 text-center"
       >
-        {/* h1 sets the column width; everything below aligns to its ends. */}
         {/* ink→soft gradient fill — the preview h1 signature (TASK-053). */}
         <motion.h1
           variants={shouldReduceMotion ? undefined : fadeUp}
@@ -69,6 +72,31 @@ function Hero() {
         >
           I build the software your business actually needs.
         </motion.h1>
+
+        {/* Portrait under the title (matches WayHero), blob-masked with a soft
+            caramel echo (§Blob motif). */}
+        <motion.div
+          variants={shouldReduceMotion ? undefined : fadeUp}
+          className="relative w-32 sm:w-36 md:w-40"
+        >
+          <Blob
+            variant={3}
+            fill="var(--color-caramel)"
+            opacity={0.16}
+            blur={8}
+            className="-left-6 -top-8 w-[130%]"
+          />
+          <div className="blob-mask-1 blob-morph relative aspect-[4/5] overflow-hidden bg-surface-2">
+            <Image
+              src="/images/abe.png"
+              alt="Abe Sandala"
+              fill
+              sizes="(min-width: 768px) 10rem, 8rem"
+              priority
+              className="object-cover object-[50%_22%]"
+            />
+          </div>
+        </motion.div>
 
         <motion.p
           variants={shouldReduceMotion ? undefined : fadeUp}
@@ -80,37 +108,10 @@ function Hero() {
           partner who gets to the point.
         </motion.p>
 
-        {/* CTA centered in the viewport (owner note 1, adjusted); portrait kept
-            on the right, larger, portrait-aspect, cropped to the face, blob-
-            masked with a soft caramel echo (§Blob motif). */}
-        <motion.div
-          variants={shouldReduceMotion ? undefined : fadeUp}
-          className="flex flex-col items-center gap-10 sm:flex-row sm:items-end sm:justify-center"
-        >
+        <motion.div variants={shouldReduceMotion ? undefined : fadeUp}>
           <MagneticButton href="/contact" size="lg">
             Let&apos;s talk
           </MagneticButton>
-
-          <div className="relative order-first w-40 shrink-0 sm:ml-16 sm:w-48 md:w-56 lg:w-64">
-            <Blob
-              variant={3}
-              fill="var(--color-caramel)"
-              opacity={0.16}
-              blur={8}
-              className="-left-6 -top-8 w-[130%]"
-            />
-            {/* Portrait aspect (taller than square) cropped to the face. */}
-            <div className="blob-mask-1 blob-morph relative aspect-[4/5] overflow-hidden bg-surface-2">
-              <Image
-                src="/images/abe.png"
-                alt="Abe Sandala"
-                fill
-                sizes="(min-width: 1024px) 16rem, (min-width: 640px) 12rem, 10rem"
-                priority
-                className="object-cover object-[50%_22%]"
-              />
-            </div>
-          </div>
         </motion.div>
       </motion.div>
     </section>

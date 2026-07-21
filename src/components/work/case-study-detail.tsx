@@ -21,7 +21,7 @@ function CaseStudyDetail({ project }: { project: Project }) {
 
       <div className="flex flex-col gap-4">
         <Eyebrow>Project</Eyebrow>
-        <h1 className="text-display font-display text-ink">{project.title}</h1>
+        <h1 className="text-display font-display display-gradient">{project.title}</h1>
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">

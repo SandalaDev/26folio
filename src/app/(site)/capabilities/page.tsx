@@ -1,4 +1,5 @@
 import { Section } from "@/components/site/section";
+import { PageHero } from "@/components/site/page-hero";
 import { Eyebrow } from "@/components/site/eyebrow";
 import { Blob } from "@/components/site/blob";
 import { ServiceTabs } from "@/components/capabilities/service-tabs";
@@ -11,20 +12,20 @@ export const dynamic = "force-static";
 export default function CapabilitiesPage() {
   return (
     <>
-      <Section className="relative overflow-hidden pb-0 md:pb-0">
-        <Blob
-          variant={4}
-          fill="var(--color-caramel)"
-          opacity={0.08}
-          blur={14}
-          className="-z-10 -right-16 -top-20 w-[26rem]"
-        />
-        {/* Single-weight display h1 (owner note 1 → EPIC-012 TASK-053) with
-            the preview's ink→soft gradient fill. Copy unchanged. */}
-        <h1 className="text-display font-display display-gradient">
-          What I can do for you
-        </h1>
-      </Section>
+      {/* EPIC-020: shared centered manifesto opener. */}
+      <PageHero
+        title="What I can do for you"
+        className="pb-0 md:pb-0"
+        backdrop={
+          <Blob
+            variant={4}
+            fill="var(--color-caramel)"
+            opacity={0.08}
+            blur={14}
+            className="-z-10 -right-16 -top-20 w-[26rem]"
+          />
+        }
+      />
 
       <Section>
         <ServiceTabs />
