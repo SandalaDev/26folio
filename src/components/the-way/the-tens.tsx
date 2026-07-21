@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowSquareOut, Shuffle } from "@phosphor-icons/react";
+import { ArrowSquareOut, CaretDown, Shuffle } from "@phosphor-icons/react";
 
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import { TENS_INTRO } from "@/lib/the-way";
@@ -37,12 +37,6 @@ function eraLabel(era: Era): string {
   return era === "classics" ? "Classics" : `${era}s`;
 }
 
-function formatRuntime(totalMs: number): string {
-  const minutes = Math.round(totalMs / 60000);
-  const hours = Math.floor(minutes / 60);
-  return hours > 0 ? `${hours} hr ${minutes % 60} min` : `${minutes} min`;
-}
-
 function formatTrackLength(ms: number): string {
   const seconds = Math.round(ms / 1000);
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
@@ -53,8 +47,10 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
 
   return (
     // Centered kiosk (owner, 2026-07-20): the platter sits mid-page as a
-    // column with the art on top, instead of stretching the section width.
-    <div className="border-border bg-surface mx-auto max-w-xl border p-6 md:p-8">
+    // column with the art on top. Width flexes with the content so the
+    // full title shows (owner, 2026-07-21): it hugs the title up to a
+    // readable cap, never overflowing the section.
+    <div className="border-border bg-surface mx-auto w-fit max-w-2xl border p-6 md:p-8">
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={track.url || track.title}
@@ -77,11 +73,11 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
             ) : null}
           </div>
           <div className="w-full min-w-0">
-            <p className="font-display text-ink truncate text-2xl font-semibold md:text-3xl">
+            <p className="font-display text-ink text-2xl font-semibold text-balance md:text-3xl">
               {track.title}
             </p>
-            <p className="text-muted mt-1 truncate">{track.artists}</p>
-            <p className="text-muted mt-1 truncate text-sm">
+            <p className="text-muted mt-1">{track.artists}</p>
+            <p className="text-muted mt-1 text-sm">
               {track.album}
               {track.releaseYear ? `, ${track.releaseYear}` : ""}
             </p>
@@ -116,9 +112,27 @@ function FeaturedTrack({ track, onShuffle }: { track: TensTrack; onShuffle: () =
   );
 }
 
+/** Rows shown before the wall caps and offers "show all". */
+const WALL_PREVIEW = 30;
+
 function TheTens({ playlist }: { playlist: TensPlaylist }) {
   const [featured, setFeatured] = React.useState(0);
   const [era, setEra] = React.useState<Era | null>(null);
+  const [showAllTracks, setShowAllTracks] = React.useState(false);
+
+  // Deal a random opener on mount (owner, 2026-07-21). The server always
+  // renders index 0, so this runs client-side after hydration to avoid a
+  // mismatch, then swaps in the AnimatePresence crossfade.
+  React.useEffect(() => {
+    if (playlist.tracks.length > 1) {
+      setFeatured(Math.floor(Math.random() * playlist.tracks.length));
+    }
+  }, [playlist.tracks.length]);
+
+  // Collapse the wall back to a preview whenever the era filter changes.
+  React.useEffect(() => {
+    setShowAllTracks(false);
+  }, [era]);
 
   // Eras recomputed from whatever the playlist holds right now: Classics
   // first when any pre-2000 track exists, then the decades ascending.
@@ -138,6 +152,7 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
     () => (era === null ? playlist.tracks : playlist.tracks.filter((track) => eraOf(track) === era)),
     [playlist.tracks, era],
   );
+  const shown = showAllTracks ? visible : visible.slice(0, WALL_PREVIEW);
 
   const shuffle = () => {
     if (playlist.tracks.length < 2) return;
@@ -147,8 +162,6 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
     }
     setFeatured(next);
   };
-
-  const totalMs = playlist.tracks.reduce((sum, track) => sum + track.durationMs, 0);
 
   return (
     <div>
@@ -181,10 +194,6 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
         </div>
       ) : (
         <>
-          <p className="text-muted mt-2 text-sm">
-            {playlist.tracks.length} songs, {formatRuntime(totalMs)}
-          </p>
-
           <div className="mt-8">
             <FeaturedTrack track={playlist.tracks[featured]} onShuffle={shuffle} />
           </div>
@@ -223,7 +232,7 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
 
           <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-1 sm:grid-cols-2 xl:grid-cols-3">
             {/* Index in the key: the playlist can hold the same track twice. */}
-            {visible.map((track, index) => (
+            {shown.map((track, index) => (
               <li key={`${index}-${track.url || track.title}`}>
                 <a
                   href={track.url || playlist.url}
@@ -256,6 +265,23 @@ function TheTens({ playlist }: { playlist: TensPlaylist }) {
               </li>
             ))}
           </ul>
+
+          {visible.length > WALL_PREVIEW ? (
+            <button
+              type="button"
+              onClick={() => setShowAllTracks((open) => !open)}
+              aria-expanded={showAllTracks}
+              className="border-border text-muted hover:border-border-2 hover:text-ink mx-auto mt-8 flex items-center gap-2 border px-4 py-2 text-sm transition-colors"
+            >
+              {showAllTracks ? "Show fewer" : `Show all ${visible.length} songs`}
+              <CaretDown
+                aria-hidden="true"
+                className={`size-3.5 transition-transform duration-300 motion-reduce:transition-none ${
+                  showAllTracks ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+          ) : null}
         </>
       )}
     </div>

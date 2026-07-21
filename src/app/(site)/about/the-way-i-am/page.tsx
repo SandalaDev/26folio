@@ -30,8 +30,9 @@ export const metadata: Metadata = {
  * progress hairline and the floating table of contents. EPIC-018 removed
  * the Hobbies exhibit and gave the walk its real artifacts (portrait,
  * album art, covers, wishlists) per the owner's 2026-07-17 brief. Walk
- * order per the owner's 2026-07-20 brief: music, creative pursuits,
- * sources of inspiration, collections.
+ * order per the owner's 2026-07-21 brief: after the intro and curiosity
+ * opener, principles, sources of inspiration, music, creative pursuits,
+ * collections.
  */
 export default async function TheWayIAmPage() {
   const playlist = await getTensPlaylist();
@@ -42,11 +43,11 @@ export default async function TheWayIAmPage() {
       <WayToc />
       <WayHero />
       <CuriosityTable />
+      <PrinciplesGallery />
+      <Bookshelf />
       <MusicHall playlist={playlist} />
       <PracticeLine />
-      <Bookshelf />
       <WishlistShelves />
-      <PrinciplesGallery />
       <WayCta />
       <WayPager />
     </>

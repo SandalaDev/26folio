@@ -717,8 +717,8 @@ export const WISHLISTS: Wishlist[] = [
     // (2026-07-20), grammar-cleaned only. Farer, Kurono and the Club Sport
     // have no textcontent entry; their lines stay agent drafts.
     description: [
-      "Let me get this out of the way: I'm not a horology guy. I know the basics of manual, automatic and quartz, and I can appreciate the absurd cleverness of a tourbillon or Seiko's Spring Drive. But at the end of the day it's a watch movement. It tells time. Who cares.",
-      "What actually pulls me in is the same thing that pulls me toward a good pair of shoes or a well-built camera: the industrial design, the materials, the finishing, the colours on the dial. A watch is a tiny object you wear every day that somebody had to make a hundred design decisions about. That's the part I find interesting. So no, I won't be discussing calibres. These are here because of how they look, what they're made of, and in a couple of cases, what they mean to me.",
+      "Let me get this out of the way: I'm not a horology buff. I know the basics of manual, automatic and quartz movements, and I can appreciate the engineering behind a tourbillon or Seiko's Spring Drive. But while I respect the craftsmanship, that's not what draws me to watches.",
+      "What pulls me in is the same thing that pulls me toward a great pair of shoes or a well-built camera: the industrial design, the materials, the finishing, the proportions, the colours on the dial. A watch is a tiny object you wear every day, and every millimetre of it is the result of hundreds of design decisions. That's the part I find fascinating.",
     ],
     items: [
       {
@@ -1154,12 +1154,11 @@ export const BOOKSHELF: { label: string; books: Book[] }[] = [
         ],
       },
       {
-        // Agent draft from the cover add (2026-07-20); owner to confirm.
         title: "Seveneves",
         cover: "/images/about/books/Seveneves- Neal Stephenson.jpg",
         author: "Neal Stephenson",
         review: [
-          "The moon breaks apart on page one and humanity gets two years to get off the planet. Stephenson would rather walk you through the orbital mechanics than skip to the drama, and I mean that as a compliment.",
+          "If I hadn't read Ancillary Justice, this would be my favourite book of all time. The moon blows up in the first sentence, and what follows is spectacular, from the characters to the sheer scale and scope of the thing. This book moves so much and changes so much that it's more varied than some entire five-book series. You could divide it into six separate books and they would be so different from each other they'd belong to six different genres. And it does all of that before pulling off the most insane beat switch in the history of fiction, a Frank Ocean's Pyramids level pivot. I remember exactly where I was when I turned that page.",
         ],
       },
     ],
@@ -1275,15 +1274,16 @@ export const BOOKSHELF: { label: string; books: Book[] }[] = [
 ];
 
 /** Floating table of contents + section anchors, in walk order (owner,
- *  2026-07-20: music, creative pursuits, inspiration, collections). */
+ *  2026-07-21: principles, inspiration, music, creative pursuits,
+ *  collections, after the intro and curiosity opener). */
 export const WAY_SECTIONS = [
   { id: "intro", label: "Intro" },
   { id: "curiosity", label: "Curiosity" },
+  { id: "principles", label: "Principles" },
+  { id: "inspiration", label: "Inspiration" },
   { id: "music", label: "Music" },
   { id: "practice", label: "Creative Pursuits" },
-  { id: "inspiration", label: "Inspiration" },
   { id: "collections", label: "Collections" },
-  { id: "principles", label: "Principles" },
   { id: "build", label: "Let's Build" },
 ] as const;
 
