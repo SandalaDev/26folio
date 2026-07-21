@@ -4,8 +4,6 @@ import * as React from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "framer-motion";
-import { Globe, Sparkle } from "@phosphor-icons/react";
-
 import { prefersReducedMotion } from "@/lib/motion";
 import { EpochWatermark, type EpochTool } from "@/components/about/epoch-icon-cycler";
 
@@ -78,15 +76,16 @@ interface Beat {
   telecom?: string;
   /** Convergence duality: the nights-and-weekends track. */
   design?: string;
+  /** A readable body paragraph. The "Now" card uses this in place of the
+   *  takeaway/kept scaffolding, so it reads as a statement, not a résumé. */
+  body?: string;
   /** Why this period matters: one accent-colored sentence per card. */
-  takeaway: string;
+  takeaway?: string;
   /** What stayed: capabilities gained, not a tool inventory. */
-  kept: string[];
+  kept?: string[];
   chain?: ChainStep[];
   current?: boolean;
 }
-
-const ICON = { size: 20, weight: "regular" } as const;
 
 /**
  * Most significant tools per epoch, shown one at a time in the epoch header
@@ -96,25 +95,24 @@ const ICON = { size: 20, weight: "regular" } as const;
  * tooling he still reaches for, so it stays out of the cycler (the epoch
  * narrative still covers that era's domain work). Owner-supplied brand marks
  * from `public/icons/` where they exist; Phosphor stand-ins where they don't
- * yet (tracked as a follow-up list in EPIC-015). EPIC-019/TASK-076: the
- * owner supplied the Foundation set (wordpress/elementor/electronics plus
- * Fireworks — the era's origin tool — standing in for the "muse.svg" the
- * brief named, which isn't in public/icons), added Webflow to Convergence,
- * and asked for a tasteful platform/devops pair on Awakening (Docker +
- * Prometheus).
+ * yet (tracked as a follow-up list in EPIC-015). EPIC-019/TASK-076 gave the
+ * headers their watermark treatment; TASK-077 finalised the sets with the
+ * owner's real marks and full product-name labels (Adobe Muse + Macromedia
+ * Fireworks MX on Foundation, WordPress & Elementor dropped from Convergence,
+ * ai-coding.svg for the AI slot on Awakening).
  */
 const FOUNDATION_TOOLS: EpochTool[] = [
   { label: "WordPress", src: "/icons/wordpress.svg" },
   { label: "Elementor", src: "/icons/elementor.svg" },
-  { label: "Fireworks", src: "/icons/fireworks.svg" },
+  { label: "Adobe Muse", src: "/icons/muse.svg" },
+  { label: "Macromedia Fireworks MX", src: "/icons/fireworks.svg" },
   { label: "Electronics", src: "/icons/electronics.svg" },
 ];
 
 const CONVERGENCE_TOOLS: EpochTool[] = [
-  { label: "Photoshop", src: "/icons/photoshop.svg" },
-  { label: "Illustrator", src: "/icons/illustrator.svg" },
-  { label: "InDesign", src: "/icons/indesign.svg" },
-  { label: "WordPress & Elementor", node: <Globe {...ICON} /> },
+  { label: "Adobe Photoshop", src: "/icons/photoshop.svg" },
+  { label: "Adobe Illustrator", src: "/icons/illustrator.svg" },
+  { label: "Adobe InDesign", src: "/icons/indesign.svg" },
   { label: "Webflow", src: "/icons/webflow.svg" },
 ];
 
@@ -128,7 +126,7 @@ const AWAKENING_TOOLS: EpochTool[] = [
   { label: "PostgreSQL", src: "/icons/postgres.svg" },
   { label: "Docker", src: "/icons/docker.svg" },
   { label: "Prometheus", src: "/icons/prometheus.svg" },
-  { label: "AI-assisted development", node: <Sparkle {...ICON} /> },
+  { label: "AI-Assisted Coding", src: "/icons/ai-coding.svg" },
 ];
 
 const FOUNDATION_BEATS: Beat[] = [
@@ -211,11 +209,8 @@ const AWAKENING_BEATS: Beat[] = [
   },
   {
     period: "Now",
-    title: "Founder, Cassandra OS",
-    meanwhile: "Writing at Scrumtrulescent when I want to think out loud.",
-    takeaway:
-      "Cassandra OS is the first project where I put my own opinions about where software is going into something real.",
-    kept: ["AI integration", "Agentic software", "Product strategy", "Software ownership"],
+    title: "Cassandra OS (in the oven)",
+    body: "Still early, but the idea is simple: rethink business software around ownership, modularity, and long-term adaptability instead of subscriptions and vendor lock-in.",
     current: true,
   },
 ];
@@ -245,9 +240,9 @@ function EpochHeader({
       <EpochWatermark tools={tools} accentClassName={accent.icon} />
       <div className="relative z-10">
         <span className={`eyebrow ${accent.eyebrow}`}>Epoch {numeral}</span>
-        <h3 className="font-display text-ink mt-1 text-3xl font-bold">{title}</h3>
-        <p className="text-soft mt-1 text-sm font-light tracking-wide">{circa}</p>
-        <p className="text-muted mt-3 text-sm italic">{epigraph}</p>
+        <h3 className="font-display text-ink mt-1 text-3xl font-bold md:text-4xl">{title}</h3>
+        <p className="text-soft mt-1.5 text-sm font-light tracking-wide">{circa}</p>
+        <p className="text-muted mt-3 max-w-[88%] text-sm leading-relaxed italic">{epigraph}</p>
       </div>
     </div>
   );
@@ -334,7 +329,11 @@ function BeatCard({ beat, accent }: { beat: Beat; accent: Accent }) {
   return (
     <li
       data-beat
-      className={`bg-surface relative border p-6 ${beat.current ? "border-rose" : "border-border"}`}
+      className={`group relative border p-6 transition-colors duration-300 md:p-7 ${
+        beat.current
+          ? "border-rose from-rose/[0.08] to-surface bg-gradient-to-br"
+          : "bg-surface border-border hover:border-border-2"
+      }`}
     >
       <RailMarker accent={accent} pulse={beat.current} />
       {beat.current ? null : (
@@ -356,16 +355,24 @@ function BeatCard({ beat, accent }: { beat: Beat; accent: Accent }) {
         </div>
       ) : (
         <>
-          <h4 className="font-display text-ink mt-1 text-xl font-semibold">{beat.title}</h4>
+          <h4
+            className={`font-display text-ink mt-1 font-semibold ${beat.current ? "text-2xl" : "text-xl"}`}
+          >
+            {beat.title}
+          </h4>
           {beat.meanwhile ? <p className="text-muted mt-2 text-sm">{beat.meanwhile}</p> : null}
         </>
       )}
 
-      <p className={`mt-4 text-sm ${accent.icon}`}>{beat.takeaway}</p>
+      {beat.body ? <p className="text-soft mt-3 leading-relaxed">{beat.body}</p> : null}
+
+      {beat.takeaway ? (
+        <p className={`mt-4 text-sm leading-relaxed ${accent.icon}`}>{beat.takeaway}</p>
+      ) : null}
 
       {beat.chain ? <ToolChain steps={beat.chain} accent={accent} /> : null}
 
-      <KeptList items={beat.kept} />
+      {beat.kept && beat.kept.length > 0 ? <KeptList items={beat.kept} /> : null}
     </li>
   );
 }
