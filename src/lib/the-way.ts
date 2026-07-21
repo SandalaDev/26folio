@@ -1274,13 +1274,13 @@ export const BOOKSHELF: { label: string; books: Book[] }[] = [
 ];
 
 /** Floating table of contents + section anchors, in walk order (owner,
- *  2026-07-21: principles, inspiration, music, creative pursuits,
- *  collections, after the intro and curiosity opener). */
+ *  2026-07-21: intro, principles, inspiration, curiosity, music, creative
+ *  pursuits, collections). */
 export const WAY_SECTIONS = [
   { id: "intro", label: "Intro" },
-  { id: "curiosity", label: "Curiosity" },
   { id: "principles", label: "Principles" },
   { id: "inspiration", label: "Inspiration" },
+  { id: "curiosity", label: "Curiosity" },
   { id: "music", label: "Music" },
   { id: "practice", label: "Creative Pursuits" },
   { id: "collections", label: "Collections" },

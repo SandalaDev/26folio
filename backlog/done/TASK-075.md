@@ -57,5 +57,7 @@ files_allowed:
   component hydrates.
 - (4) Wall capped at 30 rows with a show-all toggle that resets when the
   era filter changes; `visible.length` drives the "Show all N songs" label.
-- (7) Intro + curiosity stay as the opener (owner's list named five content
-  sections and omitted curiosity); the five follow in the given order.
+- (7) First pass kept curiosity as the opener; owner then moved it (chat,
+  2026-07-21) below Sources of Inspiration and above Music. Final order:
+  intro, principles, inspiration, curiosity, music, creative pursuits,
+  collections, build. page.tsx + WAY_SECTIONS both reflect it.
