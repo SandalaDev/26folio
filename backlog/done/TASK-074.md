@@ -70,3 +70,24 @@ files_allowed:
 - the-tens.tsx: era chips computed per track with everything pre-2000
   pooled into Classics; provenance note on the platter kiosk.
 - env.ts/env.example: SPOTIFY_REFRESH_TOKEN name (value stays local).
+
+## Follow-up: full playlist without the sanctioned API (2026-07-21)
+
+The refresh-token path 403s for this dev-mode app (not grandfathered),
+and per-track /v1/tracks year lookups hit the api.spotify.com rate limit
+when seeding the whole list. Fix, owner-approved (keep year eras over
+genre; genre needs the same throttled per-artist calls and messy buckets):
+
+- Web-player path (SPOTIFY_SP_DC cookie): a session token from the embed
+  page + the web player's `fetchPlaylistContents` persisted query pages
+  the entire playlist off api-partner (not rate-limited, no 100 cap).
+- Release years resolved per distinct album via the web player's
+  `getAlbum` query (also api-partner), cached by album uri. No calls to
+  the throttled api.spotify.com. Verified: 326 tracks, 269 albums, 0
+  missing years; module rebuild ~44s, cache-hit ~4s.
+- Persisted-query hashes harvested from live JS bundles and re-harvested
+  if a query rejects a rotated hash. Path order: web-player -> refresh
+  token -> capped embed -> snapshot.
+- Committed spotify-snapshot.json regenerated to the full 326-track list
+  with complete years so env-less/prod-cold builds render everything.
+- env.ts/env.example: SPOTIFY_SP_DC. Owner set the cookie value locally.

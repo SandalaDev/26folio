@@ -23,19 +23,35 @@ import snapshot from "@/lib/spotify-snapshot.json";
  *   the repo carries the last known data for env-less builds. A read-only
  *   filesystem (CI, some hosts) skips the write without complaint.
  *
- * Two read paths for the track list (probed 2026-07-20):
+ * Track-list read paths, tried in order of completeness (probed
+ * 2026-07-20; the sanctioned Web API refuses the full read for this
+ * dev-mode app):
  *
- * 1. SPOTIFY_REFRESH_TOKEN set (owner ran scripts/spotify-authorize.mjs
- *    once): the refresh-token grant yields a user token that CAN page
- *    /playlists/<id>/tracks, so the whole playlist arrives in one or two
- *    requests with no row cap.
- * 2. No refresh token: client-credentials only. Spotify strips playlist
- *    tracks from client-credentials responses for development-mode apps
- *    (the /tracks sub-endpoint 403s; re-verified 2026-07-20), so the
- *    track IDs come from the public embed page's __NEXT_DATA__ JSON
- *    (open.spotify.com/embed/playlist/<id>, no auth, HARD-CAPPED at 100
- *    rows) and per-track /v1/tracks/<id> calls fill in the detail. Songs
- *    beyond row 100 are invisible on this path.
+ * 1. SPOTIFY_SP_DC set (owner's Spotify web-session cookie): the full
+ *    playlist, no row cap. A session token is lifted from the embed page
+ *    (the cookie makes it a real user session), the web player's
+ *    `fetchPlaylistContents` persisted-query hash is harvested from the
+ *    live JS bundles, and api-partner's GraphQL is paged for every track.
+ *    That response carries no release year, so the year is filled per
+ *    track from /v1/tracks/<id> (client credentials) and cached by track
+ *    id, so only newly added songs ever cost a lookup. Unofficial surface:
+ *    it can break when Spotify rotates internals, and the cookie expires
+ *    roughly yearly; both failure modes fall through to the paths below.
+ * 2. SPOTIFY_REFRESH_TOKEN set (owner ran scripts/spotify-authorize.mjs):
+ *    a user token that, for apps grandfathered into playlist-tracks
+ *    access, pages /playlists/<id>/tracks with no cap. Newer dev-mode apps
+ *    get 403 here even with a scoped token (this app does), so it falls
+ *    through.
+ * 3. Client credentials only: Spotify strips playlist tracks from
+ *    client-credentials responses for development-mode apps (the /tracks
+ *    sub-endpoint 403s), so the track IDs come from the public embed
+ *    page's __NEXT_DATA__ JSON (no auth, HARD-CAPPED at 100 rows) and
+ *    per-track /v1/tracks/<id> calls fill in the detail. Songs beyond row
+ *    100 are invisible on this path.
+ *
+ * Every path is gated by snapshot_id: the metadata call (cheap, client
+ * credentials) runs each request, and the expensive rebuild only happens
+ * when the playlist actually changed.
  */
 
 export interface TensTrack {
@@ -76,15 +92,20 @@ interface SpotifyTrack {
   is_local?: boolean;
 }
 
-/** fetch with one retry on transient network failure (connect timeouts
- *  to api.spotify.com show up in practice); HTTP error statuses are the
- *  caller's problem and are not retried. */
+/** fetch that retries transient network failures (Spotify's edges drop
+ *  connections intermittently); HTTP error statuses are the caller's
+ *  problem and are returned as-is, not retried. */
 async function fetchOnceRetried(url: string, init: RequestInit): Promise<Response> {
-  try {
-    return await fetch(url, init);
-  } catch {
-    return fetch(url, init);
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      return await fetch(url, init);
+    } catch (error) {
+      lastError = error;
+      await new Promise((resolve) => setTimeout(resolve, 400 * (attempt + 1)));
+    }
   }
+  throw lastError;
 }
 
 /** Bearer token cached until shortly before expiry, so the per-request
@@ -242,6 +263,217 @@ async function fetchCappedTracks(headers: HeadersInit, id: string): Promise<Tens
   return tracks;
 }
 
+// ---- Web-player path (SPOTIFY_SP_DC): the full playlist ----
+
+const WEB_UA =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
+const PATHFINDER = "https://api-partner.spotify.com/pathfinder/v1/query";
+
+/** Extract a track id from a spotify: URI or open.spotify.com URL. */
+function trackIdOf(uriOrUrl: string): string {
+  const m = uriOrUrl.match(/(?:spotify:track:|\/track\/)([A-Za-z0-9]{22})/);
+  return m ? m[1] : "";
+}
+
+/** A real (non-anonymous) session token from the embed page, which the
+ *  sp_dc cookie upgrades to the owner's session. */
+async function webSessionToken(id: string): Promise<string> {
+  const res = await fetchOnceRetried(`https://open.spotify.com/embed/playlist/${id}`, {
+    headers: { Cookie: `sp_dc=${env.SPOTIFY_SP_DC}`, "User-Agent": WEB_UA },
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`spotify embed: ${res.status}`);
+  const html = await res.text();
+  const match = html.match(
+    /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/,
+  );
+  if (!match) throw new Error("spotify embed: no __NEXT_DATA__");
+  const data = JSON.parse(match[1]) as {
+    props?: { pageProps?: { state?: { settings?: { session?: { accessToken?: string } } } } };
+  };
+  const value = data.props?.pageProps?.state?.settings?.session?.accessToken;
+  if (!value) throw new Error("spotify embed: no session token");
+  return value;
+}
+
+/** The web player's persisted-query hashes (fetchPlaylistContents to page
+ *  the playlist, getAlbum to resolve release years), scraped from its JS
+ *  bundles. Cached in memory; cleared and re-harvested when a query
+ *  rejects a hash (Spotify rotates bundles). */
+let queryHashes: { contents: string; album: string } | null = null;
+
+async function getQueryHashes(): Promise<{ contents: string; album: string }> {
+  if (queryHashes) return queryHashes;
+  const pageRes = await fetchOnceRetried("https://open.spotify.com/", {
+    headers: { "User-Agent": WEB_UA },
+    cache: "no-store",
+  });
+  const pageHtml = await pageRes.text();
+  const scripts = [...new Set([...pageHtml.matchAll(/https:\/\/[^"']+\.js/g)].map((m) => m[0]))];
+  let contents = "";
+  let album = "";
+  for (const url of scripts) {
+    if (contents && album) break;
+    let js = "";
+    try {
+      js = await (await fetchOnceRetried(url, { headers: { "User-Agent": WEB_UA } })).text();
+    } catch {
+      continue;
+    }
+    contents ||= js.match(/"fetchPlaylistContents"\s*,\s*"query"\s*,\s*"([0-9a-f]{64})"/)?.[1] ?? "";
+    album ||= js.match(/"getAlbum"\s*,\s*"query"\s*,\s*"([0-9a-f]{64})"/)?.[1] ?? "";
+  }
+  if (!contents || !album) throw new Error("spotify web: query hashes not found");
+  queryHashes = { contents, album };
+  return queryHashes;
+}
+
+/** Run a persisted GraphQL query against api-partner. Throws on transport
+ *  or GraphQL errors, clearing the hash cache so the next call re-harvests
+ *  (covers Spotify rotating its bundles). */
+async function pathfinderQuery<T>(
+  operationName: string,
+  hash: string,
+  variables: Record<string, unknown>,
+  headers: HeadersInit,
+): Promise<T> {
+  const url =
+    `${PATHFINDER}?operationName=${operationName}` +
+    `&variables=${encodeURIComponent(JSON.stringify(variables))}` +
+    `&extensions=${encodeURIComponent(JSON.stringify({ persistedQuery: { version: 1, sha256Hash: hash } }))}`;
+  const res = await fetchOnceRetried(url, { headers, cache: "no-store" });
+  if (!res.ok) throw new Error(`spotify pathfinder ${operationName}: ${res.status}`);
+  const json = (await res.json()) as { errors?: unknown; data?: T };
+  if (json.errors || !json.data) {
+    queryHashes = null;
+    throw new Error(`spotify pathfinder ${operationName}: query errors`);
+  }
+  return json.data;
+}
+
+interface PathfinderItem {
+  itemV2?: {
+    __typename?: string;
+    data?: {
+      name?: string;
+      uri?: string;
+      trackDuration?: { totalMilliseconds?: number };
+      artists?: { items?: { profile?: { name?: string } }[] };
+      albumOfTrack?: {
+        uri?: string;
+        name?: string;
+        coverArt?: { sources?: { url?: string; width?: number }[] };
+      };
+    };
+  };
+}
+
+/** A mapped track plus the album URI it came from, so years can be
+ *  resolved once per album rather than once per track. */
+interface WebTrack {
+  track: TensTrack;
+  albumUri: string;
+}
+
+/** One pathfinder track row -> a track with releaseYear left at 0 (the
+ *  playlist query carries no date; resolveAlbumYears fills it). */
+function mapPathfinderItem(item: PathfinderItem): WebTrack | null {
+  const data = item.itemV2;
+  if (data?.__typename !== "TrackResponseWrapper") return null;
+  const track = data.data;
+  const trackId = trackIdOf(track?.uri ?? "");
+  if (!track?.name || !trackId) return null;
+  const sources = track.albumOfTrack?.coverArt?.sources ?? [];
+  const cover = sources.find((s) => s.width === 300)?.url ?? sources[0]?.url ?? "";
+  return {
+    albumUri: track.albumOfTrack?.uri ?? "",
+    track: {
+      title: track.name,
+      artists: (track.artists?.items ?? [])
+        .map((a) => a.profile?.name)
+        .filter(Boolean)
+        .join(", "),
+      album: track.albumOfTrack?.name ?? "",
+      cover,
+      releaseYear: 0,
+      durationMs: track.trackDuration?.totalMilliseconds ?? 0,
+      url: `https://open.spotify.com/track/${trackId}`,
+    },
+  };
+}
+
+/** Album URI -> release year, cached across loads (album dates never
+ *  change), so a rebuild only queries albums it hasn't seen. */
+const albumYearCache = new Map<string, number>();
+
+/** Fill releaseYear on every track by resolving its album's date through
+ *  the web player's getAlbum query (api-partner, not rate-limited). One
+ *  query per distinct album. Unresolved albums leave the year at 0; the
+ *  track still renders under "All eras". */
+async function resolveAlbumYears(items: WebTrack[], headers: HeadersInit, albumHash: string): Promise<void> {
+  const unresolved = [...new Set(items.map((i) => i.albumUri).filter(Boolean))].filter(
+    (uri) => !albumYearCache.has(uri),
+  );
+
+  for (let start = 0; start < unresolved.length; start += 6) {
+    const chunk = unresolved.slice(start, start + 6);
+    await Promise.all(
+      chunk.map(async (albumUri) => {
+        try {
+          const data = await pathfinderQuery<{ albumUnion?: { date?: { isoString?: string } } }>(
+            "getAlbum",
+            albumHash,
+            { uri: albumUri, locale: "", offset: 0, limit: 50 },
+            headers,
+          );
+          const year = Number.parseInt((data.albumUnion?.date?.isoString ?? "").slice(0, 4), 10);
+          if (!Number.isNaN(year)) albumYearCache.set(albumUri, year);
+        } catch {
+          // Leave unresolved; the track still renders under "All eras".
+        }
+      }),
+    );
+  }
+
+  for (const { track, albumUri } of items) {
+    const year = albumYearCache.get(albumUri);
+    if (year) track.releaseYear = year;
+  }
+}
+
+/** The full playlist via the web player: page every track, then resolve
+ *  each track's year from its album. All api-partner, no rate limit. */
+async function fetchViaWebPlayer(id: string): Promise<TensTrack[]> {
+  const sessionToken = await webSessionToken(id);
+  const { contents, album } = await getQueryHashes();
+  const headers = {
+    Authorization: `Bearer ${sessionToken}`,
+    "app-platform": "WebPlayer",
+    "User-Agent": WEB_UA,
+  };
+
+  const items: WebTrack[] = [];
+  const limit = 100;
+  for (let offset = 0; ; offset += limit) {
+    const data = await pathfinderQuery<{
+      playlistV2?: { content?: { totalCount?: number; items?: PathfinderItem[] } };
+    }>("fetchPlaylistContents", contents, { uri: `spotify:playlist:${id}`, offset, limit }, headers);
+    const content = data.playlistV2?.content;
+    const rows = content?.items ?? [];
+    for (const row of rows) {
+      const mapped = mapPathfinderItem(row);
+      if (mapped) items.push(mapped);
+    }
+    const total = content?.totalCount ?? items.length;
+    if (rows.length === 0 || offset + limit >= total) break;
+  }
+  if (items.length === 0) throw new Error("spotify pathfinder: empty");
+
+  await resolveAlbumYears(items, headers, album);
+  return items.map((i) => i.track);
+}
+
+
 function writeSnapshot(playlist: TensPlaylist): void {
   try {
     const file = path.join(process.cwd(), "src/lib/spotify-snapshot.json");
@@ -256,6 +488,27 @@ function writeSnapshot(playlist: TensPlaylist): void {
  *  the playlist's snapshot_id is unchanged, and on any fetch failure. */
 let cached = snapshot as TensPlaylist;
 
+/** The whole track list, best source first, each falling through to the
+ *  next on failure. Every path carries the release year (the web-player
+ *  path resolves it per album; the API paths get it inline). */
+async function fetchTracks(headers: HeadersInit, id: string): Promise<TensTrack[]> {
+  if (env.SPOTIFY_SP_DC) {
+    try {
+      return await fetchViaWebPlayer(id);
+    } catch {
+      // Unofficial surface changed or cookie expired; try the rest.
+    }
+  }
+  if (env.SPOTIFY_REFRESH_TOKEN) {
+    try {
+      return await fetchAllTracks(headers, id);
+    } catch {
+      // Dev-mode app without grandfathered access; fall through.
+    }
+  }
+  return fetchCappedTracks(headers, id);
+}
+
 /** The playlist for the page: version-checked against Spotify on every
  *  request, re-fetched only when it changed, snapshot/cache when env or
  *  the network says no. */
@@ -269,13 +522,7 @@ export async function getTensPlaylist(): Promise<TensPlaylist> {
     const meta = await fetchMeta(headers, id);
     if (meta.snapshotId && meta.snapshotId === cached.snapshotId) return cached;
 
-    // The full read needs an app grandfathered into playlist-tracks access;
-    // newer dev-mode apps 403 here even with a scoped user token (probed
-    // 2026-07-20). Fall back to the capped path so playlist edits keep
-    // flowing either way.
-    const tracks = env.SPOTIFY_REFRESH_TOKEN
-      ? await fetchAllTracks(headers, id).catch(() => fetchCappedTracks(headers, id))
-      : await fetchCappedTracks(headers, id);
+    const tracks = await fetchTracks(headers, id);
     const playlist: TensPlaylist = {
       name: meta.name,
       url: meta.url,
