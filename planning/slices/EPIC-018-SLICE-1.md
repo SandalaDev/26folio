@@ -73,3 +73,43 @@ washes stay quiet, hover reveals carry the personal voice.
 - `src/components/the-way/*` (hero, music hall, playlist, wishlists,
   bookshelf, practice line, nav; hobbies-wall deleted)
 - `env.example`, `public/images/abe2.jpg`, `public/images/about/**`
+
+## Owner revision pass 3 (TASK-073, 2026-07-20 prompt.md + textcontent.md)
+
+1. **Spotify freshness** — the route goes dynamic; every load re-reads the
+   public embed track list (one fetch) and only re-pulls track detail when
+   the list changed, then rewrites the snapshot best-effort.
+2. **Platter kiosk** — centered column (max-w-xl, art on top) instead of a
+   full-width row.
+3. **Folder sync** — every image section again mirrors its source folder
+   (61 albums, 24 books, 13 audiophile, 17 watches, 29 fragrances); new
+   images without owner copy get flagged agent drafts.
+4. **Books** — `Book` gains `review: string[]` + optional `quote`; all
+   reviews are the owner's textcontent.md copy, grammar-cleaned per his
+   embedded instructions.
+5. **Watches + fragrances** — owner intros (multi-paragraph
+   `description: string[]`) and per-item lines replace the agent drafts.
+6. **Bookshelf mechanism** — click a cover to open a reading panel under
+   the shelf (height-auto reveal, keyed crossfade between books, one per
+   shelf, reduced-motion static).
+7. **Walk order** — music, creative pursuits, inspiration, collections;
+   principles follow, then the CTA.
+
+## Spotify list follow-up (TASK-074, 2026-07-20 chat)
+
+Probed findings: the public embed feed hard-caps at 100 rows (no total
+field), client-credentials /tracks still 403s for dev-mode apps, and the
+embed's anonymous token 429s with a ~19h Retry-After. Changes:
+
+- Change detection moved to the playlist's snapshot_id (readable with
+  client credentials, changes on any edit including past row 100); bearer
+  token cached until expiry, so an unchanged playlist costs one metadata
+  call per load.
+- `SPOTIFY_REFRESH_TOKEN` (one-time owner OAuth via
+  `scripts/spotify-authorize.mjs`, no scopes) unlocks the paged /tracks
+  read with no row cap; without it the embed + per-track fallback still
+  applies, capped at 100.
+- Era chips derive per track from live data; everything pre-2000 pools
+  into a Classics era.
+- The platter kiosk carries a provenance note: songs come live from the
+  10s playlist on Spotify.

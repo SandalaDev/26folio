@@ -12,7 +12,10 @@ import { WayCta } from "@/components/the-way/way-cta";
 import { WayPager } from "@/components/the-way/way-pager";
 import { getTensPlaylist } from "@/lib/spotify";
 
-export const dynamic = "force-static";
+// Dynamic so playlist edits on Spotify show up on the next page load
+// (TASK-073); getTensPlaylist keeps the per-request cost to one embed
+// check unless the track list actually changed.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "The Way I Am | sandala.dev",
@@ -26,7 +29,9 @@ export const metadata: Metadata = {
  * is its own exhibit with its own layout family, threaded together by the
  * progress hairline and the floating table of contents. EPIC-018 removed
  * the Hobbies exhibit and gave the walk its real artifacts (portrait,
- * album art, covers, wishlists) per the owner's 2026-07-17 brief.
+ * album art, covers, wishlists) per the owner's 2026-07-17 brief. Walk
+ * order per the owner's 2026-07-21 brief: intro, principles, sources of
+ * inspiration, curiosity, music, creative pursuits, collections.
  */
 export default async function TheWayIAmPage() {
   const playlist = await getTensPlaylist();
@@ -36,12 +41,12 @@ export default async function TheWayIAmPage() {
       <WayProgress />
       <WayToc />
       <WayHero />
+      <PrinciplesGallery />
+      <Bookshelf />
       <CuriosityTable />
       <MusicHall playlist={playlist} />
       <PracticeLine />
       <WishlistShelves />
-      <PrinciplesGallery />
-      <Bookshelf />
       <WayCta />
       <WayPager />
     </>
