@@ -11,8 +11,9 @@ import { DURATION, EASE_OUT } from "@/lib/motion";
  * ServiceTabs — services section (12-ui-element-map.md §3 Capabilities #1).
  * EPIC-010: reads from the shared services source (src/lib/services.ts, also
  * consumed by the home rail) and renders a real `id=` anchor per service so
- * deep links like /capabilities#mobile-payments land here AND activate the
- * right tab (the hash effect below).
+ * deep links like /capabilities#platforms land here AND activate the right
+ * tab (the hash effect below). EPIC-021 TASK-079 bridges this component to
+ * the four-pillar schema; TASK-080 replaces it with the capability explorer.
  */
 function ServiceTabs() {
   const [initialId, setInitialId] = React.useState<string | undefined>(undefined);
@@ -86,13 +87,11 @@ function ServiceTabs() {
                   <h3 className="font-display text-2xl font-semibold text-ink">
                     {service.title}
                   </h3>
-                  {service.subtitle && (
-                    /* soft = tertiary text (§2) — the third text level on the
-                       card, distinct from the muted body items below. */
-                    <p className="mt-1 text-soft">{service.subtitle}</p>
-                  )}
+                  {/* soft = tertiary text (§2), the third text level on the
+                      card, distinct from the muted body items below. */}
+                  <p className="mt-1 text-soft">{service.problem}</p>
                   <ul className="mt-6 flex flex-col gap-2 text-ink/80">
-                    {service.items.map((item) => (
+                    {service.builds.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>

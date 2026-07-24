@@ -1,7 +1,7 @@
 ---
 id: TASK-080
 title: "Capabilities page rebuild: capability explorer, why-one-engineer strip, Build/Evolve engagement section"
-status: open
+status: in-progress
 priority: P1
 risk_level: medium
 preferred_executor: claude-code

@@ -1,89 +1,123 @@
 /**
- * Services — single source of truth (EPIC-010 TASK-042). Consumed by BOTH the
- * home page's CapabilityRail and the capabilities page's ServiceTabs, which
- * previously carried duplicated arrays that could drift.
+ * Services - single source of truth. Consumed by the home CapabilityRail and
+ * the capabilities page (EPIC-021: capability explorer), which must never
+ * carry duplicated arrays that drift.
  *
- * The first three entries are ported verbatim from the previous components
- * (11-content-strategy.md §4). `mobile-payments` and `e-commerce` are promoted
- * from custom-software's item list to standalone services (owner brief,
- * 2026-07-02); their descriptions/items are DRAFTS for owner review — neutral,
- * no invented claims. `icon` is a key the rail maps to a Phosphor component
- * (icons render client-side only; this module stays pure data).
+ * EPIC-021 TASK-079: the five-service list (web dev / custom software / AI /
+ * payments / e-commerce) collapsed into four researched pillars. Strategy and
+ * copy source: planning/content/page-copy/Capabilities.md. Payments and
+ * commerce fold into `platforms`; the old anchors retired with the ids.
+ * `icon` is a key the rail maps to a Phosphor component (icons render
+ * client-side only; this module stays pure data).
  */
-export type ServiceIcon = "globe" | "wrench" | "robot" | "device" | "storefront";
+export type ServiceIcon = "storefront" | "gear" | "robot" | "database";
 
 export interface Service {
   id: string;
   title: string;
-  /** One-line card copy (home rail). */
+  /** One-line card copy (home rail + explorer row). */
   description: string;
-  /** Optional strapline (capabilities tabs). */
-  subtitle: string;
-  /** Offer bullets (capabilities tabs). */
-  items: string[];
+  /** Who this pillar serves (explorer panel). */
+  audience: string;
+  /** The problem, in the buyer's words (explorer panel). */
+  problem: string;
+  /** Concrete systems this pillar ships (explorer panel). */
+  builds: string[];
+  /** The tool-sprawl it retires (explorer panel). */
+  replaces: string[];
+  /** Closing line for the panel. */
+  anchor: string;
   icon: ServiceIcon;
 }
 
 export const services: Service[] = [
   {
-    id: "web-development",
-    title: "Web development",
-    description: "A site that loads fast, reads clearly, and actually converts.",
-    subtitle: "Beyond a website",
-    items: [
-      'Payload CMS builds ("I build it, you control it")',
-      "Landing pages",
-      "Dashboards",
-      "Internal tools",
+    id: "platforms",
+    title: "Platforms you own",
+    description:
+      "Memberships, courses, and commerce on your own domain, with no platform taking a cut.",
+    audience:
+      "Creators, coaches, and independent brands who have outgrown Skool, Kajabi, or Substack.",
+    problem:
+      "The platform charges up to 10% of your revenue, holds your audience data, and can switch you off overnight. You built the audience. Your landlord owns the relationship.",
+    builds: [
+      "Membership sites with courses, gated content, and community",
+      "Newsletters and email lists you control outright",
+      "Checkout and subscriptions through your own Stripe account",
+      "Commerce stacks with a fallback payment path",
+      "Done-for-you migration off the platform you are leaving",
     ],
-    icon: "globe",
+    replaces: ["Kajabi", "Skool", "Teachable", "Substack", "Patreon"],
+    anchor: "You keep the margin, the audience, and the keys.",
+    icon: "storefront",
   },
   {
-    id: "custom-software",
-    title: "Custom software",
-    description: "Internal tools built around how your team already works.",
-    subtitle: "",
-    items: ["Booking systems / CRMs", "Workflow automation"],
-    icon: "wrench",
+    id: "operations",
+    title: "Operations systems",
+    description:
+      "One system that runs client work: onboarding, delivery, billing, reporting.",
+    audience: "Agencies, studios, and service firms between three and fifty people.",
+    problem:
+      "The business runs across a project tool, spreadsheets, an inbox, and someone's memory. Every handoff between them leaks hours nobody can bill.",
+    builds: [
+      "Client portals your customers log into on their own",
+      "Delivery pipelines from signed proposal to shipped work",
+      "Time tracking, billing, and invoicing wired together",
+      "Dashboards that show margin per client, not just activity",
+      "Automated status reporting, so clients stop asking",
+    ],
+    replaces: [
+      "ClickUp plus spreadsheet glue",
+      "Zapier chains nobody maintains",
+      "the weekly status-update meeting",
+    ],
+    anchor: "Admin hours go back to being billable hours.",
+    icon: "gear",
   },
   {
-    id: "ai-integration",
-    title: "AI integration",
-    description: "Automation that earns its place, not a chatbot bolted on.",
-    subtitle: "",
-    items: [
-      "Customer-care voice & chatbots",
-      "Receptionist bot",
-      "Custom integrations",
-      "Local/on-prem AI",
+    id: "automation",
+    title: "Automation & applied AI",
+    description:
+      "Busywork that completes itself: intake, drafting, qualification, reporting.",
+    audience:
+      "Teams that re-type the same information into three systems, and operators tired of chatbot demos.",
+    problem:
+      "Most AI projects die as demos because nobody wired them into real work. The model is the easy part. The integration is the job.",
+    builds: [
+      "Workflow automation across the tools you already use",
+      "AI agents that finish one job start to end, with human handoff where judgment starts",
+      "Document drafting, lead qualification, and inbox triage",
+      "Middleware connecting your portal to models, CRMs, and databases",
     ],
+    replaces: [
+      "copy-paste between tabs",
+      "a generic chatbot widget",
+      "the intern-shaped hole in your process",
+    ],
+    anchor: "People do the judgment. The system does the rest.",
     icon: "robot",
   },
   {
-    id: "mobile-payments",
-    title: "Mobile money & online payments",
-    description:
-      "Mobile money and card payments wired into your product, so getting paid is the easy part.",
-    subtitle: "",
-    items: [
-      "Mobile money integration",
-      "Card & payment-gateway setup",
-      "Checkout & billing flows",
+    id: "data",
+    title: "Data & integrations",
+    description: "Every system you run, feeding one screen you trust.",
+    audience:
+      "Businesses with numbers spread across five or ten systems and no single view of what they mean.",
+    problem:
+      "Decisions get made on exports, gut feel, and a spreadsheet somebody updated last quarter. The data exists. Nobody can see it in one place.",
+    builds: [
+      "Pipelines that pull every source into one warehouse",
+      "A Monday-morning report generated without anyone touching it",
+      "API wrappers around awkward third-party systems",
+      "Alerts that flag a moving number before it becomes a problem",
     ],
-    icon: "device",
-  },
-  {
-    id: "e-commerce",
-    title: "E-commerce",
-    description:
-      "A store you control end to end: catalog, checkout, orders, delivery.",
-    subtitle: "",
-    items: [
-      "Online storefronts",
-      "Catalog & inventory",
-      "Checkout & order management",
+    replaces: [
+      "CSV exports",
+      "copy-paste reporting",
+      "the spreadsheet only one person understands",
     ],
-    icon: "storefront",
+    anchor: "One screen you trust instead of ten you don't.",
+    icon: "database",
   },
 ];
 

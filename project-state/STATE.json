@@ -10,7 +10,7 @@
   "current": {
     "epic": "EPIC-021",
     "slice": "EPIC-021-SLICE-1",
-    "task": "TASK-079",
+    "task": "TASK-080",
     "agent": "claude-code",
     "branch": "feature/EPIC-021",
     "session_status": "active",

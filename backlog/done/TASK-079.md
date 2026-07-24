@@ -1,7 +1,7 @@
 ---
 id: TASK-079
 title: "Four-pillar services content layer: services.ts schema + final copy; home rail coherent"
-status: in-progress
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
