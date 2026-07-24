@@ -1,7 +1,7 @@
 ---
 id: TASK-080
 title: "Capabilities page rebuild: capability explorer, why-one-engineer strip, Build/Evolve engagement section"
-status: in-progress
+status: done
 priority: P1
 risk_level: medium
 preferred_executor: claude-code
@@ -61,3 +61,7 @@ files_allowed:
 - House motion only: transform/opacity, EASE_OUT, fadeUp/stagger,
   useReducedMotion gates. No parallax novelty.
 - Page shell stays a server component; the explorer is the client island.
+- Deviation from the slice: the Build/Evolve beats render side by side
+  instead of behind a click toggle. Two phases do not earn disclosure;
+  hiding half the model saved no space and added a step. The ownership
+  guarantee still closes the section as its own band.

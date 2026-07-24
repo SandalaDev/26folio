@@ -1,7 +1,7 @@
 ---
 id: EPIC-021
 title: Capabilities page repositioning — engineering partner, capability explorer
-status: in-progress
+status: done
 phase: 5
 priority: P1
 risk_level: medium
