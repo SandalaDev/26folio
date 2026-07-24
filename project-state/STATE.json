@@ -1,6 +1,6 @@
 {
   "schema": "solo-dev-os.state.v2",
-  "updated": "2026-07-21T21:38:28.653Z",
+  "updated": "2026-07-24T01:49:55.003Z",
   "updated_by": "claude-code",
   "actor": {
     "harness": "claude-code",
@@ -8,12 +8,12 @@
     "role": "executor"
   },
   "current": {
-    "epic": "EPIC-020",
-    "slice": "EPIC-020-SLICE-1",
-    "task": null,
+    "epic": "EPIC-021",
+    "slice": "EPIC-021-SLICE-1",
+    "task": "TASK-079",
     "agent": "claude-code",
-    "branch": "feature/EPIC-020",
-    "session_status": "review",
+    "branch": "feature/EPIC-021",
+    "session_status": "active",
     "handoff_status": "none"
   },
   "completion": {
@@ -63,16 +63,16 @@
       "EPIC-001 SLICE-4: CI smoke (TASK-006, deferred — protected path needs human CODEOWNER commit)",
       "Owner: supply a real contact email for the contact details block, and a CV/resume asset for EPIC-014's closing CTA band (currently points at /work instead). Real Resend delivery is a separate epic per the no-stored-submissions charter.",
       "OWNER REVIEW (EPIC-017): open the Who I Am modal on /about in a visible browser and judge the chaptered reader (width, typography rhythm, rail, parallax, watermark subtlety); then open PR feature/EPIC-017 -> dev.",
-      "Merged remote branches origin/feature/EPIC-015 (PR #19) and origin/feature/EPIC-016 (PR #20) still exist (agent deletes permission-blocked 2026-07-15) — owner: delete them on GitHub or rerun branch.sh cleanup per branch.",
+      "Merged remote branches origin/feature/EPIC-015 (PR #19), origin/feature/EPIC-016 (PR #20) and origin/feature/EPIC-020 (PR #25) still exist (agent deletes permission-blocked; EPIC-020 local deleted 2026-07-24) — owner: delete them on GitHub or rerun branch.sh cleanup per branch.",
       "No real social profile URLs yet (SocialLinks stays placeholder) — separate follow-up, not in EPIC-014 scope.",
       "OWNER REVIEW (EPIC-014): merged to dev (PR #17). Confirm the three-epoch timeline copy, the six-section bio, and the interest chips read right in a real browser."
     ],
     "blocked": "none. (TASK-006 CI still deferred - protected .github/workflows/ path needs a human-signed CODEOWNER commit. Real contact email + CV asset delivery deferred to the owner.)"
   },
   "counts": {
-    "epics_total": 19,
+    "epics_total": 20,
     "tasks_open": 0,
-    "tasks_in_progress": 0,
+    "tasks_in_progress": 1,
     "tasks_done": 73,
     "handoffs_pending": 0,
     "handoffs_consumed": 7
