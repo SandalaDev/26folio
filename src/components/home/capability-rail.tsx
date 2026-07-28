@@ -6,11 +6,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
-  DeviceMobile,
-  Globe,
+  Database,
+  Gear,
   Robot,
   Storefront,
-  Wrench,
   type Icon,
 } from "@phosphor-icons/react";
 
@@ -24,16 +23,15 @@ import { prefersReducedMotion } from "@/lib/motion";
 /* Phosphor is the project's one icon family (design lane §3.C); weight is
    standardized here so every card reads the same. */
 const ICONS: Record<ServiceIcon, Icon> = {
-  globe: Globe,
-  wrench: Wrench,
-  robot: Robot,
-  device: DeviceMobile,
   storefront: Storefront,
+  gear: Gear,
+  robot: Robot,
+  database: Database,
 };
 
 /**
- * CapabilityRail — GSAP ScrollTrigger pinned horizontal scroll
- * (12-ui-element-map.md §3 Home #3). EPIC-010: five enlarged cards from the
+ * CapabilityRail: GSAP ScrollTrigger pinned horizontal scroll
+ * (12-ui-element-map.md §3 Home #3). EPIC-021: four pillar cards from the
  * shared services source, each with an icon, a background wash + blob accent,
  * and an anchored link into /capabilities. The card nearest the viewport
  * center is emphasized (scale/opacity via the scrub) so the focused card takes
@@ -47,7 +45,7 @@ function CapabilityRail() {
   // useLayoutEffect (not useEffect): GSAP's `pin: true` reparents this
   // section into a pin-spacer wrapper, changing the DOM structure React
   // isn't aware of. The cleanup (ctx.revert(), which un-wraps the spacer)
-  // must run synchronously during React's commit/unmount phase — useEffect's
+  // must run synchronously during React's commit/unmount phase; useEffect's
   // cleanup fires after React has already tried (and failed) to remove the
   // node from its now-stale expected parent, throwing
   // "Failed to execute 'removeChild' on 'Node'" on client-side navigation.
@@ -120,7 +118,7 @@ function CapabilityRail() {
           const IconGlyph = ICONS[service.icon];
           return (
             /* Door-tilt (TASK-054): the TiltCard frame is the flex item AND
-               the GSAP emphasize target (data-rail-card) — it never rotates,
+               the GSAP emphasize target (data-rail-card); it never rotates,
                so the scrub's rect measurements stay stable while the inner
                card swings. Hinge alternates with the card's wash tone. */
             <TiltCard
@@ -141,7 +139,7 @@ function CapabilityRail() {
                   className="-right-16 -top-16 w-56"
                 />
                 {/* Icon tone follows the card's wash (rose/caramel alternation,
-                    §2) — rose stops being the only accent voice on the rail. */}
+                    §2); rose stops being the only accent voice on the rail. */}
                 <IconGlyph
                   size={40}
                   weight="light"
