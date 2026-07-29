@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-007
+epic_ref: backlog/epics/EPIC-007-magazine-integration.md
 slice: EPIC-007-SLICE-1
 depends_on: []
 design_refs: [06-project-technical-plan.md]
@@ -29,6 +30,7 @@ files_allowed:
   - src/lib/env.ts
   - env.example
   - backlog/tasks/TASK-032.md
+progress_weight: 1
 ---
 
 # Task: lib/magazine.ts

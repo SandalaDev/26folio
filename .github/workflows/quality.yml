@@ -1,0 +1,33 @@
+name: sanity
+
+# NON-BLOCKING by design: this workflow checks the OS's own memory integrity
+# (state.json consistency, parsable task frontmatter) so future sessions stay
+# trustworthy. It runs NO tests and NO review gates — tests are planned backlog
+# work, and reviews happen manually on the PR. Treat a red run as "state needs
+# a re-render", not "the code is bad".
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci || npm install
+      - name: state consistency
+        run: bash scripts/os.sh check
+      - name: task frontmatter (claimed task, if any)
+        run: |
+          TASK="$(node scripts/active-task.mjs 2>/dev/null || true)"
+          if [[ -n "${TASK:-}" && -f "${TASK:-}" ]]; then
+            node scripts/validate-task.mjs "$TASK"
+          else
+            echo "[ci] no claimed task — nothing to validate"
+          fi

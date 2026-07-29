@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-004
+epic_ref: backlog/epics/EPIC-004-about-page.md
 slice: EPIC-004-SLICE-3
 depends_on: [TASK-018]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -34,6 +35,7 @@ files_allowed:
   - package.json
   - package-lock.json
   - backlog/tasks/TASK-020.md
+progress_weight: 1
 ---
 
 # Task: Sticky cards & modals

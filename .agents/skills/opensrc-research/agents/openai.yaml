@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenSrc Research"
+  short_description: "Research compatible dependency sets"
+  default_prompt: "Use $opensrc-research to research and cross-check these dependencies before installation."

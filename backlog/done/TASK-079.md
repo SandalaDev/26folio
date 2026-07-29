@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-021
+epic_ref: backlog/epics/EPIC-021-capabilities-repositioning.md
 slice: EPIC-021-SLICE-1
 depends_on: []
 design_refs: [11-content-strategy.md, 10-design-system.md]
@@ -32,6 +33,7 @@ files_allowed:
   - planning/content/
   - planning/slices/EPIC-021-SLICE-1.md
   - backlog/tasks/TASK-079.md
+progress_weight: 1
 ---
 
 # Task: Four-pillar content layer

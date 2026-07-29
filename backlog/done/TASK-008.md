@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-002
+epic_ref: backlog/epics/EPIC-002-design-system.md
 slice: EPIC-002-SLICE-2
 depends_on: [TASK-007]
 design_refs: [10-design-system.md]
@@ -28,6 +29,7 @@ files_allowed:
   - src/app/globals.css
   - src/app/layout.tsx
   - public/fonts/
+progress_weight: 1
 ---
 
 # Task: Typography system

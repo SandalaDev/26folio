@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-009
+epic_ref: backlog/epics/EPIC-009-hero-redesign.md
 slice: EPIC-009-SLICE-2
 depends_on: [TASK-036]
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -33,6 +34,7 @@ files_allowed:
   - src/app/(site)/layout.tsx
   - src/components/home/hero.tsx
   - backlog/tasks/TASK-037.md
+progress_weight: 1
 ---
 
 # Task: Signature motion — cursor + magnetic button

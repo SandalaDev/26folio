@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-002
+epic_ref: backlog/epics/EPIC-002-design-system.md
 slice: EPIC-002-SLICE-3
 depends_on: []
 design_refs: [10-design-system.md]
@@ -26,6 +27,7 @@ handoff_type: []
 protected_paths_touched: []
 files_allowed:
   - src/lib/motion.ts
+progress_weight: 1
 ---
 
 # Task: Shared motion constants

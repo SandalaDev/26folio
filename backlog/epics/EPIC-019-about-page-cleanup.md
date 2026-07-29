@@ -1,7 +1,7 @@
 ---
 id: EPIC-019
 title: About page cleanup — card copy, modal epigraph, timeline epoch watermarks
-status: in-progress    # ready -> in-progress -> done
+status: done
 phase: 5
 priority: P1
 risk_level: low
@@ -14,6 +14,9 @@ references:
 related:
   - EPIC-015-about-page-copy.md
   - EPIC-017-who-i-am-modal-redesign.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-019 — About page cleanup

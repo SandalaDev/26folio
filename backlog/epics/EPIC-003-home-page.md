@@ -1,7 +1,7 @@
 ---
 id: EPIC-003
 title: Home page — global chrome, hero, featured work, capability rail, magazine teaser
-status: ready            # ready -> in-progress -> done
+status: done
 phase: 1
 priority: P1
 risk_level: medium
@@ -16,6 +16,9 @@ references:
 related:
   - 09-roadmap.md
   - EPIC-007 (magazine integration — see Key decisions #2)
+roadmap_refs: [ROAD-001]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-003 — Home page

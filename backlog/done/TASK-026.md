@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-005
+epic_ref: backlog/epics/EPIC-005-work-page.md
 slice: EPIC-005-SLICE-3
 depends_on: [TASK-024, TASK-025]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -28,6 +29,7 @@ files_allowed:
   - src/app/(site)/work/page.tsx
   - src/app/(site)/work/[slug]/page.tsx
   - backlog/tasks/TASK-026.md
+progress_weight: 1
 ---
 
 # Task: Assemble `/work`

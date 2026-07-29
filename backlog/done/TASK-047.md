@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-011
+epic_ref: backlog/epics/EPIC-011-design-refinement.md
 slice: EPIC-011-SLICE-3
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -29,6 +30,7 @@ protected_paths_touched: []
 files_allowed:
   - src/components/home/work-card.tsx
   - backlog/tasks/TASK-047.md
+progress_weight: 1
 ---
 
 # Task: Featured-work card door-tilt + image zoom hover

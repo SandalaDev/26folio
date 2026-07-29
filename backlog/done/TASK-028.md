@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-006
+epic_ref: backlog/epics/EPIC-006-capabilities-page.md
 slice: EPIC-006-SLICE-2
 depends_on: [TASK-027]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -27,6 +28,7 @@ protected_paths_touched: []
 files_allowed:
   - src/components/capabilities/service-tabs.tsx
   - backlog/tasks/TASK-028.md
+progress_weight: 1
 ---
 
 # Task: ServiceTabs

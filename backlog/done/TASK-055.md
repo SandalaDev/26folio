@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-013
+epic_ref: backlog/epics/EPIC-013-content-phase-1.md
 slice: EPIC-013-SLICE-1
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -32,6 +33,7 @@ files_allowed:
   - public/images/logo/
   - backlog/epics/EPIC-013-content-phase-1.md
   - backlog/tasks/TASK-055.md
+progress_weight: 1
 ---
 
 # Task: Apply real logo SVGs to header and footer

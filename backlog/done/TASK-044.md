@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-011
+epic_ref: backlog/epics/EPIC-011-design-refinement.md
 slice: EPIC-011-SLICE-1
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -32,6 +33,7 @@ files_allowed:
   - src/components/site/mobile-nav.tsx
   - src/app/(site)/layout.tsx
   - backlog/tasks/TASK-044.md
+progress_weight: 1
 ---
 
 # Task: Confirm/enforce transparent floating header

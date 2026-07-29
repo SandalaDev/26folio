@@ -1,7 +1,7 @@
 ---
 id: EPIC-004
 title: About page — hybrid intro, sticky cards, timeline, magazine section, socials
-status: ready            # ready -> in-progress -> done
+status: done
 phase: 1
 priority: P1
 risk_level: medium
@@ -15,6 +15,9 @@ references:
   - 07-architecture-principles.md
 related:
   - 09-roadmap.md
+roadmap_refs: [ROAD-001]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-004 — About page

@@ -1,76 +1,140 @@
 # AGENTS.md
+
+The canonical agent law. `OPERATING_MANUAL.md` is the full OS reference. This
+repository is the sandala.dev portfolio application, not the template
+distribution.
+
 ## Operating law
-The repository is the source of truth. Chats are scratchpads.
-Do not make durable decisions that are not reflected in Markdown or code.
-State is written in exactly one place: project-state/STATE.json.
-Never hand-edit generated files (CURRENT_STATE.md, HANDOFF_QUEUE.md).
+- The repository is the source of truth. Chat is a scratchpad you can throw away.
+- State is written in exactly one place: `project-state/state.json`.
+- Never hand-edit generated files (`current-state.md`, `metrics.md`, `dashboard.html`, `guide.html`).
+- Make durable decisions reflect in Markdown or code, or don't make them.
+- **The OS is non-blocking.** It manages memory, state, and context — it never
+  gates quality. Pushes always succeed (except direct pushes to a trunk).
+  Quality is caught by tests (planned backlog work) and by the human's manual
+  review of every PR, both outside the system.
 
-## Identity (recorded in the session lock)
-Optionally export before working:
-  HARNESS_NAME = claude-code | codex | opencode | cursor | warp | gemini-cli
-  MODEL_NAME   = the actual model id (e.g. claude-opus-4-8, gpt-5-codex)
-  AGENT_ROLE   = executor | reviewer | planner
-os.sh records these into ACTIVE_SESSION.lock (the crash journal).
+## The four layers
+```
+L0  Memory Core     state.json · ledger.jsonl · decisions.md · handoffs/ · session.lock
+L1  Views           current-state.md · dashboard.html · guide.html  (generated; never edited)
+L2  Sanity          verify.sh (advisory) in CI               (state integrity only — never blocks)
+L3  Workflow        os start|end|check|checkpoint|status|context|deps|pr|sync|claim|release|decide|doctor  (one entry point)
+─── (optional, default-on for web projects) ───
+L4  Frontend Pack   pack-frontend/                           (design phase · skills · lanes)
+```
+A non-frontend project skips L4 and still gets memory, handover, and the
+dashboard. L4 is a layer you *add*, not one the core *depends on*.
 
-## Git workflow (three branches)
-main = protected production. dev = integration. feature/EPIC-XXX = your workspace.
-Never commit to main or dev. Branch off dev with:
-  bash scripts/branch.sh start EPIC-XXX [SLICE-Y]
-This syncs dev first (refuses if local dev is dirty, fetches origin, fast-forwards
-if behind) so you branch from up-to-date code. One branch per epic (or epic-slice
-for large epics). Push the feature branch; open a PR into dev. The pre-push hook
-refuses pushes from main/dev. After a PR merges, the human runs:
-  bash scripts/branch.sh cleanup feature/EPIC-XXX   (deletes merged branch)
+## Project context
+- The one job: turn Abe Sandala's work, judgment, and point of view into
+  credible evidence that helps the right clients and technical teams start a
+  conversation.
+- Read `project-spine/01-charter.md`, `02-decisions.md`, and `03-roadmap.md` for
+  current intent. Load detailed legacy spine files only when a task references
+  them.
+- The site is static-first Next.js with strict TypeScript, Tailwind CSS,
+  purposeful motion, no database, and no CMS. Scrumtrulescent Magazine is a
+  separate project consumed read-only.
+- L4 is active. Preserve project-specific `framer-motion`, `gsap`, and `lottie`
+  skills alongside the frontend pack.
+- `state.flow` is `trunk-dev`: epic feature branches target `dev`; reviewed
+  integration work later moves from `dev` to `main`.
 
-## Session Start (every session, every agent)
-Run: bash scripts/branch.sh start EPIC-XXX   (then)   bash scripts/os.sh start
-This switches to the epic feature branch, reads STATE.json, renders the views,
-loads assigned handoffs, and writes ACTIVE_SESSION.lock (tagged harness/model/role).
-Then:
-1. Identify current Epic → Slice → Task.
-2. Read the task file, referenced slice plan and epic.
-3. Read only the relevant Project Spine files.
-4. Read required skill_refs from .agents/skills/<name>/SKILL.md.
-5. Produce a short implementation checklist before editing code.
+## Session lifecycle (every session, every agent)
+- Start:   `bash scripts/os.sh start`  — reads state, renders views, detects a stale
+  lock (crash recovery), writes the session journal.
+- Work:    stay within the task's `files_allowed` focus list (advisory — discipline,
+  not enforcement). Periodically run `bash scripts/os.sh checkpoint "next step"`
+  so an interrupted session is recoverable.
+- End:     `bash scripts/os.sh end [task]` — advisory sanity check, ONE state update,
+  renders views, appends the log + a ledger line, creates declared handoffs, clears the lock.
 
-## Session End (every session, every agent)
-Run: bash scripts/os.sh end
-This runs verify-task.sh (diffing against dev), renders the views from
-STATE.json, creates any required handoffs, and clears the session lock.
+## Testing (planned work, never a gate)
+No change *requires* a test and nothing blocks a push. After planning an epic or
+task, fill its `## Testing` section: assess what could break and recommend
+`none` (with a reason) | `with-task` (cover it inside the task) | `dedicated`
+(create a test task — normal backlog work the human prioritizes). Risk guides
+the default: low → none, medium → with-task, high/critical → dedicated. See the
+`ds-test-planner` skill.
 
-## Scope
-Edit only files listed in the task's files_allowed. The pre-push gate
-rejects any diff that escapes that list.
+## Reviews (outside the system)
+Reviews are done manually by the human after the PR is opened. The system has
+no visibility into them and enforces nothing about them. If you see pushed
+code, assume its tests and review already passed — do not re-litigate merged
+work. Your one duty to review: make risky changes (schema, auth, billing,
+secrets, infrastructure, compliance copy) loud and obvious in the PR description.
 
-## Skills
-Skills are SKILL.md folders under `.agents/skills/`. Load only task skill_refs —
-never all skills. The catalog is `registry.md`; add a new skill with
-`skills.sh add <name>` and author its SKILL.md before referencing it.
-For landing pages/portfolios/redesigns, load design-taste-frontend (the active
-design lane): state the one-line design read, then implement. Build UI with
-shadcn/ui primitives; check free/public 21st.dev before hand-rolling.
+## Project start (once)
+Light intake, not a heavy spine: `bash scripts/intake.sh brief` (you write the
+brief) → `interview` (agent asks gaps, you answer) → `ready` (fail-closed gate) →
+agent hydrates the 3-file lean context. Shape work with `new-task.sh task|epic`.
+See `OPERATING_MANUAL.md` → Launch checklist.
+
+This intake is already complete for 26folio. Do not rerun or replace the
+owner-authored brief unless the owner explicitly changes product intent.
+
+## Dependencies and far-reaching technical choices
+- Before initial application packages are downloaded, use
+  `bash scripts/os.sh deps plan initial "<purpose>" <exact-package@version>...`.
+- Before adding or upgrading packages, use the same workflow with mode `add`.
+- For frameworks, auth, data access, state, build, deployment, observability, or
+  other system-wide choices, use mode `architecture` before deciding.
+- Apply the `opensrc-research` skill: read every candidate's version-matched
+  source and relevant docs, then cross-reference engines, peers, migrations,
+  runtime assumptions, overlapping responsibilities, and best practices.
+- OpenSrc is evidence access, not a dependency solver. An approved plan also
+  requires package-manager dry-run resolution and post-install project checks.
+- Plans live under `planning/dependencies/`. Only a human changes both
+  `status` and `human_approval` to `approved`; `os deps install` accepts only
+  exact npm versions from such a plan. This scopes the precondition to the
+  install command and never gates commits or pushes.
+
+## Git workflow
+`state.flow` selects the model — **github** (default): feature branches cut off
+`main`, PR back to `main`; or **trunk-dev** (opt-in): feature → `dev` → `main`.
+- Branch: `bash scripts/branch.sh start EPIC-XXX` (one branch per epic).
+- PR: `bash scripts/os.sh pr` · post-merge: `bash scripts/os.sh sync`.
+Never commit directly to a trunk (`main`, or `dev` when active) — the pre-push
+hook's only job is to stop that. It runs no quality checks.
+
+## Handoffs (continuity, not review)
+Knowledge transfers through **files referenced by path**, never copied content.
+Handoffs exist to resume a session or chain task A into task B. Fill the prose
+blocks with real content — a `(fill in)` stub transfers nothing (discipline,
+not a gate).
+
+## Progress and writing
+- Progress traces `task → epic → roadmap → business goal`. Completed task weight
+  estimates delivery toward intent; it never proves a business outcome. Humans
+  approve goals, success signals, roadmap links, and weights. See `guide.html`.
+- For meaningful prose, apply project/domain constraints, then the core
+  `writing-style` skill, then frontend `stop-slop` when present. The scorer is
+  advisory. Human approval remains mandatory for sensitive or public claims.
+
+## Skills (portable resolution)
+- `skill_refs` contains skill names, never harness-specific paths.
+- Resolve each name first at `.agents/skills/<name>/SKILL.md`, then at
+  `pack-frontend/skills/<name>/SKILL.md`. Read the selected file completely
+  before acting; do not load unrelated skills.
+- Skill frontmatter must contain portable `name` and `description` fields.
+  Harness-specific fields may be added only when they do not change the core
+  procedure. `bash scripts/skills.sh validate` checks this contract.
+- `writing-style` is trigger-based even without an explicit task reference when
+  prose quality matters. `stop-slop` remains optional when the frontend pack is
+  absent.
+- `opensrc-research` is trigger-based for dependency selection, package changes,
+  dependency internals, and far-reaching technical design.
+
+## Identity (optional)
+`os start` auto-detects the harness. Optionally export `HARNESS_NAME` /
+`MODEL_NAME` / `AGENT_ROLE` for cleaner dashboard attribution, and optionally
+drop a `.session-usage.json` (`{"tokens_in":N,"tokens_out":N,"cost_usd":N}`)
+before `os end` for cost tracking. Both are opt-in; absent data is recorded as
+`unknown`, never invented.
 
 ## Reference
-The full operating manual lives in `OPERATING_MANUAL.md` — the day-to-day loop,
-the handoff protocol, the skills layer, the fail-closed gate, file templates,
-and the launch checklist. All human views (CURRENT_STATE.md, HANDOFF_QUEUE.md)
-are generated by `bash scripts/os.sh render`; the source of truth is
-`project-state/STATE.json`.
-
-## Public-facing text
-Before finalizing ANY public/client-facing text, run stop-slop and its scorer.
-The verify gate RECOMPUTES the score and fails below 35/50 — do not self-report.
-Do not ship un-de-slopped text.
-
-## Testing
-Every task declares verification_required matched to risk_level.
-Do not add snapshots/mocks/fixtures unless they prove durable behavior.
-
-## Handoffs
-If handoff_required: true, use ds-handoff at session end.
-Reference files by path — never copy artifact content into a handoff.
-
-## Stop conditions (human approval required)
-Stop before changing schema, auth, billing, secrets, infrastructure, or
-legal/compliance copy. Protected paths require a human-signed approving commit
-(CODEOWNERS) — not an agent-set boolean.
+The full manual is `OPERATING_MANUAL.md`. The live dashboard is `dashboard.html`
+and the standalone usage guide is `guide.html`; both regenerate via
+`bash scripts/os.sh render`. Runtime state comes from `project-state/state.json`;
+intent and work metadata come from the spine and backlog.

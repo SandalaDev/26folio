@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-012
+epic_ref: backlog/epics/EPIC-012-design-system-fidelity.md
 slice: EPIC-012-SLICE-2
 depends_on: []
 design_refs: [10-design-system.md]
@@ -36,6 +37,7 @@ files_allowed:
   - src/app/(site)/capabilities/page.tsx
   - src/app/(site)/contact/page.tsx
   - backlog/tasks/TASK-051.md
+progress_weight: 1
 ---
 
 # Task: De-jag the blob washes

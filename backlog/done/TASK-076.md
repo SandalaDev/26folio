@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-019
+epic_ref: backlog/epics/EPIC-019-about-page-cleanup.md
 slice: EPIC-019-SLICE-1
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -34,6 +35,7 @@ files_allowed:
   - planning/content/.slop/
   - planning/slices/EPIC-019-SLICE-1.md
   - backlog/tasks/TASK-076.md
+progress_weight: 1
 ---
 
 # Task: About page cleanup

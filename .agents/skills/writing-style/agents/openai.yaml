@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Style"
+  short_description: "Shape clear, human, purpose-led prose"
+  default_prompt: "Use $writing-style to revise this draft for clarity, voice, and audience."

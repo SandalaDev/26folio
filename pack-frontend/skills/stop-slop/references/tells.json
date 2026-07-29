@@ -1,0 +1,64 @@
+{
+  "schema": "agent-os.stop-slop.tells.v1",
+  "_doc": "The slop rule corpus. score.mjs reads THIS file, not hardcoded arrays. Add a tell by editing data here — no code change. Each dimension is worth 10 points (50 total); each matched tell deducts `penalty` points from that dimension (floored at 0).",
+  "dimensions": {
+    "opener": {
+      "_doc": "Throat-clearing openers that delay the point.",
+      "penalty": 2,
+      "tells": [
+        "it turns out",
+        "here's the thing",
+        "the uncomfortable truth is",
+        "let's be clear",
+        "the reality is",
+        "needless to say",
+        "at the end of the day",
+        "it's worth noting",
+        "in today's fast-paced world",
+        "gone are the days",
+        "picture this"
+      ]
+    },
+    "jargon": {
+      "_doc": "Business-vague verbs and adjectives that signify nothing.",
+      "penalty": 2,
+      "tells": [
+        "unlock", "unleash", "elevate", "empower", "seamless", "robust",
+        "leverage", "cutting-edge", "game-changer", "game-changer",
+        "synergy", "synergies", "best-in-class", "world-class", "next-generation",
+        "revolutionary", "disruptive", "paradigm shift", "holistic", "value-add"
+      ]
+    },
+    "contrast": {
+      "_doc": "Binary contrast framing that oversimplifies.",
+      "penalty": 2,
+      "tells": [
+        "whether you're a",
+        "or a seasoned",
+        "stops being",
+        "and starts being",
+        "not just x but",
+        "not only .* but also",
+        "on one hand .* on the other"
+      ],
+      "_regex": true
+    },
+    "agency": {
+      "_doc": "False agency — giving agency to abstractions.",
+      "penalty": 2,
+      "tells": [
+        "the data tells us",
+        "the numbers speak for themselves",
+        "the question becomes",
+        "the complaint becomes",
+        "this is where (it|things) get",
+        "what this means is"
+      ]
+    },
+    "emphasis": {
+      "_doc": "Emphasis crutches and dramatic punctuation.",
+      "penalty": 4,
+      "tells": ["—", "let that sink in", "full stop", "period", "simply put"]
+    }
+  }
+}

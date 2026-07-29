@@ -1,7 +1,7 @@
 ---
 id: EPIC-007
 title: Magazine integration — lib/magazine.ts client, wired into MagazineTeaser
-status: ready            # ready -> in-progress -> done
+status: done
 phase: 1
 priority: P1
 risk_level: low
@@ -13,6 +13,9 @@ references:
   - 12-ui-element-map.md
 related:
   - 09-roadmap.md
+roadmap_refs: [ROAD-001]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-007 — Magazine integration

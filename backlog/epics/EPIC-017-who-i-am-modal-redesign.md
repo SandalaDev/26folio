@@ -1,7 +1,7 @@
 ---
 id: EPIC-017
 title: Who I Am modal — wide chaptered reading experience
-status: done           # ready -> in-progress -> done
+status: done
 phase: 5
 priority: P1
 risk_level: medium
@@ -15,6 +15,9 @@ references:
 related:
   - EPIC-014-about-page-content.md
   - EPIC-016-the-way-i-am-page.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-017 — "Who I Am" as a chaptered reading experience

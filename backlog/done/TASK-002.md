@@ -6,6 +6,7 @@ priority: P1
 risk_level: low
 preferred_executor: claude-code
 epic: EPIC-001
+epic_ref: backlog/epics/EPIC-001-project-scaffold.md
 slice: EPIC-001-SLICE-2
 depends_on: [TASK-001]
 
@@ -27,6 +28,7 @@ verification_required:
 
 public_text: false
 handoff_required: false
+progress_weight: 1
 ---
 
 ## Goal

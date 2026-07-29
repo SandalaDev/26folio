@@ -1,7 +1,7 @@
 ---
 id: EPIC-006
 title: Capabilities page — services, technologies, engagement process, CTA
-status: ready            # ready -> in-progress -> done
+status: done
 phase: 1
 priority: P1
 risk_level: medium
@@ -15,6 +15,9 @@ references:
   - 06-project-technical-plan.md
 related:
   - 09-roadmap.md
+roadmap_refs: [ROAD-001]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-006 — Capabilities page

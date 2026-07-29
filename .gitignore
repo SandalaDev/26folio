@@ -8,6 +8,12 @@
 /out/
 next-env.d.ts
 
+# Agent OS generated views
+/dashboard.html
+/guide.html
+/project-state/current-state.md
+/project-state/metrics.md
+
 # production
 /build
 
@@ -24,6 +30,10 @@ yarn-debug.log*
 .env
 .env.local
 .env.*.local
+
+# Harness-local permissions and optional usage accounting
+/.claude/settings.local.json
+/.session-usage.json
 
 # typescript
 *.tsbuildinfo

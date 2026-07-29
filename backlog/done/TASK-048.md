@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-011
+epic_ref: backlog/epics/EPIC-011-design-refinement.md
 slice: EPIC-011-SLICE-3
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -32,6 +33,7 @@ files_allowed:
   - src/components/site/contact-form.tsx
   - src/components/about/social-links.tsx
   - backlog/tasks/TASK-048.md
+progress_weight: 1
 ---
 
 # Task: Contact page — inquiry form + confirmation + contact details

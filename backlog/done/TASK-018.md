@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-004
+epic_ref: backlog/epics/EPIC-004-about-page.md
 slice: EPIC-004-SLICE-1
 depends_on: []
 design_refs: [12-ui-element-map.md, 10-design-system.md]
@@ -28,6 +29,7 @@ files_allowed:
   - src/components/site/flashlight-cursor.tsx
   - src/lib/use-pointer.ts
   - backlog/tasks/TASK-018.md
+progress_weight: 1
 ---
 
 # Task: Shared pointer primitive

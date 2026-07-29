@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-018
+epic_ref: backlog/epics/EPIC-018-the-way-content-overhaul.md
 slice: EPIC-018-SLICE-1
 depends_on: [TASK-074]
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -33,6 +34,7 @@ files_allowed:
   - planning/content/.slop/
   - planning/slices/EPIC-018-SLICE-1.md
   - backlog/tasks/TASK-075.md
+progress_weight: 1
 ---
 
 # Task: Owner revision pass 4 on /about/the-way-i-am

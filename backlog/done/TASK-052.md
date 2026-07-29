@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-012
+epic_ref: backlog/epics/EPIC-012-design-system-fidelity.md
 slice: EPIC-012-SLICE-3
 depends_on: []
 design_refs: [10-design-system.md, 10-design-system.html, 12-ui-element-map.md]
@@ -43,6 +44,7 @@ files_allowed:
   - src/components/about/timeline.tsx
   - src/components/site/contact-form.tsx
   - backlog/tasks/TASK-052.md
+progress_weight: 1
 ---
 
 # Task: Palette redistribution — apply the full token set

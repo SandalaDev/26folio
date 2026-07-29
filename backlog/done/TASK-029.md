@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-006
+epic_ref: backlog/epics/EPIC-006-capabilities-page.md
 slice: EPIC-006-SLICE-3
 depends_on: []
 design_refs: [12-ui-element-map.md, 06-project-technical-plan.md]
@@ -33,6 +34,7 @@ files_allowed:
   - package.json
   - package-lock.json
   - backlog/tasks/TASK-029.md
+progress_weight: 1
 ---
 
 # Task: Technologies section

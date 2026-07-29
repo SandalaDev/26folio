@@ -1,21 +1,49 @@
 # Skills Registry
 
-Source of truth for the skill catalog. `scripts/skills.sh validate` reads the
-table below (rows beginning `| <name>`); `audit` enforces that every listed skill
-is authored. `lock.json` records vendoring method + pinned commit per skill.
+Index of vendored and authored skills. `skills.sh validate` confirms every entry
+has a non-empty SKILL.md on disk (fails-closed on corruption). `skills.sh audit`
+additionally treats empty stubs as failures (release readiness).
 
-Status legend: **authored** = real content on disk · **vendored** = pulled from an
-upstream source (see lock.json). Only authored/vendored skills are catalogued —
-empty stubs are not pre-created. Add a skill with `skills.sh add <name>` (candidate
-under `local/`) and author its `SKILL.md` before any task references it;
-`validate-task.mjs` fails a task whose `skill_refs` point at a missing skill.
+A skill is a governed, reusable capability package — a `SKILL.md` folder, optional
+scripts and references. It is not a task, not a shortcut, and not a replacement
+for the Project Spine. Load only the `skill_refs` a task declares; never all skills.
+
+## layer: core (`.agents/skills/`) — always present, stack-agnostic
 
 | name | role | status |
 |---|---|---|
-| design-taste-frontend | Brief inference + anti-templated design direction for landing/portfolio/redesign. The active design lane. | vendored |
-| stop-slop | Public-text de-slop gate; recomputed by verify-task.sh. | vendored |
-| ds-handoff | Creates review/session/task handoff artifacts at session end; updates handoff_queue. | authored |
-| ds-reviewer | Cross-model diff review against task/slice/spine/tests; writes REVIEW notes. | authored |
-| gsap | GSAP usage: core tweens, timelines, ScrollTrigger, matchMedia (reduced-motion), React integration, performance. Scroll-driven + imperative motion lane (§6). | vendored |
-| framer-motion | Framer Motion usage: motion components, variants, gestures, scroll, layout, motion values/springs. React viewport-entry + interaction lane (§6). | vendored |
-| lottie | LottieFiles motion-design principles: timing, easing, choreography, Disney principles. Library-agnostic; supports the Lottie playback lane (§6). | vendored |
+| `opensrc-research` | Exact-version source/docs research, compatibility cross-checking, and architecture evidence before dependency installation. | authored |
+| `writing-style` | Purpose, audience, structure, voice, and revision for prose; composes with domain rules and stop-slop. | authored |
+| `ds-handoff` | How to write a quality handoff (the judgement layer over create-handoff.mjs). | authored |
+| `ds-task-slicer` | Decompose an epic into bounded tasks. | authored |
+| `ds-test-planner` | Assess risk after planning and recommend testing work (non-blocking). | authored |
+
+## layer: frontend (`pack-frontend/skills/`) — default-on, detachable
+
+| name | role | status |
+|---|---|---|
+| `impeccable` | Active design lane: UI implementation, polish, visual QA, anti-generic detection. | authored |
+| `design-taste-frontend` | Brief inference + taste dials; direction input to the active lane. | authored |
+| `shadcn-ui-builder` | shadcn/ui setup, CLI, primitive composition, accessible owned components. | authored |
+| `21st-dev-components` | Find/adapt free, public 21st.dev marketing blocks before hand-building. | authored |
+| `stop-slop` | Advisory prose scorer for public-facing text (score.mjs); run on demand, never a gate. | authored |
+
+## layer: project extensions (`.agents/skills/`)
+
+| name | role | status |
+|---|---|---|
+| `framer-motion` | Vendored Framer Motion core plus gesture, layout, React, scroll, and variants references. | preserved |
+| `gsap` | Vendored GSAP core plus framework, performance, plugin, React, ScrollTrigger, timeline, and utility references. | preserved |
+| `lottie` | Vendored motion-direction guidance and Lottie implementation references. | preserved |
+
+## rules
+
+- A task may not reference a skill whose SKILL.md is absent or empty (validate-task.mjs warns; skills.sh audit fails).
+- Use `opensrc-research` before initial application packages, new dependencies,
+  upgrades, and far-reaching technical choices. OpenSrc provides source evidence;
+  package-manager resolution, project checks, and human approval complete the
+  compatibility decision.
+- One active design lane per UI pass. Impeccable is the default active lane; design-taste-frontend feeds it direction; shadcn + 21st support it. Never run two active design authorities at once.
+- For meaningful prose, apply project/domain constraints, then `writing-style`,
+  then stop-slop's scorer. Finish with factual/domain review and require human
+  approval for sensitive or public claims. The score is advisory, never a gate.

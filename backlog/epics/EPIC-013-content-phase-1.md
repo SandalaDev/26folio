@@ -1,7 +1,7 @@
 ---
 id: EPIC-013
 title: Content phase 1 — real brand + content assets replacing placeholders
-status: in-progress          # ready -> in-progress -> done
+status: done
                               # SLICE-1/TASK-055 done; later slices unscoped, epic stays open
 phase: 5
 priority: P1
@@ -15,6 +15,9 @@ references:
   - 12-ui-element-map.md
 related:
   - 09-roadmap.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-013 — Content phase 1 (real assets replacing placeholders)

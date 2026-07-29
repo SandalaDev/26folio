@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-012
+epic_ref: backlog/epics/EPIC-012-design-system-fidelity.md
 slice: EPIC-012-SLICE-3
 depends_on: [TASK-052]
 design_refs: [10-design-system.md, 10-design-system.html]
@@ -33,6 +34,7 @@ files_allowed:
   - src/components/about/about-intro.tsx
   - src/components/site/contact-form.tsx
   - backlog/tasks/TASK-053.md
+progress_weight: 1
 ---
 
 # Task: Type & functional fidelity

@@ -1,7 +1,7 @@
 ---
 id: EPIC-014
 title: About page content — three-epoch timeline, bio, interests, closing CTA
-status: done          # ready -> in-progress -> done
+status: done
 phase: 5
 priority: P1
 risk_level: low
@@ -14,6 +14,9 @@ references:
   - 12-ui-element-map.md
 related:
   - EPIC-013-content-phase-1.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-014 — About page content (real biography, timeline, interests, closing CTA)

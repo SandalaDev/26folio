@@ -1,7 +1,7 @@
 ---
 id: EPIC-020
 title: Hero + typography harmonization (project-wide, to the-way-i-am)
-status: in-progress
+status: done
 phase: 5
 priority: P1
 risk_level: low
@@ -13,6 +13,9 @@ references:
   - 12-ui-element-map.md
 related:
   - EPIC-016-the-way-i-am-page.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-020 — Hero + typography harmonization

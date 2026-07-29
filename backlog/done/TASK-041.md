@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-010
+epic_ref: backlog/epics/EPIC-010-brand-identity.md
 slice: EPIC-010-SLICE-3
 depends_on: [TASK-039]
 design_refs: [10-design-system.md, 11-content-strategy.md, 12-ui-element-map.md]
@@ -34,6 +35,7 @@ files_allowed:
   - public/images/
   - scripts/verify-task.sh
   - backlog/tasks/TASK-041.md
+progress_weight: 1
 ---
 
 # Task: Featured work image cards
