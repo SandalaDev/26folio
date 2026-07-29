@@ -1,0 +1,2 @@
+- 2026-07-29T21:20:44Z | unknown/unknown | checkpoint | task=TASK-081 | gate= | finish machinery cleanup, validate context, then run portfolio checks
+- 2026-07-29T21:37:52Z | unknown/unknown | end | task=backlog/done/TASK-083.md | gate=ok

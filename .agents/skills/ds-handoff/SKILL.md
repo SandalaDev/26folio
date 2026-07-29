@@ -1,62 +1,41 @@
 ---
 name: ds-handoff
-description: Creates the correct handoff artifact (review, session, or task) at
-  session end. Reads task frontmatter to determine required types, populates the
-  template by referencing artifact paths (never copying), updates the handoff_queue
-  in STATE.json, and is run as part of os.sh end.
-version: 1.1.0
-owner: Solo Dev OS
-risk: low
-allowed_tools: [read_files, write_markdown]
-forbidden_tools: [edit_production_code, run_deployment_commands]
+description: Create concise, path-based continuity handoffs that let another session or agent resume work without relying on chat. Use when work pauses, changes agents, crosses tasks, or leaves material risks and next steps.
+metadata:
+  layer: core
+  risk: low
 ---
-# Skill: DS Handoff
+# Skill: Handoff (the judgement layer)
 
 ## When to use
-At every session end when task frontmatter has `handoff_required: true`.
-Also proactively for session handoffs when the context window approaches limits.
+At session end (`os end`), when a task declares `handoff_required: true`.
+`create-handoff.mjs` writes the skeleton + registers the queue entry; THIS skill
+is the judgement that fills it with real prose. The skeleton is a *stub* — the
+next agent resumes from this file — a body still reading `(fill in)` transfers
+nothing (discipline, not a gate: nothing blocks, but the context is simply lost).
+
+## The principle
+Knowledge transfers through **files referenced by path**, never copied content.
+Agents are temporary; the handoff artifact is permanent. A handoff exists so a
+cold-resuming agent (possibly a different harness) can pick up the work without
+re-reading your chat history.
 
 ## Procedure
-1. Read the task file and check `handoff_type` (review | session | task; may be a list).
-2. Read `project-state/STATE.json` (completion + current).
-3. Select the correct template (review, session, or task) — see Templates below.
-4. Populate current_state, completed, remaining, risks, and artifact paths.
-5. Do **not** copy artifact content — reference by path only.
-6. Write the handoff to `handoffs/<type>/HANDOFF-<TYPE>-<REF>.md`.
-7. Add the queue entry to `STATE.json.handoff_queue[]`.
+1. Run `os end <task>` first — it creates the handoff file at the declared path.
+2. Open the file. Replace every `(fill in)` block with real content.
+3. **Reference artifacts by path only.** Never paste task content, diff content,
+   or code into a handoff. Use `Task: backlog/tasks/TASK-XXX.md`, `Diff: ...`.
+4. State current status concisely (what layer is done: DB / API / UI / tests).
+5. Name remaining work explicitly. Name known risks with where to check mitigations.
 
-The mechanical steps 6–7 are performed by `scripts/create-handoff.mjs`, which
-`os.sh end` invokes automatically when `handoff_required: true`. This skill is the
-*judgement* layer: it decides the type(s), writes the prose blocks (Purpose,
-Current State, Remaining, Risks, review_focus), and confirms the queue entry.
-Run the script, then review and enrich the generated file — never hand-sync the
-queue table (`HANDOFF_QUEUE.md` is generated from `STATE.json`).
+## Section contract (what each must contain)
+- **Purpose** — what the next agent is expected to accomplish (≥ one real sentence).
+- **Current State** — what exists now, per layer. Reference the task/slice by path.
+- **Remaining** — concrete outstanding work, not "see task".
+- **Risks** — what a reviewer or next agent should scrutinise first.
 
-## Output
-A minimal, path-referenced handoff that gives the next agent exactly the context
-needed — no more, no less.
-
-## Templates
-
-### review  →  `handoffs/review/HANDOFF-REVIEW-<TASK>.md`
-Created when a task requires cross-model review (risk_level medium and above).
-The reviewer must be a different model family than `preferred_executor`.
-Frontmatter carries `verification:` (the actual gate results) and `review_focus:`
-(the 2–4 things the reviewer must scrutinise: architecture conformance to the
-slice, risk-bearing logic, edge cases, spine-principle adherence). Body lists
-what is done and what remains *for the reviewer*. Names `review_notes_path`
-where the reviewer writes `REVIEW-<TASK>.md`.
-
-### session  →  `handoffs/session/HANDOFF-SESSION-<YYYY-MM-DD>.md`
-Resume-later handoff. Records current %, the exact next step, and the open files.
-
-### task  →  `handoffs/task/HANDOFF-TASK-<FROM>-<TO>.md`
-Task A complete → Task B begins. Carries forward only the context B needs so B
-does not re-read the whole spine.
-
-## Anti-patterns (these defeat the OS's purpose)
-- Pasting code, full task text, or "everything we did" narrative into the handoff.
-  Reference paths; the body is purpose + state + remaining + risks, nothing more.
-- Setting `handoff_required: true` but never producing the file. `verify-task.sh`
-  fails closed on this — the gate will reject the push.
-- Hand-editing `HANDOFF_QUEUE.md`. It is generated; edit `STATE.json.handoff_queue[]`.
+## Anti-patterns
+- Pasting artifact content (code, the full task, a diff) into the handoff body.
+- Leaving any `(fill in)` — a stub transfers nothing to the next session.
+- A "conversation summary" instead of a status artifact.
+- Skipping the file because the work "seems simple" — if `handoff_required: true`, the task risk justifies it.

@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-003
+epic_ref: backlog/epics/EPIC-003-home-page.md
 slice: EPIC-003-SLICE-6
 depends_on: [TASK-013, TASK-014, TASK-015, TASK-016]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -27,6 +28,7 @@ protected_paths_touched: []
 files_allowed:
   - src/app/(site)/page.tsx
   - backlog/tasks/TASK-017.md
+progress_weight: 1
 ---
 
 # Task: Assemble `/`

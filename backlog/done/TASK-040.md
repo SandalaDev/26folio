@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-010
+epic_ref: backlog/epics/EPIC-010-brand-identity.md
 slice: EPIC-010-SLICE-2
 depends_on: [TASK-039]
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -31,6 +32,7 @@ files_allowed:
   - public/images/
   - "Portrait 800 transparent.png"
   - backlog/tasks/TASK-040.md
+progress_weight: 1
 ---
 
 # Task: Hero portrait + recomposition

@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-007
+epic_ref: backlog/epics/EPIC-007-magazine-integration.md
 slice: EPIC-007-SLICE-2
 depends_on: [TASK-032]
 design_refs: [06-project-technical-plan.md, 12-ui-element-map.md]
@@ -28,6 +29,7 @@ files_allowed:
   - src/lib/magazine-placeholder.ts
   - src/app/(site)/page.tsx
   - backlog/tasks/TASK-033.md
+progress_weight: 1
 ---
 
 # Task: Wire the magazine client into the home page

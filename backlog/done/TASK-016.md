@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-003
+epic_ref: backlog/epics/EPIC-003-home-page.md
 slice: EPIC-003-SLICE-6
 depends_on: [TASK-011]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -29,6 +30,7 @@ files_allowed:
   - src/components/home/article-card.tsx
   - src/lib/magazine-placeholder.ts
   - backlog/tasks/TASK-016.md
+progress_weight: 1
 ---
 
 # Task: Magazine teaser

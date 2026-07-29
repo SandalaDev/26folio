@@ -1,7 +1,7 @@
 ---
 id: EPIC-009
 title: Hero shader background + signature motion (cursor + magnetic buttons)
-status: in-progress      # ready -> in-progress -> done
+status: done
 phase: 4
 priority: P1
 risk_level: medium
@@ -13,6 +13,9 @@ references:
   - 12-ui-element-map.md
 related:
   - 09-roadmap.md
+roadmap_refs: [ROAD-002]
+goal_refs: [GOAL-002, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-009 — Hero redesign + signature motion

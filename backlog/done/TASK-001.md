@@ -6,6 +6,7 @@ priority: P1
 risk_level: medium
 preferred_executor: claude-code
 epic: EPIC-001
+epic_ref: backlog/epics/EPIC-001-project-scaffold.md
 slice: EPIC-001-SLICE-1
 skill_refs: [nextjs-app-router]
 verification_required: [typecheck, build-static-smoke]
@@ -27,6 +28,7 @@ files_allowed:
   - .gitignore
   - src/
   - public/
+progress_weight: 1
 ---
 
 # TASK-001 — Scaffold Next.js 15 + route skeleton

@@ -1,7 +1,7 @@
 ---
 id: EPIC-001
 title: Project scaffold — Next.js 15, TypeScript, Tailwind v4, tooling
-status: ready            # ready -> in-progress -> done
+status: done
 phase: 1
 priority: P1
 risk_level: medium
@@ -15,6 +15,9 @@ related:
   - 09-roadmap.md
   - 10-design-system.md
   - 12-ui-element-map.md
+roadmap_refs: [ROAD-001]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-001 — Project scaffold (Next.js 15 + tooling)

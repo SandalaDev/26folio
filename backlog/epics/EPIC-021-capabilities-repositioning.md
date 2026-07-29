@@ -14,6 +14,9 @@ references:
   - 10-design-system.md
 related:
   - EPIC-006-capabilities-page.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-021 — Capabilities page repositioning

@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-004
+epic_ref: backlog/epics/EPIC-004-about-page.md
 slice: EPIC-004-SLICE-4
 depends_on: []
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -29,6 +30,7 @@ protected_paths_touched: []
 files_allowed:
   - src/components/about/timeline.tsx
   - backlog/tasks/TASK-021.md
+progress_weight: 1
 ---
 
 # Task: Timeline

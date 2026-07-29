@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-016
+epic_ref: backlog/epics/EPIC-016-the-way-i-am-page.md
 slice: EPIC-016-SLICE-1
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -35,6 +36,7 @@ files_allowed:
   - planning/slices/EPIC-016-SLICE-1.md
   - backlog/tasks/TASK-064.md
   - backlog/tasks/TASK-065.md
+progress_weight: 1
 ---
 
 # Task: Build the "The Way I Am" page

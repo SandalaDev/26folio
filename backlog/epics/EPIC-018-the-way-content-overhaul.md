@@ -1,7 +1,7 @@
 ---
 id: EPIC-018
 title: The Way I Am — real imagery, wishlists, Spotify 10s playlist
-status: done          # ready -> in-progress -> done
+status: done
 phase: 5
 priority: P1
 risk_level: medium
@@ -14,6 +14,9 @@ references:
   - 12-ui-element-map.md
 related:
   - EPIC-016-the-way-i-am-page.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-018 — "The Way I Am" content overhaul

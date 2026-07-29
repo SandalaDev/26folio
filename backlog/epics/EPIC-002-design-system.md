@@ -1,7 +1,7 @@
 ---
 id: EPIC-002
 title: Design system — tokens, typography, colour, spacing, base components
-status: ready            # ready -> in-progress -> done
+status: done
 phase: 1
 priority: P1
 risk_level: medium
@@ -15,6 +15,9 @@ references:
 related:
   - 06-project-technical-plan.md
   - 09-roadmap.md
+roadmap_refs: [ROAD-001]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-002 — Design system (tokens, typography, colour, spacing, base components)

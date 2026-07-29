@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-021
+epic_ref: backlog/epics/EPIC-021-capabilities-repositioning.md
 slice: EPIC-021-SLICE-1
 depends_on: [TASK-079]
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -32,6 +33,7 @@ files_allowed:
   - src/lib/
   - planning/content/.slop/
   - backlog/tasks/TASK-080.md
+progress_weight: 1
 ---
 
 # Task: Capability explorer page rebuild

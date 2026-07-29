@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-003
+epic_ref: backlog/epics/EPIC-003-home-page.md
 slice: EPIC-003-SLICE-1
 depends_on: []
 design_refs: [12-ui-element-map.md, 10-design-system.md]
@@ -30,6 +31,7 @@ files_allowed:
   - src/components/site/cta-callout.tsx
   - backlog/epics/EPIC-003-home-page.md
   - backlog/tasks/TASK-011.md
+progress_weight: 1
 ---
 
 # Task: Shared page primitives

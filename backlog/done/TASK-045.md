@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-011
+epic_ref: backlog/epics/EPIC-011-design-refinement.md
 slice: EPIC-011-SLICE-2
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -31,6 +32,7 @@ files_allowed:
   - src/components/site/site-footer.tsx
   - src/components/site/masonry-pattern.tsx
   - backlog/tasks/TASK-045.md
+progress_weight: 1
 ---
 
 # Task: Footer low-contrast light-brown text + filled low-contrast masonry

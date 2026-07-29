@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-002
+epic_ref: backlog/epics/EPIC-002-design-system.md
 slice: EPIC-002-SLICE-1
 depends_on: []
 design_refs: [10-design-system.md]
@@ -31,6 +32,7 @@ files_allowed:
   - tailwind.config.ts
   - src/app/layout.tsx
   - eslint.config.mjs
+progress_weight: 1
 ---
 
 # Task: Colour + base design tokens & global foundation

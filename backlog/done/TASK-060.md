@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-014
+epic_ref: backlog/epics/EPIC-014-about-page-content.md
 slice: EPIC-014-SLICE-2
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -33,6 +34,7 @@ files_allowed:
   - planning/slices/EPIC-014-SLICE-2.md
   - backlog/tasks/TASK-060.md
   - scripts/verify-task.sh
+progress_weight: 1
 ---
 
 # Task: Dual-CTA closing band

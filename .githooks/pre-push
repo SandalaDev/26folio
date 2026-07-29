@@ -1,6 +1,35 @@
 #!/usr/bin/env bash
+# .githooks/pre-push — trunk protection ONLY.
+#
+# The one thing this hook does: stop an accidental direct push to a trunk
+# branch (main, and dev when the trunk-dev flow is active), so changes arrive
+# via PR. It deliberately runs NO quality checks — tests are planned backlog
+# work and reviews happen manually after the PR, outside the system. A push
+# from a feature branch always succeeds.
+#
+# A push can target a trunk two ways; both are caught:
+#   1. You're ON the trunk (current branch check).
+#   2. You're on a feature branch but push TO a trunk via refspec
+#      (e.g. `git push origin HEAD:main` — read from stdin).
 set -euo pipefail
-# Agents must push feature/* branches, never main/dev directly.
-bash scripts/branch.sh guard
-TASK="$(node scripts/active-task.mjs 2>/dev/null || true)"
-if [[ -n "${TASK:-}" ]]; then bash scripts/verify-task.sh "$TASK"; else bash scripts/os.sh check; fi
+
+MAIN="${MAIN_BRANCH:-main}"
+DEV="${DEV_BRANCH:-dev}"
+
+# Guard 1: refspec destinations (stdin lines: <local> <local-sha> <remote> <remote-sha>).
+while read -r _local_ref _local_sha _remote_ref _remote_sha; do
+  dest="${_remote_ref#refs/heads/}"
+  if [[ "$dest" == "$MAIN" || "$dest" == "$DEV" ]]; then
+    echo "[pre-push] REFUSED: push targets trunk '$dest'. Open a PR instead (os pr)." >&2
+    exit 1
+  fi
+done
+
+# Guard 2: not pushing while sitting on a trunk.
+branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')"
+if [[ "$branch" == "$MAIN" || "$branch" == "$DEV" ]]; then
+  echo "[pre-push] REFUSED: on '$branch' — cut a feature branch first (branch.sh start EPIC-XXX)." >&2
+  exit 1
+fi
+
+exit 0

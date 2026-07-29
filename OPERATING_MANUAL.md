@@ -1,753 +1,399 @@
-# Operating Manual — Solo Dev OS
+# Operating Manual — agent-os
 
-This is the full agent-readable reference. `AGENTS.md` is the short law; this file
-is the detail: the day-to-day loop, the handoff protocol, the skills layer, the
-fail-closed gate, file templates, and the launch checklist.
+The full reference. `AGENTS.md` is the short law; this is the detail: the layered
+architecture, the session lifecycle, the non-blocking quality model, crash recovery, the
+handoff protocol, the skills layer, file templates, and the launch checklist.
 
-Every durable fact lives in a repo file. `project-state/STATE.json` is the single
-writable state file; every other view is generated from it. Rules that matter are
-checks in `scripts/verify-task.sh`, run by a Git hook — not prose an agent may
-ignore. A clean `git push` means the gate passed; a rejected push names the one
-rule that failed.
-
-Script sources are **not** duplicated here. Every script lives in `scripts/`; read
-it there for authoritative behavior. This manual says what each script is *for*.
-
----
-
-## Human views
-
-```
-bash scripts/os.sh render      # regenerate CURRENT_STATE.md + HANDOFF_QUEUE.md from STATE.json
-bash scripts/os.sh check       # print `state: consistent` or `state: DRIFT`
-```
-
-`CURRENT_STATE.md` and `HANDOFF_QUEUE.md` carry a
-`<!-- generated — do not edit; source: STATE.json -->` banner. Never hand-edit
-them; the pre-commit hook warns if a generated file is staged with manual edits.
-
----
-
-## Starting a New Project
-
-This repository **is** the Solo Dev OS distribution — the OS travels inside it as
-scripts and skills, not as a generated artifact. A new project is created by
-cloning this repo as a template, stripping the previous app, and running bootstrap.
-The scripts are the source of truth and live in `scripts/`.
-
-`bootstrap-solo-dev-os.sh` does **not** create the OS scripts. It writes the
-directory skeleton, `STATE.json`, `CODEOWNERS`, the git hooks, and the
-`active-task.mjs` helper, then *calls* scripts that must already be on disk. Run
-bootstrap in an empty repo and it will fail — the scripts come from the template.
-
-### Greenfield flow
-
+For the **live dashboard and standalone guide**, run:
 ```bash
-# 1. Clone this repo as the starting point.
-git clone <this-repo> my-new-project && cd my-new-project
-
-# 2. Remove the previous project's app + intent.
-#    KEEP the OS scaffolding: scripts/, .agents/, .githooks/, .github/,
-#         AGENTS.md, OPERATING_MANUAL.md, CODEOWNERS, .gitignore.
-rm -rf src node_modules .next package.json package-lock.json \
-       next.config.ts tsconfig.json components.json postcss.config.mjs \
-       tailwind.config.ts eslint.config.mjs .prettierrc .prettierignore env.example
-rm -rf project-spine backlog planning memory project-state
-
-# 3. Seed the OS: folders, STATE.json, CODEOWNERS, git hooks.
-bash scripts/bootstrap-solo-dev-os.sh
-
-# 4. Install the one Node dependency the render/validate scripts need.
-npm install yaml
-
-# 5. Reset git history (optional) and commit the skeleton.
-rm -rf .git && git init && git add -A && git commit -m "chore: Solo Dev OS skeleton"
-
-# 6. Author the Project Spine, then shape the first Epic → Slice → Tasks.
+node scripts/render-state.mjs
+bash scripts/os.sh render              # via the OS entry point (also renders the markdown views)
 ```
-
-### Keeping the OS up to date in an existing project
-
-The OS is vendored into each project (not a runtime dependency). To pull in OS
-fixes later, re-clone the template and copy the changed `scripts/`,
-`.agents/skills/`, `AGENTS.md`, and `OPERATING_MANUAL.md` over your project's
-copies, leaving `project-state/`, `project-spine/`, and `backlog/` intact. State
-and intent are project-owned; the OS machinery is repo-vendored.
+`dashboard.html` is a generated project view; `guide.html` is the generated,
+searchable operator guide. Both are gitignored. Runtime state comes from
+`project-state/state.json`; the progress estimate also reads canonical intent and
+work metadata from the charter, roadmap, epics, tasks, and done work.
 
 ---
 
-## User Guide
+## The layered architecture
 
-### Who Does What
-
-Three actors. You read generated files and let the Git gate reject anything that
-skipped a step.
-
-- **Human (you)** — owns intent and the irreversible decisions: the Project Spine,
-  schema/auth/billing/infra/secrets approvals, the final merge. You read the
-  generated state files; you do not hand-write them.
-- **Agent** — any harness (Claude Code is the one wired up here). Implements one
-  bounded task, writes **one** canonical state update, creates handoffs by path.
-  Temporary; nothing important lives only in its chat.
-- **Scripts + Git** — the enforcement layer. `verify-task.sh` runs in a pre-push
-  hook and in CI. It recomputes scope, proof, slop score, handoff presence, and
-  protected-path approval, and **fails the push** if any are wrong.
-
-### The Mental Model
-
-- **Artifacts are permanent. Agents are temporary.** Every durable fact lives in a
-  repo file. Chat is a scratchpad.
-- **One source of truth, everything else generated.** `STATE.json` is the only
-  place state is written; `CURRENT_STATE.md` and `HANDOFF_QUEUE.md` are rendered
-  from it, so they cannot disagree with it.
-- **Rules fail closed.** If a rule matters, it is a check that blocks the push. If
-  it is only prose, treat it as advice.
-
-### Project Start
-
-Author the durable foundation before writing feature code. The **Project Spine**
-(`project-spine/00-…` through `12-…`) captures intent, design, content, and UI.
-Files 00–09 are *intent* — a planning agent can draft them from your brief. Files
-10–12 are *design system*, *content strategy*, and *UI element map* — these encode
-your taste and cannot be guessed, so you supply references (drop screenshots into
-`project-spine/references/{design,content,ui}/`) and review each draft before
-approving it. There is no dedicated per-phase script; author the files directly
-(by hand or with a planning agent) and set each one's `status:` when you approve it.
-
-### A Day In The Loop
-
-Nothing is a background daemon. Every "Agent" step still needs you to have a
-session open and tell it what to do. The two steps entirely on you — launching the
-cross-model review and triggering rework — are the ones most likely to get skipped.
-
-| Phase | Who | What happens |
-|---|---|---|
-| A — Start | Agent | `branch.sh start EPIC-XXX` cuts a feature branch off `dev`; `os.sh start` reads STATE, renders views, loads handoffs, writes the session lock; agent identifies Epic → Slice → Task and writes an implementation checklist. |
-| B — Implement & close | Agent | Agent edits inside `files_allowed` only; `os.sh end` runs the gate, renders views, creates handoffs, clears the lock; `git push` runs `verify-task.sh` against `dev`. |
-| C — Review | **You** | *Not automatic.* Open a different model family, point it at `handoffs/review/HANDOFF-REVIEW-TASK-XXX.md`; it writes `.agents/reviews/REVIEW-TASK-XXX.md` with a decision. |
-| D — Rework (if not satisfied) | **You** | `rework.sh open TASK-XXX "issue"` per issue; agent resolves each (`rework.sh resolve`); the gate stays red while any item is open; you `rework.sh close` once satisfied. |
-| E — Merge & clean up | **You** | Confirm the PR check is green; merge into `dev`; `branch.sh cleanup feature/EPIC-XXX`; periodically `branch.sh promote` for `dev → main`. |
-
-### Git Workflow
-
-Three branches. Agents never commit to a shared trunk.
-
-- **`main`** — protected production. Only moves via a reviewed, fully-verified
-  `dev → main` promotion. Tagged releases live here. No agent ever pushes to it.
-- **`dev`** — integration branch. Feature branches merge here after the gate passes
-  and a cross-model review is in.
-- **`feature/EPIC-XXX`** (or `feature/EPIC-XXX-SLICE-Y`) — agent workspace for one
-  epic. Agents branch off `dev` and run the task → handoff chain here.
-
-The gate adapts its comparison base automatically: `dev` for feature branches,
-`main` when promoting. `branch.sh base` resolves it; you never set it by hand.
+agent-os is a lean core plus an optional frontend opinionation. Only the bottom
+three layers are load-bearing; L4 is a layer you add, not one the core depends on.
 
 ```
-main      ●────────────────●─────────────●        (protected; tagged releases)
-           \              ↑               ↑
-dev         ●──●────●─────●───────●───────●        (integration; you merge here)
-             \   \    \         ↑
-feature/      ●───●────●────────●                  (one per epic; agents work here)
-EPIC-021      t1  t2   t3   handoffs+review
+L0  Memory Core     state.json · ledger.jsonl · decisions.md · handoffs/ · session.lock
+L1  Views           current-state.md · dashboard.html · guide.html  (generated; never edited)
+L2  Sanity          verify.sh (advisory) in CI               (state integrity only — never blocks)
+L3  Workflow        os start|end|check|checkpoint|status|context|deps|pr|sync|claim|release|decide|doctor  (one entry point)
+─────────────────────────────────────────────────────────
+L4  Frontend Pack   pack-frontend/                           (design phase · skills · lanes)
 ```
 
-### Verify & Recover
+A non-frontend project skips L4 and still gets memory, handover, and the
+dashboard. That is what makes this a reusable template rather than a Next.js scaffold.
 
-- **State continuity:** `os.sh check` prints `state: consistent`. If it prints
-  `state: DRIFT`, `STATE.json` disagrees with a task's frontmatter or its counts —
-  the gate blocks on this; run `os.sh render` to rebuild, then re-check.
-- **Quality gates:** if `git push` succeeded, scope / risk-matched proof / slop
-  score / protected-path / handoff presence all passed. Investigate only on
-  rejection — never `--no-verify`.
-- **Cross-model review:** a `REVIEW-TASK-XXX.md` exists, written by a reviewer
-  whose family differs from the executor. Solo dev degrades to `reviewer: human`;
-  the review file is still required — review is reassigned, never skipped.
-- **Push rejected:** read the FAIL line — it names the rule. Fix that one thing and
-  push again.
-- **Session crashed:** a stale `ACTIVE_SESSION.lock` with no matching state triggers
-  a recover/discard prompt on the next `os.sh start`. The lock is your crash journal.
-
-### Your Core Commands
-
-Everything routes through one shell entry point so it works in any harness or a
-bare terminal. You mostly type `check` and merge; the agent runs the rest.
-
-| Command | Who | What it does |
-|---|---|---|
-| `bash scripts/branch.sh start EPIC-XXX` | Agent | Creates/switches the epic's feature branch off `dev`. Run before `os.sh start`. |
-| `bash scripts/os.sh start` | Agent | Reads `STATE.json`, renders views, loads handoffs, writes the session lock. |
-| `bash scripts/os.sh end` | Agent | Runs the gate, renders views, creates handoffs, clears the lock. |
-| `bash scripts/os.sh render` | Agent | Regenerates `CURRENT_STATE.md` and `HANDOFF_QUEUE.md` from `STATE.json`. |
-| `bash scripts/verify-task.sh <task>` | Agent + Git hook | The fail-closed gate. Diffs against `dev` (or `main` when promoting). |
-| `bash scripts/os.sh check` | **You** | Status probe: is the state layer consistent? |
-| `bash scripts/branch.sh promote` | **You** | Prints the `dev → main` promotion checklist (full suite, signed merge, tag). |
-| `bash scripts/rework.sh open <task> "..."` | **You** | Flag review feedback as a tracked rework item; blocks task closure until resolved. |
-| `bash scripts/rework.sh close <task>` | **You** | Accept rework once every item is resolved (refuses otherwise). |
-| `git push` / merge PR | **You** | Push the feature branch; the hook runs the gate. You merge the PR into `dev`. |
+### The mental model — three sentences
+- **Artifacts are permanent. Agents are temporary.** Every durable fact lives in a repo file.
+- **One source of truth, everything else generated.** `state.json` is the only place state is written.
+- **The OS is non-blocking.** It manages memory and context, never quality —
+  quality is caught by tests (planned backlog work) and the human's manual PR review.
 
 ---
 
-## Operating Manual
-
-### Core Operating Law
-
-The OS has one job: stop agentic coding from becoming prompt chaos. Every durable
-project decision lives in the repo. Agents explore in chat; the source of truth is
-Markdown, code, tests, scripts, and Git history. Enforcement is a first-class
-primitive: the rules that matter are checks that fail closed in Git.
-
-Non-negotiables:
-
-- Project facts live in repository files.
-- State is written in exactly one place — `STATE.json`. Every other view is
-  generated.
-- Every session starts and ends through `os.sh start` / `os.sh end`.
-- Agents implement bounded tasks, not vague ideas.
-- Skills are vendored capability packages on disk, not ad-hoc prompts.
-- Testing proves risk-bearing behavior, not vanity coverage.
-- Humans approve schema, auth, billing, infra, secrets, compliance — verified via
-  CODEOWNERS + signed commit, not a boolean.
-- No task merges until `verify-task.sh` passes in the pre-push hook.
-
-### OS Layer Map
+## Repository map
 
 ```
-00  Project State Layer — STATE.json (canonical) + generated views
-01  Product Map / Project Spine
-02  Skills Layer — vendored SKILL.md on disk
-03  Handoff Layer
-04  Planning System (Epics → Slices → Tasks)
-05  Task Execution
-06  Enforcement Layer — verify-task.sh in hook + CI
-07  Review Workflow
-08  Automation & Scripts (os.sh)
-```
-
-### Canonical Repository Map
-
-```
-project-root/
-├── AGENTS.md                          ← canonical agent instructions (source)
-├── CLAUDE.md                          ← GENERATED from AGENTS.md (sync-agent-files.sh)
-├── OPERATING_MANUAL.md                ← this file: the full OS manual
-│
-├── project-state/                     ← OS home screen
-│   ├── STATE.json                     ← CANONICAL single source of truth
-│   ├── CURRENT_STATE.md               ← generated (do not edit)
-│   ├── HANDOFF_QUEUE.md               ← generated (do not edit)
-│   ├── AGENT_LOG.md                   ← append-only, auto-rotated
-│   └── ACTIVE_SESSION.lock            ← crash journal (present only mid-session)
-│
-├── handoffs/{review,session,task,rework,archive}/
-│
-├── project-spine/
-│   ├── 00-manifesto.md … 09-roadmap.md        ← intent (drafted from the brief)
-│   ├── 05-data-model.md                        ← protected
-│   ├── 10-design-system.md (+ .html)           ← design system + visual reference
-│   ├── 11-content-strategy.md                  ← sitemap, per-page content, inventory
-│   ├── 12-ui-element-map.md                    ← every content block → exact UI element
-│   └── references/{design,content,ui}/         ← your visual intent (screenshots)
-│
-├── planning/slices/                   ← slice plans (created per epic as needed)
+agent-os/
+├── AGENTS.md                          ← canonical agent law (source)
+├── OPERATING_MANUAL.md                ← this file
+├── dashboard.html                     ← GENERATED (gitignored)
+├── guide.html                         ← GENERATED (gitignored)
+├── project-state/
+│   ├── state.json                     ← CANONICAL single source of truth
+│   ├── ledger.jsonl                   ← append-only: one line per session (tokens/cost/status)
+│   ├── decisions.md                   ← append-only ADR-lite
+│   ├── current-state.md               ← generated
+│   ├── metrics.md                     ← generated: performance + cost
+│   ├── AGENT_LOG.md                   ← append-only audit trail (rotated monthly)
+│   └── session.lock                   ← crash journal (present only mid-session)
+├── handoffs/{session,task,archive}/
 ├── backlog/{epics,tasks,done}/
-├── memory/{decisions.md,progress-log.md,agent-log/}
-│
-├── .agents/
-│   ├── skills/{registry.md,lock.json,<skill>/SKILL.md,local/}
-│   └── reviews/
-│
-├── CODEOWNERS                         ← drives protected-path human approval
-├── scripts/                           ← the authoritative script sources
+├── planning/
+├── memory/
+├── .agents/skills/                    ← core skills (always present)
+├── scripts/                           ← the engine
 ├── .githooks/{pre-push,pre-commit}
-└── .github/workflows/quality.yml      ← runs verify-task.sh in CI
+├── .github/workflows/quality.yml      ← re-runs verify.sh in CI
+└── pack-frontend/                     ← L4 (optional, default-on)
+    ├── elicit-phase.sh
+    └── skills/                        ← frontend design lanes + stop-slop
 ```
-
-### Project State Layer
-
-Exactly one writable artifact — `STATE.json` — and everything else generated from
-it or appended to it.
-
-| Artifact | Role | Writable? |
-|---|---|---|
-| `STATE.json` | Canonical state: current pointers, completion, counts, verification, handoff queue. | Yes — the only writable state file. |
-| `CURRENT_STATE.md` | Human-readable snapshot of current work. | No — generated by render. |
-| `HANDOFF_QUEUE.md` | Human-readable queue view. | No — generated by render. |
-| `AGENT_LOG.md` | Append-only audit trail. | Append only; rotated when it exceeds ~2000 lines. |
-| `ACTIVE_SESSION.lock` | Crash journal — present only while a session is open. | Written at start, cleared at end. |
-
-### Project Spine
-
-The durable foundation. Files **00–09 are intent** — drafted by a planning agent
-from the brief. Files **10–12 encode taste** — a design system, a content
-structure, and a UI map, authored from your references because they cannot be
-guessed from intent.
-
-| # | File | Holds |
-|---|---|---|
-| 00 | Manifesto | Why the project exists. |
-| 01 | Project Charter | Scope, stakeholders, constraints. |
-| 02 | Business Outcomes Map | Outcomes work must advance. |
-| 03 | Project PRD | Global product requirements. |
-| 04 | Domain Model | Entities, relationships, language. |
-| 05 | Data Model | Tables, indexes, retention, migration policy. **protected** |
-| 06 | Technical Plan | Stack, deployment, environments, integration patterns. |
-| 07 | Architecture Principles | Local rules agents must not violate. |
-| 08 | Risk Register | Known risks, mitigations, human gates. |
-| 09 | Roadmap | P1/P2/P3 sequence and rationale. |
-| 10 | Design System | Tokens, type scale, spacing, component direction, motion, a11y. |
-| 11 | Content Strategy | Audience, voice, SEO — plus sitemap, per-page content, inventory. |
-| 12 | UI Element Map | Every content block → exact UI element, source, reference, motion. |
-
-Rule: user-facing tasks that change layout, messaging, claims, forms, onboarding,
-dashboards, or client workflows must reference `10-design-system.md`,
-`11-content-strategy.md`, and (for build-out) `12-ui-element-map.md`, or explicitly
-mark them not required in the task frontmatter.
-
-### End-to-End Workflow
-
-```
-PROJECT START (once)
-  Author project-spine/00–12 (planning agent drafts intent; you approve design/content/UI).
-    ↓
-Session Start  →  os.sh start   (read STATE · render views · load handoffs · write lock)
-    ↓
-Identify Epic → Slice → Task
-    ↓
-Read task, slice, spine sections, skill_refs · write implementation checklist
-    ↓
-Implementation (inside files_allowed only)
-    ↓
-Session End  →  os.sh end   (verify-task.sh · render · create handoffs · clear lock)
-    ↓
-git push  →  .githooks/pre-push  →  verify-task.sh   ← FAILS CLOSED
-    ↓
-(if review required) HANDOFF-REVIEW created → different model writes REVIEW-TASK-XXX.md
-    ↓
-Human reads rendered state + review · merges into dev
-```
-
-### Agent Routing Matrix
-
-| Work type | Primary surface | Guardrail |
-|---|---|---|
-| State updates | Any agent, via `os.sh end` | One STATE.json write. The lock proves it ran. |
-| Project Spine edits | Human + planning agent | No autonomous rewrite without human confirmation. |
-| Epic shaping / slicing | Planning model | Must map to outcomes, domain, data, content/design where relevant. |
-| UI implementation / polish | design-taste-frontend lane + shadcn/ui | State the one-line design read, then implement. Check free/public 21st.dev before hand-building. |
-| Implementation | Claude Code (or any harness) | Must run `os.sh start` first and `os.sh end` last. Diff stays in `files_allowed` (gated). |
-| Review | Different model family | Executor may not self-approve non-trivial work. Solo dev degrades to `reviewer: human`; review file still required. |
-| High-risk changes | Human gate | Schema, auth, billing, infra, secrets, compliance — approval via CODEOWNERS + signed commit. |
-
-### Risk Gates
-
-| Area | Risk | Gate (enforced by verify-task.sh) |
-|---|---|---|
-| Static copy or CSS polish | Low | lint, typecheck; slop score if public text. |
-| Business logic or API behavior | Medium | unit tests, scope check, cross-model review. |
-| Database writes, tenant access, auth | High | integration tests, protected-path declaration, human review. |
-| Schema, billing, secrets, infrastructure | Critical | CODEOWNERS-approved signed commit, rollback plan, full verification before merge. |
-
-### Anti-Patterns Registry
-
-| Anti-pattern | Failure mode | Better action |
-|---|---|---|
-| Duplicated state | Epic/Slice/Task pointer lives in files that drift. | One canonical STATE.json; all views generated. `os.sh check` fails on drift. |
-| Honor-system gates | Agent self-grades slop or self-sets approval. | Slop score recomputed by `stop-slop/score.mjs`; approval derived from CODEOWNERS + signed commit. |
-| Prose-only rules | Important rules exist only as text the agent may ignore. | Rules that matter are checks in `verify-task.sh`, run by a Git hook. Fail closed. |
-| Package-manager coupling | `pnpm os:verify-task` breaks for npm/bun/Codex users. | All entry points are `scripts/*.sh`. No package manager assumed. |
-| Handoff by conversation summary | A long "what we did" passed as the handoff. | Reference files by path. Never copy artifact content. |
-| Skipping state commit | Session ends without writing state. | `os.sh end` is the single commit step; the open lock flags a session that never ended cleanly. |
-| Scope creep | Diff edits files the task never declared. | Gate diffs changes against `files_allowed` and fails on escapes. |
-| Skill dumping | Agent loads every skill and loses focus. | Load only `skill_refs` from the task. |
-| Shipping AI slop | Public copy goes out full of AI tells. | stop-slop recomputed gate → human gate. |
-| Coverage theatre | Weak tests added to satisfy a metric. | Test risk-bearing behavior and acceptance criteria only. |
-| Feedback in PR threads only | "Fix this" lives in GitHub comments — lost to a cold agent. | Materialize feedback into `handoffs/rework/REWORK-TASK-XXX.md` via `rework.sh`; the artifact blocks closure. |
 
 ---
 
-## Handoff Layer
+## Session lifecycle (every session, every agent)
 
-An agent-agnostic protocol. The same handoff artifacts work identically across any
-harness.
+- **Start:** `bash scripts/os.sh start` — reads state, renders views, detects a stale
+  lock (crash recovery), writes the session journal.
+- **Work:** stay within the task's `files_allowed` focus list (advisory). Periodically run
+  `bash scripts/os.sh checkpoint "next step"` so an interrupted session is recoverable.
+- **End:** `bash scripts/os.sh end [task]` — advisory sanity check, writes ONE state update,
+  renders views, appends the log + a ledger line, creates declared handoffs, clears the lock.
 
+### Sessions: when to run `os start` / `os end`
+Work happens in **sessions** — one contiguous stretch of work on a task. `os start`
+opens a session (clocks you in); `os end` closes it (clocks you out). State updates,
+ledger rows, sanity checks, and dashboard refreshes all happen at these two boundaries.
+
+- **`os start`** — run once, at the start of a work session. Reads state, renders
+  views, captures identity, writes the session journal (the crash-recovery artifact).
+- **`os checkpoint "next step"`** — mid-session, before risky edits. Saves in-flight
+  state so a crash is recoverable.
+- **`os end [task]`** — run once when you finish. Advisory sanity check, one state
+  update + ledger row, creates handoffs, clears the lock.
+
+If you work on a task Tuesday for an hour, then again Thursday — that's two sessions,
+two `os start`s and two `os end`s. It is not something you run once per project or
+leave running in the background. Skip `os start` and no session journal exists, so a
+crash loses everything since the last `os end`.
+
+### Identity (optional)
+`os start` auto-detects the harness from its environment. For cleaner dashboard
+attribution you can optionally export `HARNESS_NAME` (tool), `MODEL_NAME`
+(model id), and `AGENT_ROLE` (`executor` default | `planner`). Unset values are
+recorded honestly (`unknown`), never invented — attribution is a nice-to-have,
+not a chore on the critical path.
+
+### Context: lead every session with the project's intent
+`os context` prints a bounded (~3 KB) briefing that always leads with the
+charter's north star (the one job, from `project-spine/01-charter.md`), then
+layers in current task/branch/agent, the top pending handoff, the
+last ledger row, and the caution note (risky areas to flag in PRs). It refuses to print until the spine is
+hydrated (run `intake ready`, then hydrate). Agents should read it at session
+start so intent re-enters every loop instead of drifting.
+
+### Flow: GitHub Flow by default, `dev` opt-in
+`state.flow` selects the branch model:
+- **`github`** (default) — feature branches cut off `main` and PR back to `main`.
+- **`trunk-dev`** — the three-branch model: feature → `dev` → `main` (promote).
+
+`branch.sh`, `os pr`, and `os sync` all read `state.flow` so the integration base
+stays correct without you remembering which model is active.
+
+- **`os pr ["title"] [--body "..."] [--draft]`** — open a PR into the flow's base.
+- **`os sync`** — squash-merge the current branch's PR via `gh`, switch to base,
+  pull, and clean up the branch. One command for the whole post-merge flow.
+
+### Claiming tasks & recording decisions
+- **`os claim <TASK-XXX>`** — set `state.current.task` so sessions and views
+  attribute the work. `os release` clears it; `os end` clears it when the task closes.
+- **`os decide --title <t> --context <c> --decision <d> [--alternatives <a>]`** —
+  append an ADR entry to `project-state/decisions.md` (its sanctioned writer).
+
+### OpenSrc dependency evidence
+
+`os deps` is the pre-install dependency and architecture research workflow:
+
+- `deps plan initial "<purpose>" <exact-spec>...` before the initial stack.
+- `deps plan add "<purpose>" <exact-spec>...` before an addition or upgrade.
+- `deps plan architecture "<decision>" <exact-spec-or-pinned-repo>...` before
+  far-reaching choices.
+- `deps check <plan>` validates completed research and exact versions, then
+  reruns npm's no-payload dry-run resolution before human review.
+- `deps install <plan>` installs an approved exact npm set.
+
+OpenSrc fetches version-matched docs and source; it does not solve or certify
+compatibility. The agent applies `opensrc-research`, completes the pairwise
+evidence under `planning/dependencies/`, and names post-install checks. A human
+approves the plan. This precondition belongs to the wrapper's install command;
+it never gates commits or pushes.
+
+### The dashboard is generated, never hand-written
+`dashboard.html` and `guide.html` regenerate automatically at every `os start`
+and `os end`. To force a refresh anytime (after editing canonical sources, or to
+see fresh metrics), run
+`bash scripts/os.sh render`, then open the file. It's a snapshot of the last render,
+not a live view.
+
+### Token / cost reporting
+Before `os end`, write a tiny `.session-usage.json` at the repo root:
+```json
+{ "tokens_in": 184320, "tokens_out": 9120, "cost_usd": 0.41 }
 ```
-Agents are temporary. Artifacts are permanent.
-Never transfer knowledge via conversation history.
-Always transfer knowledge via handoff artifacts.
-```
-
-Handoffs must **never** contain: conversation summaries, chat logs, large copied
-artifacts, or duplicate content already in the repo. Handoffs must **always**:
-reference files by path, state current status concisely, name remaining work, name
-known risks.
-
-`os.sh start` loads the assigned handoffs listed in `STATE.json`, so the handoff is
-read regardless of which harness picks up the session. `verify-task.sh` also fails
-closed if a required handoff is missing.
-
-Correct vs wrong:
-
-```
-✓ Correct                        ✗ Wrong
-Artifacts:                       # Artifacts
-  Epic:  backlog/epics/EPIC-021    [full epic content pasted]
-  Slice: planning/slices/SLICE-21  [full slice content pasted]
-  Task:  backlog/tasks/TASK-04     [full task content pasted]
-```
-
-### Four Official Handoff Types
-
-- **`review` — HANDOFF-REVIEW.** Implementation → Review Agent. Triggered after task
-  completion when cross-model review is required.
-- **`session` — HANDOFF-SESSION.** Resume work later (context exhausted, end of day,
-  reboot, model switch).
-- **`task` — HANDOFF-TASK.** Task A complete → Task B begins.
-- **`rework` — REWORK.** Human review feedback → executor. Created by `rework.sh open`;
-  blocks task closure until every item is resolved.
-
-### The Rework Loop
-
-Cross-model review catches correctness problems; the rework loop captures *your*
-judgement — "this works, but I'm not satisfied." Rework items live in
-`handoffs/rework/REWORK-TASK-XXX.md`, committed to the repo — not in a PR thread
-that scrolls away and is invisible to a cold agent.
-
-```
-You review the PR  →  rework.sh open TASK-XXX "what's wrong"
-    ↓  (writes the rework artifact, item status: open; flips task → rework in STATE.json)
-Agent's next os.sh start surfaces the open rework  →  agent fixes each item
-    ↓  rework.sh resolve TASK-XXX 001 "what I did"
-verify-task.sh  →  FAILS while any item is open  (fail-closed)
-    ↓  all items resolved
-You accept  →  rework.sh close TASK-XXX  (refuses unless all resolved)
-```
-
-### Universal Handoff Template
-
-`create-handoff.mjs` scaffolds it; the queue entry is written into `STATE.json` and
-surfaced in `HANDOFF_QUEUE.md`.
-
-```yaml
----
-handoff_type: review | session | task
-id: HANDOFF-[TYPE]-[REF]
-created: YYYY-MM-DDThh:mm:ssZ
-created_by: [agent name]
-task_ref: backlog/tasks/TASK-XXX.md
-slice_ref: planning/slices/SLICE-XXX.md
-epic_ref: backlog/epics/EPIC-XXX.md
----
-# Handoff: [ID]
-## Purpose
-What the next agent is expected to accomplish.
-## Current State
-What exists now. Status of each layer (DB, API, UI, tests).
-## Completed / Remaining / Risks
-## Artifacts
-Provide paths only. Never paste content.
-## Suggested Skills
-- [skill name]
-```
-
-### Handoff Folder Structure
-
-```
-handoffs/
-├── review/   └── HANDOFF-REVIEW-TASK-021A-04.md
-├── session/  └── HANDOFF-SESSION-2026-08-21.md
-├── task/     └── HANDOFF-TASK-021-022.md
-├── rework/   └── REWORK-TASK-021A-04.md
-└── archive/      ← consumed handoffs moved here (audit history; never delete)
-```
-
-When a handoff is consumed, move the file to `handoffs/archive/` and set its status
-to `consumed` in `STATE.json`. Never delete handoffs — they are audit history.
+`os end` reads it, folds the numbers into the ledger, and removes it. If omitted, the
+ledger records `unknown` honestly rather than inventing numbers.
 
 ---
 
-## Skills Layer
+## Crash recovery (the bulletproof part)
 
-A skill is a governed, reusable capability package — a `SKILL.md` folder with
-optional scripts and references. Third-party skills are **vendored onto disk** (not
-installed at runtime), so they load the same in any harness and in restricted-egress
-environments. `scripts/skills.sh` is the installer, validator, and registry tool.
+A stale `session.lock` means the previous session never reached `os end`. On the next
+`os start`, the OS:
+1. **Preserves** the stale lock — moves it to `session.lock.crashed-<ts>` (never overwrites).
+2. **Surfaces** its full contents (identity, branch, task, next_step, files touched).
+3. **Logs a crashed ledger row** with `status:crashed` and the duration it *did* run.
+4. Folds in the dead session's `.session-usage.json` if it survived, then clears it.
 
-### Catalog
+Crashes become data: the dashboard shows a "crashed" badge and a per-combo crashed
+column. Nothing is silently lost.
 
-The catalog is `.agents/skills/registry.md`; vendoring method and pinned commit per
-skill are in `lock.json`. Only authored/vendored skills exist — no empty stubs are
-pre-created.
+The crash journal is updated by `os checkpoint`, which captures in-flight state
+(next_step, files touched) so an interrupted session is genuinely recoverable. Run a
+checkpoint before any risky edit.
 
-| Skill | Status | Use |
+---
+
+## Quality: non-blocking by design
+
+The OS never gates quality. A push always succeeds (except a direct push to a
+trunk, which the pre-push hook refuses so changes arrive via PR). Quality is
+caught by two mechanisms, both outside the system:
+
+1. **Tests — planned work, never a gate.** No change *requires* a test. After
+   planning an epic or task, the agent fills its `## Testing` section with an
+   honest recommendation:
+   - `none` — with a reason ("cosmetic; caught at a glance"). A valid answer.
+   - `with-task` — cover the happy path inside the implementing task itself.
+   - `dedicated: TASK-XXX` — create a separate test task
+     (`new-task.sh task TASK-XXX "tests: <area>" EPIC-YYY low`); it's a normal
+     backlog item the human prioritizes, defers, or declines.
+   Risk guides the default (low → none, medium → with-task, high/critical →
+   dedicated), judgment overrides it. Test runs are information for the PR
+   review — a red run never blocks anything. See the `ds-test-planner` skill.
+
+2. **Reviews — manual, after the PR.** The human reviews every PR by their own
+   process. The system has no visibility into reviews and enforces nothing
+   about them. Agents assume pushed code already passed its tests and review.
+   The agent's one duty: make risky changes (schema, auth, billing, secrets,
+   infrastructure, compliance copy) loud and obvious in the PR description so
+   the human's attention lands where it matters.
+
+### The sanity check (what verify.sh still does)
+`scripts/verify.sh` is a small ADVISORY check of the OS's own memory integrity —
+the things that, when broken, corrupt every future session:
+
+| Check | Mechanism | Flags when |
 |---|---|---|
-| design-taste-frontend | vendored | Active design lane: brief inference + anti-templated direction for landing pages, portfolios, redesigns. |
-| stop-slop | vendored | Mandatory public-text gate; score recomputed by the verify gate. |
-| ds-handoff | authored | Creates session/task/review handoffs at session end. |
-| ds-reviewer | authored | Cross-model diff review against task, spine, skills, tests. |
+| Task metadata | `validate-task.mjs` (real YAML parse) | Frontmatter unparsable or missing id/title/status (state views would break). |
+| State consistency | `render-state.mjs --check-structural` | Task pointer disagrees with the task file's frontmatter. |
 
-Add a skill with `skills.sh add <name>` (candidate under `local/`) and author its
-`SKILL.md` before any task references it — `validate-task.mjs` fails a task whose
-`skill_refs` point at a missing skill. Build UI with shadcn/ui primitives; check
-free/public 21st.dev components before hand-rolling.
-
-### Public-Text Gate (stop-slop)
-
-No public-facing or client-facing text ships without passing stop-slop: landing
-copy, marketing blocks, UX microcopy, READMEs, release notes, proposals, emails —
-any string a human outside the team reads. `score.mjs` writes a
-`planning/content/.slop/<file>.score.json` artifact, and `verify-task.sh`
-*recomputes the score independently* and fails the push if the artifact is missing
-or the number disagrees. It scans Markdown/HTML **and** component files
-(`.tsx/.ts/.jsx/.js`), so copy rendered from React is covered.
-
-Order of operations: Draft → stop-slop (de-slop + scored artifact) → human gate →
-publish.
+It runs at `os end` (reported, never blocking) and in CI (informational). Treat
+a red CI run as "state needs a re-render", not "the code is bad".
 
 ---
 
-## Testing & Verification
+## Handoff protocol (continuity, not review)
 
-Testing proves risk-bearing behavior, not vanity coverage. A task declares
-`verification_required` levels matched to its `risk_level`; the gate runs exactly
-those and records the result. Skips must be declared, never silent.
+Knowledge transfers through **files referenced by path**, never copied content.
+Handoffs must NEVER contain: conversation summaries, chat logs, large copied artifacts,
+duplicate content. Handoffs MUST: reference files by path, state status concisely, name
+remaining work, name known risks.
 
-### The Fail-Closed Gate
+When a task declares `handoff_required: true` (optional), `os end` creates the file
+via `create-handoff.mjs`; the agent then fills the prose blocks (guided by the
+`ds-handoff` skill). Two types:
+- **session** — resume later (context exhaustion, end of day, model switch).
+- **task** — task A complete → task B begins.
 
-`scripts/verify-task.sh` is a pure-shell gate wired into `.githooks/pre-push` and
-CI. It does not trust the agent — it independently recomputes what matters and
-rejects the push if any check fails. It works identically in every harness because
-it runs in Git, not in an agent's startup routine.
+Filling them is discipline, not a gate: nothing blocks on a stub, but a `(fill in)`
+placeholder transfers nothing to the next session — the context is simply lost.
 
-Golden rule: a clean `git push` means every gate passed. A rejected push names the
-one rule that failed. Investigate only on rejection — never `--no-verify`.
+Lifecycle: consumed handoffs move to `handoffs/archive/`. Never delete — audit history.
 
-### Risk → Required Test Levels
+---
 
-| Risk | Required proof | Human gate? |
-|---|---|---|
-| Low | lint, typecheck; slop score if public text | No |
-| Medium | + unit tests, scope check, cross-model review | No |
-| High | + integration tests, protected-path declaration | Yes |
-| Critical | + full verification, rollback plan, signed approval | Yes (CODEOWNERS) |
+## Skills layer
 
-### What the Gate Checks
+A skill is a governed capability package (`SKILL.md` + optional scripts/references).
+Load only the `skill_refs` a task declares; never all skills.
 
-| Check | Mechanism | Fails when |
-|---|---|---|
-| Task metadata | `validate-task.mjs` (real YAML parse) | Required frontmatter fields missing or malformed. |
-| Skill registry | `skills.sh validate` | A referenced skill's `SKILL.md` is missing on disk. |
-| Scope | `git diff` vs the union of `files_allowed` across the branch's tasks | A changed non-OS-managed file is not declared by any task on the branch. |
-| Risk-matched proof | Runs only declared `verification_required.<level>` | A required level fails. Skips are echoed, not hidden. |
-| Slop score | `stop-slop/score.mjs` recomputed | Public text changed and score < 35/50, or the score artifact is missing. |
-| Protected path | CODEOWNERS + signed-commit check | Protected file changed without a human-signed approving commit. |
-| Handoff presence | Existence of `handoff_file` + queue entry | `handoff_required: true` but file or queue entry absent. |
-| Open rework | `rework.mjs status` on the task | Any rework item is still `open`. |
-| State consistency | `render-state.mjs --check` | STATE.json disagrees with task frontmatter or recomputed counts (drift). |
+- **Core (`.agents/skills/`)** — always present, stack-agnostic:
+  `opensrc-research`, `writing-style`, `ds-handoff`, `ds-task-slicer`,
+  `ds-test-planner`.
+- **Frontend (`pack-frontend/skills/`)** — default-on, detachable: `impeccable` (active
+  lane), `design-taste-frontend`, `shadcn-ui-builder`, `21st-dev-components`, `stop-slop`.
 
-The scope check reads proof levels by dot-path (`verification_required.lint`), so
-declared checks actually run. Its allowed set is the **union** of `files_allowed`
-across the current task plus every task referenced in the branch's commit messages,
-and OS-managed paths (`project-state/`, `handoffs/`, `memory/`, `backlog/done/`,
-`backlog/epics/`, generated `CLAUDE.md`) are excluded — so multi-task epic branches
-don't false-flag.
+`skills.sh validate` fails-closed on missing files and invalid portable metadata;
+`skills.sh audit` (release-facing) additionally fails on thin stubs. For writing,
+project/domain rules lead, `writing-style` owns drafting and revision, and
+`stop-slop` is the advisory final scan. The `stop-slop` scorer reads its
+rules from externalized data (`tells.json`) — extend by editing data, not code.
 
-### Git Hooks & CI
+---
 
-Bootstrap sets `git config core.hooksPath .githooks` so the hooks travel with the
-repo and run in every harness. CI re-runs the same gate so a bypassed local hook
-still cannot merge.
+## Git workflow (three branches)
 
-```bash
-# .githooks/pre-push
-#!/usr/bin/env bash
-set -euo pipefail
-bash scripts/branch.sh guard                    # never push from main/dev directly
-TASK="$(node scripts/active-task.mjs 2>/dev/null || true)"
-if [[ -n "${TASK:-}" ]]; then
-  bash scripts/verify-task.sh "$TASK"
-else
-  bash scripts/os.sh check     # at minimum, state must be consistent
-fi
+```
+main   ●─────────●─────────●        (protected; tagged releases)
+        \         ↑          ↑
+dev      ●──●────●──────●────●        (integration; you merge here)
+          \   \    \
+feature/   ●───●────●                 (one per epic; agents work here)
 ```
 
-### Degraded Modes
+- `bash scripts/branch.sh start EPIC-XXX` — syncs the base, cuts the feature branch.
+- `bash scripts/branch.sh base` — resolves the integration base (per `state.flow`).
+- `bash scripts/branch.sh cleanup feature/EPIC-XXX` — after merge (refuses unless merged).
+- `bash scripts/branch.sh promote` — prints the dev→main checklist (trunk-dev flow).
 
-- **Single model family** — set `reviewer: human`. The gate still requires a review
-  file to exist; review is reassigned, never skipped.
-- **No Node available** — the gate's spine is shell. Node-dependent checks degrade
-  to a declared `skip (no node)` rather than a silent pass; CI (which has Node) still
-  enforces them.
-- **Restricted egress** — vendored skills are already on disk, so the skill check
-  passes offline.
-- **Hook bypassed (`--no-verify`)** — CI runs the identical gate on the PR.
+Agents never commit directly to a trunk. Protect it on your Git host if your plan allows.
+
+### Trunk protection
+The `pre-push` hook refuses pushes that target a trunk (by current branch AND by
+refspec) — its ONLY job; it runs no quality checks. It's bypassable with
+`git push --no-verify` (a conscious decision, not an accident). On a paid plan or
+public repo, add GitHub's server-side branch protection on top.
 
 ---
 
-## File Templates
+## File templates
 
-### Task Template
-
-The one file the agent authors by hand. `files_allowed` is load-bearing — the gate
-diffs against it.
-
+### Task template (the one file the agent authors)
 ```yaml
 ---
 id: TASK-042
 title: [Task title]
-status: ready          # ready | in-progress | rework | done
+status: ready          # ready | in-progress | blocked | done
 priority: P1
 risk_level: low | medium | high | critical
-preferred_executor: claude-code
-reviewer: codex | opencode | human
-outcome_refs: []
-roadmap_epic: EPIC-XXX
-epic_ref: backlog/epics/EPIC-XXX.md
-slice_plan: planning/slices/SLICE-XXX.md
-content_refs: []
-design_refs: []
-skill_refs: [ds-handoff]
-verification_required:
-  lint: true
-  typecheck: true
-  unit: false
-  integration: false
-  e2e: false
-  accessibility: false
-public_text: false            # set true to trigger the recomputed slop gate
-handoff_required: false
-handoff_type: []
-handoff_file: handoffs/[type]/HANDOFF-[TYPE]-TASK-XXX.md
-protected_paths_touched: []   # if non-empty, gate requires CODEOWNERS-signed approval
-files_allowed:                # load-bearing: the gate diffs against this list
-  - [file path]
+epic_ref: backlog/epics/EPIC-001.md
+files_allowed: []             # advisory focus list — keeps the agent scoped; not enforced
+skill_refs: [ds-test-planner]
 ---
 # Task: [Title]
 ## Scope
-[What this task implements]
 ## Acceptance Criteria
-- [ ] [criterion]
+## Testing
+- recommendation: (none | with-task | dedicated: TASK-XXX)
+- rationale:
 ```
+The frontmatter is deliberately minimal — just what state derivation and planning
+need. The `## Testing` section is where the planning agent records its testing
+recommendation (see "Quality: non-blocking by design"). Optional extras:
+`handoff_required: true` + `handoff_type: [session|task]` for continuity handoffs.
 
-Approval is not an agent-editable field — it is derived at gate time from CODEOWNERS
-plus a human-signed commit. `files_allowed` and `public_text` are read by the gate.
-
-### Slice Plan Template
-
-```markdown
----
-id: SLICE-XXX
-title: [Feature slice]
-status: draft
-epic_ref: backlog/epics/EPIC-XXX.md
-outcome_refs: []
-risk_level: low | medium | high | critical
-content_refs: []
-design_refs: []
-skill_refs: []
----
-# Slice Plan: [Name]
-## Intent
-What outcome does this slice advance?
-## Scope / Non-goals
-## Content and design
-Which copy, UX states, interface blueprint, and design lane apply?
-## Technical approach
-Files, modules, data, APIs, integration points.
-## Task map
-| Task | Purpose | Risk | Required proof |
-|---|---|---|---|
-## Gates
-- [ ] Spine references valid.
-- [ ] Skills selected.
-- [ ] Protected paths declared.
-```
-
-### Cross-Model Review Template
-
-```markdown
----
-id: REVIEW-TASK-XXX
-task_ref: backlog/tasks/TASK-XXX.md
-handoff_ref: handoffs/review/HANDOFF-REVIEW-TASK-XXX.md
-reviewer: codex | opencode | human
-reviewer_family: [must differ from preferred_executor unless human]
-status: pass | pass-with-notes | changes-requested | blocked
----
-# Review: TASK-XXX
-## Scope check
-- [ ] Diff stays inside files_allowed.
-- [ ] No unplanned architecture changes.
-## Skill / Test / Content checks
-- [ ] Required skills followed; design lane respected.
-- [ ] Verification level matches risk; required checks pass; no test bloat.
-- [ ] Copy refs respected; slop score artifact present.
-## Decision
-Pass / changes requested / blocked.
-## Rework (human)
-If the work passes review but you're not satisfied, open tracked rework instead of
-merging: `bash scripts/rework.sh open TASK-XXX "specific feedback"`.
-```
+### state.json (canonical — agent-os.state.v1)
+See `project-state/state.json`. One writable state file; every view is generated.
 
 ---
 
-## Launch Checklist
+## Launch checklist
 
-### First Hour — Stand Up the OS
+### First hour
+1. `bash setup.sh` — wires hooks; uses pinned OpenSrc to verify the reviewed
+   `yaml@2.9.0` source and npm graph before installing it; renders views.
+2. `bash scripts/os.sh start` — open the first session, write the lock.
+3. (Optional) set identity env (`HARNESS_NAME`, `MODEL_NAME`, `AGENT_ROLE`) for
+   cleaner dashboard attribution — auto-derived otherwise.
+4. Branches: `main` exists; with the default github flow that's all you need.
+   (Opt into trunk-dev via `state.flow` if you want an integration branch.)
+5. Open `guide.html`, follow its VERIFY callouts, then confirm `dashboard.html`
+   shows the correct next action.
 
-- Run `bash scripts/bootstrap-solo-dev-os.sh` — creates the skeleton, seeds
-  `STATE.json` and `CODEOWNERS`, installs Git hooks.
-- Install the one Node dependency: the `yaml` package (or vendor it).
-- Set real owners in `CODEOWNERS` (replace `@owner`).
-- Confirm hooks are active: `git config core.hooksPath` returns `.githooks`.
-- Ensure `main` exists, create `dev` off it, and protect both on your Git host (no
-  direct pushes, require PR + CI).
-- Write `AGENTS.md`, then run `bash scripts/sync-agent-files.sh` to generate
-  `CLAUDE.md`.
+### Project start — light intake (replaces the heavy spine)
+1. `bash scripts/intake.sh brief` — scaffold `project-spine/00-brief.md`; fill every
+   section (or "none"); set `status: ready`.
+2. `bash scripts/intake.sh interview` — scaffold the gap interview; a planning agent
+   fills the questions; you answer each inline; set `status: answered`.
+3. `bash scripts/intake.sh ready` — must print READY (fail-closed: real frontmatter
+   parse, structural placeholder check). Only then does an agent hydrate the 3-file
+   lean context (`01-charter`, `02-decisions`, `03-roadmap`) from brief + interview.
+4. Before a scaffold or application dependency download, run
+   `bash scripts/os.sh deps plan initial "<purpose>" <exact-package@version>...`;
+   complete its OpenSrc docs/source and cross-package evidence, run `deps check`,
+   obtain human approval, then run `deps install`.
+5. Shape work: `bash scripts/new-task.sh epic EPIC-001 "title"`, then
+   `bash scripts/new-task.sh task TASK-001 "title" EPIC-001 <risk>`. The scaffolder
+   writes valid frontmatter; you fill scope + criteria + the Testing recommendation.
 
-### First Day — Author the Spine
+Why three context files, not ten: the legacy spine tried to capture domain/data/
+technical/risk models upfront. Most solo projects under-specify those and they drift.
+Here, schema/risk are captured as they become real (in tasks and decisions) rather
+than guessed at intake.
 
-- Draft the intent files `00-manifesto … 09-roadmap` (a planning agent can draft
-  from your brief).
-- Author `10-design-system.md` (+ `10-design-system.html` visual reference),
-  `11-content-strategy.md` (sitemap + per-page content + inventory), and
-  `12-ui-element-map.md` (every block → exact element), supplying your references
-  under `project-spine/references/`.
-- Vendor the third-party skills: `bash scripts/skills.sh install-defaults`, then
-  record commits in `lock.json`.
-- Shape the first Epic → Slice → Tasks. Each task declares `files_allowed`,
-  `risk_level`, and `verification_required`.
-- Fill `STATE.json` `current` + `completion`, then `bash scripts/os.sh render`;
-  confirm `os.sh check` prints `state: consistent`.
+### Hydrate the lean context (after `intake ready`)
+This is an agent step, gated on `intake ready` printing READY. A planning agent
+drafts the three files in `project-spine/` straight from the brief + interview —
+it elaborates decisions already made, it does not invent new ones. Order matters:
+charter first (it scopes the other two), then decisions, then roadmap.
 
-### Daily Loop
+1. `01-charter.md` — scope, stakeholders, constraints, the one job this does,
+   plus human-approved goal IDs, weights, success signals, and outcome status.
+   Pulled from brief §1/§3/§4. An elaboration of what's decided, not new decisions.
+2. `02-decisions.md` — the durable decisions and their rationale, in
+   context / decision / alternatives form. Seeds from the interview answers and
+   brief §4 non-negotiables. This is the highest-value long-term memory; append
+   over time, never rewrite history.
+3. `03-roadmap.md` — P1 / P2 / P3 sequence and rationale, with stable roadmap
+   IDs, goal references, weights, and status. Drives Epic shaping (step 4 above).
 
-| Step | Command / Action | Who |
+The dashboard traces completed task weight through epic and roadmap references
+to these goals. It reports linkage confidence and never equates delivery with
+validated business outcomes. See the Progress chapter in `guide.html`.
+
+Boundary: do not invent design, content, or UI during hydration. Those come from
+the L4 elicitation phases (design → content → UI), not from intent hydration.
+Schema and risk are likewise captured later, as they become real — not guessed here.
+
+### First day (frontend project — L4)
+1. Design phase: `elicit-phase.sh design questionnaire` → answer + references →
+   `ready` → agent generates `10-design-system.{md,html}` → `preview` → inspect → approve.
+2. Content phase (gated on design): questionnaire → ready → generate → approve.
+3. UI phase (gated on content): questionnaire → ready → generate → approve.
+
+### Daily loop
+| Step | Command | Who |
 |---|---|---|
-| Branch | `bash scripts/branch.sh start EPIC-XXX` (off `dev`) | Agent |
-| Open session | `bash scripts/os.sh start` | Agent |
-| Locate work | Identify Epic → Slice → Task from rendered state | Agent |
-| Plan | Read task, slice, spine, `skill_refs`; write implementation checklist | Agent |
-| Implement | Edit only files in `files_allowed` | Agent |
-| Close session | `bash scripts/os.sh end` | Agent |
-| Push | `git push` the feature branch → pre-push guards branch + runs `verify-task.sh` vs `dev` | Agent + Git |
-| Review | PR `feature → dev`; different model family writes `REVIEW-TASK-XXX.md` | Reviewer |
-| Rework (if needed) | `rework.sh open TASK-XXX "..."` → agent resolves → `rework.sh close` | **You** + Agent |
-| Merge | Read rendered state + review, then merge the PR into `dev` | **You** |
-| Cleanup | `bash scripts/branch.sh cleanup feature/EPIC-XXX` after the PR merges | **You** |
+| Branch | `branch.sh start EPIC-XXX` | Agent |
+| Open session | `os.sh start` | Agent |
+| Checkpoint | `os.sh checkpoint "next"` | Agent |
+| Close session | `os.sh end <task>` | Agent |
+| Push + PR | `git push` → `os.sh pr` (risky changes flagged in the body) | Agent |
+| Review | manual, on the PR — your process, outside the system | You |
+| Test work | planned test tasks run as normal backlog items | Agent |
+| Status | `os.sh check` | You |
+| Merge | merge the PR → `os.sh sync` | You + Agent |
 
-### Weekly Maintenance
-
-- Archive consumed handoffs to `handoffs/archive/` and confirm queue statuses in
-  `STATE.json`.
-- Confirm `AGENT_LOG.md` rotated into `memory/agent-log/YYYY-MM.md` (or run
-  `os.sh rotate-log`).
-- Audit the skills registry: `bash scripts/skills.sh validate`; re-pin any updated
-  skill in `lock.json`.
-- Review the risk register and roadmap against what actually shipped.
-- When `dev` holds a coherent, reviewed chunk, promote:
-  `bash scripts/branch.sh promote` → full suite → CODEOWNER-signed merge → tag the
-  release on `main`.
-
-Principle: the OS should reduce ceremony, not add it. If a step feels like admin
-theatre, delete it — but never delete the gate, the single state file, or the
-handoff trail. Those are what make any agent resumable.
+You mostly review PRs and merge. Pushes always succeed (except direct-to-trunk);
+feedback travels through the PR, not through the system.

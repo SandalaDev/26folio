@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-016
+epic_ref: backlog/epics/EPIC-016-the-way-i-am-page.md
 slice: EPIC-016-SLICE-1
 depends_on: [TASK-064]
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -31,6 +32,7 @@ files_allowed:
   - src/components/about/sticky-card.tsx
   - src/components/about/interests-modal.tsx
   - backlog/tasks/TASK-065.md
+progress_weight: 1
 ---
 
 # Task: Retire the "The way I am" modal

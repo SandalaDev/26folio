@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-002
+epic_ref: backlog/epics/EPIC-002-design-system.md
 slice: EPIC-002-SLICE-3
 depends_on: [TASK-007]
 design_refs: [10-design-system.md]
@@ -31,6 +32,7 @@ files_allowed:
   - package.json
   - package-lock.json
   - src/app/globals.css
+progress_weight: 1
 ---
 
 # Task: Base shadcn primitives

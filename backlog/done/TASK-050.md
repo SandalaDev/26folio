@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-012
+epic_ref: backlog/epics/EPIC-012-design-system-fidelity.md
 slice: EPIC-012-SLICE-2
 depends_on: []
 design_refs: [10-design-system.md, 10-design-system.html]
@@ -31,6 +32,7 @@ files_allowed:
   - src/components/site/mesh-bg.tsx
   - src/components/motion/shader-background.tsx
   - backlog/tasks/TASK-050.md
+progress_weight: 1
 ---
 
 # Task: Smooth gradient ramps (kill the banding)

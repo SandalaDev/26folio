@@ -1,7 +1,7 @@
 ---
 id: EPIC-016
 title: The Way I Am — dedicated page (museum walk, modal retired)
-status: done          # ready -> in-progress -> done
+status: done
 phase: 5
 priority: P1
 risk_level: medium
@@ -15,6 +15,9 @@ references:
 related:
   - EPIC-014-about-page-content.md
   - EPIC-015-about-page-copy.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-016 — "The Way I Am" as a first-class page

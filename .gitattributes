@@ -1,14 +1,23 @@
 # Force LF on checkout for all text files, regardless of core.autocrlf.
-# The Solo Dev OS frontmatter parsers anchor on \n and shell scripts require LF;
-# without this, Windows checkouts (autocrlf=true) produce CRLF task files whose
-# frontmatter the gate reads as empty — silently skipping every proof, the slop
-# check, scope enforcement, and handoff presence. eol=lf makes every harness and
-# OS see identical bytes.
+# The OS frontmatter parsers anchor on \n and shell scripts require LF; without
+# this, Windows checkouts (autocrlf=true) produce CRLF whose frontmatter the gate
+# reads as empty — silently skipping every proof, the slop check, and scope
+# enforcement. eol=lf makes every harness and OS see identical bytes.
 * text=auto eol=lf
 
 # Shell scripts must stay LF or they break under bash on every platform.
-*.sh text eol=lf
+*.sh  text eol=lf
 *.mjs text eol=lf
+
+# JSONL ledger: one record per line — must never get CRLF mid-line.
+*.jsonl text eol=lf
+
+# Memory files that two concurrent agents can both append to: union-merge instead
+# of conflict. The ledger is append-only (one row per session event), so a union
+# merge never loses a row — it takes both sides. state.json is intentionally NOT
+# union-merged: it's atomically rewritten by the OS (one writer at a time via
+# update-state.mjs), so a real conflict there should surface, not silently union.
+project-state/ledger.jsonl merge=union
 
 # Binary assets: never normalize.
 *.png  binary

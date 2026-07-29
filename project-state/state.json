@@ -1,0 +1,186 @@
+{
+  "schema": "agent-os.state.v1",
+  "version": "1.0.0",
+  "updated": "2026-07-29T21:37:53.599Z",
+  "updated_by": "agent",
+  "actor": {
+    "harness": null,
+    "model": null,
+    "role": null
+  },
+  "current": {
+    "epic": null,
+    "slice": null,
+    "task": null,
+    "agent": null,
+    "branch": null,
+    "session_status": "migration",
+    "handoff_status": "none"
+  },
+  "completion": {
+    "summary": "Agent OS v1 is implemented on feature/EPIC-022 with the portfolio application unchanged and its prior history preserved.",
+    "done": [
+      "Core portfolio routes, design system, signature motion, work and capability presentation are implemented.",
+      "About, Who I Am, and The Way I Am narrative experiences are implemented with real content and media.",
+      "EPIC-021 delivered the four-pillar capability explorer and Build/Evolve engagement model.",
+      "Seventy-five detailed completed-task records and twenty prior epic records remain as implementation history."
+    ],
+    "remaining": [
+      "Human review and merge: inspect the new lean charter, roadmap links, progress weights, dashboard estimate, and EPIC-022 migration diff.",
+      "Owner review: capability copy and visible-browser treatment, The Way I Am draft personal lines, project descriptors, and outstanding biography presentation.",
+      "Owner assets: real contact email, CV/resume asset, social profile URLs, and any final licensed imagery.",
+      "Launch work: production environment values, contact delivery, Dokploy configuration, SEO, accessibility, performance, and real-device review.",
+      "Security follow-up: triage four npm high-severity advisories and review install scripts for sharp and unrs-resolver. No audit inventory was transmitted and no automatic fix was applied during EPIC-022.",
+      "Post-launch: validate consulting inquiries, senior opportunities, reader engagement, and product-quality signals."
+    ],
+    "blocked": "none"
+  },
+  "counts": {
+    "epics_total": 21,
+    "tasks_open": 0,
+    "tasks_in_progress": 0,
+    "tasks_done": 78,
+    "handoffs_pending": 0,
+    "handoffs_consumed": 0
+  },
+  "metrics": {
+    "updated": "2026-07-29T21:37:53.761Z",
+    "min_n": 5,
+    "totals": {
+      "sessions": 1,
+      "gate_pass": 1,
+      "gate_fail": 0,
+      "crashed": 0,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0
+    },
+    "combos": [
+      {
+        "harness": "unknown",
+        "model": "unknown",
+        "role": "executor",
+        "sessions": 1,
+        "gate_pass": 1,
+        "gate_fail": 0,
+        "gate_pass_rate": 100,
+        "avg_session_min": 17,
+        "tokens_in": 0,
+        "tokens_out": 0,
+        "cost_usd": 0,
+        "cost_per_pass": 0,
+        "crashed": 0,
+        "low_n": true
+      }
+    ]
+  },
+  "epics": [
+    {
+      "id": "EPIC-001",
+      "title": "Project scaffold — Next.js 15, TypeScript, Tailwind v4, tooling",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-002",
+      "title": "Design system — tokens, typography, colour, spacing, base components",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-003",
+      "title": "Home page — global chrome, hero, featured work, capability rail, magazine teaser",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-004",
+      "title": "About page — hybrid intro, sticky cards, timeline, magazine section, socials",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-005",
+      "title": "Work page — project grid + individual case study pages",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-006",
+      "title": "Capabilities page — services, technologies, engagement process, CTA",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-007",
+      "title": "Magazine integration — lib/magazine.ts client, wired into MagazineTeaser",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-009",
+      "title": "Hero shader background + signature motion (cursor + magnetic buttons)",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-010",
+      "title": "Brand identity overhaul — blobs, typography, layout, hero portrait, card redesigns",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-011",
+      "title": "Design refinement wave — hero, header, footer, buttons, cards, contact (owner review of EPIC-010)",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-012",
+      "title": "Design-system fidelity — flashlight, gradient smoothness, full token application",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-013",
+      "title": "Content phase 1 — real brand + content assets replacing placeholders",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-014",
+      "title": "About page content — three-epoch timeline, bio, interests, closing CTA",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-015",
+      "title": "About page copy — editorial pass on the about-page prose",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-016",
+      "title": "The Way I Am — dedicated page (museum walk, modal retired)",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-017",
+      "title": "Who I Am modal — wide chaptered reading experience",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-018",
+      "title": "The Way I Am — real imagery, wishlists, Spotify 10s playlist",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-019",
+      "title": "About page cleanup — card copy, modal epigraph, timeline epoch watermarks",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-020",
+      "title": "Hero + typography harmonization (project-wide, to the-way-i-am)",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-021",
+      "title": "Capabilities page repositioning — engineering partner, capability explorer",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-022",
+      "title": "Migrate 26folio to Agent OS v1 without losing project history",
+      "status": "done"
+    }
+  ],
+  "handoff_queue": [],
+  "flow": "trunk-dev"
+}

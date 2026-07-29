@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-003
+epic_ref: backlog/epics/EPIC-003-home-page.md
 slice: EPIC-003-SLICE-5
 depends_on: [TASK-011]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -29,6 +30,7 @@ protected_paths_touched: []
 files_allowed:
   - src/components/home/capability-rail.tsx
   - backlog/tasks/TASK-015.md
+progress_weight: 1
 ---
 
 # Task: Capability rail

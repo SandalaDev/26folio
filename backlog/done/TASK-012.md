@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-003
+epic_ref: backlog/epics/EPIC-003-home-page.md
 slice: EPIC-003-SLICE-2
 depends_on: [TASK-011]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -36,6 +37,7 @@ files_allowed:
   - package.json
   - package-lock.json
   - backlog/tasks/TASK-012.md
+progress_weight: 1
 ---
 
 # Task: Global chrome

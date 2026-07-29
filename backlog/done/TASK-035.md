@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-009
+epic_ref: backlog/epics/EPIC-009-hero-redesign.md
 slice: EPIC-009-SLICE-1
 depends_on: []
 design_refs: [10-design-system.md]
@@ -40,6 +41,7 @@ files_allowed:
   - backlog/tasks/TASK-035.md
   - backlog/tasks/TASK-036.md
   - backlog/tasks/TASK-037.md
+progress_weight: 1
 ---
 
 # Task: Repo cleanup + vendor animation skills

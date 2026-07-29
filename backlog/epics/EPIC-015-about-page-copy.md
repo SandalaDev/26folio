@@ -1,7 +1,7 @@
 ---
 id: EPIC-015
 title: About page copy — editorial pass on the about-page prose
-status: ready          # ready -> in-progress -> done
+status: done
 phase: 5
 priority: P1
 risk_level: low
@@ -13,6 +13,9 @@ references:
   - 12-ui-element-map.md
 related:
   - EPIC-014-about-page-content.md
+roadmap_refs: [ROAD-003]
+goal_refs: [GOAL-001, GOAL-002, GOAL-003, GOAL-004]
+progress_weight: 1
 ---
 
 # EPIC-015 — About page copy & timeline redesign

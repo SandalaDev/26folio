@@ -7,6 +7,7 @@ risk_level: low
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-004
+epic_ref: backlog/epics/EPIC-004-about-page.md
 slice: EPIC-004-SLICE-5
 depends_on: [TASK-011]
 design_refs: [12-ui-element-map.md, 11-content-strategy.md]
@@ -28,6 +29,7 @@ files_allowed:
   - src/components/about/magazine-section.tsx
   - src/components/about/social-links.tsx
   - backlog/tasks/TASK-022.md
+progress_weight: 1
 ---
 
 # Task: Magazine section & social links

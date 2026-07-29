@@ -7,6 +7,7 @@ risk_level: medium
 preferred_executor: claude-code
 reviewer: human
 epic: EPIC-012
+epic_ref: backlog/epics/EPIC-012-design-system-fidelity.md
 slice: EPIC-012-SLICE-4
 depends_on: []
 design_refs: [10-design-system.md, 12-ui-element-map.md]
@@ -39,6 +40,7 @@ files_allowed:
   # held port 3000; the preview needed a second port). Harness config, not app
   # code; declared here because the diagnosis session produced it.
   - .claude/launch.json
+progress_weight: 1
 ---
 
 # Task: Card motion repair + door-tilt rollout

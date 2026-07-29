@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no application test suite specified\" && exit 1",
+    "test:os": "bash scripts/test/derived-state.sh && node scripts/test/progress.test.mjs && node scripts/test/deps.test.mjs && node scripts/test/rendered-artifacts.test.mjs",
+    "os:render": "bash scripts/os.sh render"
   },
   "repository": {
     "type": "git",
@@ -45,7 +47,7 @@
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.2",
-    "yaml": "^2.9.0"
+    "yaml": "2.9.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
