@@ -2,3 +2,6 @@
 - 2026-07-29T21:37:52Z | unknown/unknown | end | task=backlog/done/TASK-083.md | gate=ok
 - 2026-07-29T23:10:13Z | unknown/unknown | checkpoint | task=none | gate= | end closeout session, commit canonical state, push branch, open PR to dev
 - 2026-07-29T23:10:22Z | unknown/unknown | end | task=none | gate=ok
+- 2026-07-30T00:52:15Z | unknown/unknown | checkpoint | task=TASK-084 | gate= | implement typed capabilities content and page architecture
+- 2026-07-30T01:09:23Z | unknown/unknown | checkpoint | task=TASK-087 | gate= | run production validation, audit icons and copy, then delete the consumed source brief
+- 2026-07-30T01:13:52Z | unknown/unknown | end | task=backlog/done/TASK-087.md | gate=ok

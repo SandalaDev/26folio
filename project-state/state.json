@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-07-29T23:10:23.232Z",
+  "updated": "2026-07-30T01:14:24.385Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -36,19 +36,19 @@
     "blocked": "none"
   },
   "counts": {
-    "epics_total": 21,
+    "epics_total": 22,
     "tasks_open": 0,
     "tasks_in_progress": 0,
-    "tasks_done": 78,
+    "tasks_done": 82,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-07-29T23:10:23.346Z",
+    "updated": "2026-07-30T01:14:24.523Z",
     "min_n": 5,
     "totals": {
-      "sessions": 2,
-      "gate_pass": 2,
+      "sessions": 3,
+      "gate_pass": 3,
       "gate_fail": 0,
       "crashed": 0,
       "tokens_in": 0,
@@ -60,11 +60,11 @@
         "harness": "unknown",
         "model": "unknown",
         "role": "executor",
-        "sessions": 2,
-        "gate_pass": 2,
+        "sessions": 3,
+        "gate_pass": 3,
         "gate_fail": 0,
         "gate_pass_rate": 100,
-        "avg_session_min": 9,
+        "avg_session_min": 7,
         "tokens_in": 0,
         "tokens_out": 0,
         "cost_usd": 0,
@@ -178,6 +178,11 @@
     {
       "id": "EPIC-022",
       "title": "Migrate 26folio to Agent OS v1 without losing project history",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-023",
+      "title": "Capabilities page: problem-led services and animated technical proof",
       "status": "done"
     }
   ],
