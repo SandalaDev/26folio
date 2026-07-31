@@ -5,3 +5,14 @@
 - 2026-07-30T00:52:15Z | unknown/unknown | checkpoint | task=TASK-084 | gate= | implement typed capabilities content and page architecture
 - 2026-07-30T01:09:23Z | unknown/unknown | checkpoint | task=TASK-087 | gate= | run production validation, audit icons and copy, then delete the consumed source brief
 - 2026-07-30T01:13:52Z | unknown/unknown | end | task=backlog/done/TASK-087.md | gate=ok
+- 2026-07-31T01:08:53Z | unknown/unknown | checkpoint | task=none | gate= | Validate refined technology atlas and scroll choreography
+- 2026-07-31T01:14:39Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-07-31T01:15:42Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-07-31T01:19:46Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-07-31T01:25:04Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-07-31T01:44:49Z | unknown/unknown | checkpoint | task=none | gate= | Resume with partnership scroll, mobile tap/overflow, and reduced-motion review
+- 2026-07-31T01:44:54Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-07-31T12:41:30Z | unknown/unknown | checkpoint | task=none | gate= | Resume TASK-088 with partnership scroll, mobile, and reduced-motion review
+- 2026-07-31T12:41:45Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-07-31T13:00:19Z | unknown/unknown | checkpoint | task=none | gate= | Push EPIC-023 refinement and open PR against dev
+- 2026-07-31T13:00:26Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok

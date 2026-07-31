@@ -31,8 +31,7 @@ export const capabilityServices: CapabilityService[] = [
       "A successful payment activates a membership, confirms an order, reserves a booking, or releases a service.",
       "Finance staff can see which payments cleared, failed, or still need to be matched.",
     ],
-    note:
-      "Receipts, staff notifications, customer-account updates, and the next operational step can all follow automatically.",
+    note: "Receipts, staff notifications, customer-account updates, and the next operational step can all follow automatically.",
     startingPoint:
       "Tell me how customers currently pay you and what your team has to do after the money arrives.",
   },
@@ -49,8 +48,7 @@ export const capabilityServices: CapabilityService[] = [
       "A publisher makes premium articles, reports, or downloads available to paying subscribers.",
       "An organization manages applications, approvals, member records, payments, and communication in one place.",
     ],
-    note:
-      "Members manage their account and access; staff see the complete membership picture without reconciling several spreadsheets.",
+    note: "Members manage their account and access; staff see the complete membership picture without reconciling several spreadsheets.",
     startingPoint:
       "Describe who your members are, what they pay for, and what they should receive after joining.",
   },
@@ -68,10 +66,8 @@ export const capabilityServices: CapabilityService[] = [
       "A service company assigns bookings by location or availability.",
       "A business accepts recurring appointments without coordinating every date manually.",
     ],
-    note:
-      "Availability, deposits, confirmations, reminders, cancellations, rescheduling, calendar updates, and internal notifications stay connected.",
-    startingPoint:
-      "Show me how a booking moves from the first enquiry to the completed service.",
+    note: "Availability, deposits, confirmations, reminders, cancellations, rescheduling, calendar updates, and internal notifications stay connected.",
+    startingPoint: "Show me how a booking moves from the first enquiry to the completed service.",
   },
   {
     id: "cms",
@@ -87,8 +83,7 @@ export const capabilityServices: CapabilityService[] = [
       "A company manages services, profiles, branches, vacancies, reports, and downloads.",
       "Different employees manage only the content for which they are responsible.",
     ],
-    note:
-      "Editors change words, images, products, listings, and records while the system preserves typography, spacing, responsiveness, accessibility, and hierarchy. Drafts, previews, approvals, scheduling, version history, reusable sections, media, permissions, languages, SEO, and integrations can be shaped around the organization.",
+    note: "Editors change words, images, products, listings, and records while the system preserves typography, spacing, responsiveness, accessibility, and hierarchy. Drafts, previews, approvals, scheduling, version history, reusable sections, media, permissions, languages, SEO, and integrations can be shaped around the organization.",
     startingPoint:
       "Show me what your team needs to update and what you never want them to accidentally break.",
   },
@@ -106,8 +101,7 @@ export const capabilityServices: CapabilityService[] = [
       "A multi-branch business brings transactions from different locations into one operational view.",
       "Management sees commercial and compliance information without combining several exports manually.",
     ],
-    note:
-      "The work can include the technical integration, a test environment, clear submission errors, and support through the required testing and approval process. ZRA registration, approval, and certification remain subject to ZRA requirements.",
+    note: "The work can include the technical integration, a test environment, clear submission errors, and support through the required testing and approval process. ZRA registration, approval, and certification remain subject to ZRA requirements.",
     startingPoint:
       "Show me where invoices are created today and where staff enter the same information twice.",
   },
@@ -115,8 +109,7 @@ export const capabilityServices: CapabilityService[] = [
     id: "ai-automation",
     index: "06",
     title: "AI Integration & Workflow Automation",
-    summary:
-      "Use AI inside real business processes—not as a chatbot added for decoration.",
+    summary: "Use AI inside real business processes—not as a chatbot added for decoration.",
     examples: [
       "Documents: extract required information from invoices, forms, delivery notes, or contracts; staff review exceptions.",
       "Enquiries: identify intent, collect missing information, update the lead, and prepare a response for approval.",
@@ -126,10 +119,8 @@ export const capabilityServices: CapabilityService[] = [
       "Meetings: turn calls into summaries, commitments, deadlines, follow-up tasks, and customer-record updates.",
       "Collections: identify overdue invoices, prepare reminders, and alert staff when personal attention is needed.",
     ],
-    note:
-      "AI handles messy language, documents, classification, and first drafts. Deterministic software handles money, permissions, compliance rules, and final decisions. Human approval stays wherever judgment or risk requires it.",
-    startingPoint:
-      "Send me the repetitive task that consumes the most staff time.",
+    note: "AI handles messy language, documents, classification, and first drafts. Deterministic software handles money, permissions, compliance rules, and final decisions. Human approval stays wherever judgment or risk requires it.",
+    startingPoint: "Send me the repetitive task that consumes the most staff time.",
   },
   {
     id: "portals",
@@ -145,10 +136,8 @@ export const capabilityServices: CapabilityService[] = [
       "A professional-services client submits information, approves work, and retrieves completed documents.",
       "A supplier lets customers request quotations and follow their status.",
     ],
-    note:
-      "The result is fewer repetitive calls and messages, a clearer customer experience, and a more complete operational record.",
-    startingPoint:
-      "Tell me the questions customers repeatedly ask your team.",
+    note: "The result is fewer repetitive calls and messages, a clearer customer experience, and a more complete operational record.",
+    startingPoint: "Tell me the questions customers repeatedly ask your team.",
   },
   {
     id: "integrations",
@@ -162,8 +151,7 @@ export const capabilityServices: CapabilityService[] = [
       "Add QR and barcode workflows, identity controls, currency data, or video-meeting creation.",
       "Design for authentication, validation, retries, duplicate prevention, rate limits, audit trails, and clear intervention when another service is unavailable.",
     ],
-    startingPoint:
-      "Show me the two systems your staff are connecting manually.",
+    startingPoint: "Show me the two systems your staff are connecting manually.",
   },
 ];
 
@@ -256,6 +244,8 @@ export const engineeringStandards = [
 export interface Technology {
   name: string;
   icon?: string;
+  iconShape?: "square" | "wide";
+  iconTone?: "original" | "white";
 }
 
 export interface TechnologyGroup {
@@ -278,7 +268,11 @@ export const technologyGroups: TechnologyGroup[] = [
       { name: "TypeScript", icon: "/icons/color/ts.svg" },
       { name: "React", icon: "/icons/color/react.svg" },
       { name: "Next.js", icon: "/icons/color/next.svg" },
-      { name: "Node.js", icon: "/icons/color/node.svg" },
+      {
+        name: "Node.js",
+        icon: "/icons/color/node.svg",
+        iconShape: "wide",
+      },
       { name: "Hono", icon: "/icons/color/hono.svg" },
       { name: "TanStack", icon: "/icons/color/tanstack.svg" },
       { name: "Tailwind CSS", icon: "/icons/color/tailwind.svg" },
@@ -292,6 +286,8 @@ export const technologyGroups: TechnologyGroup[] = [
     technologies: [
       { name: "Motion", icon: "/icons/color/motion.svg" },
       { name: "GSAP", icon: "/icons/color/gsap.svg" },
+      { name: "Remotion", icon: "/icons/color/remotion.svg" },
+      { name: "Three.js", icon: "/icons/color/threejs.svg" },
     ],
   },
   {
@@ -315,7 +311,18 @@ export const technologyGroups: TechnologyGroup[] = [
     technologies: [
       { name: "Hugging Face", icon: "/icons/color/huggingface.svg" },
       { name: "OpenRouter", icon: "/icons/color/openrouter.svg" },
-      { name: "Ollama", icon: "/icons/color/ollama.svg" },
+      {
+        name: "Ollama",
+        icon: "/icons/color/ollama.svg",
+        iconTone: "white",
+      },
+      { name: "LangChain", icon: "/icons/color/langchain.svg" },
+      { name: "Vercel AI SDK", icon: "/icons/color/vercel.svg" },
+      {
+        name: "Cloudflare Workers AI",
+        icon: "/icons/color/cloudflare.svg",
+        iconShape: "wide",
+      },
     ],
   },
   {
@@ -328,7 +335,7 @@ export const technologyGroups: TechnologyGroup[] = [
       { name: "Docker", icon: "/icons/color/docker.svg" },
       { name: "Cloudflare", icon: "/icons/color/cloudflare.svg" },
       { name: "Vercel", icon: "/icons/color/vercel.svg" },
-      { name: "Alibaba Cloud" },
+      { name: "Alibaba Cloud", icon: "/icons/color/alibabacloud.svg" },
       { name: "Dokploy", icon: "/icons/color/dokploy.svg" },
       { name: "Nginx", icon: "/icons/color/nginx.svg" },
       { name: "Traefik", icon: "/icons/color/traefik.svg" },
@@ -341,14 +348,14 @@ export const technologyGroups: TechnologyGroup[] = [
       "Source control, automated builds, browser and integration tests, deployment pipelines, error reporting, metrics, traces, dashboards, and alerts.",
     technologies: [
       { name: "Git", icon: "/icons/color/git.svg" },
-      { name: "GitHub" },
+      { name: "GitHub", icon: "/icons/color/github.svg" },
       { name: "GitHub Actions", icon: "/icons/color/github%20actions.svg" },
       { name: "Playwright", icon: "/icons/color/playwright.svg" },
       { name: "Vitest", icon: "/icons/color/vitest.svg" },
       { name: "OpenTelemetry", icon: "/icons/color/OpenTelemetry.svg" },
       { name: "Prometheus", icon: "/icons/color/prometheus.svg" },
       { name: "Grafana", icon: "/icons/color/grafana.svg" },
-      { name: "Sentry" },
+      { name: "Sentry", icon: "/icons/color/sentry.svg" },
     ],
   },
   {
@@ -357,13 +364,30 @@ export const technologyGroups: TechnologyGroup[] = [
     description:
       "Payments, transactional communication, regulatory connections, synchronization, signature verification, duplicate prevention, and controlled failure recovery.",
     technologies: [
-      { name: "Stripe", icon: "/icons/color/stripe.svg" },
+      {
+        name: "Stripe",
+        icon: "/icons/color/stripe.svg",
+        iconShape: "wide",
+      },
       { name: "Resend", icon: "/icons/color/resend.svg" },
-      { name: "Mobile money gateways" },
-      { name: "SMS & WhatsApp services" },
-      { name: "ZRA Smart Invoice / VSDC" },
-      { name: "REST APIs" },
-      { name: "Webhooks" },
+      {
+        name: "Africa's Talking",
+        icon: "/icons/color/africaistaliking.svg",
+      },
+      {
+        name: "Mobile money gateways",
+        icon: "/icons/color/mobilemoney.svg",
+      },
+      {
+        name: "ZRA Smart Invoice / VSDC",
+        icon: "/icons/color/smartinvoice.svg",
+        iconShape: "wide",
+      },
+      {
+        name: "APIs — REST, GraphQL & beyond",
+        icon: "/icons/color/graphql.svg",
+      },
+      { name: "Webhooks", icon: "/icons/color/webhooks.svg" },
     ],
   },
   {
@@ -373,6 +397,11 @@ export const technologyGroups: TechnologyGroup[] = [
       "Interface design, prototyping, design systems, vector assets, image preparation, and the path from early concept to polished implementation.",
     technologies: [
       { name: "Figma", icon: "/icons/color/figma.svg" },
+      {
+        name: "Figma Make",
+        icon: "/icons/color/figmamake.svg",
+        iconShape: "wide",
+      },
       { name: "Adobe Illustrator", icon: "/icons/color/illustrator.svg" },
       { name: "Adobe Photoshop", icon: "/icons/color/photoshop.svg" },
     ],
@@ -383,20 +412,54 @@ export const technologyGroups: TechnologyGroup[] = [
     description:
       "Agentic tools accelerate research, implementation, testing, refactoring, and documentation; architectural constraints and direct verification still govern the result.",
     technologies: [
-      { name: "OpenCode", icon: "/icons/color/opencode.svg" },
+      {
+        name: "OpenCode",
+        icon: "/icons/color/opencode.svg",
+        iconShape: "wide",
+      },
+      { name: "Cursor", icon: "/icons/color/cursor.svg" },
+      { name: "Pi", icon: "/icons/color/pi.svg" },
       { name: "Warp", icon: "/icons/color/warp.svg" },
     ],
   },
 ];
 
 export const stackFlow = [
-  "Next.js interface",
-  "Node.js or Hono API",
-  "PostgreSQL with Drizzle",
-  "Redis-backed jobs",
-  "Payment, SMS, email, or ZRA integrations",
-  "OpenTelemetry and Grafana",
-  "Docker on Linux behind Cloudflare",
+  {
+    label: "Next.js interface",
+    detail: "Customer and staff interaction",
+    icon: "interface",
+  },
+  {
+    label: "Node.js or Hono API",
+    detail: "Rules, access, and orchestration",
+    icon: "api",
+  },
+  {
+    label: "PostgreSQL with Drizzle",
+    detail: "Durable business records",
+    icon: "data",
+  },
+  {
+    label: "Redis-backed jobs",
+    detail: "Scheduled and resilient work",
+    icon: "jobs",
+  },
+  {
+    label: "Payments, messages, and ZRA",
+    detail: "Controlled external services",
+    icon: "integrations",
+  },
+  {
+    label: "OpenTelemetry and Grafana",
+    detail: "Production evidence",
+    icon: "observability",
+  },
+  {
+    label: "Docker, Linux, and Cloudflare",
+    detail: "Repeatable delivery",
+    icon: "delivery",
+  },
 ] as const;
 
 export const fitGuidance = {

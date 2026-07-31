@@ -1,13 +1,14 @@
 ---
 id: EPIC-023
 title: "Capabilities page: problem-led services and animated technical proof"
-status: done
+status: in-progress
 priority: P1
 risk_level: high
 roadmap_refs: [ROAD-004]
 goal_refs: [GOAL-001, GOAL-002, GOAL-004]
 progress_weight: 1
 ---
+
 # Epic: Capabilities page: problem-led services and animated technical proof
 
 ## Outcome
@@ -57,6 +58,8 @@ through the page.
 - [x] TASK-085 — Build the animated services and partnership experience.
 - [x] TASK-086 — Build the colored technology atlas.
 - [x] TASK-087 — Validate responsive motion, accessibility, and content migration.
+
+- [ ] TASK-088 — Refine technology atlas and delivery motion.
 
 ## Dependency / Architecture Evidence
 
