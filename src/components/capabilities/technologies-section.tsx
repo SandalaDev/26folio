@@ -1,23 +1,37 @@
-import { Section } from "@/components/site/section";
-import { Eyebrow } from "@/components/site/eyebrow";
+import { StackFlow } from "@/components/capabilities/stack-flow";
 import { TechGrid } from "@/components/capabilities/tech-grid";
+import { Section } from "@/components/site/section";
 
-/** TechnologiesSection — intro + TechGrid (12-ui-element-map.md §3 Capabilities #2). */
 function TechnologiesSection() {
   return (
-    <Section>
-      <Eyebrow tone="caramel">Technologies</Eyebrow>
-      <h2 className="mt-3 text-heading font-display text-ink">
-        Tools I reach for, <span className="font-extralight">and why</span>
-      </h2>
-      <p className="measure mt-6 text-muted">
-        I pick boring, well-supported tools for the parts that need to be
-        reliable, and modern ones where they earn their place. Hover (or
-        focus) any item below for what it&apos;s actually doing here.
-      </p>
-      <div className="mt-10">
+    <Section id="technology" className="scroll-mt-20">
+      <div className="border-border grid gap-10 border-b pb-12 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-20">
+        <div>
+          <p className="eyebrow text-caramel">The technology behind the work</p>
+          <h2 className="font-display text-heading text-ink mt-4">
+            Logos are not the point. <span className="font-extralight">Responsibility is.</span>
+          </h2>
+        </div>
+        <div className="text-muted space-y-5">
+          <p>
+            The point is choosing a stack that fits the system, operating it responsibly, and
+            knowing what to do when something breaks.
+          </p>
+          <p>
+            For technical teams and hiring managers, independent delivery includes clarifying
+            ambiguous requirements, writing specifications, modelling data, building interfaces and
+            APIs, integrating external services, deploying, monitoring, and debugging production
+            systems. I can carry that work end to end and collaborate with specialists when the
+            problem benefits from a broader team.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-12">
         <TechGrid />
       </div>
+
+      <StackFlow />
     </Section>
   );
 }
