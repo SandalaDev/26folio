@@ -1,7 +1,7 @@
 ---
 id: EPIC-023
 title: "Capabilities page: problem-led services and animated technical proof"
-status: in-progress
+status: done
 priority: P1
 risk_level: high
 roadmap_refs: [ROAD-004]
