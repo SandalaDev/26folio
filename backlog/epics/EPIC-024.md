@@ -1,7 +1,7 @@
 ---
 id: EPIC-024
 title: "Upgrade agentic system (OS machinery) from the upstream template without losing project memory"
-status: open
+status: done
 priority: P1
 risk_level: medium
 roadmap_refs: [ROAD-004]
@@ -50,10 +50,10 @@ risky changes quickly.
 
 ## Tasks
 
-- [ ] TASK-089 — Preview the OS upgrade with `--dry-run` and capture the diff for human review.
-- [ ] TASK-090 — Apply the upgrade, re-wire hooks, re-verify the `yaml@2.9.0` pin.
-- [ ] TASK-091 — Commit the machinery change as a single `chore: update OS machinery from template` commit.
-- [ ] TASK-092 — Validate continuity (`os doctor`, `os render`, portfolio lint, strict TypeScript, production build).
+- [x] TASK-089 — Preview the OS upgrade with `--dry-run` and capture the diff for human review.
+- [x] TASK-090 — Apply the upgrade, re-wire hooks, re-verify the `yaml@2.9.0` pin.
+- [x] TASK-091 — Commit the machinery change as a single `chore: update OS machinery from template` commit.
+- [x] TASK-092 — Validate continuity (`os doctor`, `os render`, portfolio lint, strict TypeScript, production build).
 
 ## Dependency / Architecture Evidence
 
