@@ -19,3 +19,4 @@
 - 2026-08-02T12:33:20Z | opencode/unknown | checkpoint | task=TASK-089 | gate= | TASK-089 dry-run complete; awaiting human review before TASK-090
 - 2026-08-02T12:35:21Z | opencode/unknown | checkpoint | task=TASK-090 | gate= | TASK-090 starting: apply OS upgrade, re-wire hooks, re-verify pin
 - 2026-08-02T12:36:44Z | opencode/unknown | checkpoint | task=TASK-090 | gate= | TASK-090 apply done; script self-overwrite at line 134 caused early exit; post-copy steps verified manually; awaiting human review of staged diff
+- 2026-08-02T12:42:12Z | opencode/unknown | end | task=backlog/done/TASK-092.md | gate=ok

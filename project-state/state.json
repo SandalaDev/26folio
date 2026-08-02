@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-02T12:41:50.882Z",
+  "updated": "2026-08-02T12:42:12.795Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -9,11 +9,11 @@
     "role": null
   },
   "current": {
-    "epic": "EPIC-024",
+    "epic": null,
     "slice": null,
-    "task": "TASK-092",
-    "agent": "opencode/unknown",
-    "branch": "feature/EPIC-024",
+    "task": null,
+    "agent": null,
+    "branch": null,
     "session_status": "open",
     "handoff_status": "none"
   },
@@ -47,11 +47,11 @@
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-08-02T12:41:50.954Z",
+    "updated": "2026-08-02T12:42:12.849Z",
     "min_n": 5,
     "totals": {
-      "sessions": 10,
-      "gate_pass": 10,
+      "sessions": 11,
+      "gate_pass": 11,
       "gate_fail": 0,
       "crashed": 0
     },
@@ -67,6 +67,18 @@
         "avg_session_min": 3,
         "crashed": 0,
         "low_n": false
+      },
+      {
+        "harness": "opencode",
+        "model": "unknown",
+        "role": "executor",
+        "sessions": 1,
+        "gate_pass": 1,
+        "gate_fail": 0,
+        "gate_pass_rate": 100,
+        "avg_session_min": 5,
+        "crashed": 0,
+        "low_n": true
       }
     ]
   },
