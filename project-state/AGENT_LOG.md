@@ -16,3 +16,4 @@
 - 2026-07-31T12:41:45Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
 - 2026-07-31T13:00:19Z | unknown/unknown | checkpoint | task=none | gate= | Push EPIC-023 refinement and open PR against dev
 - 2026-07-31T13:00:26Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-08-02T12:33:20Z | opencode/unknown | checkpoint | task=TASK-089 | gate= | TASK-089 dry-run complete; awaiting human review before TASK-090

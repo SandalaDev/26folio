@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-01T23:32:35.497Z",
+  "updated": "2026-08-02T12:34:24.246Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -9,7 +9,7 @@
     "role": null
   },
   "current": {
-    "epic": "EPIC-024",
+    "epic": null,
     "slice": null,
     "task": null,
     "agent": null,
@@ -41,12 +41,12 @@
     "epics_total": 23,
     "tasks_open": 0,
     "tasks_in_progress": 1,
-    "tasks_done": 82,
+    "tasks_done": 83,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-08-01T23:32:35.589Z",
+    "updated": "2026-08-02T12:34:24.406Z",
     "min_n": 5,
     "totals": {
       "sessions": 10,

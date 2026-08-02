@@ -1,0 +1,24 @@
+=== update-from-template ===
+  source: git@github.com:SandalaDev/agenticOS.git (ref: main)
+  target: C:/_git/26folio
+  mode:   DRY-RUN (no files written)
+  cloning template from URL...
+
+── updating OS machinery ──
+  [would update] scripts/
+  [would update] .githooks/
+  [would update] .agents/skills/
+  [would update] docs/
+  [would update] pack-frontend/
+  [would update] AGENTS.md
+  [would update] OPERATING_MANUAL.md
+  [would update] README.md
+  [would update] setup.sh
+  [would update] .gitattributes
+
+── config merge ──
+  [package.json] unchanged (reviewed yaml@2.9.0 already present)
+  [note] .gitignore differs from template — review and merge by hand (project version preserved)
+
+=== done ===
+Dry run complete — no files changed. Re-run without --dry-run to apply.
