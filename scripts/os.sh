@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # scripts/os.sh — the single entry point for agent-os.
-# Subcommands: start | end | checkpoint | check | status | render | claim | release | decide | context | deps | pr | sync | doctor
+# Subcommands: start | onboard | switch | end | checkpoint | check | status | render | claim | release | decide | context | deps | pr | sync | doctor
 #
 # DESIGN PRINCIPLES:
 #  - NON-BLOCKING: the OS manages memory, state, and context. It does not gate
@@ -95,9 +95,34 @@ check_epic_alignment() {
   fi
 }
 
+# Lock freshness: minutes since the lock's last write (start or last checkpoint).
+# Unreadable age -> treat as stale (crash path), never as live.
+lock_age_min() {
+  local started; started="$(grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
+  [[ -n "$started" ]] || { echo 999999; return; }
+  have_node || { echo 999999; return; }
+  node -e 'const s=new Date(process.argv[1]);const m=(Date.now()-s)/60000;process.stdout.write(Number.isFinite(m)&&m>=0?String(Math.floor(m)):"999999")' "$started" 2>/dev/null || echo 999999
+}
+
 # ── start ──────────────────────────────────────────────────────────────────
 cmd_start() {
   [[ -f "$STATE" ]] || { echo "[os] missing $STATE — run bootstrap first"; exit 1; }
+
+  # Session ownership: a FRESH lock means another session is (probably) alive —
+  # refuse instead of corrupting it (sub-agents, second tabs, two humans). A
+  # STALE lock is a crash and falls through to recovery below. A human confirms
+  # handover of a fresh lock with --takeover (e.g. the previous agent hit a
+  # rate limit and is never coming back).
+  if [[ -f "$LOCK" && "${1:-}" != "--takeover" ]]; then
+    local age ttl; age="$(lock_age_min)"; ttl="${OS_LOCK_TTL_MIN:-120}"
+    if [[ "$age" -lt "$ttl" ]]; then
+      echo "[os] REFUSED: a session lock ${age} min old is probably live (fresh < ${ttl} min)." >&2
+      echo "[os] If another agent is genuinely running, wait — or work inside its session." >&2
+      echo "[os] If the previous session is over (rate limit, stuck agent, closed tab):" >&2
+      echo "[os]   bash scripts/os.sh onboard --takeover   # the journal is preserved as a crash artifact" >&2
+      exit 1
+    fi
+  fi
 
   # Crash recovery: a stale lock means the previous session never ended cleanly.
   # PRESERVE it (never overwrite), surface it, and require a decision.
@@ -136,6 +161,47 @@ write_lock() {
   printf 'started: %s\nharness: %s\nmodel: %s\nrole: %s\nbranch: %s\ntask: %s\nnext_step: %s\nlast_verification: %s\nfiles_touched: %s\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$HARNESS" "$MODEL" "$ROLE" \
     "$branch" "$task" "$next_step" "unknown" "$files" > "$LOCK"
+}
+
+# ── onboard: the agent-switch entry point — start + print the onboarding packet ──
+# The whole human workflow when changing agents (rate limit, stuck model,
+# escalating for the next task) is one line given to the new agent:
+#   bash scripts/os.sh onboard
+cmd_onboard() {
+  cmd_start "$@"   # includes fresh-lock refusal and crash recovery
+  if have_node; then node scripts/onboard-packet.mjs || true
+  else echo "[os] skip onboarding packet (no node)"; fi
+}
+
+# write_switch_handoff <note> — a session handoff with REAL content (never a
+# stub): why the switch, where things stand, what changed. Read by `os onboard`.
+write_switch_handoff() {
+  local note="$1"
+  local dir="handoffs/session"
+  local file="$dir/HANDOFF-SESSION-SWITCH-$(date -u +%Y%m%dT%H%M%SZ).md"
+  local branch task files
+  branch="$(grep '^branch:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo none)"
+  task="$(grep '^task:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo none)"
+  files="$(grep '^files_touched:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
+  mkdir -p "$dir"
+  printf -- '---\nhandoff_type: session\nid: %s\ncreated: %s\ncreated_by: %s/%s\ntask_ref: %s\n---\n' \
+    "$(basename "$file" .md)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${HARNESS:-unknown}" "${MODEL:-unknown}" "$task" > "$file"
+  printf -- '# Handoff: agent switch (%s/%s)\n\n## Why the switch\n%s\n\n## Where things stand\n- task: %s\n- branch: %s\n- files touched: %s\n\n## Next\nRun `bash scripts/os.sh onboard` — it prints the active task, its acceptance criteria, and the next action. Move this file to handoffs/archive/ once consumed.\n' \
+    "${HARNESS:-unknown}" "${MODEL:-unknown}" "$note" "$task" "$branch" "${files:-none}" >> "$file"
+  echo "[os] handoff written: $file"
+}
+
+# ── switch "note": graceful handover — checkpoint, real handoff, end (keep claim) ──
+cmd_switch() {
+  local note="${*:-}"
+  [[ -f "$LOCK" ]] || { echo "[os] no active session — nothing to switch from."; exit 1; }
+  [[ -n "$note" ]] || { echo 'Usage: bash scripts/os.sh switch "where you stopped, what is next, anything risky"'; exit 2; }
+  derive_identity
+  cmd_checkpoint "switching agents: $note" >/dev/null
+  write_switch_handoff "$note"
+  ( OS_KEEP_CLAIM=1; cmd_end )   # the task continues with the next agent
+  echo "[os] switch complete. Hand the next agent one line:"
+  echo "[os]   bash scripts/os.sh onboard"
 }
 
 # ── checkpoint: update the journal's in-flight state so a crash is recoverable ──
@@ -193,7 +259,8 @@ cmd_end() {
   rm -f "$LOCK"
 
   # Clear the claim for the finished task so a stale pointer doesn't linger.
-  if [[ -n "$task" && "$task" != "none" ]] && have_node; then
+  # (os switch sets OS_KEEP_CLAIM=1: the task continues with the next agent.)
+  if [[ -n "$task" && "$task" != "none" && "${OS_KEEP_CLAIM:-0}" != "1" ]] && have_node; then
     local cid="$task"; [[ "$task" == */* ]] && cid="$(basename "$task" .md)"
     local claimed; claimed="$(node -e 'try{const s=require("./project-state/state.json");process.stdout.write(s.current&&s.current.task||"")}catch{}' 2>/dev/null || true)"
     if [[ "$claimed" == "$cid" ]]; then
@@ -429,7 +496,9 @@ cmd_deps() {
 }
 
 case "${1:-help}" in
-  start)       cmd_start ;;
+  start)       shift; cmd_start "$@" ;;
+  onboard)     shift; cmd_onboard "$@" ;;
+  switch)      shift; cmd_switch "$@" ;;
   end)         shift; cmd_end "${1:-}" ;;
   checkpoint)  shift; cmd_checkpoint "${*:-}" ;;
   claim)       shift; cmd_claim "${1:-}" ;;
@@ -443,5 +512,5 @@ case "${1:-help}" in
   status)      cmd_status ;;
   render)      cmd_render ;;
   doctor)      cmd_doctor ;;
-  *) echo "Usage: bash scripts/os.sh [start|end [task]|checkpoint \"next\"|claim <TASK>|release|decide|context|deps|pr|sync|check|status|render|doctor]" ;;
+  *) echo "Usage: bash scripts/os.sh [start [--takeover]|onboard [--takeover]|switch \"note\"|end [task]|checkpoint \"next\"|claim <TASK>|release|decide|context|deps|pr|sync|check|status|render|doctor]" ;;
 esac

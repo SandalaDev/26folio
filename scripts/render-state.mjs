@@ -73,6 +73,7 @@ function deriveHandoffQueue() {
   if (!exists(HANDOFFS)) return [];
   const out = [];
   for (const dir of fs.readdirSync(HANDOFFS)) {
+    if (dir === "archive") continue;   // archive/ is the consumed path
     const sub = path.join(HANDOFFS, dir);
     if (!fs.statSync(sub).isDirectory()) continue;
     for (const f of fs.readdirSync(sub).filter(x => x.endsWith(".md"))) {

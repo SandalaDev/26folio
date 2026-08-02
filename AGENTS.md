@@ -33,6 +33,12 @@ dashboard. L4 is a layer you *add*, not one the core *depends on*.
   so an interrupted session is recoverable.
 - End:     `bash scripts/os.sh end [task]` — advisory sanity check, ONE state update,
   renders views, appends the log + a ledger line, creates declared handoffs, clears the lock.
+- Switch:  changing agents mid-work (rate limit, stuck model, escalating) —
+  the outgoing agent runs `bash scripts/os.sh switch "where you stopped"`;
+  the incoming agent runs `bash scripts/os.sh onboard` (crash recovery + session
+  start + full onboarding packet). A fresh lock (<120 min, tunable via
+  `OS_LOCK_TTL_MIN`) means a *live* session: `onboard` refuses, and a human
+  confirms the handover with `os onboard --takeover`. Sub-agents never onboard.
 
 ## Testing (planned work, never a gate)
 No change *requires* a test and nothing blocks a push. After planning an epic or

@@ -5,6 +5,7 @@ import fs from "node:fs";
 import { execSync } from "node:child_process";
 import { loadProgressModel } from "./progress.mjs";
 import { loadEffortModel } from "./effort.mjs";
+import { pathToFileURL } from "node:url";
 
 const STATE = "project-state/state.json";
 const LEDGER = "project-state/ledger.jsonl";
@@ -145,6 +146,9 @@ function progressRows(items, type) {
     </div>`).join("");
 }
 
+export { nextStep };
+
+function main() {
 if (!exists(STATE)) {
   console.error(`[dashboard] missing ${STATE}`);
   process.exit(1);
@@ -315,3 +319,6 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 
 fs.writeFileSync(OUT, html);
 console.log(`[dashboard] wrote ${OUT}; progress=${percent(progress.overallPercent)} (${progress.confidence} confidence)`);
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
