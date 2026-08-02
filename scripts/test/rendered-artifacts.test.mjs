@@ -6,6 +6,8 @@ const dashboard = fs.readFileSync("dashboard.html", "utf8");
 const guide = fs.readFileSync("guide.html", "utf8");
 
 assert.match(dashboard, /Estimated delivery toward intent/);
+assert.match(dashboard, /Effort & estimation/);
+assert.match(dashboard, /Estimation baseline needs|Baseline: ~[0-9]+ min per weight/);
 assert.match(dashboard, /Task completion estimates delivery toward intent/);
 assert.match(dashboard, /href="guide\.html"/);
 assert.match(dashboard, /Business-goal progress/);

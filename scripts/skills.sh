@@ -18,10 +18,7 @@ FE_DIR="pack-frontend/skills"
 # registry.md is human-readable documentation; we don't parse its table because a
 # 3-column markdown table is fragile to parse and carries no reliable layer column.
 skill_names() {
-  # A portable skill is one direct child folder. Vendored skills may contain
-  # nested specialist SKILL.md references; those belong to the parent package
-  # and must not be mistaken for separately installed top-level skills.
-  find "$CORE_DIR" "$FE_DIR" -mindepth 2 -maxdepth 2 -name SKILL.md -type f 2>/dev/null | while read -r f; do
+  find "$CORE_DIR" "$FE_DIR" -name SKILL.md -type f 2>/dev/null | while read -r f; do
     local name; name="$(basename "$(dirname "$f")")"
     local layer; layer="core"; [[ "$f" == *"$FE_DIR"* ]] && layer="frontend"
     echo "$name $layer"

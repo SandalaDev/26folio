@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-02T12:34:24.246Z",
+  "updated": "2026-08-02T12:35:17.412Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -11,8 +11,8 @@
   "current": {
     "epic": null,
     "slice": null,
-    "task": null,
-    "agent": null,
+    "task": "TASK-090",
+    "agent": "opencode/unknown",
     "branch": "feature/EPIC-024",
     "session_status": "open",
     "handoff_status": "none"

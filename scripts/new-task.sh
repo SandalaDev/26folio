@@ -54,7 +54,12 @@ What this task implements.
 - rationale:
 ## Notes
 EOF
-  echo "[new-task] wrote $f — fill in scope, acceptance criteria, and the Testing recommendation."
+   echo "[new-task] wrote $f — fill in scope, acceptance criteria, and the Testing recommendation."
+   local hint=""
+   if command -v node >/dev/null 2>&1; then
+     hint="$(node scripts/effort.mjs --baseline 2>/dev/null || true)"
+   fi
+   [[ -n "$hint" ]] && echo "[new-task] observed baseline — $hint"
 }
 
 scaffold_epic() {

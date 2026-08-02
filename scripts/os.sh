@@ -32,9 +32,14 @@ LOCK="project-state/session.lock"
 LEDGER="project-state/ledger.jsonl"
 DECISIONS="project-state/decisions.md"
 AGENT_LOG="project-state/AGENT_LOG.md"
-USAGE=".session-usage.json"
 
 have_node() { command -v node >/dev/null 2>&1; }
+
+# Current branch name. symbolic-ref works on unborn branches (fresh repos) and
+# exits non-zero on detached HEAD. rev-parse --abbrev-ref prints "HEAD" AND
+# fails there, so the `|| echo` fallback appends a second line — injecting a
+# newline that corrupts single-line records like ledger rows.
+current_branch() { git symbolic-ref --short -q HEAD 2>/dev/null || echo none; }
 
 # ── Identity: derive harness/model/role, warn LOUDLY if unset ──────────────
 derive_identity() {
@@ -107,9 +112,6 @@ cmd_start() {
     echo "[os]   ─────────────"
     echo "[os] The crashed session has been logged with status:crashed."
     log_crashed "$crashed" || true
-    # If the dead agent left a usage drop-file, fold it into the crashed row,
-    # then clear it so it can't leak into the recovered session's ledger line.
-    if [[ -f "$USAGE" ]]; then rm -f "$USAGE"; fi
     echo "[os] Recover by reading the journal above, or start fresh below."
   fi
 
@@ -119,7 +121,7 @@ cmd_start() {
   local curtask; curtask="$(state_get)"
 
   # Write a REAL journal: identity + branch + task + recoverable fields.
-  local branch; branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)"
+  local branch; branch="$(current_branch)"
   check_epic_alignment "$branch"
   write_lock "$branch" "$curtask" "" ""
   # Render after the lock exists so the dashboard reports the open session.
@@ -142,7 +144,7 @@ cmd_checkpoint() {
   if [[ ! -f "$LOCK" ]]; then echo "[os] no active session — run 'os start' first."; exit 1; fi
   derive_identity
   local branch task files
-  branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)"
+  branch="$(current_branch)"
   task="$(state_get)"
   # Auto-derive touched files from the diff vs base (best-effort).
   files="$(git diff --name-only 2>/dev/null | tr '\n' ' ' || echo '')"
@@ -155,6 +157,17 @@ cmd_checkpoint() {
 # ── end: sanity check (non-blocking), ONE state update, ledger, log, handoffs, clear lock ──
 cmd_end() {
   local task="${1:-${ACTIVE_TASK:-}}"
+  # Bare `os end`: attribute the session to the claimed task so the ledger (and
+  # everything that mines it) records the real task instead of "none".
+  if [[ -z "$task" ]] && have_node; then
+    task="$(state_get)"
+    # Resolve the ID to its file path when it exists (verify.sh + handoffs want paths).
+    if [[ -n "$task" ]]; then
+      for d in backlog/tasks backlog/done; do
+        [[ -f "$d/$task.md" ]] && { task="$d/$task.md"; break; }
+      done
+    fi
+  fi
   local check="ok"
   if [[ -n "$task" ]]; then
     # Materialise a declared handoff (session/task continuity — optional).
@@ -174,11 +187,10 @@ cmd_end() {
 
   local started branch
   started="$(grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
-  branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)"
-  local usage_json; usage_json="$(read_usage)"
-  append_ledger "completed" "$started" "$branch" "$task" "$check" "$usage_json"
+  branch="$(current_branch)"
+  append_ledger "completed" "$started" "$branch" "$task" "$check"
   append_log "end" "$task" "" "$check" || true
-  rm -f "$LOCK" "$USAGE"
+  rm -f "$LOCK"
 
   # Clear the claim for the finished task so a stale pointer doesn't linger.
   if [[ -n "$task" && "$task" != "none" ]] && have_node; then
@@ -205,31 +217,21 @@ log_crashed() {
   role="$(grep '^role:' "$crashed" 2>/dev/null | cut -d' ' -f2- || echo executor)"
   branch="$(grep '^branch:' "$crashed" 2>/dev/null | cut -d' ' -f2- || echo none)"
   task="$(grep '^task:' "$crashed" 2>/dev/null | cut -d' ' -f2- || echo none)"
-  # Fold in the dead session's usage drop-file if it survived the crash.
-  local usage; usage="$(read_usage)"
-  append_ledger_raw "crashed" "$started" "$harness" "$model" "$role" "$branch" "$task" "skipped" "$usage"
+  append_ledger_raw "crashed" "$started" "$harness" "$model" "$role" "$branch" "$task" "skipped"
   append_log "crashed" "$task" "$(grep '^next_step:' "$crashed" 2>/dev/null | cut -d' ' -f2-)" "skipped" || true
 }
 
-# read_usage: parse the .session-usage.json drop-file -> inline JSON fields, or
-# an explicit "unknown" set if absent/invalid. Delegates to read-usage.mjs to
-# avoid fragile inline-node shell-escaping.
-read_usage() {
-  have_node || { echo '"tokens_in":"unknown","tokens_out":"unknown","cost_usd":"unknown",'; return; }
-  node scripts/read-usage.mjs 2>/dev/null || echo '"tokens_in":"unknown","tokens_out":"unknown","cost_usd":"unknown",'
-}
-
-# append_ledger <status> <started> <branch> <task> <gate> <usageFieldsJson>
+# append_ledger <status> <started> <branch> <task> <gate>
 append_ledger() {
-  append_ledger_raw "$1" "$2" "$HARNESS" "$MODEL" "$ROLE" "$3" "${4:-none}" "$5" "$6"
+  append_ledger_raw "$1" "$2" "$HARNESS" "$MODEL" "$ROLE" "$3" "${4:-none}" "$5"
 }
 
-# append_ledger_raw <status> <started> <h> <m> <r> <branch> <task> <gate> <usageFieldsJson>
+# append_ledger_raw <status> <started> <h> <m> <r> <branch> <task> <gate>
 append_ledger_raw() {
-  local status="$1" started="$2" h="$3" m="$4" r="$5" branch="$6" task="$7" gate="$8" usage="$9"
-  printf '{"started":%s,"ended":"%s","harness":"%s","model":"%s","role":"%s","branch":"%s","task":"%s","gate":"%s","status":"%s",%s"duration_min":%s}\n' \
+  local status="$1" started="$2" h="$3" m="$4" r="$5" branch="$6" task="$7" gate="$8"
+  printf '{"started":%s,"ended":"%s","harness":"%s","model":"%s","role":"%s","branch":"%s","task":"%s","gate":"%s","status":"%s","duration_min":%s}\n' \
     "$(json_str "$started")" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$h" "$m" "$r" "$branch" "$task" "$gate" "$status" \
-    "$usage" "$(duration_min "$started")" >> "$LEDGER"
+    "$(duration_min "$started")" >> "$LEDGER"
 }
 
 # duration_min <startedISO> -> integer minutes, or "unknown"
@@ -322,7 +324,7 @@ cmd_claim() {
     exit 1
   fi
   derive_identity
-  local branch; branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo none)"
+  local branch; branch="$(current_branch)"
   node scripts/update-state.mjs set-current task "$id" || { echo "[os] claim failed."; exit 1; }
   node scripts/update-state.mjs set-current branch "$branch" >/dev/null || true
   node scripts/update-state.mjs set-current agent "${HARNESS}/${MODEL}" >/dev/null || true
@@ -390,7 +392,7 @@ cmd_pr() {
       *) [[ -z "$title" ]] && title="$1" || { echo "[os] pr: unexpected arg '$1'"; exit 2; }; shift ;;
     esac
   done
-  local branch; branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')"
+  local branch; branch="$(git symbolic-ref --short -q HEAD 2>/dev/null || echo '')"
   [[ -n "$branch" && "$branch" != "main" && "$branch" != "dev" ]] \
     || { echo "[os] pr: on '$branch' — run from a feature branch (branch.sh start <EPIC>)."; exit 1; }
   [[ -n "$title" ]] || title="merge ${branch}"
@@ -407,7 +409,7 @@ cmd_pr() {
 # Refuses if the PR isn't merged or the branch isn't yet merged into the base.
 cmd_sync() {
   command -v gh >/dev/null 2>&1 || { echo "[os] sync needs the gh CLI installed"; exit 1; }
-  local branch; branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')"
+  local branch; branch="$(git symbolic-ref --short -q HEAD 2>/dev/null || echo '')"
   [[ -n "$branch" && "$branch" != "main" && "$branch" != "dev" ]] \
     || { echo "[os] sync: on '$branch' — run from a feature branch."; exit 1; }
   local base; base="$(bash scripts/branch.sh base 2>/dev/null || echo main)"

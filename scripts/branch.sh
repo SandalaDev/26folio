@@ -12,7 +12,7 @@ MAIN="${MAIN_BRANCH:-main}"
 DEV="${DEV_BRANCH:-dev}"
 STATE="project-state/state.json"
 
-cur() { git rev-parse --abbrev-ref HEAD 2>/dev/null || echo ""; }
+cur() { git symbolic-ref --short -q HEAD 2>/dev/null || echo ""; }
 
 # flow(): print "github" or "trunk-dev". Defaults to github if state missing/unreadable.
 flow() {

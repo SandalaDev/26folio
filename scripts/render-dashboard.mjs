@@ -4,6 +4,7 @@
 import fs from "node:fs";
 import { execSync } from "node:child_process";
 import { loadProgressModel } from "./progress.mjs";
+import { loadEffortModel } from "./effort.mjs";
 
 const STATE = "project-state/state.json";
 const LEDGER = "project-state/ledger.jsonl";
@@ -110,7 +111,11 @@ function nextStep(state) {
     return { owner: "AGENT", command: "shape the first epic and tasks", why: "Translate the roadmap into executable work." };
   }
   if (!state.current?.task && (state.counts?.tasks_open ?? 0) > 0) {
-    return { owner: "AGENT", command: "claim the next ready task", why: `${state.counts.tasks_open} task(s) are ready.` };
+    const win = loadEffortModel().quickWins[0];
+    const why = win
+      ? `${state.counts.tasks_open} task(s) are ready. Quickest: ${win.id} (weight ${win.weight}).`
+      : `${state.counts.tasks_open} task(s) are ready.`;
+    return { owner: "AGENT", command: "claim the next ready task", why };
   }
   if (!state.current?.task) {
     return { owner: "HUMAN + AGENT", command: "choose and shape the next roadmap item", why: "There is no ready work." };
@@ -148,6 +153,7 @@ if (!exists(STATE)) {
 const state = readJson(STATE);
 const rows = readLedger();
 const progress = loadProgressModel();
+const effort = loadEffortModel();
 const next = nextStep(state);
 const counts = state.counts || {};
 const current = state.current || {};
@@ -161,8 +167,9 @@ const confidenceText = {
   medium: "Medium: intent metadata exists, but some scope or task-to-intent links are missing.",
   low: "Low: treat this as a rough planning signal until goals, roadmap scope, and links are completed.",
 }[progress.confidence];
-const fmtNumber = value => Number.isFinite(+value) ? Math.round(+value).toLocaleString() : "unknown";
-const fmtMoney = value => Number.isFinite(+value) ? `$${(+value).toFixed(2)}` : "unknown";
+const fmtMin = value => Number.isFinite(+value)
+  ? (+value >= 60 ? `${Math.floor(+value / 60)}h ${Math.round(+value % 60)}m` : `${Math.round(+value)}m`)
+  : "—";
 
 const handoffs = (state.handoff_queue || []).map(handoff => `
   <tr><td>${esc(handoff.id)}</td><td>${esc(handoff.type)}</td><td>${esc(handoff.task_ref)}</td>
@@ -254,18 +261,36 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
     </div>
   </section>
 
+  <section class="card">
+    <h2>Effort & estimation</h2>
+    <div class="stats">
+      <div class="stat"><b>${fmtMin(effort.trackedMin)}</b><span>tracked effort</span></div>
+      <div class="stat"><b>${effort.unattributed.sessions}</b><span>unattributed sessions</span></div>
+      <div class="stat"><b>${effort.longest.length}</b><span>tasks with effort</span></div>
+      ${effort.calibration.baselineMinPerWeight != null ? `<div class="stat"><b>${Math.round(effort.calibration.baselineMinPerWeight)}m</b><span>per weight · n=${effort.calibration.n}</span></div>` : ""}
+    </div>
+    ${effort.longest.length ? `
+    <table><thead><tr><th>Task</th><th>Epic</th><th>Effort</th><th>Sessions</th><th>Weight</th><th>Flag</th></tr></thead>
+    <tbody>${effort.longest.map(t => `
+      <tr><td><code>${esc(t.id)}</code></td><td>${esc(t.epic || "—")}</td><td>${fmtMin(t.totalMin)}</td>
+      <td>${t.sessions}${t.gateFails ? ` · ${t.gateFails} fail` : ""}</td><td>${t.weight}</td>
+      <td>${t.flag ? esc(t.flag) : "—"}</td></tr>`).join("")}</tbody></table>` : `<p class="empty">No completed sessions with task attribution yet.</p>`}
+    ${effort.quickWins.length ? `<h3>Quick wins</h3><ul>${effort.quickWins.map(t => `<li><code>${esc(t.id)}</code> · ${esc(t.title)} · weight ${t.weight}</li>`).join("")}</ul>` : ""}
+    ${effort.unattributed.sessions ? `<p class="empty">${effort.unattributed.sessions} session(s) ran with no claimed task (${fmtMin(effort.unattributed.minutes)} unattributed) — run <code>os claim</code> to attribute effort.</p>` : ""}
+    <p class="empty">${effort.calibration.baselineMinPerWeight == null ? `Estimation baseline needs ≥5 completed tasks (have ${effort.calibration.n}).` : `Baseline: ~${Math.round(effort.calibration.baselineMinPerWeight)} min per weight (n=${effort.calibration.n}).`}</p>
+  </section>
+
   <section class="grid">
     <article class="card"><h2>Active work</h2><dl>
       <dt>Epic</dt><dd>${esc(current.epic)}</dd><dt>Slice</dt><dd>${esc(current.slice)}</dd>
       <dt>Task</dt><dd>${esc(current.task)}</dd><dt>Branch</dt><dd><code>${esc(current.branch)}</code></dd>
       <dt>Actor</dt><dd>${esc(actor)}</dd>
     </dl></article>
-    <article class="card"><h2>Session accounting (opt-in)</h2><dl>
+    <article class="card"><h2>Session history</h2><dl>
       <dt>Sessions</dt><dd>${totals.sessions ?? rows.length}</dd>
-      <dt>Tokens in</dt><dd>${fmtNumber(totals.tokens_in)}</dd>
-      <dt>Tokens out</dt><dd>${fmtNumber(totals.tokens_out)}</dd>
-      <dt>Cost</dt><dd>${fmtMoney(totals.cost_usd)}</dd>
-    </dl><p class="empty">Unknown is intentional unless an agent supplies <code>.session-usage.json</code>.</p></article>
+      <dt>Gate pass / fail</dt><dd>${totals.gate_pass ?? 0} / ${totals.gate_fail ?? 0}</dd>
+      <dt>Crashed</dt><dd>${totals.crashed ?? 0}</dd>
+    </dl></article>
   </section>
 
   <section class="card"><h2>Completion narrative</h2>

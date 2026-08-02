@@ -28,14 +28,6 @@ for the Project Spine. Load only the `skill_refs` a task declares; never all ski
 | `21st-dev-components` | Find/adapt free, public 21st.dev marketing blocks before hand-building. | authored |
 | `stop-slop` | Advisory prose scorer for public-facing text (score.mjs); run on demand, never a gate. | authored |
 
-## layer: project extensions (`.agents/skills/`)
-
-| name | role | status |
-|---|---|---|
-| `framer-motion` | Vendored Framer Motion core plus gesture, layout, React, scroll, and variants references. | preserved |
-| `gsap` | Vendored GSAP core plus framework, performance, plugin, React, ScrollTrigger, timeline, and utility references. | preserved |
-| `lottie` | Vendored motion-direction guidance and Lottie implementation references. | preserved |
-
 ## rules
 
 - A task may not reference a skill whose SKILL.md is absent or empty (validate-task.mjs warns; skills.sh audit fails).

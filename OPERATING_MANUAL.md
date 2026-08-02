@@ -156,16 +156,6 @@ see fresh metrics), run
 `bash scripts/os.sh render`, then open the file. It's a snapshot of the last render,
 not a live view.
 
-### Token / cost reporting
-Before `os end`, write a tiny `.session-usage.json` at the repo root:
-```json
-{ "tokens_in": 184320, "tokens_out": 9120, "cost_usd": 0.41 }
-```
-`os end` reads it, folds the numbers into the ledger, and removes it. If omitted, the
-ledger records `unknown` honestly rather than inventing numbers.
-
----
-
 ## Crash recovery (the bulletproof part)
 
 A stale `session.lock` means the previous session never reached `os end`. On the next
@@ -173,7 +163,6 @@ A stale `session.lock` means the previous session never reached `os end`. On the
 1. **Preserves** the stale lock — moves it to `session.lock.crashed-<ts>` (never overwrites).
 2. **Surfaces** its full contents (identity, branch, task, next_step, files touched).
 3. **Logs a crashed ledger row** with `status:crashed` and the duration it *did* run.
-4. Folds in the dead session's `.session-usage.json` if it survived, then clears it.
 
 Crashes become data: the dashboard shows a "crashed" badge and a per-combo crashed
 column. Nothing is silently lost.
