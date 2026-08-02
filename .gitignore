@@ -31,9 +31,8 @@ yarn-debug.log*
 .env.local
 .env.*.local
 
-# Harness-local permissions and optional usage accounting
+# Harness-local permissions
 /.claude/settings.local.json
-/.session-usage.json
 
 # typescript
 *.tsbuildinfo
