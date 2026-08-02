@@ -114,10 +114,7 @@ export function loadProgressModel(root = process.cwd()) {
   const roadmapById = new Map(roadmap.map(item => [item.id, item]));
 
   const tasks = [...openTasks, ...doneTasks].map(task => {
-    // Epic filenames may include descriptive slugs
-    // (EPIC-021-capabilities-repositioning.md). Identity is the numeric token,
-    // not the whole filename stem.
-    const epicId = idFromRef(task.epic_ref, /(EPIC-\d+)/);
+    const epicId = idFromRef(task.epic_ref, /(EPIC-[A-Za-z0-9_-]+)/);
     const epic = epicById.get(epicId) || {};
     const roadmapRefs = refs(task, "roadmap_ref", "roadmap_refs", /(ROAD-[A-Za-z0-9_-]+)/);
     const inheritedRoadmapRefs = roadmapRefs.length

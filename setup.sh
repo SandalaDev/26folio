@@ -40,9 +40,5 @@ echo
 echo "=== setup complete ==="
 echo "Dashboard: $(pwd)/dashboard.html"
 echo "Usage guide: $(pwd)/guide.html"
-if [[ -f "project-spine/00-brief.md" ]]; then
-  echo "Next: bash scripts/os.sh start"
-else
-  echo "Next: bash scripts/intake.sh brief   (start a project)"
-fi
+echo "Next: bash scripts/intake.sh brief   (start a project)"
 echo "Verify everything works: open guide.html and follow its VERIFY callouts."

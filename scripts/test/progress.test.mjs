@@ -28,7 +28,7 @@ roadmap:
     goal_refs: [GOAL-001]
 ---
 `);
-  write("backlog/epics/EPIC-001-activation-flow.md", `---
+  write("backlog/epics/EPIC-001.md", `---
 id: EPIC-001
 roadmap_refs: [ROAD-001]
 goal_refs: [GOAL-001]
@@ -37,14 +37,14 @@ goal_refs: [GOAL-001]
   write("backlog/tasks/TASK-002.md", `---
 id: TASK-002
 status: ready
-epic_ref: backlog/epics/EPIC-001-activation-flow.md
+epic_ref: backlog/epics/EPIC-001.md
 progress_weight: 1
 ---
 `);
   write("backlog/done/TASK-001.md", `---
 id: TASK-001
 status: done
-epic_ref: backlog/epics/EPIC-001-activation-flow.md
+epic_ref: backlog/epics/EPIC-001.md
 progress_weight: 1
 ---
 `);

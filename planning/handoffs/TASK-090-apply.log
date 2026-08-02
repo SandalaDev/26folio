@@ -1,0 +1,17 @@
+=== update-from-template ===
+  source: git@github.com:SandalaDev/agenticOS.git (ref: main)
+  target: C:/_git/26folio
+  cloning template from URL...
+
+── updating OS machinery ──
+  [updated] scripts/
+  [updated] .githooks/
+  [updated] .agents/skills/
+  [updated] docs/
+  [updated] pack-frontend/
+  [updated] AGENTS.md
+  [updated] OPERATING_MANUAL.md
+  [updated] README.md
+  [updated] setup.sh
+  [updated] .gitattributes
+scripts/update-from-template.sh: line 134: syntax error near unexpected token `('

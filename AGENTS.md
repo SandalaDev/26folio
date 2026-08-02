@@ -1,8 +1,7 @@
 # AGENTS.md
 
-The canonical agent law. `OPERATING_MANUAL.md` is the full OS reference. This
-repository is the sandala.dev portfolio application, not the template
-distribution.
+The canonical agent law. `OPERATING_MANUAL.md` is the full reference. Both are
+project-agnostic: this is the OS distribution, not a Next.js scaffold.
 
 ## Operating law
 - The repository is the source of truth. Chat is a scratchpad you can throw away.
@@ -25,21 +24,6 @@ L4  Frontend Pack   pack-frontend/                           (design phase · sk
 ```
 A non-frontend project skips L4 and still gets memory, handover, and the
 dashboard. L4 is a layer you *add*, not one the core *depends on*.
-
-## Project context
-- The one job: turn Abe Sandala's work, judgment, and point of view into
-  credible evidence that helps the right clients and technical teams start a
-  conversation.
-- Read `project-spine/01-charter.md`, `02-decisions.md`, and `03-roadmap.md` for
-  current intent. Load detailed legacy spine files only when a task references
-  them.
-- The site is static-first Next.js with strict TypeScript, Tailwind CSS,
-  purposeful motion, no database, and no CMS. Scrumtrulescent Magazine is a
-  separate project consumed read-only.
-- L4 is active. Preserve project-specific `framer-motion`, `gsap`, and `lottie`
-  skills alongside the frontend pack.
-- `state.flow` is `trunk-dev`: epic feature branches target `dev`; reviewed
-  integration work later moves from `dev` to `main`.
 
 ## Session lifecycle (every session, every agent)
 - Start:   `bash scripts/os.sh start`  — reads state, renders views, detects a stale
@@ -70,9 +54,6 @@ Light intake, not a heavy spine: `bash scripts/intake.sh brief` (you write the
 brief) → `interview` (agent asks gaps, you answer) → `ready` (fail-closed gate) →
 agent hydrates the 3-file lean context. Shape work with `new-task.sh task|epic`.
 See `OPERATING_MANUAL.md` → Launch checklist.
-
-This intake is already complete for 26folio. Do not rerun or replace the
-owner-authored brief unless the owner explicitly changes product intent.
 
 ## Dependencies and far-reaching technical choices
 - Before initial application packages are downloaded, use
@@ -128,10 +109,8 @@ not a gate).
 
 ## Identity (optional)
 `os start` auto-detects the harness. Optionally export `HARNESS_NAME` /
-`MODEL_NAME` / `AGENT_ROLE` for cleaner dashboard attribution, and optionally
-drop a `.session-usage.json` (`{"tokens_in":N,"tokens_out":N,"cost_usd":N}`)
-before `os end` for cost tracking. Both are opt-in; absent data is recorded as
-`unknown`, never invented.
+`MODEL_NAME` / `AGENT_ROLE` for cleaner dashboard attribution. Absent data is
+recorded as `unknown`, never invented.
 
 ## Reference
 The full manual is `OPERATING_MANUAL.md`. The live dashboard is `dashboard.html`

@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-07-31T13:00:27.386Z",
+  "updated": "2026-08-02T12:42:12.795Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -14,16 +14,18 @@
     "task": null,
     "agent": null,
     "branch": null,
-    "session_status": "migration",
+    "session_status": "open",
     "handoff_status": "none"
   },
   "completion": {
-    "summary": "Agent OS v1 is implemented on feature/EPIC-022 with the portfolio application unchanged and its prior history preserved.",
+    "summary": "EPIC-022 closed the legacy Agent OS migration on v1. EPIC-023 shipped the problem-led capabilities page through PR #28 into dev. EPIC-024 closed the OS machinery upgrade from the upstream template without touching project memory; os doctor, os check, os render, four template tests, portfolio lint, strict TypeScript, and production build all pass.",
     "done": [
       "Core portfolio routes, design system, signature motion, work and capability presentation are implemented.",
       "About, Who I Am, and The Way I Am narrative experiences are implemented with real content and media.",
       "EPIC-021 delivered the four-pillar capability explorer and Build/Evolve engagement model.",
-      "Seventy-five detailed completed-task records and twenty prior epic records remain as implementation history."
+      "EPIC-022 replaced the legacy Agent OS with Agent OS v1 and preserved every project-history artifact by path.",
+      "EPIC-023 shipped the problem-led capabilities dossier, animated services experience, and colored technology atlas through PR #28 into dev.",
+      "EPIC-024 closed the OS machinery upgrade from SandalaDev/agenticOS@main: 24 files in a single chore commit; project memory, project-only scripts/skills, and the yaml@2.9.0 pin preserved; full validation green (doctor, check, render, 4 template tests, lint, typecheck, build)."
     ],
     "remaining": [
       "Human review and merge: inspect the new lean charter, roadmap links, progress weights, dashboard estimate, and EPIC-022 migration diff.",
@@ -31,29 +33,27 @@
       "Owner assets: real contact email, CV/resume asset, social profile URLs, and any final licensed imagery.",
       "Launch work: production environment values, contact delivery, Dokploy configuration, SEO, accessibility, performance, and real-device review.",
       "Security follow-up: triage four npm high-severity advisories and review install scripts for sharp and unrs-resolver. No audit inventory was transmitted and no automatic fix was applied during EPIC-022.",
-      "Post-launch: validate consulting inquiries, senior opportunities, reader engagement, and product-quality signals."
+      "Post-launch: validate consulting inquiries, senior opportunities, reader engagement, and product-quality signals.",
+      "Upstream feedback: file a wart against the template for the update-from-template.sh self-overwrite abort observed during EPIC-024 TASK-090 (mid-run copy of the script itself caused a transient syntax error; post-conditions were re-verified manually)."
     ],
     "blocked": "none"
   },
   "counts": {
-    "epics_total": 22,
+    "epics_total": 23,
     "tasks_open": 0,
     "tasks_in_progress": 1,
-    "tasks_done": 82,
+    "tasks_done": 86,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-07-31T13:00:27.487Z",
+    "updated": "2026-08-02T12:42:12.849Z",
     "min_n": 5,
     "totals": {
-      "sessions": 10,
-      "gate_pass": 10,
+      "sessions": 11,
+      "gate_pass": 11,
       "gate_fail": 0,
-      "crashed": 0,
-      "tokens_in": 0,
-      "tokens_out": 0,
-      "cost_usd": 0
+      "crashed": 0
     },
     "combos": [
       {
@@ -65,12 +65,20 @@
         "gate_fail": 0,
         "gate_pass_rate": 100,
         "avg_session_min": 3,
-        "tokens_in": 0,
-        "tokens_out": 0,
-        "cost_usd": 0,
-        "cost_per_pass": 0,
         "crashed": 0,
         "low_n": false
+      },
+      {
+        "harness": "opencode",
+        "model": "unknown",
+        "role": "executor",
+        "sessions": 1,
+        "gate_pass": 1,
+        "gate_fail": 0,
+        "gate_pass_rate": 100,
+        "avg_session_min": 5,
+        "crashed": 0,
+        "low_n": true
       }
     ]
   },
@@ -183,7 +191,12 @@
     {
       "id": "EPIC-023",
       "title": "Capabilities page: problem-led services and animated technical proof",
-      "status": "in-progress"
+      "status": "done"
+    },
+    {
+      "id": "EPIC-024",
+      "title": "Upgrade agentic system (OS machinery) from the upstream template without losing project memory",
+      "status": "done"
     }
   ],
   "handoff_queue": [],

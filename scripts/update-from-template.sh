@@ -47,7 +47,7 @@ MACHINERY=(
 # ── Project-owned paths: NEVER touched, even if the template has them ──────────
 # (Documented for clarity; the script protects these by ONLY copying MACHINERY.)
 #   project-state/state.json, ledger.jsonl, AGENT_LOG.md, decisions.md
-#   backlog/  handoffs/  planning/  memory/  project-spine/  .session-usage.json
+#   backlog/  handoffs/  planning/  memory/  project-spine/
 
 # ── Config files: special handling (merge, don't clobber) ──────────────────────
 # .gitignore is config — we never overwrite. We print a notice if

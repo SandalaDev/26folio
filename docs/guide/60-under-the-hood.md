@@ -43,7 +43,7 @@ Every `os end` (and every detected crash) appends one JSON line to `project-stat
 
 ### Identity and cost (both optional)
 
-The harness is auto-detected (Claude Code, Cursor, Codex, …). Exporting `HARNESS_NAME` / `MODEL_NAME` / `AGENT_ROLE` refines the attribution; leaving them unset records `unknown` — honest, silent, and completely fine. Cost tracking is likewise opt-in: if a `.session-usage.json` file (`{"tokens_in":N,"tokens_out":N,"cost_usd":N}`) exists at `os end`, its numbers fold into the ledger and the file is removed; if not, the ledger says `unknown`. The system never invents numbers and never nags.
+The harness is auto-detected (Claude Code, Cursor, Codex, …). Exporting `HARNESS_NAME` / `MODEL_NAME` / `AGENT_ROLE` refines the attribution; leaving them unset records `unknown` — honest, silent, and completely fine. The system never invents numbers and never nags.
 
 ### The doctor
 
