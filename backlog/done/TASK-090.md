@@ -1,7 +1,7 @@
 ---
 id: TASK-090
 title: "Apply OS upgrade; re-wire hooks; re-verify yaml@2.9.0 pin"
-status: in-progress
+status: done
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-024.md

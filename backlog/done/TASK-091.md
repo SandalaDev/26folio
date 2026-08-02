@@ -1,7 +1,7 @@
 ---
 id: TASK-091
 title: "Commit OS machinery upgrade as a single chore commit"
-status: in-progress
+status: done
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-024.md
