@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-02T23:28:15.073Z",
+  "updated": "2026-08-02T23:29:16.925Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -47,11 +47,11 @@
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-08-02T23:28:15.139Z",
+    "updated": "2026-08-02T23:29:16.983Z",
     "min_n": 5,
     "totals": {
-      "sessions": 12,
-      "gate_pass": 12,
+      "sessions": 13,
+      "gate_pass": 13,
       "gate_fail": 0,
       "crashed": 0
     },
@@ -72,11 +72,11 @@
         "harness": "opencode",
         "model": "unknown",
         "role": "executor",
-        "sessions": 2,
-        "gate_pass": 2,
+        "sessions": 3,
+        "gate_pass": 3,
         "gate_fail": 0,
         "gate_pass_rate": 100,
-        "avg_session_min": 5,
+        "avg_session_min": 4,
         "crashed": 0,
         "low_n": true
       }
