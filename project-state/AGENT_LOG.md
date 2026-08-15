@@ -22,3 +22,12 @@
 - 2026-08-02T12:42:12Z | opencode/unknown | end | task=backlog/done/TASK-092.md | gate=ok
 - 2026-08-02T23:14:04Z | opencode/unknown | end | task=none | gate=ok
 - 2026-08-02T23:29:16Z | opencode/unknown | end | task=none | gate=ok
+- 2026-08-05T21:39:01Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-08T23:53:06Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-09T00:13:17Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-09T00:37:06Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-10T13:09:16Z | unknown/unknown | checkpoint | task=none | gate= | Draft EPIC-025 for owner review; preserve the portfolio boundary and defer stack choices.
+- 2026-08-10T13:20:09Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-10T14:57:21Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-15T01:03:29Z | claude-code/unknown | checkpoint | task=none | gate= | cleanup done; writing EPIC-026 (work/ project pages) + tasks
+- 2026-08-15T01:14:10Z | claude-code/unknown | end | task=none | gate=ok

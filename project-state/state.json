@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-02T23:29:16.925Z",
+  "updated": "2026-08-15T01:28:24.825Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -39,19 +39,19 @@
     "blocked": "none"
   },
   "counts": {
-    "epics_total": 23,
-    "tasks_open": 0,
+    "epics_total": 25,
+    "tasks_open": 12,
     "tasks_in_progress": 1,
     "tasks_done": 86,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-08-02T23:29:16.983Z",
+    "updated": "2026-08-15T01:28:24.884Z",
     "min_n": 5,
     "totals": {
-      "sessions": 13,
-      "gate_pass": 13,
+      "sessions": 20,
+      "gate_pass": 20,
       "gate_fail": 0,
       "crashed": 0
     },
@@ -60,11 +60,11 @@
         "harness": "unknown",
         "model": "unknown",
         "role": "executor",
-        "sessions": 10,
-        "gate_pass": 10,
+        "sessions": 16,
+        "gate_pass": 16,
         "gate_fail": 0,
         "gate_pass_rate": 100,
-        "avg_session_min": 3,
+        "avg_session_min": 8,
         "crashed": 0,
         "low_n": false
       },
@@ -77,6 +77,18 @@
         "gate_fail": 0,
         "gate_pass_rate": 100,
         "avg_session_min": 4,
+        "crashed": 0,
+        "low_n": true
+      },
+      {
+        "harness": "claude-code",
+        "model": "unknown",
+        "role": "executor",
+        "sessions": 1,
+        "gate_pass": 1,
+        "gate_fail": 0,
+        "gate_pass_rate": 100,
+        "avg_session_min": 11,
         "crashed": 0,
         "low_n": true
       }
@@ -197,6 +209,16 @@
       "id": "EPIC-024",
       "title": "Upgrade agentic system (OS machinery) from the upstream template without losing project memory",
       "status": "done"
+    },
+    {
+      "id": "EPIC-025",
+      "title": "Client onboarding and engagement system — first usable release",
+      "status": "deferred"
+    },
+    {
+      "id": "EPIC-026",
+      "title": "Work section — real project pages composed from each project's own assets",
+      "status": "ready"
     }
   ],
   "handoff_queue": [],

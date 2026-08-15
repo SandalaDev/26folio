@@ -45,6 +45,18 @@ planning/content/.slop/
 
 # obsidian volatile UI state (per-machine; keeps re-appearing as modified)
 .obsidian/workspace.json
+.obsidian/appearance.json
+
+# scratch working directory (PDF page extracts, contact sheets, throwaway crops).
+# Files here are inputs to a session, never deliverables — keep them on disk,
+# out of history.
+/tmp/
+
+# Owner-supplied project originals, unoptimized and not web-safe (filenames with
+# spaces, 4500px PNGs, unminified SVGs). Ignored so `git add -A` can't ship 22MB
+# of raw source into the deploy. EPIC-026 TASK-093 normalizes these and commits
+# the optimized derivatives under public/images/projects/<slug>/ instead.
+/public/projects/
 
 # obsidian vault clutter — personal notes/screenshots, not project artifacts
 /Pasted image*.png
