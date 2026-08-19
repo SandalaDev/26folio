@@ -60,3 +60,28 @@ decision: Pin `yaml@2.9.0`, backed by
 
 alternatives: A caret range was rejected because unattended installs could
 silently change the OS parser.
+## 2026-08-19 — Client operations accepts card and mobile money at first release
+context: EPIC-025 TASK-106 asked the owner which payment methods a real client deposit must support. The answer selects the payment provider more than any other requirement.
+decision: The first release accepts card payments and mobile money. Bank transfer is not required for the pilot. TASK-107 must evaluate providers against both methods together, and deposit state still depends on a verified, idempotent provider event rather than a browser redirect.
+alternatives: Card only was rejected as a poor fit for regional corporate clients. Bank transfer was rejected for the first release because it makes deposit paid depend on manual reconciliation. Deferring the choice to TASK-107 was rejected because provider selection cannot start without it.
+
+## 2026-08-19 — No data residency constraint on client operations data
+context: EPIC-025 TASK-106 needed to know whether client documents and engagement data must stay in a named region before TASK-107 selects hosting and storage.
+decision: There is no data residency constraint. Any reputable hosting region is acceptable, so TASK-107 may choose providers on merit rather than on region pinning. Counsel review may still impose one later, so region remains a configuration value and not an assumption baked into code.
+alternatives: Pinning to one named region was rejected as unnecessary today. Treating residency as unknown until counsel confirms was rejected because it would narrow the provider list before any evidence justified it.
+
+## 2026-08-19 — Third-party model provider may process client operations data under no-training terms
+context: EPIC-025 TASK-106 asked whether the AI assistance described in the epic may send client documents and engagement data to a commercial model provider.
+decision: A third-party model provider may process client documents and engagement data under commercial terms that exclude training on that data. Provider selection and the terms themselves belong to TASK-107. Every AI output that could reach a client or change the engagement still requires Abe's approval, and client credentials are never collected, stored, or processed.
+alternatives: Restricting AI to owner-approved text was rejected as too weak for the extraction work the epic describes. Self-hosted or no model was rejected because it defers TASK-117 and raises the hosting requirements without a matching benefit.
+
+## 2026-08-19 — Rehearse the client operations pilot before running a real client
+context: EPIC-025 TASK-106 needed to know whether the first pilot is a named real client or a rehearsal.
+decision: Run the synthetic engagement in planning/client-ops/pilot-journey.md end to end first, then one named real client. TASK-119 validates against the rehearsal before any real engagement is exposed to the system.
+alternatives: Going straight to a real client was rejected because a first failure would happen in front of a paying client. Synthetic only was rejected because it produces no evidence about real client effort or confidence.
+
+## 2026-08-19 — Mobile money is offered to local clients only, and the interface says so
+context: EPIC-025 TASK-106 asked which currency the pilot settles in, after the owner approved card and mobile money. The owner answered that mobile money applies to local clients only.
+decision: Payment method availability follows the client organisation country recorded on the engagement. Local clients are offered mobile money, international clients are offered card, and the deposit request states which methods apply to that client rather than showing methods they cannot use. The settlement currency for card deposits is decided in TASK-107 with provider coverage evidence attached.
+alternatives: Offering both methods to every client was rejected because mobile money coverage is country specific and showing an unusable method invites a failed payment. Picking a single global settlement currency now was rejected because the provider evidence that would justify it does not exist yet.
+

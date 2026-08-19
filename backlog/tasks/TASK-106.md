@@ -2,7 +2,7 @@
 id: TASK-106
 title: "Confirm the first-release product contract and pilot journey"
 status: in-progress
-blocked: "owner decisions P6, P11, L4, L7 — payment methods, data residency, model-provider access"
+blocked: "awaiting owner read-through of planning/client-ops/; the architecture-material decisions are recorded in project-state/decisions.md"
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-025.md

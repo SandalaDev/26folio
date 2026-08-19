@@ -4,7 +4,7 @@ title: "Client operations — first-release product contract"
 epic_ref: ../../backlog/epics/EPIC-025.md
 task_ref: ../../backlog/tasks/TASK-106.md
 status: awaiting-owner-review
-owner_review: pending
+owner_review: "decisions recorded 2026-08-19; document read-through pending"
 created: 2026-08-19
 ---
 
@@ -117,6 +117,20 @@ Off-path states in the first release are `proposal expired`, `declined`,
 `ready for kickoff`, each records who ended the path and when, and none of
 them deletes the record or its evidence.
 
+### Payment methods follow the client's country
+
+The first release accepts card and mobile money, and availability is not the
+same for every client. Mobile money is offered to local clients only.
+International clients are offered card. The deposit request derives this from
+the client organisation's country on the engagement record, shows only the
+methods that client can actually use, and says in plain words why: mobile
+money is available to clients in the practice's own market.
+
+A client never sees a payment method they cannot complete. Method availability
+is engagement data, not a hard-coded branch, so adding a market later is a
+configuration change rather than a rewrite. The settlement currency for card
+deposits is decided in `TASK-107` alongside provider coverage evidence.
+
 ### Four states that must not be collapsed
 
 - **Signed** — the intended signer accepted a specific, immutable agreement
@@ -205,18 +219,22 @@ survive review are recorded durably with
 
 | # | Question | Recommended default | Owner decision | Date |
 |---|---|---|---|---|
-| P1 | Is the first pilot a named real client or a rehearsal with a synthetic engagement? | Rehearse once with the synthetic engagement in `pilot-journey.md`, then run one named real client. | | |
+| P1 | Is the first pilot a named real client or a rehearsal with a synthetic engagement? | Rehearse once with the synthetic engagement in `pilot-journey.md`, then run one named real client. | Rehearse first, then one named real client | 2026-08-19 |
 | P2 | Does this epic follow the portfolio launch baseline or interrupt it? | Keep it at P2, after the launch baseline. | | |
 | P3 | Is the 15-minute onboarding-effort hypothesis accepted as a measurement target? | Accept it as an internal target to measure in the pilot, never as a public promise. | | |
 | P4 | What is the deposit basis: fixed amount, percentage of fee, or set per proposal? | Set per proposal, with the amount stored on the engagement rather than derived in code. | | |
-| P5 | Which settlement currency does the first release support? | One settlement currency for the pilot. Other currencies stay display-only until a second is genuinely needed. | | |
-| P6 | Which payment methods must the first release accept: card, bank transfer, mobile money, or a combination? | Owner decision required before `TASK-107`. This selects the provider more than any other factor. | | |
+| P5 | Which settlement currency does the first release support? | One settlement currency for the pilot. Other currencies stay display-only until a second is genuinely needed. | Mobile money settles locally and is offered to local clients only. The card settlement currency is decided in `TASK-107` with provider coverage evidence | 2026-08-19 |
+| P6 | Which payment methods must the first release accept: card, bank transfer, mobile money, or a combination? | Owner decision required before `TASK-107`. This selects the provider more than any other factor. | Card and mobile money. Bank transfer is not required for the pilot | 2026-08-19 |
 | P7 | Do clients ever get an account, or is link-only access the permanent model? | Link-only, with a one-time code sent to the recorded email address once a link has expired. | | |
 | P8 | Does Abe approve the generated onboarding checklist before the client sees it? | Yes. `onboarding active` requires his approval. | | |
 | P9 | Is the use of AI assistance disclosed to clients? | Yes, in plain language: AI drafts internally and a human approves everything the client receives. | | |
 | P10 | What is the interface language for the first release? | English only. | | |
-| P11 | Is there a data residency requirement for client documents and engagement data? | Owner decision required before `TASK-107`. It constrains hosting and storage. | | |
+| P11 | Is there a data residency requirement for client documents and engagement data? | Owner decision required before `TASK-107`. It constrains hosting and storage. | None. Any reputable region, with region kept configurable in case counsel imposes one later | 2026-08-19 |
 | P12 | Who may a stakeholder request be delegated to: anyone with an email address, or only people the project contact names on the engagement? | Only people named on the engagement, so isolation stays provable. | | |
 
-P6 and P11 block `TASK-107`. The rest can be answered alongside it, and none
-of them may be assumed by an implementation task.
+P1, P5, P6, and P11 were answered by the owner on 2026-08-19 and are recorded
+in `project-state/decisions.md`. Nothing further blocks `TASK-107`.
+
+P4 and J2, the deposit basis and the pilot's amount, block `TASK-113` rather
+than the architecture work. The remaining rows can be answered alongside
+`TASK-107`, and none of them may be assumed by an implementation task.

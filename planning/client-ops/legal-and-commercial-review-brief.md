@@ -4,7 +4,7 @@ title: "Client operations — legal and commercial review brief"
 epic_ref: ../../backlog/epics/EPIC-025.md
 task_ref: ../../backlog/tasks/TASK-106.md
 status: awaiting-owner-review
-owner_review: pending
+owner_review: "decisions recorded 2026-08-19; document read-through pending"
 counsel_review: not-started
 created: 2026-08-19
 ---
@@ -117,11 +117,20 @@ evidence of the session.
 
 ### Payments
 
+The owner has decided the first release accepts card and mobile money, with
+mobile money offered to local clients only and the interface stating which
+methods apply.
+
 - Are there licensing, tax invoicing, or receipting requirements attached to
-  collecting a deposit in the practice's jurisdiction, and do they change per
-  payment method?
-- Do any of the expected payment methods carry obligations the product must
-  reflect in what it shows the client before payment?
+  collecting a deposit in the practice's jurisdiction, and do they change
+  between card and mobile money?
+- Does collecting local deposits by mobile money carry any registration or
+  reporting obligation the practice does not already meet?
+- Do either of these methods carry obligations the product must reflect in
+  what it shows the client before payment, such as a tax breakdown or a
+  specific receipt format?
+- Does offering different payment methods to local and international clients
+  raise any issue counsel would want changed?
 
 ## Questions for the owner
 
@@ -129,10 +138,9 @@ Commercial questions counsel cannot answer.
 
 - What is the deposit: a fixed amount, a percentage of the fee, or set per
   proposal?
-- Which currencies must the first release support, and which one is the
-  settlement currency?
-- Which payment methods are required for real clients: card, bank transfer,
-  mobile money, or a combination? This decides the provider.
+- Which currency do card deposits settle in? Local mobile money deposits
+  settle locally, and the card side is decided in `TASK-107` with provider
+  coverage evidence attached.
 - Is the deposit refundable, and under what conditions?
 - How is the invoicing entity named on invoices and receipts?
 - What are the cancellation and rescheduling terms, and what happens to a paid
@@ -171,12 +179,20 @@ Answers that cannot be deferred, because they change the shape of the system:
 | L1 | Is counsel engaged for this review, and by when? | Engage before the first real pilot, not before `TASK-107`. Architecture can proceed on configurable assumptions. | | |
 | L2 | Which jurisdiction is the practice's legal seat for these agreements? | `TBD — owner decision`. Nothing in the repository establishes this, and no task may infer it. | | |
 | L3 | Do we accept that the pilot runs on ordinary consulting agreements only? | Yes. Anything needing advanced signature or notarisation stays outside this workflow in the first release. | | |
-| L4 | Is there a data residency constraint on client documents and engagement data? | `TBD — owner decision`. Required before `TASK-107` selects hosting and storage. | | |
+| L4 | Is there a data residency constraint on client documents and engagement data? | `TBD — owner decision`. Required before `TASK-107` selects hosting and storage. | None today. Region stays configurable so counsel can impose one later without a migration | 2026-08-19 |
 | L5 | Is AI use disclosed to clients as notice, or is explicit consent captured? | Notice in the privacy statement plus a plain sentence in the client-facing experience, upgraded to consent if counsel requires it. | | |
 | L6 | What is the default retention period for engagement records and uploaded documents? | Keep for the life of the engagement plus a period counsel confirms. Make it configurable and record deletions. | | |
-| L7 | May client documents be processed by a third-party model provider? | `TBD — owner decision`, and it constrains provider selection in `TASK-107`. | | |
+| L7 | May client documents be processed by a third-party model provider? | `TBD — owner decision`, and it constrains provider selection in `TASK-107`. | Yes, under commercial terms that exclude training on the data. Terms are evidence `TASK-107` must record | 2026-08-19 |
 | L8 | Who approves client-facing legal and compliance copy? | Abe, after counsel review, with the approval recorded on the document version. | | |
 
-L4 and L7 block `TASK-107`. L2 blocks the first real pilot rather than the
-architecture work. Counsel-dependent items may stay open while architecture
-keeps them configurable, and an open item is never treated as approved.
+L4 and L7 were answered by the owner on 2026-08-19 and are recorded in
+`project-state/decisions.md`. Neither answer is a legal opinion: L4 says no
+constraint is known today, and L7 approves third-party processing on
+commercial terms. Counsel can still narrow both, which is why region and model
+provider stay configuration rather than assumptions in code.
+
+L2 blocks the first real pilot rather than the architecture work, and it is
+also the question the mobile money decision makes harder to defer, since
+payment licensing and tax invoicing follow the practice's legal seat.
+Counsel-dependent items may stay open while architecture keeps them
+configurable, and an open item is never treated as approved.

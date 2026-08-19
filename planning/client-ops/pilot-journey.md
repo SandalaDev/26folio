@@ -4,7 +4,7 @@ title: "Client operations — representative pilot journey"
 epic_ref: ../../backlog/epics/EPIC-025.md
 task_ref: ../../backlog/tasks/TASK-106.md
 status: awaiting-owner-review
-owner_review: pending
+owner_review: "decisions recorded 2026-08-19; document read-through pending"
 subject: synthetic
 created: 2026-08-19
 ---
@@ -15,7 +15,8 @@ created: 2026-08-19
 > named below, and every amount are invented for review. No real client, real
 > price, real agreement, or real payment is described here. The owner replaces
 > this with a named pilot under decision J1 in
-> [product-contract.md](product-contract.md).
+> [product-contract.md](product-contract.md). Northwind is treated as a local
+> company, which is what makes mobile money appear in its deposit request.
 
 One engagement walked end to end, so the states in
 [product-contract.md](product-contract.md) can be checked against something
@@ -23,7 +24,9 @@ concrete. The state table at the end is the direct input to
 [TASK-109](../../backlog/tasks/TASK-109.md).
 
 Money appears as `[DEPOSIT_AMOUNT]` and `[CURRENCY]` throughout. Those stay
-placeholders until the owner answers P4, P5, and P6 of the product contract.
+placeholders until the owner answers P4 of the product contract and J2 below.
+Method availability is already settled: mobile money for local clients, card
+for international ones.
 
 ## The cast
 
@@ -85,7 +88,12 @@ person who acts next.
 
 ## 4. Deposit, failed and retried
 
-Dora's first payment attempt fails. The provider reports the failure, the
+Northwind is a local company, so the deposit request offers mobile money as
+well as card, and says why mobile money is available to them. An international
+client on the same engagement type would see card only, with no mention of a
+method they cannot use. Dora chooses mobile money.
+
+Her first payment attempt fails. The provider reports the failure, the
 engagement stays in `agreement accepted`, and the failed attempt is recorded
 with the provider's reason.
 
@@ -216,8 +224,8 @@ none of them removes prior evidence.
 
 | # | Question | Recommended default | Owner decision | Date |
 |---|---|---|---|---|
-| J1 | Who is the real pilot client, and may they be named in the repository? | Rehearse with this synthetic engagement, then run one named real client whose name stays in private planning only. | | |
-| J2 | What is the deposit amount and currency for the pilot? | `TBD — owner decision`. No implementation task may invent one. | | |
+| J1 | Who is the real pilot client, and may they be named in the repository? | Rehearse with this synthetic engagement, then run one named real client whose name stays in private planning only. | Rehearse here first, then one named real client. The client is not yet chosen | 2026-08-19 |
+| J2 | What is the deposit amount and currency for the pilot? | `TBD — owner decision`. No implementation task may invent an amount. Method availability is settled: mobile money for local clients, card for international | | |
 | J3 | How long is a proposal link valid, and who may reissue it? | 14 days, reissued by Abe, with both the expiry and the reissue recorded. | | |
 | J4 | How many failed payment attempts before the system stops offering a retry and tells the client to contact Abe? | Three, then a message that names Abe as the next step. | | |
 | J5 | Does a stakeholder link expire on completion of its one request? | Yes, immediately on satisfaction, with reissue possible if the request reopens. | | |
