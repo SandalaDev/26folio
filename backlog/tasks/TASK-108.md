@@ -1,7 +1,8 @@
 ---
 id: TASK-108
 title: "Bootstrap the separate client-operations application"
-status: ready
+status: in-progress
+blocked: "non-production deployment needs owner-created Fly.io, database, storage, email and payment accounts; @types deviations and a linter need owner sign-off"
 priority: P2
 risk_level: high
 epic_ref: backlog/epics/EPIC-025.md
@@ -79,18 +80,22 @@ repository with paths and commands rather than copied configuration.
 
 ## Acceptance criteria
 
-- [ ] The application uses the exact boundary approved in TASK-107 and does not
+- [x] The application uses the exact boundary approved in TASK-107 and does not
       add auth, a database, or client routes to the static portfolio.
-- [ ] A clean checkout installs from the lockfile using documented commands.
+- [x] A clean checkout installs from the lockfile using documented commands.
 - [ ] Only approved dependencies were added; deviations were re-approved.
-- [ ] Environment validation fails clearly when values are absent and no secret
+      (Added and recorded in the application README, not yet re-approved: three
+      @types packages. `@tailwindcss/postcss@4.3.3` was already named in the
+      approved plan.)
+- [x] Environment validation fails clearly when values are absent and no secret
       is committed.
-- [ ] The baseline migration applies to an empty development database.
+- [x] The baseline migration applies to an empty development database.
 - [ ] Local development, lint, strict typecheck, unit command, and production
-      build run successfully.
-- [ ] Health/readiness is observable without disclosing configuration.
+      build run successfully. (All but lint: no linter is installed, because
+      none was in the approved dependency plan.)
+- [x] Health/readiness is observable without disclosing configuration.
 - [ ] A non-production deployment starts and reaches approved dependencies.
-- [ ] README and `application-map.md` let another model resume without chat.
+- [x] README and `application-map.md` let another model resume without chat.
 
 ## Non-goals
 
