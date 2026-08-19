@@ -31,3 +31,4 @@
 - 2026-08-10T14:57:21Z | unknown/unknown | end | task=none | gate=ok
 - 2026-08-15T01:03:29Z | claude-code/unknown | checkpoint | task=none | gate= | cleanup done; writing EPIC-026 (work/ project pages) + tasks
 - 2026-08-15T01:14:10Z | claude-code/unknown | end | task=none | gate=ok
+- 2026-08-19T21:39:25Z | claude-code/unknown | checkpoint | task=TASK-106 | gate= | TASK-106 claimed on feature/EPIC-025; writing the three planning/client-ops/ documents (product contract, pilot journey, legal+commercial review brief)

@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-15T01:28:24.825Z",
+  "updated": "2026-08-19T21:44:51.065Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -9,11 +9,11 @@
     "role": null
   },
   "current": {
-    "epic": null,
+    "epic": "EPIC-025",
     "slice": null,
-    "task": null,
-    "agent": null,
-    "branch": null,
+    "task": "TASK-106",
+    "agent": "claude-code/unknown",
+    "branch": "feature/EPIC-025",
     "session_status": "open",
     "handoff_status": "none"
   },
@@ -40,14 +40,14 @@
   },
   "counts": {
     "epics_total": 25,
-    "tasks_open": 12,
-    "tasks_in_progress": 1,
+    "tasks_open": 25,
+    "tasks_in_progress": 2,
     "tasks_done": 86,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-08-15T01:28:24.884Z",
+    "updated": "2026-08-19T21:44:51.133Z",
     "min_n": 5,
     "totals": {
       "sessions": 20,
@@ -213,7 +213,7 @@
     {
       "id": "EPIC-025",
       "title": "Client onboarding and engagement system — first usable release",
-      "status": "deferred"
+      "status": "ready"
     },
     {
       "id": "EPIC-026",

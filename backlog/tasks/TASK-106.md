@@ -1,7 +1,8 @@
 ---
 id: TASK-106
 title: "Confirm the first-release product contract and pilot journey"
-status: ready
+status: in-progress
+blocked: "owner decisions P6, P11, L4, L7 — payment methods, data residency, model-provider access"
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-025.md
