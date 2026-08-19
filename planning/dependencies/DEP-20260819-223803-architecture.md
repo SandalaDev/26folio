@@ -1,8 +1,8 @@
 ---
 id: "DEP-20260819-223803-architecture"
 mode: "architecture"
-status: "review-ready"
-human_approval: "pending"
+status: "approved"
+human_approval: "approved"
 purpose: "EPIC-025 client operations foundation"
 opensrc_cli: "0.7.2"
 created_at: "2026-08-19T22:38:03Z"
@@ -845,3 +845,51 @@ HUMAN: review the evidence and exact versions. If approved, change `status` to
 `approved` and `human_approval` to `approved`. The OS install command will
 not run this plan until then. Direct package-manager commands remain available
 because the OS does not gate pushes.
+
+## Licenses
+
+Read from the registry metadata for each exact version. Every candidate is a
+permissive licence with no copyleft obligation and no commercial-use
+restriction, so nothing in this set constrains a private, closed application.
+
+| Candidate | License |
+|---|---|
+| next@16.3.1 | MIT |
+| react@19.2.8 | MIT |
+| react-dom@19.2.8 | MIT |
+| typescript@5.9.3 | Apache-2.0 |
+| tailwindcss@4.3.3 | MIT |
+| drizzle-orm@0.45.2 | Apache-2.0 |
+| drizzle-kit@0.31.10 | MIT |
+| postgres@3.4.9 | Unlicense |
+| better-auth@1.7.1 | MIT |
+| pg-boss@12.27.0 | MIT |
+| @aws-sdk/client-s3@3.1114.0 | Apache-2.0 |
+| @aws-sdk/s3-request-presigner@3.1114.0 | Apache-2.0 |
+| postmark@5.1.0 | MIT |
+| @react-pdf/renderer@4.6.1 | MIT |
+| @anthropic-ai/sdk@0.120.0 | MIT |
+| zod@4.4.3 | MIT |
+| pino@10.3.1 | MIT |
+| @sentry/nextjs@10.70.0 | MIT |
+
+Self-hosting implications: none of these are hosted services in disguise.
+PostgreSQL 17 (PostgreSQL License) is the one server-side component the project
+runs rather than imports, and it is managed by the platform rather than
+self-operated.
+
+## Hosted services and their API versions
+
+Services are not npm packages, so their versions are the ones their own
+documentation names. Pricing is deliberately absent: every published price is a
+current estimate to confirm at `TASK-108`, not a durable fact.
+
+| Service | Version / surface | Evidence | Exit path |
+|---|---|---|---|
+| Lenco (by BroadPay) | Collections API v2.0, `POST /collections/mobile-money`, statuses `pending`/`successful`/`failed`/`pay-offline`, operators `mtn`/`airtel`/`zamtel`, currency ZMW. Webhooks signed `X-Lenco-Signature` (HMAC-SHA512 over the raw body, key derived from the API token), unacknowledged events retried hourly for 24 hours, plus a collection status requery endpoint. | Official API reference (`lenco-api.readme.io`) | Payment adapter interface; swap the implementation module. |
+| Flutterwave | v3 Zambia mobile money collections in ZMW, `charge.completed` webhook plus an independent verification endpoint. Documented as available to Zambian merchants by default. | Official developer documentation | Documented fallback adapter. |
+| Stripe | Not applicable while the invoicing entity is Zambian: Stripe's published country list does not include Zambia, and its African coverage is Côte d'Ivoire plus the Paystack extended network. | `stripe.com/global` | Becomes the international card adapter only if the entity moves to a supported country. |
+| Anthropic API | `@anthropic-ai/sdk@0.120.0`; models `claude-opus-5` and `claude-haiku-4-5`. No embeddings endpoint is published, which is why retrieval is PostgreSQL full-text search in the first release. | SDK manifest and current model reference | Model calls sit behind one module; drafts are never facts, so a provider change does not change the trust model. |
+| Cloudflare R2 | S3-compatible API, consumed through AWS SDK v3. | AWS SDK v3 client used against the S3 API surface | Any S3-compatible provider: endpoint and credentials. |
+| Postmark | Transactional API via the official `postmark@5.1.0` client. | Package manifest (ActiveCampaign) | One email module behind an interface; Resend 6.20.0 is the evaluated alternative. |
+| Fly.io | Two process groups from one image. Region note: Fly lists exactly one African region, Johannesburg, and Managed Postgres is **not** available there, so app and database run together in a European region instead of being split. | Official Fly regions reference | Standard Node container plus managed PostgreSQL; nothing in the application depends on Fly-specific APIs. |

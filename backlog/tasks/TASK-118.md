@@ -10,10 +10,10 @@ files_allowed:
   - planning/client-ops/
   - src/app/api/contact/
   - src/components/site/contact-form.tsx
-  - <application-root-from-TASK-107>/src/intake/
-  - <application-root-from-TASK-107>/src/notifications/
-  - <application-root-from-TASK-107>/src/jobs/
-  - <application-root-from-TASK-107>/tests/integration/
+  - ../sandala-client-ops/src/intake/
+  - ../sandala-client-ops/src/notifications/
+  - ../sandala-client-ops/src/jobs/
+  - ../sandala-client-ops/tests/integration/
 skill_refs: [writing-style]
 ---
 

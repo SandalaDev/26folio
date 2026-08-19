@@ -8,10 +8,10 @@ epic_ref: backlog/epics/EPIC-025.md
 progress_weight: 1
 files_allowed:
   - planning/client-ops/
-  - <application-root-from-TASK-107>/src/operator/
-  - <application-root-from-TASK-107>/src/kickoff/
-  - <application-root-from-TASK-107>/src/jobs/
-  - <application-root-from-TASK-107>/tests/operator/
+  - ../sandala-client-ops/src/operator/
+  - ../sandala-client-ops/src/kickoff/
+  - ../sandala-client-ops/src/jobs/
+  - ../sandala-client-ops/tests/operator/
 skill_refs: [writing-style]
 ---
 

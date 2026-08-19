@@ -1,8 +1,7 @@
 ---
 id: TASK-106
 title: "Confirm the first-release product contract and pilot journey"
-status: in-progress
-blocked: "awaiting owner read-through of planning/client-ops/; the architecture-material decisions are recorded in project-state/decisions.md"
+status: done
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-025.md
@@ -116,21 +115,21 @@ hand-edit generated state or pretend silence is approval.
 
 ## Acceptance criteria
 
-- [ ] The three planning documents exist and link back to EPIC-025.
-- [ ] The first release has named actors, visible permissions, states, entry and
+- [x] The three planning documents exist and link back to EPIC-025.
+- [x] The first release has named actors, visible permissions, states, entry and
       exit conditions, and explicit non-goals.
-- [ ] The representative journey covers acceptance, a failed and successful
+- [x] The representative journey covers acceptance, a failed and successful
       deposit attempt, tailored onboarding, delegation, documents, decisions,
       and kickoff readiness.
-- [ ] Every state transition identifies the event and evidence that authorises
+- [x] Every state transition identifies the event and evidence that authorises
       it; browser redirects are not treated as payment evidence.
-- [ ] Deposit, currency, sequencing, pilot identity, legal review, retention,
+- [x] Deposit, currency, sequencing, pilot identity, legal review, retention,
       and AI disclosure decisions are either owner-approved or clearly marked
       as unresolved constraints.
-- [ ] The product packet preserves the separate-product boundary and does not
+- [x] The product packet preserves the separate-product boundary and does not
       select a stack or provider.
-- [ ] Public/legal/commercial wording is identified as requiring human approval.
-- [ ] The owner can approve the packet without needing this chat for context.
+- [x] Public/legal/commercial wording is identified as requiring human approval.
+- [x] The owner can approve the packet without needing this chat for context.
 
 ## Non-goals
 

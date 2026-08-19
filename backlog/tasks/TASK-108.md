@@ -9,7 +9,7 @@ progress_weight: 1
 files_allowed:
   - planning/client-ops/
   - planning/dependencies/
-  - <application-root-from-TASK-107>/
+  - ../sandala-client-ops/
 skill_refs: [opensrc-research]
 ---
 

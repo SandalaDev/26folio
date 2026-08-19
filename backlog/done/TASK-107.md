@@ -1,7 +1,7 @@
 ---
 id: TASK-107
 title: "Research and approve the client-operations architecture"
-status: ready
+status: done
 priority: P2
 risk_level: high
 epic_ref: backlog/epics/EPIC-025.md
@@ -143,20 +143,20 @@ Record the result; OpenSrc is evidence access, not a dependency solver.
 
 ## Acceptance criteria
 
-- [ ] Every foundation category above has one selected owner or an explicit
+- [x] Every foundation category above has one selected owner or an explicit
       safe first-release fallback.
-- [ ] Exact package versions and official service API versions are recorded.
-- [ ] Engines, peers, migrations, licenses, and runtime assumptions have been
+- [x] Exact package versions and official service API versions are recorded.
+- [x] Engines, peers, migrations, licenses, and runtime assumptions have been
       cross-checked from source and official docs.
-- [ ] The plan explains authentication, client isolation, authoritative payment
+- [x] The plan explains authentication, client isolation, authoritative payment
       events, immutable agreement evidence, document storage, background jobs,
       and AI context isolation end to end.
-- [ ] Backup, restore, export, retention, and provider-exit paths are explicit.
-- [ ] Dry-run dependency resolution succeeds or conflicts are documented.
-- [ ] No package has been installed and no application has been scaffolded.
-- [ ] The owner has changed the dependency plan to the repository's approved
+- [x] Backup, restore, export, retention, and provider-exit paths are explicit.
+- [x] Dry-run dependency resolution succeeds or conflicts are documented.
+- [x] No package has been installed and no application has been scaffolded.
+- [x] The owner has changed the dependency plan to the repository's approved
       state after review.
-- [ ] TASK-108 through TASK-119 contain usable application-root focus paths,
+- [x] TASK-108 through TASK-119 contain usable application-root focus paths,
       not unresolved placeholders.
 
 ## Non-goals

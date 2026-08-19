@@ -8,12 +8,12 @@ epic_ref: backlog/epics/EPIC-025.md
 progress_weight: 1
 files_allowed:
   - planning/client-ops/
-  - <application-root-from-TASK-107>/src/acceptance/
-  - <application-root-from-TASK-107>/src/proposals/
-  - <application-root-from-TASK-107>/src/client/
-  - <application-root-from-TASK-107>/src/documents/
-  - <application-root-from-TASK-107>/migrations/
-  - <application-root-from-TASK-107>/tests/acceptance/
+  - ../sandala-client-ops/src/acceptance/
+  - ../sandala-client-ops/src/proposals/
+  - ../sandala-client-ops/src/client/
+  - ../sandala-client-ops/src/documents/
+  - ../sandala-client-ops/migrations/
+  - ../sandala-client-ops/tests/acceptance/
 skill_refs: [writing-style]
 ---
 

@@ -8,12 +8,12 @@ epic_ref: backlog/epics/EPIC-025.md
 progress_weight: 1
 files_allowed:
   - planning/client-ops/security-baseline.md
-  - <application-root-from-TASK-107>/src/auth/
-  - <application-root-from-TASK-107>/src/authorization/
-  - <application-root-from-TASK-107>/src/audit/
-  - <application-root-from-TASK-107>/src/data/
-  - <application-root-from-TASK-107>/migrations/
-  - <application-root-from-TASK-107>/tests/security/
+  - ../sandala-client-ops/src/auth/
+  - ../sandala-client-ops/src/authorization/
+  - ../sandala-client-ops/src/audit/
+  - ../sandala-client-ops/src/data/
+  - ../sandala-client-ops/migrations/
+  - ../sandala-client-ops/tests/security/
 skill_refs: []
 ---
 
