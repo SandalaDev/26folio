@@ -1,7 +1,7 @@
 ---
 id: EPIC-025
 title: "Client onboarding and engagement system — first usable release"
-status: deferred
+status: ready
 priority: P2
 risk_level: critical
 roadmap_refs: []
@@ -11,17 +11,17 @@ progress_weight: 1
 
 # Epic: Client onboarding and engagement system — first usable release
 
-## Deferred (owner decision, 2026-08-15)
+## Reactivated (owner decision, 2026-08-19)
 
-Not started. The owner deferred this epic until there is budget to take it on
-properly — it is the largest unplanned surface in the backlog (a separate
-product with auth, payments, and document authority) and slicing it costs
-real planning effort before any code exists.
+The owner explicitly reactivated this epic and approved task slicing. That
+approval authorises detailed planning; it does not silently decide the legal,
+commercial, repository, provider, or architecture questions listed below.
+`TASK-106` resolves the product decisions, and `TASK-107` produces the required
+architecture and dependency evidence before any application is scaffolded.
 
-Nothing here is cancelled and nothing is stale: the plan below stands as
-written, no tasks were created, and the `## Owner decisions before approval`
-list is still the correct entry point when it is picked up. `EPIC-026` was
-planned ahead of it and carries the current priority.
+`EPIC-026` already has active work on `feature/EPIC-026`. Do not mix EPIC-025
+implementation into that branch. When implementation begins, use one dedicated
+EPIC-025 branch in whichever repository boundary `TASK-107` records.
 
 ## Outcome
 
@@ -187,14 +187,47 @@ other formalities use a managed signing provider outside this workflow.
 
 ## Tasks
 
-No tasks are created while this epic is in draft. After owner approval, apply
-the `ds-task-slicer` skill to produce bounded tasks with acceptance criteria,
-dependencies, intent traceability, and advisory file scopes.
+Execute these tasks in order unless a task explicitly identifies a safe
+parallel path. Each task is written to be independently understandable and
+must leave its named handoff evidence in the repository.
 
-Likely slicing lanes are product and architecture evidence, the engagement
-record, acceptance and payment, client onboarding, documents and decisions,
-internal AI assistance, portfolio handoff, and validation. These are review
-prompts, not committed task boundaries.
+- [ ] TASK-106 — Confirm the first-release product contract and pilot journey.
+- [ ] TASK-107 — Research and approve the client-operations architecture.
+- [ ] TASK-108 — Bootstrap the separate client-operations application.
+- [ ] TASK-109 — Implement the canonical engagement model and state machine.
+- [ ] TASK-110 — Implement authorization, client isolation, and audit history.
+- [ ] TASK-111 — Build immutable proposal issuance and hosted review.
+- [ ] TASK-112 — Implement auditable click acceptance and acceptance receipts.
+- [ ] TASK-113 — Integrate deposit collection and verified onboarding activation.
+- [ ] TASK-114 — Build adaptive onboarding, stakeholder requests, and safe uploads.
+- [ ] TASK-115 — Build the authoritative document and decision room.
+- [ ] TASK-116 — Build Abe's operating queue and kickoff brief.
+- [ ] TASK-117 — Add evidence-grounded AI assistance with human approval.
+- [ ] TASK-118 — Connect the portfolio handoff and lifecycle notifications.
+- [ ] TASK-119 — Validate the end-to-end client journey and prepare the first pilot.
+
+### Task chain
+
+```text
+TASK-106 product contract
+  → TASK-107 architecture approval
+  → TASK-108 application foundation
+  → TASK-109 engagement model and state machine
+  → TASK-110 authorization and audit foundation
+  → TASK-111 proposal issuance
+  → TASK-112 agreement acceptance
+  → TASK-113 deposit gate
+  → TASK-114 onboarding concierge
+  → TASK-115 documents and decisions
+  → TASK-116 internal operating view
+  → TASK-117 evidence-grounded AI
+  → TASK-118 portfolio handoff and notifications
+  → TASK-119 dedicated validation and pilot readiness
+```
+
+Do not skip directly to the attractive client-facing screens. The immutable
+record, authorization boundary, and verified state transitions are what make
+those screens trustworthy.
 
 ## Dependency / Architecture Evidence
 
@@ -212,7 +245,7 @@ deployment foundation:
 
 ## Testing
 
-- recommendation: dedicated test task, created during post-approval slicing
+- recommendation: dedicated: TASK-119
 - rationale: This epic handles contract acceptance evidence, payments,
   confidential client data, document authority, access isolation, and AI-derived
   project knowledge. A failure could start unpaid work, expose another client's
@@ -227,14 +260,13 @@ deployment foundation:
   experience feels impressive; counsel review and a real pilot remain separate
   human evidence.
 
-The dedicated task is deliberately not scaffolded before the epic itself is
-approved and sliced. The owner may accept, decline, or reprioritize the testing
-recommendation with the rest of the backlog.
+`TASK-119` is normal backlog work. The owner may reprioritize it, but the epic
+must not claim pilot readiness without the evidence that task asks for.
 
-## Owner decisions before approval
+## Owner decisions resolved through TASK-106
 
-- Confirm that this system becomes a separate product boundary rather than part
-  of the static portfolio.
+- The separate product boundary is already approved: it does not add a database
+  or authenticated client area to the static portfolio.
 - Confirm whether it follows portfolio launch readiness or interrupts it; P2
   after the launch baseline is the current recommendation.
 - Approve or revise the 15-minute onboarding-effort hypothesis.
