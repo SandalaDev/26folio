@@ -1,7 +1,7 @@
 ---
 id: TASK-109
 title: "Implement the canonical engagement model and state machine"
-status: ready
+status: done
 priority: P2
 risk_level: critical
 epic_ref: backlog/epics/EPIC-025.md
@@ -89,20 +89,20 @@ must agree.
 
 ## Acceptance criteria
 
-- [ ] Schema and documentation cover the canonical entities and stable
+- [x] Schema and documentation cover the canonical entities and stable
       references without implementing later features early.
-- [ ] State changes only through typed domain operations.
-- [ ] Every transition names event, preconditions, actor, evidence, result, and
+- [x] State changes only through typed domain operations.
+- [x] Every transition names event, preconditions, actor, evidence, result, and
       duplicate-event behaviour.
-- [ ] Invalid transitions, including payment without acceptance/payment
+- [x] Invalid transitions, including payment without acceptance/payment
       evidence, fail without partial writes.
-- [ ] Duplicate domain events produce one logical result.
-- [ ] Facts preserve provenance and cannot become approved commitments through
+- [x] Duplicate domain events produce one logical result.
+- [x] Facts preserve provenance and cannot become approved commitments through
       an AI or client write alone.
-- [ ] IDs, timestamps, constraints, uniqueness, and archive semantics are
+- [x] IDs, timestamps, constraints, uniqueness, and archive semantics are
       enforced appropriately.
-- [ ] The synthetic fixture loads on a clean database.
-- [ ] Migration, domain tests, lint, strict typecheck, and build pass.
+- [x] The synthetic fixture loads on a clean database.
+- [x] Migration, domain tests, lint, strict typecheck, and build pass.
 
 ## Non-goals
 
