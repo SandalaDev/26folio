@@ -32,7 +32,7 @@ has been scaffolded.
 | Owner, 2026-08-20 | Self-hosted on a VPS through Dokploy rather than a managed platform. Development stays local for now. |
 | Owner, 2026-08-20 | PostgreSQL runs as a container the project operates, in development and in production. |
 | Owner, 2026-08-20 | The model provider must be free to use. If no free provider meets the no-training condition, the AI work is deferred rather than paid for. |
-| Owner, 2026-08-20 (later) | For the test phase, model quality outranks data handling. Provider selection optimises for the best free models; the no-training requirement returns with real client data. |
+| Owner, 2026-08-20 (later) | Model quality outranks data handling for now. Provider selection optimises for the best free models, and provider terms get revisited before real clients are onboarded. |
 | Owner, 2026-08-19 | A third-party model provider may process client documents under terms that exclude training on the data. |
 | product-contract.md | Link-only client access, expiring links, resumability, idempotent payment handling, append-only audit, export without lock-in, isolation at the data layer. |
 | product-contract.md | Credentials are never collected, stored, or processed. |
@@ -84,14 +84,14 @@ repository inherits a server-side security posture.
 | UI | React, Tailwind | `react@19.2.8`, `react-dom@19.2.8`, `tailwindcss@4.3.3` | Matches `next@16.3.1` peer ranges (`react ^18.2 || ^19`). |
 | Language tooling | TypeScript | `typescript@5.9.3` | Deliberately not `7.0.2`. TypeScript 7 is the native compiler rewrite and is one release old; a product handling payments and contract evidence should not adopt a new compiler in its first week. Re-evaluate after the pilot. |
 | Package manager | npm | npm 10.9.3, exact versions, committed lockfile | Same as the portfolio. No second package manager to learn. |
-| Database | PostgreSQL | 17 | Already installed locally. Row-level security, `jsonb`, full-text search, and advisory locks all carry weight in this design. |
+| Database | PostgreSQL | 17 | Row-level security, `jsonb`, full-text search, and advisory locks all carry weight in this design. |
 | Data access and migrations | Drizzle | `drizzle-orm@0.45.2`, `drizzle-kit@0.31.10`, `postgres@3.4.9` | SQL-first, no engine binary, migrations are plain SQL files that can carry row-level security policies. `drizzle-orm@0.45.2` lists `postgres >=3` as a peer. |
 | Operator authentication | Better Auth | `better-auth@1.7.1` | Peer ranges match this exact candidate set: `next ^14 \|\| ^15 \|\| ^16`, `react ^18 \|\| ^19`, `drizzle-orm ^0.45.2`, `drizzle-kit >=0.31.4`. |
 | Background jobs | pg-boss | `pg-boss@12.27.0` | Durable queues inside the same PostgreSQL instance. No Redis, no second datastore to back up, and jobs commit in the same transaction as the state they follow. |
 | Object storage | S3-compatible, Cloudflare R2 | `@aws-sdk/client-s3@3.1114.0`, `@aws-sdk/s3-request-presigner@3.1114.0` | Standard S3 API, presigned uploads and downloads, no egress fees. Any S3-compatible provider is a swap of endpoint and credentials. |
 | Transactional email | Postmark | `postmark@5.1.0` | The product sends few, critical messages: agreement links, receipts, reminders. Deliverability matters more than templating breadth. Resend `6.20.0` is the alternative if the owner prefers its DX. |
 | Document rendering | React PDF | `@react-pdf/renderer@4.6.1` | Produces the immutable acceptance copy in-process with no Chromium in the image. Peer range covers React 19. |
-| Model API | Google AI Studio free tier for the test phase; Groq free tier once real client data exists | no SDK; `fetch` plus `zod`, against an OpenAI-compatible endpoint | Two selections, one interface. See "Retrieval and AI" for the evidence, and note the production boot guard that keeps the test-phase provider out of production. |
+| Model API | Google AI Studio free tier | no SDK; `fetch` plus `zod`, against an OpenAI-compatible endpoint | The strongest models available free, with 1M context and multimodal input. See "Retrieval and AI" for the evidence and the trade. |
 | Validation | Zod | `zod@4.4.3` | One schema layer for request bodies, webhook payloads, and AI structured output. |
 | Logging | Pino | `pino@10.3.1` | Structured JSON logs with redaction paths for tokens and client data. |
 | Error reporting | Sentry | `@sentry/nextjs@10.70.0` | Peer range `next ^16.0.0-0`. |
@@ -249,77 +249,52 @@ payment path is a liability rather than a convenience.
 
 ## Retrieval and AI
 
-There are two provider selections here, not one, because the constraints differ
-by phase. The owner relaxed the data-handling requirement for the test phase on
-2026-08-20, ranking model quality above everything except price.
-
-### Test phase: Google AI Studio free tier
-
-**Selected: Gemini 3.7 Flash for reasoning work, a Flash-Lite for
-classification**, through the OpenAI-compatible endpoint at
-`https://generativelanguage.googleapis.com/v1beta/openai/`. Confirm the exact
-model ids in AI Studio rather than from this document; they live in
-configuration precisely because they move.
+**Selected: Google AI Studio's free tier**, through the OpenAI-compatible
+endpoint at `https://generativelanguage.googleapis.com/v1beta/openai/`. Gemini
+3.7 Flash does the reasoning work and a Flash-Lite handles classification.
+Confirm the exact model ids in AI Studio rather than from this document; they
+live in configuration precisely because they move.
 
 It wins on the axes this product actually uses:
 
 - **The strongest models anyone gives away.** Google's pricing page lists a free
-  tier on the whole current Flash line — 3.7, 3.6, 3.5, and the Flash-Lite
+  tier across the whole current Flash line — 3.7, 3.6, 3.5, and the Flash-Lite
   variants — plus Gemini 2.5 Pro. Nothing else free is in that class.
 - **A million tokens of context**, which matters when the job is reading a
   client's documents rather than answering a question.
 - **Multimodal input**, which is what a client actually uploads: scans, screen
   captures, a photographed contract.
-- **Structured output with JSON schema, function calling, and embeddings** are
-  all on the compatibility layer, so the same `fetch` call covers extraction
-  today and the `pgvector` upgrade path later.
-- **Roughly a thousand-plus requests a day** on the Flash line at free tier,
-  against a workload of a few dozen calls per engagement.
+- **Structured output with JSON schema, function calling, and embeddings** all
+  sit on the compatibility layer, so one `fetch` call covers extraction today
+  and the `pgvector` upgrade path later.
+- **A generous free daily allowance** on the Flash line, against a workload of a
+  few dozen calls per engagement.
 
-The price is data: Google's terms state that on the unpaid service it uses
-submitted content and responses to "provide, improve, and develop Google
-products and services". That is acceptable while every document in the system
-is synthetic, and only while that is true.
+**No SDK.** The endpoint is one JSON POST, called with `fetch` and validated
+with `zod`, both already in the stack. That removed `@anthropic-ai/sdk@0.120.0`
+from the approved set rather than swapping it, and it makes the provider a base
+URL and a model id in configuration — which is what keeps a future move cheap.
 
-**The boundary is enforced in code, not in a memory.** `MODEL_PROVIDER_TRAINS_ON_DATA`
-is a required environment value, and the application refuses to boot when it is
-`true` and `APP_ENV` is `production`. Flipping to a no-training provider is a
-base URL, a key, and that flag.
-
-### When real client data arrives: Groq's free tier
-
-Still the documented no-training path, and still free. Its Services Agreement
-covers fee-free usage in section 5.1, and section 4.2 states Groq "is not
-permitted to use Inputs or Outputs for training or fine-tuning any AI Model
-Services or other models, unless explicitly granted permission or instructed by
-Customer", with zero data retention available self-serve. It serves open models
-rather than a frontier closed one, so the trade at that point is quality for
-confidentiality — or a paid tier, if the pilot shows the quality gap matters.
-
-**Rejected: OpenRouter's free routes.** Two reasons, and the second one now
-outranks the first. Their data policy varies by underlying provider, so any
-guarantee depends on which backend answered; and the free catalogue no longer
-carries a strong general reasoning model, which was the only reason to consider
-it here.
+**Rejected: OpenRouter's free routes.** Their data policy varies by underlying
+provider, so any guarantee depends on which backend answered, and the free
+catalogue no longer carries a strong general reasoning model.
 
 **Rejected: GitHub Models.** It would have offered frontier models free, but
 GitHub retired the model catalogue, inference API, and BYOK entirely on
 2026-07-30.
 
-**No SDK.** The endpoint is one JSON POST, so it is called with `fetch` and
-validated with `zod`, both already in the stack. This *removes*
-`@anthropic-ai/sdk@0.120.0` from the approved set rather than swapping it, and
-it makes the provider a base URL and a model id in configuration — which is what
-keeps a future move cheap.
+**Groq's free tier stays the documented alternative.** Open models rather than a
+frontier one, in exchange for a Services Agreement that forbids training on
+inputs and outputs. Switching is a base URL and a key.
 
-**What free actually costs.** Free-tier rate limits are per-organisation and
-change without notice; treat the published numbers as current estimates, read
-them in the console, and expect roughly tens of requests per minute rather than
-hundreds. That is comfortably above this product's needs — the model work is a
-few thousand tokens per engagement, not a stream — but every model call runs in
-the worker behind a queue, so a rate limit is a retry rather than a failed
-client action. If the free tier is withdrawn, `ModelAdapter` is the seam: change
-a base URL, or turn the feature off and lose drafting, not the product.
+**What the free tier costs.** Google's terms state that on the unpaid service it
+uses submitted content and responses to "provide, improve, and develop Google
+products and services". The owner will revisit provider terms before onboarding
+real clients; until then this is the recorded position rather than an oversight.
+Rate limits are per-organisation and change without notice, so read them in AI
+Studio. Every model call runs in the worker behind a queue, which means a rate
+limit is a retry rather than a failed client action, and the adapter retries
+only 408, 429, and 5xx — retrying a 400 would burn quota for the same answer.
 
 Retrieval in the first release is **PostgreSQL full-text search scoped by
 engagement**, not a vector store. Two reasons: a vector store would add an

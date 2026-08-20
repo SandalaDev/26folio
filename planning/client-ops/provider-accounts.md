@@ -14,10 +14,10 @@ Every external account the client-operations product needs, what it does, and
 what it puts into the environment. Agents cannot create accounts, accept terms,
 or enter payment details, so every row here is owner work.
 
-Revised on 2026-08-20 after three owner decisions: self-host on a VPS through
+Revised on 2026-08-20 after four owner decisions: self-host on a VPS through
 Dokploy instead of Fly.io, run PostgreSQL as a container we operate instead of a
-managed service, and use a free model provider. Two managed services left the
-list and one VPS joined it.
+managed service, use a free model provider, and pick that provider on model
+quality. Two managed services left the list and one VPS joined it.
 
 Pricing is deliberately absent. A published price is a current estimate rather
 than a durable fact — read it at signup.
@@ -48,31 +48,29 @@ been performed.
 | 4 | **Cloudflare R2** | Two jobs now. Object storage for client uploads, agreement copies, receipts, and exports; and the off-host destination for database backups. Being a different provider from the VPS is the point — a backup on the same machine is a copy. | `STORAGE_ENDPOINT`, `STORAGE_BUCKET`, `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY` | S3-compatible, so swappable for Backblaze B2 or similar. Turn on versioning. Backups get their own write-only credentials, separate from the application's. |
 | 5 | **Postmark** | Transactional email: agreement links, one-time re-entry codes, receipts, reminders, and delivery events. | `POSTMARK_SERVER_TOKEN`, `POSTMARK_FROM` | Requires a verified sending domain with SPF and DKIM records. Account approval is manual. |
 | 6 | **DNS for `sandala.dev`** | `ops.sandala.dev` for the operator view and `clients.sandala.dev` for client links, both pointed at the VPS, plus the Postmark SPF and DKIM records. | `OPS_ORIGIN`, `CLIENT_ORIGIN` | Not a new account; wherever the domain's DNS already lives. The static portfolio is untouched. |
-| 7 | **Google AI Studio** — the test-phase model provider | Drafting, extraction, classification, comparison against the strongest models available free: the Gemini Flash line, 1M context, multimodal, JSON-schema output. Every output is a draft until a person approves it. | `MODEL_API_BASE_URL`, `MODEL_API_KEY`, `MODEL_ID_REASONING`, `MODEL_ID_CLASSIFICATION`, `MODEL_PROVIDER_TRAINS_ON_DATA=true` | Free, no card, five minutes. Google's free tier trains on what you send it, which is fine while every document is synthetic. The application refuses to boot with this flag set in production, so the boundary does not depend on anyone remembering it. |
-| 8 | **Groq** — the provider for real client data | Same role, same interface, different trade: open models rather than a frontier one, in exchange for a Services Agreement that forbids training on inputs and outputs. | Same variables, with `MODEL_PROVIDER_TRAINS_ON_DATA=false` | Free, no card. Create it whenever; switching is a base URL and a key. Enable zero data retention in the console's data controls. |
+| 7 | **Google AI Studio** — the model provider | Drafting, extraction, classification, comparison against the strongest models available free: the Gemini Flash line, 1M context, multimodal input, JSON-schema output. Every output is a draft until a person approves it. | `MODEL_API_BASE_URL`, `MODEL_API_KEY`, `MODEL_ID_REASONING`, `MODEL_ID_CLASSIFICATION` | Free, no card, five minutes at [aistudio.google.com](https://aistudio.google.com). Confirm the model ids there rather than from a document. Google's free tier trains on submitted content; provider terms get revisited before real clients are onboarded. |
 
 ## Worth having, not blocking
 
 | # | Provider | Role | Environment | Notes |
 |---|---|---|---|---|
-| 9 | **Sentry** | Error reporting, with client identifiers scrubbed before send. | `SENTRY_DSN` | Optional by design: without a DSN the app runs with no reporter rather than a broken one. Self-hosting makes it more useful, since no platform is watching the process for you. |
-| 10 | **A managed secret-sharing channel** — 1Password, Bitwarden Send, or similar | The rare case where a client secret genuinely has to move. It moves there, never through this product, and the engagement records only that the handoff happened. | — | You may already have one. If so, name it and it stops being an open item. |
+| 8 | **Sentry** | Error reporting, with client identifiers scrubbed before send. | `SENTRY_DSN` | Optional by design: without a DSN the app runs with no reporter rather than a broken one. Self-hosting makes it more useful, since no platform is watching the process for you. |
+| 9 | **A managed secret-sharing channel** — 1Password, Bitwarden Send, or similar | The rare case where a client secret genuinely has to move. It moves there, never through this product, and the engagement records only that the handoff happened. | — | You may already have one. If so, name it and it stops being an open item. |
 
 ## Conditional or later
 
 | # | Provider | Role | Trigger |
 |---|---|---|---|
-| 11 | **Managed e-signature provider** | Agreements click acceptance does not suit — assignments of IP, anything needing notarisation or witnessing. The epic routes these outside this workflow. | When counsel names an agreement type that needs it (`L3` in the legal brief). |
-| 12 | **Flutterwave** | Documented fallback payment adapter: Zambian mobile money in ZMW with webhook plus independent verification. | If Lenco's onboarding, fees, or settlement terms do not suit. |
-| 13 | **Stripe** | International card rail. | Only if the invoicing entity moves to a country Stripe supports. It does not support Zambian businesses, so this follows `L2` rather than preference. |
-| 14 | **A paid model provider** | Frontier model quality *and* no training on the data, which no free tier offers together. | If the test phase shows Groq's open models are not good enough for real client work. Answering that is part of what the test phase is for. |
+| 10 | **Managed e-signature provider** | Agreements click acceptance does not suit — assignments of IP, anything needing notarisation or witnessing. The epic routes these outside this workflow. | When counsel names an agreement type that needs it (`L3` in the legal brief). |
+| 11 | **Flutterwave** | Documented fallback payment adapter: Zambian mobile money in ZMW with webhook plus independent verification. | If Lenco's onboarding, fees, or settlement terms do not suit. |
+| 12 | **Stripe** | International card rail. | Only if the invoicing entity moves to a country Stripe supports. It does not support Zambian businesses, so this follows `L2` rather than preference. |
+| 13 | **A different model provider** | No training on submitted content, which the free tier does not offer. Groq's free tier forbids it on open models; a paid tier buys it on frontier ones. | Before real clients are onboarded, when provider terms get revisited. Switching is a base URL and a key. |
 
 ## Order to work through them
 
 1. **Lenco** — start now, finish last. Business verification is the long pole.
-2. **Google AI Studio** — five minutes, free, no card, and it unblocks the AI
-   work with the best models anyone gives away. **Groq** the same, whenever: it
-   is what the system switches to before a real client's documents exist.
+2. **Google AI Studio** — five minutes, free, no card, and the model adapter
+   is already written against it.
 3. **GitHub repo** — unblocks pushing the code that already exists locally.
 4. **VPS, then Dokploy on it** — `TASK-120`. Development stays local until this
    exists, so nothing is blocked meanwhile.
