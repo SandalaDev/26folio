@@ -1,7 +1,7 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-08-20T18:08:44.089Z",
+  "updated": "2026-08-20T18:42:43.309Z",
   "updated_by": "agent",
   "actor": {
     "harness": null,
@@ -11,7 +11,7 @@
   "current": {
     "epic": "EPIC-025",
     "slice": null,
-    "task": "TASK-113",
+    "task": "TASK-114",
     "agent": "claude-code/unknown",
     "branch": "feature/EPIC-025",
     "session_status": "open",
@@ -40,14 +40,14 @@
   },
   "counts": {
     "epics_total": 25,
-    "tasks_open": 19,
+    "tasks_open": 18,
     "tasks_in_progress": 2,
-    "tasks_done": 93,
+    "tasks_done": 94,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-08-20T18:08:44.163Z",
+    "updated": "2026-08-20T18:42:43.373Z",
     "min_n": 5,
     "totals": {
       "sessions": 20,

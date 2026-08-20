@@ -1,7 +1,7 @@
 ---
 id: TASK-114
 title: "Build adaptive onboarding, stakeholder requests, and safe uploads"
-status: ready
+status: done
 priority: P2
 risk_level: high
 epic_ref: backlog/epics/EPIC-025.md
@@ -111,24 +111,24 @@ while directing the actual secret through an approved external secure flow.
 
 ## Acceptance criteria
 
-- [ ] Payment activation creates exactly one scope-derived onboarding plan.
-- [ ] The pilot receives only applicable requests with reason, example, effort,
+- [x] Payment activation creates exactly one scope-derived onboarding plan.
+- [x] The pilot receives only applicable requests with reason, example, effort,
       essential/optional status, and one obvious next action.
-- [ ] Known facts are prefilled with provenance and client corrections do not
+- [x] Known facts are prefilled with provenance and client corrections do not
       silently overwrite approved commitments.
-- [ ] Saved progress survives refresh, session expiry, and interrupted uploads.
-- [ ] A delegate is limited to the assigned request; revocation/reassignment is
+- [x] Saved progress survives refresh, session expiry, and interrupted uploads.
+- [x] A delegate is limited to the assigned request; revocation/reassignment is
       immediate and auditable.
-- [ ] Files remain private, scoped, validated/scanned or quarantined, hashed,
+- [x] Files remain private, scoped, validated/scanned or quarantined, hashed,
       and inaccessible across clients.
-- [ ] The product blocks ordinary secret/credential submission and tracks only
+- [x] The product blocks ordinary secret/credential submission and tracks only
       secure-access status.
-- [ ] Optional items do not block readiness; incomplete/rejected essential items
+- [x] Optional items do not block readiness; incomplete/rejected essential items
       do.
-- [ ] Completion advances state once and explains what happens next.
-- [ ] Mobile, keyboard, screen-reader, error, empty, and long-content states are
+- [x] Completion advances state once and explains what happens next.
+- [x] Mobile, keyboard, screen-reader, error, empty, and long-content states are
       usable.
-- [ ] Onboarding/upload tests, lint, strict typecheck, migrations, and build pass.
+- [x] Onboarding/upload tests, lint, strict typecheck, migrations, and build pass.
 
 ## Non-goals
 
