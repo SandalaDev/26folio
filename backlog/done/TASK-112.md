@@ -1,7 +1,7 @@
 ---
 id: TASK-112
 title: "Implement auditable click acceptance and acceptance receipts"
-status: ready
+status: done
 priority: P2
 risk_level: critical
 epic_ref: backlog/epics/EPIC-025.md
@@ -93,23 +93,23 @@ retried, but the client must see an honest status.
 
 ## Acceptance criteria
 
-- [ ] The agreement control starts unchecked and the final action clearly
+- [x] The agreement control starts unchecked and the final action clearly
       communicates intent to accept/sign.
-- [ ] Acceptance is allowed only for the authenticated intended signer and the
+- [x] Acceptance is allowed only for the authenticated intended signer and the
       current eligible agreement version.
-- [ ] The record binds identity/authority fields, exact wording, immutable
+- [x] The record binds identity/authority fields, exact wording, immutable
       version/hash, timestamp, correlation, and approved security evidence.
-- [ ] A stale, superseded, altered, expired, revoked, cross-client, or ineligible
+- [x] A stale, superseded, altered, expired, revoked, cross-client, or ineligible
       agreement cannot be accepted.
-- [ ] Double clicks, retries, and concurrent requests create one acceptance and
+- [x] Double clicks, retries, and concurrent requests create one acceptance and
       one logical state transition.
-- [ ] Acceptance receipt and immutable copy match the accepted hash and are
+- [x] Acceptance receipt and immutable copy match the accepted hash and are
       recoverable if rendering/email initially fails.
-- [ ] Payment is shown only after authoritative acceptance, but no payment state
+- [x] Payment is shown only after authoritative acceptance, but no payment state
       is changed in this task.
-- [ ] Keyboard, screen-reader, mobile, error, and interrupted-session behaviour
+- [x] Keyboard, screen-reader, mobile, error, and interrupted-session behaviour
       is clear and usable.
-- [ ] Acceptance/audit tests, lint, strict typecheck, migrations, and build pass.
+- [x] Acceptance/audit tests, lint, strict typecheck, migrations, and build pass.
 
 ## Non-goals
 
