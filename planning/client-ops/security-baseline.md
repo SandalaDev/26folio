@@ -10,6 +10,13 @@ created: 2026-08-19
 
 # Security baseline
 
+> Implemented since 2026-08-20 (TASK-110): link grants stored as SHA-256
+> digests with purpose, expiry, and revocation; one deny-by-default policy in
+> `src/auth/policy.ts`; row-level security on a non-owning `app_client` role
+> keyed to a per-transaction engagement scope; and an append-only audit table
+> with a redaction pass. Operator sign-in is Better Auth with public sign-up
+> disabled. What follows is the standard; the code is where it is met.
+
 The rules every EPIC-025 implementation task inherits. They exist because this
 product holds contract acceptance evidence, payment state, confidential client
 material, and model-derived context for more than one client at a time.

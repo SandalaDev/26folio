@@ -1,7 +1,7 @@
 ---
 id: TASK-110
 title: "Implement authorization, client isolation, and audit history"
-status: ready
+status: done
 priority: P2
 risk_level: critical
 epic_ref: backlog/epics/EPIC-025.md
@@ -97,22 +97,22 @@ access hooks for TASK-114 and TASK-115 without exposing public bucket keys.
 
 ## Acceptance criteria
 
-- [ ] Operator and client identities use the approved authentication method.
-- [ ] Client access tokens are purpose-bound, expiring, revocable, safely
+- [x] Operator and client identities use the approved authentication method.
+- [x] Client access tokens are purpose-bound, expiring, revocable, safely
       stored, and cannot be replayed beyond approved behaviour.
-- [ ] Authorization is centralized, deny-by-default, and applies equally to UI,
+- [x] Authorization is centralized, deny-by-default, and applies equally to UI,
       APIs, jobs, storage, exports, and future AI retrieval.
-- [ ] A person assigned to Client A cannot read, enumerate, mutate, search,
+- [x] A person assigned to Client A cannot read, enumerate, mutate, search,
       download, or infer Client B's data even with known IDs.
-- [ ] Revoked or expired access fails without changing data.
-- [ ] Audit events are append-only through application interfaces, attributable,
+- [x] Revoked or expired access fails without changing data.
+- [x] Audit events are append-only through application interfaces, attributable,
       scoped, correlated, timestamped, and free of secrets.
-- [ ] Domain state changes from TASK-109 emit audit events without breaking
+- [x] Domain state changes from TASK-109 emit audit events without breaking
       idempotency.
-- [ ] Security-focused tests cover positive access, cross-client denial,
+- [x] Security-focused tests cover positive access, cross-client denial,
       revoked/expired links, token replay, identifier guessing, and storage
       access.
-- [ ] Lint, strict typecheck, migrations, tests, and build pass.
+- [x] Lint, strict typecheck, migrations, tests, and build pass.
 
 ## Non-goals
 

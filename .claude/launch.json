@@ -2,9 +2,14 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "next-dev",
+      "name": "client-ops",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "../sandala-client-ops",
+        "run",
+        "dev"
+      ],
       "port": 3000,
       "autoPort": true
     }
