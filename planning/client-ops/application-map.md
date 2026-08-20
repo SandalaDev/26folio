@@ -66,11 +66,23 @@ Run from the application repository root.
 - Environment validation fails with a readable list rather than a stack trace.
 - Three unit tests pass on Node's built-in runner.
 
+## Deployment
+
+Self-hosted since 2026-08-20. `deploy/docker-compose.yml` in the application
+repository is the Dokploy stack: `web`, `worker`, and a pinned `postgres:17`
+with a persistent volume, behind Traefik for TLS, on one VPS in a Johannesburg
+datacentre.
+
+Nothing is provisioned yet, and development stays local until it is. `TASK-120`
+provisions the host, hardens it, and — the part that decides whether this is
+safe to run — builds backups and performs a restore.
+
 ## What it did not prove
 
-No deployment exists. The Fly.io app, managed PostgreSQL, object storage
-bucket, Postmark server, and Lenco credentials all require owner accounts, so
-the "non-production deployment" acceptance criterion in `TASK-108` is open.
+No deployment exists. The VPS, object storage bucket, Postmark server, Lenco
+credentials, and Groq key all require owner accounts, so the "non-production
+deployment" acceptance criterion in `TASK-108` is open and now belongs to
+`TASK-120`.
 
 There is no linter or formatter, because neither was in the approved dependency
 plan and adding one is a plan amendment rather than an install.

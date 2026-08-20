@@ -205,6 +205,7 @@ must leave its named handoff evidence in the repository.
 - [ ] TASK-117 — Add evidence-grounded AI assistance with human approval.
 - [ ] TASK-118 — Connect the portfolio handoff and lifecycle notifications.
 - [ ] TASK-119 — Validate the end-to-end client journey and prepare the first pilot.
+- [ ] TASK-120 — Provision and harden the self-hosted VPS, with a proven restore.
 
 ### Task chain
 
@@ -224,6 +225,10 @@ TASK-106 product contract
   → TASK-118 portfolio handoff and notifications
   → TASK-119 dedicated validation and pilot readiness
 ```
+
+TASK-120 runs alongside the chain rather than inside it. It was created on
+2026-08-20 when the owner replaced the managed platform with a self-hosted VPS,
+and it gates the first real client rather than the build.
 
 Do not skip directly to the attractive client-facing screens. The immutable
 record, authorization boundary, and verified state transitions are what make

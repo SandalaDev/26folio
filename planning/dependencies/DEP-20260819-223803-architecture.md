@@ -893,3 +893,53 @@ current estimate to confirm at `TASK-108`, not a durable fact.
 | Cloudflare R2 | S3-compatible API, consumed through AWS SDK v3. | AWS SDK v3 client used against the S3 API surface | Any S3-compatible provider: endpoint and credentials. |
 | Postmark | Transactional API via the official `postmark@5.1.0` client. | Package manifest (ActiveCampaign) | One email module behind an interface; Resend 6.20.0 is the evaluated alternative. |
 | Fly.io | Two process groups from one image. Region note: Fly lists exactly one African region, Johannesburg, and Managed Postgres is **not** available there, so app and database run together in a European region instead of being split. | Official Fly regions reference | Standard Node container plus managed PostgreSQL; nothing in the application depends on Fly-specific APIs. |
+
+## Amendment — 2026-08-20
+
+The owner changed three infrastructure choices after this plan was approved.
+Recorded here rather than in a new plan, because only one of the three touches
+the package set.
+
+### Removed: `@anthropic-ai/sdk@0.120.0`
+
+The model provider moved from Anthropic to Groq's free tier, which speaks the
+OpenAI-compatible chat completions surface. That endpoint is a single JSON POST,
+so it is called with `fetch` and validated with `zod@4.4.3`, already in this
+plan. The SDK is removed and nothing replaces it.
+
+A removal needs no new compatibility evidence: it cannot introduce a peer
+conflict, an engine floor, or a licence obligation. The resolver was re-run
+after the change and the remaining seventeen packages install cleanly; the
+application's typecheck, tests, and production build all pass without it.
+
+`zod@4.4.3` was previously justified in part by the Anthropic SDK's declared
+peer range. That justification is gone, and zod stays on its own merits as the
+single validation layer at every trust boundary.
+
+**Provider evidence.** Groq's Services Agreement covers fee-free usage in
+section 5.1 and states in section 4.2 that Groq "is not permitted to use Inputs
+or Outputs for training or fine-tuning any AI Model Services or other models,
+unless explicitly granted permission or instructed by Customer", with zero data
+retention available self-serve. Google's free Gemini tier was rejected on its own
+terms, which state that on the unpaid service Google uses submitted content and
+generated responses to improve and develop its products. OpenRouter's free routes
+were rejected because their data policy varies by underlying provider.
+
+### Unchanged by the hosting move
+
+Hosting moved from Fly.io to a self-hosted VPS running Dokploy, and PostgreSQL
+from a managed service to a pinned `postgres:17` container the project operates.
+Neither is an npm package, so the remaining candidates and their compatibility
+matrix stand exactly as approved. `pg-boss@12.27.0` still sets the Node floor at
+22.12.0, and PostgreSQL 17 is still the database — it is now a container we run
+rather than one somebody else runs.
+
+The obligations that move creates are operational rather than dependency-shaped:
+WAL archiving, off-host backups, a restore that has been performed, and host
+hardening. They are `TASK-120`.
+
+### Status
+
+The plan stays approved. This amendment removes a package and changes no
+version, so it does not reopen the review; the decisions behind it are recorded
+in `project-state/decisions.md` under 2026-08-20.

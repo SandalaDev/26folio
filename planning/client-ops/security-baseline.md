@@ -123,9 +123,12 @@ that pointless; it makes the log useful the first time there is a second.
 
 ## Encryption
 
-- TLS everywhere, HSTS on both hostnames, no mixed content.
-- Encryption at rest for the database and object storage, provided by the
-  platform and confirmed at `TASK-108` rather than assumed.
+- TLS everywhere, HSTS on both hostnames, no mixed content. Traefik under
+  Dokploy issues and renews the certificates; renewal failure is an alert, not
+  something discovered by a client.
+- Encryption at rest is ours now, not a platform's. The database volume and the
+  backup destination are both encrypted, and `TASK-120` states which mechanism
+  provides it rather than assuming the VPS disk is enough.
 - Hashing where verification beats retrieval: link tokens (SHA-256), documents
   (SHA-256 over the stored bytes), one-time codes.
 - No home-grown cryptography, no self-hosted signature service, and no attempt
@@ -147,15 +150,46 @@ that pointless; it makes the log useful the first time there is a second.
    is a recorded no-op.
 6. Scheduled reconciliation catches events that never arrived at all.
 
+## Host and control plane
+
+New with the move to a self-hosted VPS. None of it existed when a managed
+platform owned the machine.
+
+- **The Dokploy dashboard is the most valuable credential in the system.** It
+  holds every environment secret and can deploy arbitrary code. It gets a strong
+  unique password, a second factor where supported, and it is not exposed to the
+  open internet on a guessable hostname without at least IP restriction. Treat a
+  compromise of it as a compromise of everything.
+- **SSH by key only.** No password authentication, no root login, and the key
+  lives on one machine.
+- **The firewall closes everything except 80, 443, and SSH.** Postgres is
+  reachable only over the Docker network; it never gets a published port on the
+  host, because a published Postgres port is how a self-hosted database becomes
+  a public one.
+- **Unattended security updates on**, with a scheduled window for anything that
+  needs a reboot.
+- **One host, one purpose.** Nothing unrelated to this product runs on it.
+- **Container images are pinned**, including `postgres:17`. A floating tag turns
+  a redeploy into an unplanned upgrade.
+
 ## Backups and recovery
 
-- Managed PostgreSQL point-in-time recovery, plus a nightly logical dump written
-  to a bucket with its own credentials, so one compromised key cannot destroy
-  both the database and its backups.
+Self-hosting moved this section from "configure a managed feature" to "build and
+prove a mechanism". It is the largest single obligation the VPS decision
+created, and `TASK-120` owns it.
+
+- Continuous WAL archiving plus a nightly logical dump, both written off the
+  host to object storage. The backup credentials can write and cannot delete, so
+  one compromised key cannot destroy the database and its history together.
+- The backup destination is a different provider from the host. A backup on the
+  same machine is a copy, not a backup.
+- Backups are monitored. A backup job that silently stopped three weeks ago is
+  the normal way this fails.
 - Object storage versioning on, with lifecycle rules that keep authoritative
   documents beyond the retention floor counsel confirms.
-- A restore drill before the first real client, then quarterly. An untested
-  backup is a belief, not a backup.
+- A restore drill into a scratch database before the first real client, then
+  quarterly. An untested backup is a belief, not a backup. Until one has passed,
+  the system holds no real client data.
 - Per-engagement export produces structured JSON plus the original documents.
   It is both the client's export right and the product's exit path.
 
@@ -183,8 +217,12 @@ A runbook lives in the application repository and covers, at minimum:
   the isolation guarantee.
 - **Bad payment state.** Reconcile from the provider's records, never from our
   own assumption, and record the correction as an event.
-- **Data loss.** Restore from point-in-time recovery, verify against the event
-  history, and report what was lost to the affected client.
+- **Data loss.** Restore from the archived WAL and the latest dump, verify
+  against the event history, and report what was lost to the affected client.
+- **Host compromise.** Assume every secret on the machine is gone. Rebuild the
+  host from scratch rather than cleaning it, rotate every credential the
+  environment held, restore data from backup, and only then reopen the client
+  surface.
 
 Client notification wording is human-approved copy. It is drafted in advance,
 not written during an incident.
@@ -197,3 +235,6 @@ not written during an incident.
   visibility.
 - It assumes one operator. A second internal user changes the authorization
   model and requires this document to be revised first.
+- It assumes one host, which is one failure domain. Self-hosting trades a
+  managed platform's redundancy for control, and the compensating control is a
+  proven restore rather than a second machine.

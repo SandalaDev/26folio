@@ -29,6 +29,9 @@ has been scaffolded.
 | EPIC-025 | Separate private product. No database, auth, or client data added to `sandala.dev`. |
 | Owner, 2026-08-19 | Card and mobile money. Mobile money offered to local clients only, and the interface says which methods apply. |
 | Owner, 2026-08-19 | No data residency constraint. Region stays configurable. |
+| Owner, 2026-08-20 | Self-hosted on a VPS through Dokploy rather than a managed platform. Development stays local for now. |
+| Owner, 2026-08-20 | PostgreSQL runs as a container the project operates, in development and in production. |
+| Owner, 2026-08-20 | The model provider must be free to use. If no free provider meets the no-training condition, the AI work is deferred rather than paid for. |
 | Owner, 2026-08-19 | A third-party model provider may process client documents under terms that exclude training on the data. |
 | product-contract.md | Link-only client access, expiring links, resumability, idempotent payment handling, append-only audit, export without lock-in, isolation at the data layer. |
 | product-contract.md | Credentials are never collected, stored, or processed. |
@@ -87,25 +90,30 @@ repository inherits a server-side security posture.
 | Object storage | S3-compatible, Cloudflare R2 | `@aws-sdk/client-s3@3.1114.0`, `@aws-sdk/s3-request-presigner@3.1114.0` | Standard S3 API, presigned uploads and downloads, no egress fees. Any S3-compatible provider is a swap of endpoint and credentials. |
 | Transactional email | Postmark | `postmark@5.1.0` | The product sends few, critical messages: agreement links, receipts, reminders. Deliverability matters more than templating breadth. Resend `6.20.0` is the alternative if the owner prefers its DX. |
 | Document rendering | React PDF | `@react-pdf/renderer@4.6.1` | Produces the immutable acceptance copy in-process with no Chromium in the image. Peer range covers React 19. |
-| Model API | Anthropic | `@anthropic-ai/sdk@0.120.0`, `claude-opus-5` for drafting and extraction, `claude-haiku-4-5` for cheap classification | Owner approved third-party processing under no-training terms. |
+| Model API | Groq free tier, OpenAI-compatible endpoint | no SDK; `fetch` plus `zod` | Free tier, and its Services Agreement covers free usage and forbids training on inputs or outputs. See "Retrieval and AI" below for the evidence and the limits. |
 | Validation | Zod | `zod@4.4.3` | One schema layer for request bodies, webhook payloads, and AI structured output. |
 | Logging | Pino | `pino@10.3.1` | Structured JSON logs with redaction paths for tokens and client data. |
 | Error reporting | Sentry | `@sentry/nextjs@10.70.0` | Peer range `next ^16.0.0-0`. |
-| Hosting | Fly.io, two process groups from one image | — | `web` runs Next.js, `worker` runs pg-boss. A serverless-only host cannot run a durable worker, and the worker is what makes payment reconciliation and reminders reliable. |
-| Managed database | Fly Managed Postgres, or Neon | — | Confirm during `TASK-108`; see the region note below. |
+| Hosting | One VPS running Dokploy | — | Dokploy is a self-hosted deployment layer over Docker and Traefik: it builds from the repository's Dockerfile, runs the `web` and `worker` services, manages environment secrets, and terminates TLS. A serverless host was never an option because the worker must be long-lived. |
+| Database hosting | PostgreSQL 17 container on the same VPS, with a persistent volume | — | The same image development already runs, so there is one Postgres version across every environment. Backups are ours; see "Failure, retry, and recovery". |
 
 ### Region
 
-Fly.io lists exactly one African region, Johannesburg (`jnb`), and Johannesburg
-is one of the regions where Managed Postgres is **not** available. Running the
-application close to Zambian clients would therefore split the app and its
-database across regions, which is the wrong trade for a form-driven product.
+**Johannesburg.** The application and its database run on one VPS in a
+Johannesburg datacentre, which is the closest commonly available region to
+Zambian clients.
 
-**Recommendation: run app and database in one European region (`fra`) for the
-first release.** The owner recorded no residency constraint, so this is legal;
-the cost is round-trip latency for local clients on pages that are mostly form
-submissions. Revisit only if the pilot shows it matters, and then with a
-database story that matches the app region rather than by splitting them.
+This is the one place where self-hosting is strictly better than the managed
+plan it replaced. Fly.io has exactly one African region, Johannesburg, and it
+is one of the regions where Fly's Managed Postgres is not available — so the
+managed design had to put app and database together in Europe and accept the
+latency, or split them across regions and accept something worse. Operating our
+own Postgres container removes that constraint entirely: both halves sit in
+Johannesburg, on the same host, on the same Docker network.
+
+The trade taken in exchange is real and is priced in the next section but one:
+point-in-time recovery, patching, and host security stop being someone else's
+job.
 
 ## Component responsibilities
 
@@ -123,7 +131,8 @@ this kind of system rots.
 | Payment gateway | Checkout, collection, and the provider's own record | Our payment state. The engagement moves to `deposit paid` only after we verify a signed event **and** requery the provider. |
 | pg-boss | Delivery, retry, scheduling | Idempotency. Every handler is safe to run twice, keyed on a business identifier. |
 | Postgres full-text search | Finding approved engagement material | Truth. Retrieval results cite records; the record is the authority. |
-| Anthropic model API | Draft text, extraction, classification, comparison | Facts. Every output is a draft with `approved_by` null until Abe approves it. |
+| Model provider | Draft text, extraction, classification, comparison | Facts. Every output is a draft with `approved_by` null until Abe approves it. |
+| Dokploy | Building images, running the two services, holding environment secrets, issuing TLS certificates | The application's correctness or its data. It is a deployment layer with deploy rights, which is why its dashboard is treated as a production secret in the security baseline. |
 | Postmark | Message delivery and delivery events | Whether a client acted. Only our recorded events say that. |
 
 ## Trust boundaries
@@ -185,9 +194,17 @@ approved it and when.
   agreement link raises an operator alert rather than dying silently.
 - **Interrupted client flow:** every multi-step form saves partial state against
   the engagement, keyed to the link, and resumes.
-- **Database restore:** managed point-in-time recovery plus a nightly logical
-  dump written to a separate bucket with separate credentials. A restore drill
-  runs before the first real client and quarterly after that.
+- **Database restore:** ours to build, and the single largest cost of
+  self-hosting. Continuous WAL archiving plus a nightly logical dump, both
+  written off the host to object storage with credentials that cannot delete
+  what they wrote. A restore into a scratch database runs before the first real
+  client and quarterly after that. Until that exists, the system holds no real
+  client data. `TASK-120` owns it.
+- **Host failure:** one VPS is one failure domain. Recovery is rebuild from the
+  repository plus restore from backup, which is exactly why the restore drill is
+  not optional. Accepted for a first release with one operator and a handful of
+  engagements; revisit before the product carries a client's only copy of
+  anything.
 - **Provider exit:** payments sit behind an adapter interface; storage is the S3
   API; email is one module; documents are files plus hashes. The engagement
   export is JSON plus the original documents, which is the real exit path.
@@ -231,31 +248,72 @@ payment path is a liability rather than a convenience.
 
 ## Retrieval and AI
 
-`claude-opus-5` handles drafting, extraction, and comparison; `claude-haiku-4-5`
-handles cheap classification. Both are called through `@anthropic-ai/sdk@0.120.0`
-with adaptive thinking.
+The owner requires a free provider, and the standing condition from 2026-08-19
+is that no provider may train on client data. Those two together disqualify most
+free tiers, so the selection is evidence rather than preference.
+
+**Selected: Groq's free tier**, called through its OpenAI-compatible chat
+completions endpoint.
+
+- Groq's Services Agreement covers free usage explicitly: section 5.1 describes
+  services "designated as fee-free or otherwise available without triggering a
+  payment", so the agreement's data terms apply to the free tier rather than
+  only to paying customers.
+- Section 4.2 states Groq "is not permitted to use Inputs or Outputs for
+  training or fine-tuning any AI Model Services or other models, unless
+  explicitly granted permission or instructed by Customer", and a zero data
+  retention setting is available self-serve.
+
+**Rejected: Google's Gemini free tier.** Its API terms are explicit that on the
+unpaid service Google uses submitted content and generated responses to
+"provide, improve, and develop Google products and services". That is precisely
+the condition the owner set against. The paid tier does not train, but it is not
+free.
+
+**Rejected for now: OpenRouter's free model routes.** They forward to underlying
+providers whose data policies vary per route, so "no training" would have to be
+re-established every time a route changed. A guarantee that depends on which
+backend answered is not a guarantee.
+
+**No SDK.** The endpoint is one JSON POST, so it is called with `fetch` and
+validated with `zod`, both already in the stack. This *removes*
+`@anthropic-ai/sdk@0.120.0` from the approved set rather than swapping it, and
+it makes the provider a base URL and a model id in configuration — which is what
+keeps a future move cheap.
+
+**What free actually costs.** Free-tier rate limits are per-organisation and
+change without notice; treat the published numbers as current estimates, read
+them in the console, and expect roughly tens of requests per minute rather than
+hundreds. That is comfortably above this product's needs — the model work is a
+few thousand tokens per engagement, not a stream — but every model call runs in
+the worker behind a queue, so a rate limit is a retry rather than a failed
+client action. If the free tier is withdrawn, `ModelAdapter` is the seam: change
+a base URL, or turn the feature off and lose drafting, not the product.
 
 Retrieval in the first release is **PostgreSQL full-text search scoped by
-engagement**, not a vector store. Two reasons: Anthropic publishes no embeddings
-endpoint, so vectors would add a second model provider and a second processing
-agreement for a corpus that is small per engagement; and full-text search over
-an engagement's approved material is enough to cite sources. `pgvector` is the
-documented upgrade path when a real corpus justifies it, and the isolation rule
-does not change: retrieval takes an engagement scope or it does not run.
+engagement**, not a vector store. Two reasons: a vector store would add an
+embeddings provider and a second data-processing relationship for a corpus that
+is small per engagement; and full-text search over an engagement's approved
+material is enough to cite sources. `pgvector` is the documented upgrade path
+when a real corpus justifies it, and the isolation rule does not change:
+retrieval takes an engagement scope or it does not run.
 
 ## Observability, secrets, and cost
 
 - **Logs:** pino JSON with redaction paths covering link tokens, session
   cookies, provider signatures, and client contact details.
 - **Errors:** Sentry, with client identifiers scrubbed before send.
-- **Metrics:** the platform's own, plus the engagement event history, which
-  answers the questions the pilot actually asks.
-- **Secrets:** the platform secret store, one set per environment, rotated when
-  anyone with access changes. No secret in the repository, no production secret
-  on a developer machine.
-- **Cost:** platform, database, storage, email, and model usage are all
-  usage-priced and small at pilot volume. Treat every published price as a
-  current estimate to confirm at `TASK-108`, not a durable fact.
+- **Metrics:** Docker and host metrics from the VPS, plus the engagement event
+  history, which answers the questions the pilot actually asks. Nobody else is
+  watching the host now, so disk and memory alerts matter more than they would
+  on a managed platform.
+- **Secrets:** Dokploy's environment store, one set per environment, rotated
+  when anyone with access changes. No secret in the repository, no production
+  secret on a developer machine. Dokploy itself holds every secret and can
+  deploy, so its own access is the most valuable credential in the system.
+- **Cost:** one VPS is the fixed cost. Storage, email, and payments stay
+  usage-priced, and the model provider is free at this volume. Treat every
+  published price as a current estimate, not a durable fact.
 
 ## Implementation sequence
 
@@ -273,11 +331,15 @@ does not change: retrieval takes an engagement scope or it does not run.
 | TASK-117 | Retrieval, drafting, approval workflow. |
 | TASK-118 | Portfolio handoff and lifecycle notifications. |
 | TASK-119 | End-to-end validation and pilot readiness. |
+| TASK-120 | Self-hosted operations: VPS and Dokploy provisioning, backups, a proven restore, host hardening. Created by the move off a managed platform. It gates the first real client, not the build. |
 
 ## Open items
 
-- Confirm Fly Managed Postgres availability and pricing in the chosen region at
-  `TASK-108`, or select Neon instead.
+- Choose the VPS provider with a Johannesburg datacentre and size it, at
+  `TASK-120`. Nothing is provisioned yet, and development stays local until it
+  is.
+- Confirm Groq's free-tier rate limits in the console rather than from a
+  third-party summary, before `TASK-117` relies on them.
 - Confirm Lenco merchant onboarding, settlement account, and fee structure with
   the provider. Nothing here asserts commercial terms.
 - Card settlement currency for international clients, which follows the
