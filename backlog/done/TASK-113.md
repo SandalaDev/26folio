@@ -1,7 +1,7 @@
 ---
 id: TASK-113
 title: "Integrate deposit collection and verified onboarding activation"
-status: ready
+status: done
 priority: P2
 risk_level: critical
 epic_ref: backlog/epics/EPIC-025.md
@@ -86,20 +86,20 @@ accounting.
 
 ## Acceptance criteria
 
-- [ ] Checkout amount, currency, engagement, and recipient come only from the
+- [x] Checkout amount, currency, engagement, and recipient come only from the
       authoritative server record.
-- [ ] The client sees exact deposit details and status before acting.
-- [ ] Webhooks use official verification and reject forged or wrong-environment
+- [x] The client sees exact deposit details and status before acting.
+- [x] Webhooks use official verification and reject forged or wrong-environment
       events without state changes.
-- [ ] Browser redirects cannot set payment or onboarding state.
-- [ ] Duplicate/retried/concurrent events create one logical payment, receipt,
+- [x] Browser redirects cannot set payment or onboarding state.
+- [x] Duplicate/retried/concurrent events create one logical payment, receipt,
       audit trail, and onboarding activation.
-- [ ] Amount/currency/reference mismatches are quarantined for operator review.
-- [ ] Delayed or out-of-order events reconcile safely.
-- [ ] Payment truth survives downstream email, receipt, or onboarding-job
+- [x] Amount/currency/reference mismatches are quarantined for operator review.
+- [x] Delayed or out-of-order events reconcile safely.
+- [x] Payment truth survives downstream email, receipt, or onboarding-job
       failure and those effects can retry independently.
-- [ ] Failed/abandoned payment allows a safe retry without duplicate charging.
-- [ ] Provider sandbox tests, webhook fixtures, lint, strict typecheck,
+- [x] Failed/abandoned payment allows a safe retry without duplicate charging.
+- [x] Provider sandbox tests, webhook fixtures, lint, strict typecheck,
       migrations, and build pass.
 
 ## Non-goals
