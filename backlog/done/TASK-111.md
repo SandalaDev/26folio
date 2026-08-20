@@ -1,7 +1,7 @@
 ---
 id: TASK-111
 title: "Build immutable proposal issuance and hosted review"
-status: ready
+status: done
 priority: P2
 risk_level: high
 epic_ref: backlog/epics/EPIC-025.md
@@ -91,20 +91,20 @@ rendered file so a missing derivative can be regenerated and verified.
 
 ## Acceptance criteria
 
-- [ ] Proposal content comes from approved structured fields and controlled
+- [x] Proposal content comes from approved structured fields and controlled
       clauses; missing data is visible rather than fabricated.
-- [ ] Draft changes do not alter an issued version.
-- [ ] Issuance requires Abe's explicit approval and records recipient, version,
+- [x] Draft changes do not alter an issued version.
+- [x] Issuance requires Abe's explicit approval and records recipient, version,
       snapshot, hash, sources, timestamp, status, and audit event atomically.
-- [ ] Reissuing creates a new version and clearly supersedes the old one without
+- [x] Reissuing creates a new version and clearly supersedes the old one without
       deleting its history.
-- [ ] Hosted review and downloadable copy represent the same hashed snapshot.
-- [ ] Unauthorized, expired, revoked, wrong-client, or superseded access cannot
+- [x] Hosted review and downloadable copy represent the same hashed snapshot.
+- [x] Unauthorized, expired, revoked, wrong-client, or superseded access cannot
       expose or accept the proposal.
-- [ ] The review works on small screens, keyboard, and assistive technology and
+- [x] The review works on small screens, keyboard, and assistive technology and
       keeps the complete terms available before any acceptance action.
-- [ ] Rendering retries do not create duplicate proposal versions.
-- [ ] Proposal tests, lint, strict typecheck, migrations, and build pass.
+- [x] Rendering retries do not create duplicate proposal versions.
+- [x] Proposal tests, lint, strict typecheck, migrations, and build pass.
 
 ## Non-goals
 
