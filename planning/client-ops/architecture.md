@@ -32,6 +32,7 @@ has been scaffolded.
 | Owner, 2026-08-20 | Self-hosted on a VPS through Dokploy rather than a managed platform. Development stays local for now. |
 | Owner, 2026-08-20 | PostgreSQL runs as a container the project operates, in development and in production. |
 | Owner, 2026-08-20 | The model provider must be free to use. If no free provider meets the no-training condition, the AI work is deferred rather than paid for. |
+| Owner, 2026-08-20 (later) | For the test phase, model quality outranks data handling. Provider selection optimises for the best free models; the no-training requirement returns with real client data. |
 | Owner, 2026-08-19 | A third-party model provider may process client documents under terms that exclude training on the data. |
 | product-contract.md | Link-only client access, expiring links, resumability, idempotent payment handling, append-only audit, export without lock-in, isolation at the data layer. |
 | product-contract.md | Credentials are never collected, stored, or processed. |
@@ -90,7 +91,7 @@ repository inherits a server-side security posture.
 | Object storage | S3-compatible, Cloudflare R2 | `@aws-sdk/client-s3@3.1114.0`, `@aws-sdk/s3-request-presigner@3.1114.0` | Standard S3 API, presigned uploads and downloads, no egress fees. Any S3-compatible provider is a swap of endpoint and credentials. |
 | Transactional email | Postmark | `postmark@5.1.0` | The product sends few, critical messages: agreement links, receipts, reminders. Deliverability matters more than templating breadth. Resend `6.20.0` is the alternative if the owner prefers its DX. |
 | Document rendering | React PDF | `@react-pdf/renderer@4.6.1` | Produces the immutable acceptance copy in-process with no Chromium in the image. Peer range covers React 19. |
-| Model API | Groq free tier, OpenAI-compatible endpoint | no SDK; `fetch` plus `zod` | Free tier, and its Services Agreement covers free usage and forbids training on inputs or outputs. See "Retrieval and AI" below for the evidence and the limits. |
+| Model API | Google AI Studio free tier for the test phase; Groq free tier once real client data exists | no SDK; `fetch` plus `zod`, against an OpenAI-compatible endpoint | Two selections, one interface. See "Retrieval and AI" for the evidence, and note the production boot guard that keeps the test-phase provider out of production. |
 | Validation | Zod | `zod@4.4.3` | One schema layer for request bodies, webhook payloads, and AI structured output. |
 | Logging | Pino | `pino@10.3.1` | Structured JSON logs with redaction paths for tokens and client data. |
 | Error reporting | Sentry | `@sentry/nextjs@10.70.0` | Peer range `next ^16.0.0-0`. |
@@ -248,32 +249,62 @@ payment path is a liability rather than a convenience.
 
 ## Retrieval and AI
 
-The owner requires a free provider, and the standing condition from 2026-08-19
-is that no provider may train on client data. Those two together disqualify most
-free tiers, so the selection is evidence rather than preference.
+There are two provider selections here, not one, because the constraints differ
+by phase. The owner relaxed the data-handling requirement for the test phase on
+2026-08-20, ranking model quality above everything except price.
 
-**Selected: Groq's free tier**, called through its OpenAI-compatible chat
-completions endpoint.
+### Test phase: Google AI Studio free tier
 
-- Groq's Services Agreement covers free usage explicitly: section 5.1 describes
-  services "designated as fee-free or otherwise available without triggering a
-  payment", so the agreement's data terms apply to the free tier rather than
-  only to paying customers.
-- Section 4.2 states Groq "is not permitted to use Inputs or Outputs for
-  training or fine-tuning any AI Model Services or other models, unless
-  explicitly granted permission or instructed by Customer", and a zero data
-  retention setting is available self-serve.
+**Selected: Gemini 3.7 Flash for reasoning work, a Flash-Lite for
+classification**, through the OpenAI-compatible endpoint at
+`https://generativelanguage.googleapis.com/v1beta/openai/`. Confirm the exact
+model ids in AI Studio rather than from this document; they live in
+configuration precisely because they move.
 
-**Rejected: Google's Gemini free tier.** Its API terms are explicit that on the
-unpaid service Google uses submitted content and generated responses to
-"provide, improve, and develop Google products and services". That is precisely
-the condition the owner set against. The paid tier does not train, but it is not
-free.
+It wins on the axes this product actually uses:
 
-**Rejected for now: OpenRouter's free model routes.** They forward to underlying
-providers whose data policies vary per route, so "no training" would have to be
-re-established every time a route changed. A guarantee that depends on which
-backend answered is not a guarantee.
+- **The strongest models anyone gives away.** Google's pricing page lists a free
+  tier on the whole current Flash line — 3.7, 3.6, 3.5, and the Flash-Lite
+  variants — plus Gemini 2.5 Pro. Nothing else free is in that class.
+- **A million tokens of context**, which matters when the job is reading a
+  client's documents rather than answering a question.
+- **Multimodal input**, which is what a client actually uploads: scans, screen
+  captures, a photographed contract.
+- **Structured output with JSON schema, function calling, and embeddings** are
+  all on the compatibility layer, so the same `fetch` call covers extraction
+  today and the `pgvector` upgrade path later.
+- **Roughly a thousand-plus requests a day** on the Flash line at free tier,
+  against a workload of a few dozen calls per engagement.
+
+The price is data: Google's terms state that on the unpaid service it uses
+submitted content and responses to "provide, improve, and develop Google
+products and services". That is acceptable while every document in the system
+is synthetic, and only while that is true.
+
+**The boundary is enforced in code, not in a memory.** `MODEL_PROVIDER_TRAINS_ON_DATA`
+is a required environment value, and the application refuses to boot when it is
+`true` and `APP_ENV` is `production`. Flipping to a no-training provider is a
+base URL, a key, and that flag.
+
+### When real client data arrives: Groq's free tier
+
+Still the documented no-training path, and still free. Its Services Agreement
+covers fee-free usage in section 5.1, and section 4.2 states Groq "is not
+permitted to use Inputs or Outputs for training or fine-tuning any AI Model
+Services or other models, unless explicitly granted permission or instructed by
+Customer", with zero data retention available self-serve. It serves open models
+rather than a frontier closed one, so the trade at that point is quality for
+confidentiality — or a paid tier, if the pilot shows the quality gap matters.
+
+**Rejected: OpenRouter's free routes.** Two reasons, and the second one now
+outranks the first. Their data policy varies by underlying provider, so any
+guarantee depends on which backend answered; and the free catalogue no longer
+carries a strong general reasoning model, which was the only reason to consider
+it here.
+
+**Rejected: GitHub Models.** It would have offered frontier models free, but
+GitHub retired the model catalogue, inference API, and BYOK entirely on
+2026-07-30.
 
 **No SDK.** The endpoint is one JSON POST, so it is called with `fetch` and
 validated with `zod`, both already in the stack. This *removes*
@@ -338,8 +369,12 @@ retrieval takes an engagement scope or it does not run.
 - Choose the VPS provider with a Johannesburg datacentre and size it, at
   `TASK-120`. Nothing is provisioned yet, and development stays local until it
   is.
-- Confirm Groq's free-tier rate limits in the console rather than from a
-  third-party summary, before `TASK-117` relies on them.
+- Confirm the exact Gemini free-tier model ids and rate limits in AI Studio,
+  and Groq's in its console, rather than from a third-party summary, before
+  `TASK-117` relies on either.
+- Decide before the first real client whether Groq's open models are good enough
+  for the drafting work, or whether a paid tier earns its price. The test phase
+  is the evidence for that call.
 - Confirm Lenco merchant onboarding, settlement account, and fee structure with
   the provider. Nothing here asserts commercial terms.
 - Card settlement currency for international clients, which follows the
