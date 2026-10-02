@@ -15,11 +15,12 @@ set -euo pipefail
 
 MAIN="${MAIN_BRANCH:-main}"
 DEV="${DEV_BRANCH:-dev}"
+FLOW="$(node -e 'try{process.stdout.write(require("./project-state/state.json").flow||"github")}catch{process.stdout.write("github")}')"
 
 # Guard 1: refspec destinations (stdin lines: <local> <local-sha> <remote> <remote-sha>).
 while read -r _local_ref _local_sha _remote_ref _remote_sha; do
   dest="${_remote_ref#refs/heads/}"
-  if [[ "$dest" == "$MAIN" || "$dest" == "$DEV" ]]; then
+  if [[ "$dest" == "$MAIN" || ( "$FLOW" == "trunk-dev" && "$dest" == "$DEV" ) ]]; then
     echo "[pre-push] REFUSED: push targets trunk '$dest'. Open a PR instead (os pr)." >&2
     exit 1
   fi
@@ -27,7 +28,7 @@ done
 
 # Guard 2: not pushing while sitting on a trunk.
 branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo '')"
-if [[ "$branch" == "$MAIN" || "$branch" == "$DEV" ]]; then
+if [[ "$branch" == "$MAIN" || ( "$FLOW" == "trunk-dev" && "$branch" == "$DEV" ) ]]; then
   echo "[pre-push] REFUSED: on '$branch' — cut a feature branch first (branch.sh start EPIC-XXX)." >&2
   exit 1
 fi

@@ -1,40 +1,37 @@
-## Start here: the whole system in five minutes
+## Start here
 
-This repository is a project operating system, not an application scaffold. Copy it into a new project, capture the project's intent, shape that intent into traceable work, and let any compatible coding agent operate through the same files and commands.
+Agent OS gives a coding agent a durable record of your project's intent, decisions, work and evidence. You explain what you want in conversation; the agent maintains the files and demonstrates the result. This guide explains both the human workflow and the commands underneath it.
 
-:::human Your irreducible responsibilities
+### Choose your starting point
 
-You supply intent, answer factual questions, approve the charter/roadmap/backlog, decide priorities, review every pull request, and approve sensitive or public writing. The system cannot make those judgments true by automating them.
-:::
+- Just cloned the template? Follow [Create a new project](#02-new-project), including export, setup, the first interview and your own Git remote.
+- Returning to a product project? Follow [Daily work](#20-daily-work).
+- Moving to another model or agent? Follow [Switch agents and delegate work](#25-agents).
+- Updating a project's OS? Follow [Update an existing project](#50-maintenance).
+- Want the system explained first? Read [How the OS works](#05-system).
+- Something failed? Start with [Diagnose and recover](#55-recovery).
 
-:::agent What to delegate
+### How to read the examples
 
-Tell the agent what outcome you want. The agent should run setup/workflow commands, read the bounded context, shape tasks, implement, test as planned, checkpoint, maintain durable decisions, and prepare the pull request.
-:::
+Commands use Bash. On Windows, open **Git Bash**; paths such as `/c/_git/my-project` mean `C:\_git\my-project`. PowerShell uses different syntax, and Windows' default `bash.exe` may launch WSL instead of Git Bash. On macOS or Linux, substitute your own filesystem paths.
 
-:::system What happens automatically
+Run commands from the product repository root unless a step explicitly says **template checkout**. Replace identifiers such as `TASK-001`, `YOUR_TEMPLATE_URL`, `YOUR_PRODUCT_URL` and `YOUR_RELEASE_TAG` with real values. A release tag or full commit hash must already exist in the source repository. Example JSON records are templates for your agent to populate from evidence, not configuration to paste blindly.
 
-The scripts derive current state, dashboard, guide, metrics, task counts, progress estimates, and handoff queues from repository files. Generated HTML and Markdown views are disposable.
-:::
+Each workflow explains when to use it, what you decide, what the agent runs, what changes and what to check next. You can operate the commands yourself, but you do not need to edit interview forms or generated dashboards.
 
-### The shortest safe path
+### Give your agent a prompt
 
-1. Create a repository from this template and run `bash setup.sh`.
-2. Tell the agent to scaffold the brief; write the intent yourself.
-3. Let the agent interview gaps; answer the questions yourself.
-4. Let the agent hydrate charter, decisions, and roadmap; review and approve all three.
-5. Let the agent shape an epic and tasks; confirm the links back to roadmap and goals.
-6. Tell the agent to work a task. Review the resulting pull request and merge only when satisfied.
+<div class="prompt-list">
+<p class="quick-prompt"><span>Scaffold a new independent project from the template. Explain the destination and chosen template revision, run setup, then interview me in this conversation.</span><button type="button" class="copy-prompt">Copy prompt</button></p>
+<p class="quick-prompt"><span>Resume this project. Read its state, saved decisions and handoff. Tell me the next decision or task before continuing.</span><button type="button" class="copy-prompt">Copy prompt</button></p>
+<p class="quick-prompt"><span>Walk me through the next epic: expected behavior, scope, examples, estimated work, risks and what I will inspect when it is done.</span><button type="button" class="copy-prompt">Copy prompt</button></p>
+<p class="quick-prompt"><span>Show model usage and subscription accounting. Separate observed tokens, API-equivalent estimates, actual payments and project allocation. Explain missing data.</span><button type="button" class="copy-prompt">Copy prompt</button></p>
+<p class="quick-prompt"><span>Preview an OS update from the template. Show files to update, retire or reconcile, preserve my project records, then validate the applied changes.</span><button type="button" class="copy-prompt">Copy prompt</button></p>
+<p class="quick-prompt"><span>Save a handoff for another agent. Record what changed, evidence paths, unresolved decisions and the exact next step.</span><button type="button" class="copy-prompt">Copy prompt</button></p>
+</div>
 
-:::check You know the system is ready when
+### What this guide covers
 
-`bash scripts/os.sh doctor` reports healthy, `dashboard.html` names one sensible next action, and `guide.html` opens as this standalone guide. If the progress estimate says low confidence, follow the Progress chapter rather than trusting the number.
-:::
+The OS lifecycle is: export → setup → discovery → delivery and capability decisions → epic planning → implementation and verification → demonstration and acceptance → release assessment. Sessions, usage capture and handoffs keep that work recoverable. OS updates maintain the tooling across the life of the product.
 
-### Never do these
-
-- Do not treat chat as durable memory.
-- Do not hand-edit `dashboard.html`, `guide.html`, `current-state.md`, or `metrics.md`.
-- Do not mistake task completion for evidence that customers or the business received the intended outcome.
-- Do not let an agent silently invent product intent, success measures, legal claims, pricing, or brand promises.
-- Do not delete a stale session journal before reading its next step and touched files.
+The HTML is an offline document. It displays information and copies text; it does not run shell commands, submit interview answers, connect accounts or mutate your project. Open `dashboard.html` to inspect current project status. After an agent changes source records, regenerate the pages and reload your browser.

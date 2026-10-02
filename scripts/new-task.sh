@@ -12,6 +12,11 @@
 #   bash scripts/new-task.sh epic <ID> "<title>"
 set -euo pipefail
 
+source scripts/telemetry.sh
+case "${1:-help}" in
+  task|epic) telemetry_install_exit_hook "work-shaping" "new-task:${1}" ;;
+esac
+
 KIND="${1:-}"; ID="${2:-}"; TITLE="${3:-}"
 
 [[ -n "$ID" && -n "$TITLE" ]] || { echo "Usage: new-task.sh <task|epic> <ID> \"<title>\" [epic] [risk]"; exit 2; }
@@ -32,6 +37,15 @@ epic_ref: backlog/epics/${epic}.md
 progress_weight: 1
 files_allowed: []          # advisory focus list — helps the agent stay scoped; not enforced
 skill_refs: []
+parallel:
+  suitable: false
+  reason: Assess independence, context cost and file overlap before dispatch.
+  dependencies: []
+  result: null
+testing:
+  recommendation: unassessed
+  reason: null
+  commands: []
 ---
 # Task: ${TITLE}
 ## Scope

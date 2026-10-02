@@ -8,6 +8,11 @@
 # Read from state.json so branch.sh and os pr agree on the integration base.
 set -euo pipefail
 
+source scripts/telemetry.sh
+case "${1:-help}" in
+  start|base|guard|sync-dev|cleanup|promote) telemetry_install_exit_hook "branch-workflow" "branch:${1}" ;;
+esac
+
 MAIN="${MAIN_BRANCH:-main}"
 DEV="${DEV_BRANCH:-dev}"
 STATE="project-state/state.json"

@@ -10,6 +10,11 @@
 # fallback that closes the "empty registry vacuously passes" hole.
 set -euo pipefail
 
+source scripts/telemetry.sh
+case "${1:-help}" in
+  validate|audit|add) telemetry_install_exit_hook "skill-governance" "skills:${1}" ;;
+esac
+
 CORE_DIR=".agents/skills"
 FE_DIR="pack-frontend/skills"
 

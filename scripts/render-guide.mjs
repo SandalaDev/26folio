@@ -1,92 +1,48 @@
 #!/usr/bin/env node
-// Generate the standalone, self-contained guide.html from docs/guide/*.md.
-import fs from "node:fs";
-import path from "node:path";
-import { renderMarkdown } from "./md.mjs";
-
-const SOURCE = "docs/guide";
-const OUT = "guide.html";
-const esc = value => String(value ?? "").replace(/[&<>"]/g, char => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;",
-}[char]));
-const slug = value => String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-if (!fs.existsSync(SOURCE)) {
-  console.error(`[guide] missing ${SOURCE}`);
-  process.exit(1);
-}
-
-const chapters = fs.readdirSync(SOURCE).filter(file => file.endsWith(".md")).sort().map(file => {
-  const markdown = fs.readFileSync(path.join(SOURCE, file), "utf8");
-  const title = markdown.match(/^##\s+(.+)$/m)?.[1] || path.basename(file, ".md");
-  return { file, title, id: slug(path.basename(file, ".md")), html: renderMarkdown(markdown) };
+// Generate the standalone guide from docs/guide; all assets and behavior embedded.
+import fs from 'node:fs';
+import path from 'node:path';
+import { renderMarkdown } from './md.mjs';
+import { brandCSS } from './brand.mjs';
+const esc = value => String(value).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const slug = value => value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const chapters=fs.readdirSync('docs/guide').filter(f=>f.endsWith('.md')).sort().map(file=>{
+  const markdown=fs.readFileSync(path.join('docs/guide',file),'utf8');
+  const id=slug(path.basename(file,'.md')),title=markdown.match(/^##\s+(.+)$/m)?.[1]||file;
+  const headings=[],used=new Set();
+  let html=renderMarkdown(markdown).replace(/<h3>(.*?)<\/h3>/g,(_,label)=>{
+    const base=id+'--'+slug(label.replace(/<[^>]*>/g,''));let anchor=base,n=2;
+    while(used.has(anchor))anchor=base+'-'+n++;used.add(anchor);headings.push({label,anchor});
+    return `<h3 id="${anchor}">${label}<a class="heading-link" href="#${anchor}" aria-label="Link to ${esc(label.replace(/<[^>]*>/g,''))}">#</a></h3>`;
+  }).replace(/<table>/g,'<div class="table-wrap" role="region" aria-label="Reference table" tabindex="0"><table>').replace(/<\/table>/g,'</table></div>');
+  html=html.replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/g,(_,code)=>`<div class="code-block"><div class="code-tools"><span>Example · replace placeholders</span><button type="button" class="copy-code">Copy code</button></div><pre><code>${code}</code></pre></div>`);
+  const outline=headings.length?`<details class="chapter-outline"><summary>In this chapter · ${headings.length} topics</summary><nav aria-label="${esc(title)} topics">${headings.map(h=>`<a href="#${h.anchor}">${h.label}</a>`).join('')}</nav></details>`:'';
+  html=html.replace(/(<h2>.*?<\/h2>)/,`$1${outline}`);
+  return {file,id,title,html};
 });
-
-const nav = chapters.map(chapter =>
-  `<a href="#${chapter.id}" data-guide-link>${esc(chapter.title)}</a>`).join("");
-const content = chapters.map(chapter =>
-  `<section class="chapter" id="${chapter.id}" data-search="${esc(chapter.title.toLowerCase())}">${chapter.html}</section>`).join("\n");
-
-const html = `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Agent OS · Complete usage guide</title>
-<style>
-:root{--bg:#f3f1eb;--paper:#fffefa;--ink:#20231f;--muted:#666b63;--line:#d8d4c9;--brand:#245548;--human:#a64225;--agent:#225da8;--system:#59615a;--check:#29733d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 Inter,ui-sans-serif,system-ui,sans-serif}
-header{position:sticky;top:0;z-index:4;background:var(--brand);color:white;padding:13px 22px;display:flex;gap:18px;align-items:center;box-shadow:0 2px 8px #0002}
-header strong{font-size:17px}.top-link{margin-left:auto;color:white;text-decoration:none;border:1px solid #92b1a7;border-radius:6px;padding:6px 10px;font-weight:750;font-size:13px}
-.layout{display:grid;grid-template-columns:280px minmax(0,820px);gap:34px;max-width:1180px;margin:auto;padding:28px 24px 70px}
-aside.sidebar{position:sticky;top:82px;align-self:start;max-height:calc(100vh - 100px);overflow:auto}.sidebar input{width:100%;border:1px solid var(--line);border-radius:6px;padding:9px 10px;background:white;margin-bottom:12px}
-.sidebar nav{display:grid;gap:3px}.sidebar nav a{color:var(--ink);text-decoration:none;padding:7px 9px;border-radius:5px;font-size:13px}.sidebar nav a:hover{background:#e3ebe6;color:var(--brand)}
-.legend{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}.legend span{display:block;font-size:11px;font-weight:850;letter-spacing:.05em;margin:7px 0}.human-text{color:var(--human)}.agent-text{color:var(--agent)}.system-text{color:var(--system)}.check-text{color:var(--check)}
-.chapter{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:26px 30px;margin-bottom:18px;scroll-margin-top:78px}.chapter h2{font-size:25px;line-height:1.2;margin:0 0 18px;color:var(--brand)}.chapter h3{font-size:17px;margin:25px 0 7px}.chapter p{margin:8px 0}.chapter li{margin:5px 0}
-code{background:#efede6;border-radius:4px;padding:2px 5px;font:12px ui-monospace,SFMono-Regular,Consolas,monospace}pre{background:#222722;color:#f4f2eb;border-radius:7px;padding:13px 15px;overflow:auto}pre code{background:none;color:inherit;padding:0}
-table{border-collapse:collapse;width:100%;font-size:13px}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left}th{color:var(--muted)}
-.callout{border:1px solid;border-left-width:6px;border-radius:8px;padding:12px 15px;margin:16px 0}.callout p:last-child{margin-bottom:0}.callout-title{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.callout.human{border-color:#dfa58f;background:#fff1eb}.callout.human .callout-title{color:var(--human)}.callout.agent{border-color:#9dbce2;background:#edf5ff}.callout.agent .callout-title{color:var(--agent)}.callout.system{border-color:#bfc3bf;background:#f0f1ef}.callout.system .callout-title{color:var(--system)}.callout.check{border-color:#9fc9a9;background:#edf8ef}.callout.check .callout-title{color:var(--check)}
-.no-results{display:none;background:#fff1eb;border:1px solid #dfa58f;border-radius:8px;padding:16px}
-@media(max-width:800px){header{position:static}.layout{grid-template-columns:1fr;padding:18px 14px}.sidebar{position:static;max-height:none}.chapter{padding:21px 18px}}
-@media print{header,.sidebar{display:none}.layout{display:block;padding:0}.chapter{break-inside:avoid;border:0}}
-</style>
-</head>
-<body>
-<header><strong>Agent OS · complete usage guide</strong><span>Human intervention is labelled, not implied.</span><a class="top-link" href="dashboard.html">Back to dashboard</a></header>
-<div class="layout">
-  <aside class="sidebar">
-    <input id="guide-search" type="search" placeholder="Filter chapters…" aria-label="Filter guide chapters">
-    <nav>${nav}</nav>
-    <div class="legend">
-      <span class="human-text">HUMAN — judgment or approval required</span>
-      <span class="agent-text">AGENT — ask any compatible coding agent</span>
-      <span class="system-text">AUTOMATIC — generated by scripts</span>
-      <span class="check-text">VERIFY — observable success condition</span>
-    </div>
-  </aside>
-  <main>
-    <div class="no-results" id="no-results">No chapter contains that phrase.</div>
-    ${content}
-  </main>
-</div>
+const nav=chapters.map((c,i)=>`<a href="#${c.id}" data-guide-link><span>${String(i+1).padStart(2,'0')}</span>${esc(c.title)}</a>`).join('');
+const content=chapters.map((c,i)=>`<section class="chapter" id="${c.id}" aria-label="${esc(c.title)}"><p class="chapter-number">Chapter ${String(i+1).padStart(2,'0')}</p>${c.html}<div class="chapter-footer"><a href="#${chapters[0].id}">Back to start</a>${chapters[i+1]?`<a href="#${chapters[i+1].id}">Next: ${esc(chapters[i+1].title)} →</a>`:''}</div></section>`).join('\n');
+const html=`<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><title>Agent OS · Operator's guide</title><style>
+${brandCSS}
+html{scroll-behavior:smooth;scroll-padding-top:24px}header.site{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 4vw}header.site strong{font-size:20px;letter-spacing:-.03em}header.site a{text-decoration:none;border-bottom:1px solid var(--rose);padding:8px 0}.hero{padding:32px 4vw 48px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.5fr);gap:32px;align-items:end}.hero h1{font-size:clamp(42px,5.8vw,88px);line-height:1.04;font-weight:650;letter-spacing:-.04em;margin:0}.hero h1 span{color:var(--rose)}.hero p{max-width:50ch;color:var(--muted);margin:0}.hero .edition{font-size:13px;color:var(--caramel);margin:0 0 14px}.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:4vw;padding:32px 4vw 72px}.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;padding-right:12px;scrollbar-width:thin}.search-label{display:block;font-size:13px;color:var(--caramel);margin-bottom:8px}.search-row{display:flex;gap:6px}.search-row input{min-width:0;width:100%;background:var(--surface);border:1px solid var(--line-strong);padding:10px}.search-row button{background:transparent;border:1px solid var(--line-strong);padding:6px;color:var(--muted)}#search-status{font-size:12px;color:var(--muted);min-height:20px;margin:8px 0 16px}.sidebar nav{display:grid;gap:2px}.sidebar nav a{display:flex;align-items:baseline;gap:12px;text-decoration:none;color:var(--muted);padding:10px 8px;border-left:2px solid transparent;font-size:14px}.sidebar nav a span{font:11px var(--font-mono);color:var(--caramel)}.sidebar nav a:hover,.sidebar nav a[aria-current="location"]{color:var(--ink);background:var(--surface);border-left-color:var(--rose)}.sidebar-note{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;margin-top:20px}.layout main{min-width:0}.chapter{padding:32px clamp(20px,3vw,48px);background:var(--surface);border:1px solid var(--line);margin:0 0 32px;scroll-margin-top:24px}.chapter-number{font:12px var(--font-mono);color:var(--caramel);margin:0 0 16px}.chapter h2{font-size:clamp(28px,3vw,46px);font-weight:600;letter-spacing:-.025em;line-height:1.12;margin:0 0 20px}.chapter h3{font-size:23px;font-weight:500;line-height:1.3;margin:40px 0 14px;scroll-margin-top:32px}.chapter>p,.chapter>ul,.chapter>ol,.callout p{max-width:72ch}.chapter p{margin-top:12px;margin-bottom:12px}.chapter li{margin:8px 0}.chapter li::marker{color:var(--caramel)}.heading-link{font:16px var(--font-mono);margin-left:10px;text-decoration:none;color:var(--muted)}.heading-link:hover{color:var(--rose)}.chapter-outline{border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);margin:20px 0 24px;padding:10px 0}.chapter-outline summary{color:var(--caramel);cursor:pointer;font-size:14px}.chapter-outline nav{display:grid;gap:8px;margin:12px 0;font-size:14px}.chapter-outline a{text-decoration:none}.chapter-outline a:hover{text-decoration:underline}code{font:.85em/1.6 var(--font-mono);background:var(--surface-2);padding:2px 5px;color:var(--soft-ink)}:not(pre)>code{overflow-wrap:anywhere}.code-block{margin:20px 0;border:1px solid var(--line-strong);background:var(--bg)}.code-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 14px;border-bottom:1px solid var(--line);color:var(--muted);font-size:11px}.copy-code,.copy-prompt{background:var(--rose);border:1px solid var(--rose);padding:7px 12px;color:var(--bg);font-size:12px;font-weight:600;flex-shrink:0}.copy-code:hover,.copy-prompt:hover{background:var(--peach);border-color:var(--peach)}pre{overflow:auto;margin:0;padding:18px;tab-size:2}pre code{background:none;color:var(--soft-ink);padding:0;font:13px/1.75 var(--font-mono)}.table-wrap{overflow:auto;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5}th,td{padding:14px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line-strong)}th{color:var(--caramel);font-weight:500;background:var(--surface-2)}td{min-width:140px}td code{font-size:12px}.callout{margin:24px 0;padding:16px 20px;background:var(--surface-2);border-left:3px solid var(--caramel)}.callout-title{font-weight:600;color:var(--caramel)}.callout.human{border-color:var(--rose)}.callout.human .callout-title{color:var(--rose)}.callout.check{border-color:var(--success)}.quick-prompt{display:flex;justify-content:space-between;gap:24px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line-strong)}.quick-prompt span{max-width:65ch}.chapter-footer{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;margin-top:36px;padding-top:16px;border-top:1px solid var(--line-strong);font-size:13px}.no-results{padding:24px;border:1px solid var(--caramel)}footer.site-footer{padding:0 4vw 32px;color:var(--muted);font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.layout{grid-template-columns:220px minmax(0,1fr);gap:24px;padding-left:20px;padding-right:20px}.hero{grid-template-columns:1fr}.chapter{padding:24px}.quick-prompt{align-items:flex-start;flex-direction:column;gap:12px}}
+@media(max-width:680px){header.site{padding:18px 20px}.hero{padding:24px 20px 32px}.layout{display:block;padding:20px 14px}.sidebar{position:static;max-height:none;padding:0;margin-bottom:24px}.sidebar nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:0}.sidebar nav a{font-size:12px;padding:8px 4px;gap:6px}.sidebar-note{display:none}.chapter{padding:24px 18px}.chapter h3{font-size:20px}.code-tools span{max-width:22ch}th,td{padding:10px}.chapter-footer{flex-direction:column}.hero h1{font-size:44px}}
+@media print{.sidebar,header.site,.code-tools,.copy-prompt,.chapter-outline,.chapter-footer,.heading-link,.skip-link{display:none}.hero{display:block;padding:0 0 24px}.hero h1{font-size:36px}.layout{display:block;padding:0}.chapter{border:0;background:transparent;padding:0;margin:0 0 36px;break-before:page}body{background:white;color:#1a1411}.chapter,.chapter p,.chapter li,h1,h2,h3,td{color:#1a1411}a,.hero h1 span,.hero p,.chapter-number{color:#4a3a32}.table-wrap{overflow:visible}pre{white-space:pre-wrap;overflow:visible}code,pre code,.code-block,th,.callout{background:transparent;color:#1a1411}.code-block,table{break-inside:avoid}}
+</style></head><body>
+<a class="skip-link" href="#guide-main">Skip to guide</a>
+<header class="site"><strong>Agent OS</strong><a href="dashboard.html">Open dashboard ↗</a></header>
+<div class="hero"><div><p class="edition">The operator's guide · ${chapters.length} chapters</p><h1>Your project.<br><span>From first conversation<br>to release.</span></h1></div><p>Complete workflows, real commands and the reasoning behind them. Start with a clean project, keep work recoverable and understand what the evidence actually says.</p></div>
+<div class="layout"><aside class="sidebar" aria-label="Guide navigation"><label class="search-label" for="guide-search">Find a workflow</label><div class="search-row"><input id="guide-search" type="search" placeholder="Try: subscription, clone, handoff"><button type="button" id="clear-search" aria-label="Clear search">Clear</button></div><p id="search-status" role="status" aria-live="polite">${chapters.length} chapters · search all text</p><nav aria-label="Chapters">${nav}</nav><p class="sidebar-note">Run examples in Bash from the product root unless the workflow names the template checkout. The page never executes commands.</p></aside><main id="guide-main"><div class="no-results" id="no-results" hidden>No chapter contains that phrase. Clear the search to browse all workflows.</div>${content}</main></div>
+<footer class="site-footer">Generated from docs/guide · Warm espresso, rose and caramel from the 26folio design system · Works offline</footer><div id="copy-status" class="sr-only" role="status" aria-live="polite"></div>
 <script>
-const search = document.getElementById("guide-search");
-const chapters = [...document.querySelectorAll(".chapter")];
-const links = [...document.querySelectorAll("[data-guide-link]")];
-search.addEventListener("input", () => {
-  const query = search.value.trim().toLowerCase();
-  let visible = 0;
-  chapters.forEach((chapter, index) => {
-    const show = !query || chapter.textContent.toLowerCase().includes(query);
-    chapter.hidden = !show;
-    links[index].hidden = !show;
-    if (show) visible++;
-  });
-  document.getElementById("no-results").style.display = visible ? "none" : "block";
-});
-</script>
-</body>
-</html>`;
-
-fs.writeFileSync(OUT, html);
-console.log(`[guide] wrote ${OUT} (${chapters.length} chapters)`);
+const search=document.getElementById('guide-search'),chapters=[...document.querySelectorAll('.chapter')],links=[...document.querySelectorAll('[data-guide-link]')];
+function filter(){const q=search.value.trim().toLowerCase();let visible=0;chapters.forEach((c,i)=>{const show=!q||c.textContent.toLowerCase().includes(q);c.hidden=!show;links[i].hidden=!show;if(show)visible++;});document.getElementById('no-results').hidden=visible>0;document.getElementById('search-status').textContent=q?visible+' of '+chapters.length+' chapters match':chapters.length+' chapters · search all text';}
+search.addEventListener('input',filter);document.getElementById('clear-search').addEventListener('click',()=>{search.value='';filter();search.focus();});search.addEventListener('keydown',e=>{if(e.key==='Escape'){search.value='';filter();}});
+function revealHash(){const target=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(!target)return;const c=target.closest('.chapter');if(c?.hidden){search.value='';filter();}links.forEach(a=>{if(c&&a.hash==='#'+c.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});target.scrollIntoView();}
+window.addEventListener('hashchange',revealHash);if(location.hash)revealHash();
+document.querySelectorAll('.copy-prompt,.copy-code').forEach(button=>button.addEventListener('click',async()=>{const original=button.textContent;const source=button.classList.contains('copy-code')?button.closest('.code-block').querySelector('code'):button.previousElementSibling;try{await navigator.clipboard.writeText(source.textContent);button.textContent='Copied';document.getElementById('copy-status').textContent='Text copied to clipboard.';}catch{const range=document.createRange();range.selectNodeContents(source);const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);button.textContent='Text selected';document.getElementById('copy-status').textContent='Clipboard unavailable. Text selected; copy it manually.';}setTimeout(()=>button.textContent=original,2200);}));
+window.addEventListener('beforeprint',()=>{chapters.forEach(c=>c.hidden=false);document.getElementById('no-results').hidden=true;});window.addEventListener('afterprint',filter);
+</script></body></html>`;
+fs.writeFileSync('guide.html',html);
+console.log('[guide] wrote guide.html ('+chapters.length+' chapters)');

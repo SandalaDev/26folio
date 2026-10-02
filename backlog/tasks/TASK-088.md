@@ -1,6 +1,6 @@
 ---
 id: TASK-088
-title: "Refine technology atlas and delivery motion"
+title: Refine technology atlas and delivery motion
 status: in-progress
 priority: P1
 risk_level: high
@@ -11,7 +11,11 @@ files_allowed:
   - public/icons/color/
   - src/components/capabilities/
   - src/lib/capabilities.ts
-skill_refs: [gsap, framer-motion, lottie]
+skill_refs:
+  - gsap
+  - framer-motion
+  - lottie
+started_at: 2026-09-27T22:32:01Z
 ---
 
 # Task: Refine technology atlas and delivery motion

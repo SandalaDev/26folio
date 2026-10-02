@@ -1,0 +1,4 @@
+interface:
+  display_name: "Epic Estimator"
+  short_description: "Estimate roadmap epics from weighted task structure"
+  default_prompt: "Use $ds-epic-estimator to decompose and weight roadmap epics for release planning."

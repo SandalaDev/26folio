@@ -1,20 +1,9 @@
 #!/usr/bin/env node
-// onboard-packet.mjs — the agent-switch onboarding packet, printed by `os onboard`.
-//
-// WHY THIS EXISTS
-// Switching agents (rate limit, stuck model, escalating to a stronger one) used
-// to mean "read these six files and figure out where things are." This assembles
-// everything the incoming agent needs, once, read-only:
-//   1. the bounded context briefing (north star + current facts)
-//   2. the active task and its acceptance criteria
-//   3. pending handoffs (paths — read fully, then archive)
-//   4. git sync state (branch, uncommitted, unpushed)
-//   5. the single next action (the dashboard's own decision ladder)
-// Paths are references, never copies — the handoff doctrine applies to agents too.
+// Assemble the incoming agent packet from intent, task, handoffs and workflow.
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync, execSync } from "node:child_process";
-import { nextStep } from "./render-dashboard.mjs";
+import { nextAction } from "./workflow.mjs";
 
 const STATE = "project-state/state.json";
 const exists = (p) => fs.existsSync(p);
@@ -87,7 +76,7 @@ function gitSection() {
 // 5. Next action — the same decision ladder the dashboard's next-step card uses.
 function nextSection(state) {
   try {
-    const next = nextStep(state || {});
+    const next = nextAction(process.cwd(), state || {});
     return [`  [${next.owner}] ${next.command}`, `  ${next.why}`].join("\n");
   } catch {
     return "  (next step unavailable — see dashboard.html)";

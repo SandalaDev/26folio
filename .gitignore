@@ -14,6 +14,12 @@ next-env.d.ts
 /project-state/current-state.md
 /project-state/metrics.md
 
+# Agent OS v2 local caches, workers, and atomic-write files
+/.agent-os-cache/
+/.agent-os-worktrees/
+/project-state/state.json.write-lock
+/project-state/*.tmp-*
+
 # production
 /build
 

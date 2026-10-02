@@ -5,8 +5,11 @@
 //
 // Flags: --check  (verify consistency + freshness, write nothing; exit 1 on drift)
 import fs from "node:fs";
+import { transaction } from "./runtime.mjs";
+import { loadMetricsModel } from "./render-metrics.mjs";
 import path from "node:path";
 import YAML from "yaml";
+import { synchronizeReleaseBaselines } from "./release-baseline.mjs";
 
 const STATE = "project-state/state.json";
 const TASKS = "backlog/tasks";
@@ -72,18 +75,25 @@ function deriveCurrentEpic(task) {
 function deriveHandoffQueue() {
   if (!exists(HANDOFFS)) return [];
   const out = [];
-  for (const dir of fs.readdirSync(HANDOFFS)) {
-    if (dir === "archive") continue;   // archive/ is the consumed path
-    const sub = path.join(HANDOFFS, dir);
-    if (!fs.statSync(sub).isDirectory()) continue;
-    for (const f of fs.readdirSync(sub).filter(x => x.endsWith(".md"))) {
-      const file = path.join(sub, f).replace(/\\/g, "/");
-      const fm = frontmatter(file);
-      if (fm.id == null || fm.id === "") continue;
-      out.push({ id: String(fm.id), type: fm.handoff_type || dir,
-                 task_ref: fm.task_ref ?? null, file, status: "pending" });
+  const walk = dir => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else if (entry.isFile() && entry.name.endsWith(".md")) {
+        const relative = file.replace(/\\/g, "/");
+        const parts = relative.split("/");
+        const category = parts[1] === "archive" ? (parts[2] || "archive") : (parts[1] || "unknown");
+        const fm = frontmatter(file);
+        if (fm.id == null || fm.id === "") continue;
+        out.push({
+          id: String(fm.id), type: fm.handoff_type || category,
+          task_ref: fm.task_ref ?? null, file: relative,
+          status: parts[1] === "archive" ? "consumed" : "pending",
+        });
+      }
     }
   }
+  walk(HANDOFFS);
   return out.sort((a, b) => a.id.localeCompare(b.id));
 }
 
@@ -105,10 +115,19 @@ function deriveCompletion() {
 }
 
 if (!exists(STATE)) { console.error(`[render] missing ${STATE}`); process.exit(1); }
-const state = readJSON(STATE);
+let state = readJSON(STATE);
 
 // ---- consistency: does state.current.task agree with that task's frontmatter? ----
 let drift = [];
+let releaseBaselineUpdate = null;
+try {
+  releaseBaselineUpdate = synchronizeReleaseBaselines(process.cwd(), state);
+  if (CHECK && !process.argv.includes("--check-structural") && releaseBaselineUpdate.changed) {
+    drift.push("release_baselines: canonical history or approved baseline needs synchronization (run `os render`)");
+  }
+} catch (error) {
+  drift.push(`release baseline migration: ${error.message}`);
+}
 const curTask = state.current?.task;
 if (curTask && curTask !== "TASK-XXX") {
   const tf = path.join(TASKS, `${curTask}.md`);
@@ -181,6 +200,12 @@ if (CHECK) {
 }
 
 // ---- write derived fields back into the canonical file ----
+if (releaseBaselineUpdate) {
+  state.release_baselines = releaseBaselineUpdate.store;
+  if (releaseBaselineUpdate.created) console.log(`[render] baselined release ${releaseBaselineUpdate.baseline.release_id} at weight ${releaseBaselineUpdate.baseline.total_weight}`);
+  if (releaseBaselineUpdate.legacy) console.warn(`[render] project-state/release-baselines.json is superseded; ${releaseBaselineUpdate.store.baselines.length} baseline(s) are canonical in state.json. The legacy file was not deleted.`);
+  if (releaseBaselineUpdate.legacyInvalid) console.warn(`[render] skipped ${releaseBaselineUpdate.legacyInvalid} malformed legacy baseline row(s).`);
+}
 state.counts = counts;
 state.epics = epics;
 state.handoff_queue = handoffs;
@@ -188,7 +213,10 @@ state.completion = completion;
 if (derivedEpic) state.current.epic = derivedEpic;
 state.updated = new Date().toISOString();
 state.updated_by = process.env.HARNESS_NAME || process.env.AGENT_NAME || state.updated_by || "render-state";
-fs.writeFileSync(STATE, JSON.stringify(state, null, 2) + "\n");
+state.metrics = loadMetricsModel(process.cwd(), state);
+state = transaction(process.cwd(), current => {
+  for (const key of ["counts", "epics", "handoff_queue", "completion", "release_baselines", "current", "metrics", "updated_by"]) if (state[key] !== undefined) current[key] = state[key];
+}, state.revision ?? 0);
 
 const banner = "<!-- generated — do not edit; source: project-state/state.json -->";
 
@@ -228,18 +256,18 @@ console.log(`  epics:${counts.epics_total} open:${counts.tasks_open} done:${coun
 try {
   if (fs.existsSync("project-state/ledger.jsonl") && fs.existsSync("scripts/render-metrics.mjs")) {
     const { execFileSync } = await import("node:child_process");
-    execFileSync(process.execPath, ["scripts/render-metrics.mjs"], { stdio: "inherit" });
+    execFileSync(process.execPath, ["scripts/render-metrics.mjs"], { stdio: "inherit", env: {...process.env, OS_RENDER_SNAPSHOT:"1"} });
   }
-} catch { /* metrics are best-effort */ }
+} catch (e) { console.error("[render] metrics failed:", e.message); process.exitCode = 1; }
 try {
   if (fs.existsSync("scripts/render-dashboard.mjs")) {
     const { execFileSync } = await import("node:child_process");
     execFileSync(process.execPath, ["scripts/render-dashboard.mjs"], { stdio: "inherit" });
   }
-} catch { /* dashboard is best-effort */ }
+} catch (e) { console.error("[render] dashboard failed:", e.message); process.exitCode = 1; }
 try {
   if (fs.existsSync("scripts/render-guide.mjs")) {
     const { execFileSync } = await import("node:child_process");
     execFileSync(process.execPath, ["scripts/render-guide.mjs"], { stdio: "inherit" });
   }
-} catch { /* guide is best-effort */ }
+} catch (e) { console.error("[render] guide failed:", e.message); process.exitCode = 1; }

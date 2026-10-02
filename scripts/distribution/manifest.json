@@ -1,0 +1,225 @@
+{
+  "schema": "agent-os.distribution-manifest.v1",
+  "version": "2.0.0",
+  "description": "Explicit ownership boundary for clean exports and updates.",
+  "categories": {
+    "machinery": "OS files. Updates replace or retire only files whose recorded baseline still matches; project modifications are preserved.",
+    "seed": "Ships to every new project, but reset to a clean starting state per seed_treatment — never copied verbatim from this repository's own accumulated content.",
+    "template_dev_only": "Never ships to a new project. Exists only to develop, plan, and operate the canonical template repository itself."
+  },
+  "seed_treatments": {
+    "as-is": "Copy the tracked file byte-for-byte. Only valid when the tracked file is already seed-clean (no accumulated project content).",
+    "empty-dir": "Ship the directory containing only the files listed in `keep` (typically .gitkeep). Every other file currently tracked under this directory is implicitly template_dev_only — it does not need a separate manifest entry.",
+    "empty-file": "Ship a zero-byte file at this path (append-only logs).",
+    "reset-template": "Ship the file at `template` (under scripts/distribution/seed/) in place of the tracked path."
+  },
+  "entries": [
+    {
+      "path": ".agents/",
+      "category": "machinery"
+    },
+    {
+      "path": ".cursorrules",
+      "category": "machinery"
+    },
+    {
+      "path": ".gitattributes",
+      "category": "machinery"
+    },
+    {
+      "path": ".githooks/",
+      "category": "machinery"
+    },
+    {
+      "path": ".github/",
+      "category": "machinery"
+    },
+    {
+      "path": ".gitignore",
+      "category": "machinery"
+    },
+    {
+      "path": "AGENTS.md",
+      "category": "machinery"
+    },
+    {
+      "path": "CLAUDE.md",
+      "category": "machinery"
+    },
+    {
+      "path": "OPERATING_MANUAL.md",
+      "category": "machinery"
+    },
+    {
+      "path": "README.md",
+      "category": "machinery"
+    },
+    {
+      "path": "docs/",
+      "category": "machinery"
+    },
+    {
+      "path": "package.json",
+      "category": "machinery"
+    },
+    {
+      "path": "package-lock.json",
+      "category": "machinery"
+    },
+    {
+      "path": "pack-frontend/",
+      "category": "machinery"
+    },
+    {
+      "path": "scripts/",
+      "category": "machinery"
+    },
+    {
+      "path": "setup.sh",
+      "category": "machinery"
+    },
+    {
+      "path": "backlog/epics/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "backlog/tasks/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "backlog/done/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "handoffs/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "memory/",
+      "category": "seed",
+      "seed_treatment": "as-is"
+    },
+    {
+      "path": "planning/dependencies/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "planning/rc/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "planning/migrations/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": [
+        ".gitkeep"
+      ]
+    },
+    {
+      "path": "planning/.gitkeep",
+      "category": "seed",
+      "seed_treatment": "as-is"
+    },
+    {
+      "path": "project-spine/LEAN-CONTEXT.template.md",
+      "category": "seed",
+      "seed_treatment": "as-is"
+    },
+    {
+      "path": "project-state/state.json",
+      "category": "seed",
+      "seed_treatment": "reset-template",
+      "template": "scripts/distribution/seed/state.json"
+    },
+    {
+      "path": "project-state/AGENT_LOG.md",
+      "category": "seed",
+      "seed_treatment": "reset-template",
+      "template": "scripts/distribution/seed/AGENT_LOG.md"
+    },
+    {
+      "path": "project-state/decisions.md",
+      "category": "seed",
+      "seed_treatment": "as-is"
+    },
+    {
+      "path": "project-state/completion.md",
+      "category": "seed",
+      "seed_treatment": "as-is"
+    },
+    {
+      "path": "project-state/ledger.jsonl",
+      "category": "seed",
+      "seed_treatment": "empty-file"
+    },
+    {
+      "path": "project-state/commands.jsonl",
+      "category": "seed",
+      "seed_treatment": "empty-file"
+    },
+    {
+      "path": "planning/template-development/",
+      "category": "template_dev_only"
+    },
+    {
+      "path": "archive/",
+      "category": "template_dev_only"
+    },
+    {
+      "path": "scripts/test/",
+      "category": "template_dev_only"
+    },
+    {
+      "path": ".github/workflows/os-regression.yml",
+      "category": "template_dev_only"
+    },
+    {
+      "path": "overhaul.md.md",
+      "category": "template_dev_only"
+    },
+    {
+      "path": "planning/interviews/",
+      "category": "seed",
+      "seed_treatment": "empty-dir",
+      "keep": []
+    },
+    {
+      "path": "project-spine/",
+      "category": "template_dev_only"
+    },
+    {
+      "path": "project-state/",
+      "category": "template_dev_only"
+    }
+  ],
+  "invariants": [
+    "Closed list: a tracked path not matched by any entry above (by exact path or by directory-prefix) FAILS distribution validation instead of silently shipping.",
+    "Within an empty-dir seed directory, only files in `keep` are seed; every other tracked file there is implicitly template_dev_only without a separate entry.",
+    "Adding a new top-level tracked path requires a manifest entry in the same PR, or the repository's own distribution self-check (scripts/test/distribution-manifest.test.mjs) fails.",
+    "This manifest classifies WHAT ships. Git history and the template remote are never copied regardless of category — the scaffolder always initializes a fresh Git repository (see RC-FIX-02)."
+  ]
+}

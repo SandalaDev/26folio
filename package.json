@@ -13,7 +13,7 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "test": "echo \"Error: no application test suite specified\" && exit 1",
-    "test:os": "bash scripts/test/derived-state.sh && node scripts/test/progress.test.mjs && node scripts/test/deps.test.mjs && node scripts/test/rendered-artifacts.test.mjs",
+    "test:os": "node scripts/doctor.mjs && node scripts/test/os-integration.test.mjs && node scripts/migrate.mjs verify",
     "os:render": "bash scripts/os.sh render"
   },
   "repository": {

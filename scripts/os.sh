@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # scripts/os.sh — the single entry point for agent-os.
-# Subcommands: start | onboard | switch | end | checkpoint | check | status | render | claim | release | decide | context | deps | pr | sync | doctor
+# Subcommands: start | onboard | switch | end | checkpoint | check | status | render | refresh | next | interview | usage | work | review | skills | map | locate | project | verify-task | guard-hook | claim | done | release | decide | context | deps | rc | migrate | pr | sync | doctor
 #
 # DESIGN PRINCIPLES:
 #  - NON-BLOCKING: the OS manages memory, state, and context. It does not gate
@@ -32,6 +32,7 @@ LOCK="project-state/session.lock"
 LEDGER="project-state/ledger.jsonl"
 DECISIONS="project-state/decisions.md"
 AGENT_LOG="project-state/AGENT_LOG.md"
+COMMANDS="${OS_COMMAND_LOG:-project-state/commands.jsonl}"
 
 have_node() { command -v node >/dev/null 2>&1; }
 
@@ -47,7 +48,7 @@ derive_identity() {
   # Auto-detect common harnesses from their telltale env vars when not declared.
   if [[ -z "$h" ]]; then
     if   [[ -n "${CLAUDECODE:-}${CLAUDE_CODE:-}" ]]; then h="claude-code"
-    elif [[ -n "${CODEX_ENVIRONMENT:-}" ]];          then h="codex"
+    elif [[ -n "${CODEX_ENVIRONMENT:-}${CODEX_THREAD_ID:-}" ]];          then h="codex"
     elif [[ -n "${ZCODE:-}" ]];                      then h="zcode"
     elif [[ -n "${GEMINI_CLI:-}" ]];                 then h="gemini-cli"
     elif [[ -n "${CURSOR_TRACE_ID:-}" ]];            then h="cursor"
@@ -68,6 +69,16 @@ derive_identity() {
 render() {
   if have_node; then node scripts/render-state.mjs
   else echo "[os] skip render (no node) — CI will render"; fi
+}
+
+# Opaque session id for privacy-bounded telemetry: the session lock's start
+# timestamp (not user text). "none" when no session is open.
+session_id() {
+  if [[ -f "$LOCK" ]]; then
+    grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- | tr -d '\n' || printf 'none'
+  else
+    printf 'none'
+  fi
 }
 
 # Read a scalar from state.json via node (single source of truth).
@@ -98,10 +109,13 @@ check_epic_alignment() {
 # Lock freshness: minutes since the lock's last write (start or last checkpoint).
 # Unreadable age -> treat as stale (crash path), never as live.
 lock_age_min() {
-  local started; started="$(grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
-  [[ -n "$started" ]] || { echo 999999; return; }
+  local heartbeat
+  heartbeat="$(grep '^heartbeat:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || true)"
+  # Legacy locks have no heartbeat; their started field was the heartbeat.
+  [[ -n "$heartbeat" ]] || heartbeat="$(grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
+  [[ -n "$heartbeat" ]] || { echo 999999; return; }
   have_node || { echo 999999; return; }
-  node -e 'const s=new Date(process.argv[1]);const m=(Date.now()-s)/60000;process.stdout.write(Number.isFinite(m)&&m>=0?String(Math.floor(m)):"999999")' "$started" 2>/dev/null || echo 999999
+  node -e 'const s=new Date(process.argv[1]);const m=(Date.now()-s)/60000;process.stdout.write(Number.isFinite(m)&&m>=0?String(Math.floor(m)):"999999")' "$heartbeat" 2>/dev/null || echo 999999
 }
 
 # ── start ──────────────────────────────────────────────────────────────────
@@ -148,19 +162,17 @@ cmd_start() {
   # Write a REAL journal: identity + branch + task + recoverable fields.
   local branch; branch="$(current_branch)"
   check_epic_alignment "$branch"
-  write_lock "$branch" "$curtask" "" ""
-  # Render after the lock exists so the dashboard reports the open session.
-  render
+  local started; started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  write_lock "$branch" "$curtask" "" "" "$started"
+  # Rendering happens once in the dispatcher tail, AFTER this command's event is
+  # appended, so the dashboard reports both the open session and this invocation.
   echo "[os] session started as ${HARNESS}/${MODEL} (${ROLE})."
   echo "[os] Run 'os checkpoint \"next step\"' before risky edits so a crash is recoverable."
 }
 
-# write_lock <branch> <task> <next_step> <files_touched>
+# write_lock <branch> <task> <next_step> <files_touched> <started>
 write_lock() {
-  local branch="$1" task="$2" next_step="${3:-}" files="${4:-}"
-  printf 'started: %s\nharness: %s\nmodel: %s\nrole: %s\nbranch: %s\ntask: %s\nnext_step: %s\nlast_verification: %s\nfiles_touched: %s\n' \
-    "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$HARNESS" "$MODEL" "$ROLE" \
-    "$branch" "$task" "$next_step" "unknown" "$files" > "$LOCK"
+  node scripts/session-io.mjs lock "$@"
 }
 
 # ── onboard: the agent-switch entry point — start + print the onboarding packet ──
@@ -179,7 +191,7 @@ write_switch_handoff() {
   local note="$1"
   local dir="handoffs/session"
   local file="$dir/HANDOFF-SESSION-SWITCH-$(date -u +%Y%m%dT%H%M%SZ).md"
-  local branch task files
+  local branch task files started
   branch="$(grep '^branch:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo none)"
   task="$(grep '^task:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo none)"
   files="$(grep '^files_touched:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
@@ -214,7 +226,9 @@ cmd_checkpoint() {
   task="$(state_get)"
   # Auto-derive touched files from the diff vs base (best-effort).
   files="$(git diff --name-only 2>/dev/null | tr '\n' ' ' || echo '')"
-  write_lock "$branch" "$task" "$next_step" "$files"
+  started="$(grep '^started:' "$LOCK" 2>/dev/null | cut -d' ' -f2- || echo '')"
+  node scripts/control.mjs usage capture || echo "[os] usage capture unavailable" >&2
+  write_lock "$branch" "$task" "$next_step" "$files" "$started"
   # Append a progress line to AGENT_LOG.md so checkpoints are durable even mid-session.
   append_log "checkpoint" "$task" "$next_step" "" || true
   echo "[os] checkpoint saved. next_step='$next_step' files='${files:-none}'"
@@ -222,6 +236,8 @@ cmd_checkpoint() {
 
 # ── end: sanity check (non-blocking), ONE state update, ledger, log, handoffs, clear lock ──
 cmd_end() {
+  [[ -f "$LOCK" ]] || { echo "[os] no active session; nothing to close."; return 0; }
+  node scripts/update-state.mjs set-current session_status closing >/dev/null
   local task="${1:-${ACTIVE_TASK:-}}"
   # Bare `os end`: attribute the session to the claimed task so the ledger (and
   # everything that mines it) records the real task instead of "none".
@@ -249,6 +265,7 @@ cmd_end() {
     cmd_check || check="warn"
   fi
 
+  node scripts/control.mjs usage capture || echo "[os] usage capture unavailable" >&2
   derive_identity
 
   local started branch
@@ -256,6 +273,7 @@ cmd_end() {
   branch="$(current_branch)"
   append_ledger "completed" "$started" "$branch" "$task" "$check"
   append_log "end" "$task" "" "$check" || true
+  node scripts/update-state.mjs set-current session_status none >/dev/null
   rm -f "$LOCK"
 
   # Clear the claim for the finished task so a stale pointer doesn't linger.
@@ -268,8 +286,8 @@ cmd_end() {
     fi
   fi
 
-  # Render last: ledger, lock removal, and claim release must already be visible.
-  render
+  # Rendering happens in the dispatcher tail, after this command's event is
+  # appended: ledger, lock removal, and claim release are already visible.
 
   echo "[os] session ended as ${HARNESS}/${MODEL} (${ROLE}). state.json canonical; views regenerated; ledger appended."
 }
@@ -284,7 +302,7 @@ log_crashed() {
   role="$(grep '^role:' "$crashed" 2>/dev/null | cut -d' ' -f2- || echo executor)"
   branch="$(grep '^branch:' "$crashed" 2>/dev/null | cut -d' ' -f2- || echo none)"
   task="$(grep '^task:' "$crashed" 2>/dev/null | cut -d' ' -f2- || echo none)"
-  append_ledger_raw "crashed" "$started" "$harness" "$model" "$role" "$branch" "$task" "skipped"
+  node scripts/session-io.mjs crash "$crashed"
   append_log "crashed" "$task" "$(grep '^next_step:' "$crashed" 2>/dev/null | cut -d' ' -f2-)" "skipped" || true
 }
 
@@ -295,29 +313,7 @@ append_ledger() {
 
 # append_ledger_raw <status> <started> <h> <m> <r> <branch> <task> <gate>
 append_ledger_raw() {
-  local status="$1" started="$2" h="$3" m="$4" r="$5" branch="$6" task="$7" gate="$8"
-  printf '{"started":%s,"ended":"%s","harness":"%s","model":"%s","role":"%s","branch":"%s","task":"%s","gate":"%s","status":"%s","duration_min":%s}\n' \
-    "$(json_str "$started")" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$h" "$m" "$r" "$branch" "$task" "$gate" "$status" \
-    "$(duration_min "$started")" >> "$LEDGER"
-}
-
-# duration_min <startedISO> -> integer minutes, or "unknown"
-duration_min() {
-  local s="$1"
-  [[ -z "$s" ]] && { echo "unknown"; return; }
-  have_node || { echo "unknown"; return; }
-  node -e '
-    const s=new Date(process.argv[1]); const e=new Date();
-    const m=(e-s)/60000;
-    process.stdout.write(Number.isFinite(m)&&m>=0?String(Math.round(m)):"unknown");
-  ' "$s" 2>/dev/null || echo "unknown"
-}
-
-# json_str <raw> -> a JSON-safe quoted string, or null if empty
-json_str() {
-  local v="$1"
-  [[ -z "$v" ]] && { echo "null"; return; }
-  node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$v" 2>/dev/null || echo "null"
+  node scripts/session-io.mjs ledger "$@"
 }
 
 # append_log <event> <task> <detail> <gate> -> appends a structured line to AGENT_LOG.md
@@ -349,7 +345,7 @@ cmd_status() {
   cmd_check || true
 }
 
-cmd_render() { render; }
+cmd_render() { :; }  # the dispatcher tail renders once, after this command's event is appended
 
 # ── doctor: system health check (catches environment + self-drift) ───────────
 # Runs deps/identity/hooks/sanity checks plus self-drift: asserts advertised
@@ -390,13 +386,54 @@ cmd_claim() {
     echo "[os] claim: no task file for '$id' in backlog/tasks or backlog/done." >&2
     exit 1
   fi
+  node scripts/control.mjs gate "$id" >/dev/null || exit 1
+  node scripts/control.mjs usage capture >/dev/null || true
   derive_identity
   local branch; branch="$(current_branch)"
   node scripts/update-state.mjs set-current task "$id" || { echo "[os] claim failed."; exit 1; }
   node scripts/update-state.mjs set-current branch "$branch" >/dev/null || true
   node scripts/update-state.mjs set-current agent "${HARNESS}/${MODEL}" >/dev/null || true
+  local started_at; started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  node scripts/stamp-task.mjs "$found" started_at "$started_at" \
+    || { echo "[os] claim: task claimed, but started_at could not be stamped." >&2; exit 1; }
   echo "[os] claimed $id (${found})."
   echo "[os] run 'os start' to open the session, 'os end $found' to close + clear."
+}
+
+# â”€â”€ done <TASK>: stamp completion, move to done/, clear claim, render â”€â”€â”€â”€â”€â”€
+cmd_done() {
+  local task="${1:-}"
+  [[ -n "$task" ]] || { echo "Usage: bash scripts/os.sh done <TASK-XXX>"; exit 2; }
+  have_node || { echo "[os] done needs node"; exit 1; }
+  local id="$task"
+  [[ "$task" == */* ]] && id="$(basename "$task" .md)"
+  local open="backlog/tasks/$id.md" done="backlog/done/$id.md" file=""
+  if [[ -f "$open" ]]; then file="$open"
+  elif [[ -f "$done" ]]; then file="$done"
+  else echo "[os] done: no task file for '$id' in backlog/tasks or backlog/done." >&2; exit 1
+  fi
+
+  node scripts/control.mjs gate "$id" >/dev/null || exit 1
+  node scripts/control.mjs usage capture || true
+  local completed_at; completed_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  node scripts/stamp-task.mjs "$file" completed_at "$completed_at" || exit 1
+  node scripts/stamp-task.mjs "$file" status done --set || exit 1
+
+  if [[ "$file" == "$open" ]]; then
+    mkdir -p backlog/done
+    if git ls-files --error-unmatch "$open" >/dev/null 2>&1; then
+      git mv "$open" "$done"
+    else
+      mv "$open" "$done"
+    fi
+    file="$done"
+  fi
+
+  local claimed; claimed="$(state_get)"
+  [[ "$claimed" == "$id" ]] && node scripts/update-state.mjs clear-task >/dev/null
+  # Rendering happens in the dispatcher tail, after this command's event is appended.
+  node scripts/control.mjs interview after-done "$id"
+  echo "[os] done $id ($file)."
 }
 
 # ── release: clear current.task/branch/agent (e.g. after a merged task) ───────
@@ -495,6 +532,24 @@ cmd_deps() {
   node scripts/deps.mjs "$@"
 }
 
+# ── rc: RC evidence assessment and release-contract validation (read-only,
+# except assess --write, which creates a new planning/rc/ revision) ─────────
+cmd_rc() {
+  have_node || { echo "[os] rc needs node"; exit 1; }
+  node scripts/rc.mjs "$@"
+}
+
+# ── migrate: versioned project-data migration (inspect/plan are read-only;
+# apply writes only declared paths with atomic writes; verify re-checks) ────
+cmd_migrate() {
+  have_node || { echo "[os] migrate needs node"; exit 1; }
+  node scripts/migrate.mjs "$@"
+}
+
+dispatch() {
+case "${1:-help}" in
+  checkpoint|end|switch|claim|done|release|decide) node scripts/control.mjs owner || return 1 ;;
+esac
 case "${1:-help}" in
   start)       shift; cmd_start "$@" ;;
   onboard)     shift; cmd_onboard "$@" ;;
@@ -502,15 +557,73 @@ case "${1:-help}" in
   end)         shift; cmd_end "${1:-}" ;;
   checkpoint)  shift; cmd_checkpoint "${*:-}" ;;
   claim)       shift; cmd_claim "${1:-}" ;;
+  done)        shift; cmd_done "${1:-}" ;;
   release)     cmd_release ;;
   decide)      shift; cmd_decide "$@" ;;
-  context)     cmd_context ;;
+  context)     shift; if [[ $# -gt 0 ]]; then node scripts/control.mjs briefing "$@"; else cmd_context; fi ;;
   deps)        shift; cmd_deps "$@" ;;
+  rc)          shift; cmd_rc "$@" ;;
+  migrate)     shift; cmd_migrate "$@" ;;
   pr)          shift; cmd_pr "$@" ;;
   sync)        cmd_sync ;;
   check)       cmd_check ;;
   status)      cmd_status ;;
-  render)      cmd_render ;;
+  render)      : ;;
+  refresh|next|interview|usage|work|review|skills|map|locate|project|verify-task|guard-hook) node scripts/control.mjs "$@" ;;
   doctor)      cmd_doctor ;;
-  *) echo "Usage: bash scripts/os.sh [start [--takeover]|onboard [--takeover]|switch \"note\"|end [task]|checkpoint \"next\"|claim <TASK>|release|decide|context|deps|pr|sync|check|status|render|doctor]" ;;
+  *) echo "Usage: bash scripts/os.sh [start [--takeover]|onboard [--takeover]|switch \"note\"|end [task]|checkpoint \"next\"|claim <TASK>|done <TASK>|release|decide|context|deps|rc assess|validate|migrate inspect|plan|apply|verify|pr|sync|check|status|render|doctor]" ;;
 esac
+}
+
+# Normalize the invocation to a known dispatcher verb; anything else is
+# "unknown". Arguments never reach telemetry.
+command_verb() {
+  case "${1:-help}" in
+    start|onboard|switch|end|checkpoint|claim|done|release|decide|context|deps|rc|migrate|pr|sync|check|status|render|doctor) printf '%s' "${1}" ;;
+    *) printf 'unknown' ;;
+  esac
+}
+
+telemetry_harness() {
+  local h="${HARNESS_NAME:-${AGENT_NAME:-}}"
+  if [[ -z "$h" ]]; then
+    if   [[ -n "${CLAUDECODE:-}${CLAUDE_CODE:-}" ]]; then h="claude-code"
+    elif [[ -n "${CODEX_ENVIRONMENT:-}" ]];          then h="codex"
+    elif [[ -n "${ZCODE:-}" ]];                      then h="zcode"
+    elif [[ -n "${GEMINI_CLI:-}" ]];                 then h="gemini-cli"
+    elif [[ -n "${CURSOR_TRACE_ID:-}" ]];            then h="cursor"
+    elif [[ -n "${OPENCODE:-}" ]];                   then h="opencode"
+    fi
+  fi
+  printf '%s' "${h:-unknown}"
+}
+
+# One privacy-bounded event per top-level invocation. The verb is normalized
+# against the dispatcher, arguments never enter this function, and any write
+# failure is deliberately ignored so instrumentation cannot change OS behavior.
+# The event carries a feature id (resolved from the OS feature registry) and an
+# opaque session id; it never carries arguments, paths, or user text.
+append_command_event() {
+  local cmd="$1" exit_code="$2" elapsed_ms="$3" feature
+  have_node || return 0
+  feature="$(node --input-type=module -e 'import {featureForCommand} from "./scripts/os-feature-registry.mjs"; process.stdout.write(featureForCommand(process.argv[1])?.id || "")' "$cmd" 2>/dev/null || true)"
+  [[ -n "$feature" ]] && OS_COMMAND_LOG="$COMMANDS" node scripts/record-telemetry.mjs "$feature" "$cmd" "$exit_code" "$elapsed_ms" 2>/dev/null || true
+}
+
+__command="$(command_verb "${1:-help}")"
+__command_started_ms="$(node -e 'process.stdout.write(String(Date.now()))' 2>/dev/null || date +%s000)"
+set +e
+( dispatch "$@" )
+__command_exit=$?
+set -e
+__command_ended_ms="$(node -e 'process.stdout.write(String(Date.now()))' 2>/dev/null || date +%s000)"
+__command_elapsed_ms=$((__command_ended_ms - __command_started_ms))
+append_command_event "$__command" "$__command_exit" "$__command_elapsed_ms" || true
+# Event/render ordering fix: the event is appended first, then the views are
+# regenerated, so the command that just completed appears in the current
+# dashboard and metrics. Rendering stays best-effort and never changes the exit.
+case "$__command" in
+  render) node scripts/control.mjs refresh || exit 1 ;;
+  start|onboard|switch|end|done) render || echo "[os] view refresh failed; run os refresh to diagnose" >&2 ;;
+esac
+exit "$__command_exit"

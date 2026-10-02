@@ -1,9 +1,63 @@
-started: 2026-08-20T18:42:44Z
-harness: claude-code
+id: 54fcc672-ca18-42de-991a-af1b4ae9bb69
+owner: null
+ownership: instruction-only
+started: 2026-10-02T13:42:07Z
+heartbeat: 2026-10-02T13:42:10.317Z
+harness: unknown
 model: unknown
 role: executor
 branch: feature/EPIC-025
-task: TASK-114
-next_step: TASK-109..114 done and committed in both repos. Next: TASK-115 documents and decisions. Live verification of payments, uploads, and email still needs owner-created provider accounts.
+task: ""
+next_step: ""
 last_verification: unknown
-files_touched: backlog/done/TASK-114.md project-state/state.json 
+files_touched: agents/skills/ds-task-slicer/SKILL.md
+  .agents/skills/ds-test-planner/SKILL.md .cursorrules .githooks/pre-push
+  .gitignore AGENTS.md CLAUDE.md OPERATING_MANUAL.md README.md
+  backlog/tasks/TASK-088.md docs/guide/00-start-here.md
+  docs/guide/10-overview.md docs/guide/20-setup.md
+  docs/guide/30-project-start.md docs/guide/32-dependencies.md
+  docs/guide/35-progress.md docs/guide/40-daily-loop.md
+  docs/guide/45-switching-agents.md docs/guide/50-testing.md
+  docs/guide/55-writing.md docs/guide/60-under-the-hood.md
+  docs/guide/70-troubleshooting.md pack-frontend/elicit-phase.sh package.json
+  project-state/AGENT_LOG.md project-state/ledger.jsonl
+  project-state/session.lock project-state/state.json scripts/branch.sh
+  scripts/context.mjs scripts/doctor.mjs scripts/effort.mjs scripts/intake.sh
+  scripts/md.mjs scripts/new-task.sh scripts/onboard-packet.mjs scripts/os.sh
+  scripts/progress.mjs scripts/render-dashboard.mjs scripts/render-guide.mjs
+  scripts/render-metrics.mjs scripts/render-state.mjs scripts/skills.sh
+  scripts/test/agent-switch.test.mjs scripts/test/dashboard-wiring.test.mjs
+  scripts/test/deps.test.mjs scripts/test/derived-state.sh
+  scripts/test/effort.test.mjs scripts/test/fixtures/dependency-plan-approved.md
+  scripts/test/progress.test.mjs scripts/test/rendered-artifacts.test.mjs
+  scripts/update-from-template.sh scripts/update-state.mjs setup.sh
+  src/components/capabilities/capabilities-hero.tsx
+  src/components/capabilities/service-dossier.tsx src/lib/spotify-snapshot.json
+  .agents/skills/ds-epic-estimator/SKILL.md
+  .agents/skills/ds-epic-estimator/agents/openai.yaml
+  .agents/skills/ds-interviewer/SKILL.md 26folio/.obsidian/app.json
+  26folio/.obsidian/appearance.json 26folio/.obsidian/core-plugins.json
+  26folio/.obsidian/graph.json 26folio/.obsidian/workspace.json
+  26folio/Welcome.md docs/guide/02-new-project.md docs/guide/05-system.md
+  docs/guide/10-interviews.md docs/guide/15-planning.md
+  docs/guide/20-daily-work.md docs/guide/25-agents.md docs/guide/30-usage.md
+  docs/guide/35-context-dependencies.md docs/guide/40-quality-release.md
+  docs/guide/45-release.md docs/guide/50-maintenance.md
+  docs/guide/55-recovery.md docs/guide/60-reference.md
+  planning/migrations/AGENT-OS-2.0.0-2026-09-25.md
+  planning/migrations/PLAN-2026-09-24T23-07-40-707Z.json
+  project-state/commands.jsonl project-state/distribution-receipts.jsonl
+  project-state/session.lock.crashed-20260924T230349Z scripts/brand.mjs
+  scripts/code-map.mjs scripts/control.mjs scripts/distribution/apply-seed.mjs
+  scripts/distribution/atomic-write.mjs scripts/distribution/manifest.json
+  scripts/distribution/migration-plan.schema.md
+  scripts/distribution/migrations/registry.mjs
+  scripts/distribution/rc-assessment.schema.md scripts/distribution/resolve.mjs
+  scripts/distribution/seed/AGENT_LOG.md scripts/distribution/seed/state.json
+  scripts/distribution/update.mjs scripts/forecast.mjs scripts/interviews.mjs
+  scripts/migrate.mjs scripts/os-feature-registry.mjs scripts/rc.mjs
+  scripts/record-telemetry.mjs scripts/release-baseline.mjs scripts/runtime.mjs
+  scripts/scaffold-project.sh scripts/seed-history.mjs scripts/session-io.mjs
+  scripts/stamp-task.mjs scripts/task-history.mjs scripts/telemetry.sh
+  scripts/test/os-integration.test.mjs scripts/usage.mjs scripts/work.mjs
+  scripts/workflow.mjs

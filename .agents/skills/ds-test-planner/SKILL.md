@@ -46,3 +46,7 @@ These are defaults, not rules. Override them with judgment and say why.
 - Skipping the rationale on `none` — "none, because X" is the whole product.
 - Treating a red test run as a blocker — it's information for the human's
   manual PR review, nothing more.
+
+## Executable evidence
+
+For agreed checks, put `testing.commands` in task frontmatter as arrays of executable and literal arguments. Record behavior, failure mode and why these checks are proportionate. `os verify-task TASK` records results and source fingerprints; missing commands report not-run. A status stamp is not test evidence. Keep OS regression fixtures in template development; product exports plan their own tests.
