@@ -80,12 +80,9 @@ function CapabilitiesHero() {
 
       <div className="grid min-h-[calc(100vh-10rem)] items-center gap-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)]">
         <div className="relative z-10">
-          <p data-hero-copy className="eyebrow text-rose">
-            Capabilities &amp; services
-          </p>
           <h1
             data-hero-copy
-            className="mt-5 max-w-5xl font-display text-display text-ink"
+            className="max-w-5xl font-display text-display text-ink"
           >
             Custom software for businesses that have{" "}
             <span className="font-extralight text-soft">
