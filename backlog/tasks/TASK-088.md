@@ -81,3 +81,18 @@ Visitor-facing asset-audit language has been removed from the technology
 atlas. The focus panel now names only the active technology and uses the dark
 background token on peach; rendered contrast measures 9.33:1. Lint, strict
 TypeScript, production build, and browser copy checks pass.
+
+2026-10-03: owner-flagged copy items 1-2 committed (d752490): hero eyebrow and
+duplicated dossier labels removed. Item 5 superseded by owner-authored rewrite
+of the whole technology section: "My tech stack" header, per-technology notes
+replacing the generic "sits within" panel text, group intro/outro support
+(Workflow intro, AI Platforms outro), Stripe dropped (icon deleted), generic
+mobile-money entry replaced by Airtel Money / MTN MoMo / Zamtel Kwacha with the
+new owner-supplied marks, plus Express, Bun, TanStack Start, Cloudflare D1,
+Neon, Alibaba Cloud Model Studio, AWS, Kubernetes, CodeRabbit, Paper, T3 Code,
+Hermes Agent, and Herdr added; Figma, Traefik, and Resend dropped. Excessive
+numbering removed (tab indices, "stack / NN"). Neon and Lenco / BroadPay have
+no mark yet and render the initials fallback. Lint, strict TypeScript, and
+production build green on Windows (tmp/*.log); icon audit 63 refs, 0 missing.
+Items 3 (partnership reframe) and 4 (standards heading) proposals remain in
+tmp/capabilities-items-3-4-5-proposal.md awaiting owner confirmation.
