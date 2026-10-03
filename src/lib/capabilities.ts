@@ -300,7 +300,7 @@ export const technologyGroups: TechnologyGroup[] = [
       },
       {
         name: "Express",
-        icon: "/icons/color/epressjs.svg",
+        icon: "/icons/color/expressjs.svg",
         note: "One of the foundational Node.js web frameworks and something I consider essential knowledge for a full-stack JavaScript engineer. I don't necessarily reach for it first anymore, but understanding Express means understanding a significant part of the Node backend ecosystem.",
       },
       {
@@ -549,6 +549,7 @@ export const technologyGroups: TechnologyGroup[] = [
     technologies: [
       {
         name: "Lenco / BroadPay",
+        icon: "/icons/color/lenco.svg",
         note: "A Zambian payments platform I selected after researching the local payments landscape. I'm interested in it as a way to work with local payment rails through a modern API rather than building every integration from scratch.",
       },
       {
