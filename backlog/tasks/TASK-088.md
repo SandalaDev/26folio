@@ -98,5 +98,7 @@ Item 3 approved and implemented 2026-10-03: eyebrow "Working together",
 heading "Month to month, with working software you can judge.", "movement /"
 card labels removed, terms footnote rewritten to include the reversibility
 line ("a month ends it cleanly - everything delivered stays with you").
-Item 4 (standards section heading) rejected; the owner will supply that copy
-after this run - the section is untouched.
+Item 4 (standards section heading): final owner decision 2026-10-03 - no
+change; the section remains exactly as it was. All five flagged copy items
+are now resolved (1-3 applied, 4 kept as-is, 5 applied via the owner's
+full tech-stack rewrite).

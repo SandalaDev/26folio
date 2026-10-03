@@ -387,6 +387,7 @@ export const technologyGroups: TechnologyGroup[] = [
       },
       {
         name: "Neon",
+        icon: "/icons/color/neon.svg",
         note: "Managed PostgreSQL with a developer experience built around serverless applications and database branching. I use it when managed Postgres makes more sense for a project than operating the database myself; for other applications, I prefer the control and learning that comes with self-hosting PostgreSQL.",
       },
     ],
