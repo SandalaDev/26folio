@@ -144,10 +144,10 @@ function PartnershipPath() {
       </div>
 
       <div className="pt-16 md:pt-20">
-        <p className="eyebrow text-caramel">How the partnership works</p>
+        <p className="eyebrow text-caramel">Working together</p>
         <h2 className="font-display text-heading text-ink mt-4 max-w-4xl">
-          Useful change arrives in{" "}
-          <span className="font-extralight">three connected movements.</span>
+          Month to month, with{" "}
+          <span className="font-extralight">working software you can judge.</span>
         </h2>
 
         <div
@@ -192,8 +192,7 @@ function PartnershipPath() {
                   </span>
                 </div>
                 <div className="flex flex-col justify-end pt-7 md:p-10">
-                  <p className="text-soft font-mono text-xs">movement / {phase.index}</p>
-                  <h3 className="font-display text-ink mt-4 max-w-lg text-3xl font-semibold md:text-4xl">
+                  <h3 className="font-display text-ink max-w-lg text-3xl font-semibold md:text-4xl">
                     {phase.title}
                   </h3>
                   <p className="text-muted mt-5 max-w-xl">{phase.body}</p>
@@ -208,10 +207,10 @@ function PartnershipPath() {
         </div>
 
         <p className="measure border-rose text-soft mt-12 border-l pl-5 text-sm">
-          Engagements are structured month to month unless agreed otherwise. The fee, available
-          capacity, communication rhythm, support expectations, and included work are agreed before
-          development begins. Hosting and third-party services remain in your accounts and are
-          billed directly to you.
+          Engagements run month to month. The scope, fee, available capacity, communication
+          rhythm, and support expectations are agreed before work begins, and hosting and
+          third-party services stay in your accounts, billed directly to you. If the fit is
+          wrong, a month ends it cleanly — and everything delivered so far stays with you.
         </p>
       </div>
     </Section>

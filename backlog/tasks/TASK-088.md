@@ -94,5 +94,9 @@ Hermes Agent, and Herdr added; Figma, Traefik, and Resend dropped. Excessive
 numbering removed (tab indices, "stack / NN"). Neon and Lenco / BroadPay have
 no mark yet and render the initials fallback. Lint, strict TypeScript, and
 production build green on Windows (tmp/*.log); icon audit 63 refs, 0 missing.
-Items 3 (partnership reframe) and 4 (standards heading) proposals remain in
-tmp/capabilities-items-3-4-5-proposal.md awaiting owner confirmation.
+Item 3 approved and implemented 2026-10-03: eyebrow "Working together",
+heading "Month to month, with working software you can judge.", "movement /"
+card labels removed, terms footnote rewritten to include the reversibility
+line ("a month ends it cleanly - everything delivered stays with you").
+Item 4 (standards section heading) rejected; the owner will supply that copy
+after this run - the section is untouched.
