@@ -44,3 +44,9 @@
 - 2026-09-27T22:33:23Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Items 1-2 implemented (hero eyebrow removed, dossier label/index dedup); lint+typecheck green; awaiting owner decision on items 3-5 proposals
 - 2026-09-27T22:59:54Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | PAUSED mid-TASK-088. Done: capabilities items 1-2 (hero eyebrow deleted; dossier dedup: single What-I-build eyebrow, no system/NN prefixes, no A-system-can label). Lint+typecheck green, UNCOMMITTED. Pending owner decisions: item 3 Working-together repurpose + pricing numbers; item 4 Built-so-you-can-leave heading; item 5 per-tech notes in capabilities.ts + TechGrid description swap; housekeeping: 96 pre-existing uncommitted template-machinery files on feature/EPIC-025 need commit/stash/leave decision before any commit of capabilities work.
 - 2026-09-27T23:02:38Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-10-02T14:30:26Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Machinery
+- 2026-10-03T18:55:41Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | TASK-088
+- 2026-10-03T21:31:13Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Icon
+- 2026-10-03T21:49:07Z | cline-desktop/mimo-v2.6-flash | checkpoint | task=TASK-088 | gate= | Recovered
+- 2026-10-03T21:50:17Z | cline-desktop/mimo-v2.6-flash | checkpoint | task=TASK-088 | gate= | Recovery
+- 2026-10-03T22:24:23Z | cline-desktop/mimo-v2.6-flash | end | task=backlog/tasks/TASK-088.md | gate=ok

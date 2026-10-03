@@ -19,3 +19,10 @@
 {"ts":"2026-10-02T13:42:07.317Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":68,"harness":"unknown","session":"none"}
 {"ts":"2026-10-02T13:42:10.501Z","feature":"session-start","action":"start","exit":0,"ms":3253,"harness":"unknown","session":"s-454e716a7401"}
 {"ts":"2026-10-02T14:28:05.016Z","feature":"task-claim","action":"claim","exit":0,"ms":7398,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-02T14:30:26.489Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":6287,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-03T18:55:41.799Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":5896,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-03T21:31:13.805Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":8360,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-03T21:48:05.416Z","feature":"session-start","action":"onboard","exit":1,"ms":77,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-03T21:49:07.348Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":7098,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-03T21:50:17.573Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":6655,"harness":"cline-desktop","session":"s-454e716a7401"}
+{"ts":"2026-10-03T22:24:26.389Z","feature":"session-end","action":"end","exit":0,"ms":170355,"harness":"cline-desktop","session":"none"}
