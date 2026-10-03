@@ -12,6 +12,8 @@ const eslintConfig = [
     ignores: [
       // OS / docs / non-app dirs
       ".agents/", ".claude/", "scripts/", "backlog/", "project-state/", "project-spine/",
+      // scratch working directory — session inputs, never deliverables (mirrors .gitignore)
+      "tmp/",
       // generated build output + Next.js-authored type shims (flat config does not
       // inherit eslint-config-next's legacy ignores, so declare them explicitly).
       ".next/", "out/", "build/", "dist/", "node_modules/", "next-env.d.ts",
