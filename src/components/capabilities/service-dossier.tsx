@@ -15,8 +15,7 @@ function ServiceDossier() {
       <div className="grid gap-16 xl:grid-cols-[16rem_minmax(0,1fr)] xl:gap-20">
         <aside className="hidden xl:block">
           <div className="sticky top-28">
-            <p className="eyebrow text-rose">What I build</p>
-            <nav aria-label="Capabilities on this page" className="mt-6">
+            <nav aria-label="Capabilities on this page">
               <ol className="border-l border-border">
                 {capabilityServices.map((service) => (
                   <li key={service.id}>
@@ -38,8 +37,8 @@ function ServiceDossier() {
 
         <div>
           <div className="mb-16 max-w-4xl">
-            <p className="eyebrow text-rose xl:hidden">What I build</p>
-            <h2 className="mt-4 font-display text-heading text-ink xl:mt-0">
+            <p className="eyebrow text-rose">What I build</p>
+            <h2 className="mt-4 font-display text-heading text-ink">
               Systems shaped around{" "}
               <span className="font-extralight">the work as it really happens.</span>
             </h2>
@@ -65,17 +64,7 @@ function ServiceDossier() {
               >
                 <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
                   <div>
-                    <div className="flex items-center gap-4">
-                      <span
-                        className={`font-mono text-xs ${
-                          index % 2 === 0 ? "text-rose" : "text-caramel"
-                        }`}
-                      >
-                        system / {service.index}
-                      </span>
-                      <span className="h-px flex-1 bg-border" />
-                    </div>
-                    <h3 className="mt-5 font-display text-3xl font-semibold text-ink md:text-4xl">
+                    <h3 className="font-display text-3xl font-semibold text-ink md:text-4xl">
                       {service.title}
                     </h3>
                     <p className="mt-5 text-lg text-muted">{service.summary}</p>
@@ -87,8 +76,7 @@ function ServiceDossier() {
                   </div>
 
                   <div>
-                    <p className="eyebrow text-soft">A system can</p>
-                    <ul className="mt-4 grid gap-x-8 gap-y-5 md:grid-cols-2">
+                    <ul className="grid gap-x-8 gap-y-5 md:grid-cols-2">
                       {service.examples.map((example) => (
                         <li key={example} className="flex items-start gap-3">
                           <Check

@@ -66,7 +66,9 @@ export function renderMarkdown(src) {
       i++;
       while (i < lines.length && !/^```/.test(lines[i].trim())) { block.push(lines[i]); i++; }
       i++; // skip closing fence
-      out.push(`<pre>${block.map(inline).join("\n")}</pre>`);
+      // Literal code must not parse Markdown emphasis, links or shell backticks.
+      const code = block.join("\n").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      out.push(`<pre><code>${code}</code></pre>`);
       continue;
     }
 

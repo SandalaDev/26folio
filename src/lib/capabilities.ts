@@ -243,6 +243,7 @@ export const engineeringStandards = [
 
 export interface Technology {
   name: string;
+  note: string;
   icon?: string;
   iconShape?: "square" | "wide";
   iconTone?: "original" | "white";
@@ -251,7 +252,8 @@ export interface Technology {
 export interface TechnologyGroup {
   id: string;
   title: string;
-  description: string;
+  intro?: string;
+  outro?: string;
   technologies: readonly Technology[];
 }
 
@@ -259,167 +261,405 @@ export const technologyGroups: TechnologyGroup[] = [
   {
     id: "product",
     title: "Product Engineering",
-    description:
-      "Responsive interfaces and full-stack products built on web standards, typed code, reusable components, server rendering, APIs, and maintainable design systems.",
     technologies: [
-      { name: "HTML", icon: "/icons/color/html.svg" },
-      { name: "CSS", icon: "/icons/color/css.svg" },
-      { name: "JavaScript", icon: "/icons/color/js.svg" },
-      { name: "TypeScript", icon: "/icons/color/ts.svg" },
-      { name: "React", icon: "/icons/color/react.svg" },
-      { name: "Next.js", icon: "/icons/color/next.svg" },
+      {
+        name: "HTML",
+        icon: "/icons/color/html.svg",
+        note: "The structure behind every interface I build. HTML is simple, durable, and still the foundation everything else in the browser is built around.",
+      },
+      {
+        name: "CSS",
+        icon: "/icons/color/css.svg",
+        note: "The visual language of the web. I use it to turn an interface from a collection of elements into an intentional experience, from layout and typography to responsive behaviour and interaction states.",
+      },
+      {
+        name: "JavaScript",
+        icon: "/icons/color/js.svg",
+        note: "The language at the centre of my web development work. I use it across the browser, servers, tooling and increasingly AI-powered applications.",
+      },
+      {
+        name: "TypeScript",
+        icon: "/icons/color/ts.svg",
+        note: "My default language for serious JavaScript development. Static typing gives me better tooling, safer refactoring, and a clearer way to reason about increasingly complex applications without giving up JavaScript's flexibility.",
+      },
+      {
+        name: "React",
+        icon: "/icons/color/react.svg",
+        note: "My primary UI library. I use React's component model to build interfaces that can grow from individual interactive elements into complete application experiences.",
+      },
+      {
+        name: "Next.js",
+        icon: "/icons/color/next.svg",
+        note: "My primary full-stack React framework. I use it when I want the frontend, server-side application logic, routing, rendering, APIs and deployment workflow to live within one cohesive application.",
+      },
       {
         name: "Node.js",
         icon: "/icons/color/node.svg",
         iconShape: "wide",
+        note: "The runtime behind a huge part of the JavaScript ecosystem and an important primitive for any full-stack JavaScript engineer. I use it when the surrounding ecosystem requires it, particularly where compatibility with established tooling or frameworks makes it the practical choice.",
       },
-      { name: "Hono", icon: "/icons/color/hono.svg" },
-      { name: "TanStack", icon: "/icons/color/tanstack.svg" },
-      { name: "Tailwind CSS", icon: "/icons/color/tailwind.svg" },
+      {
+        name: "Express",
+        icon: "/icons/color/expressjs.svg",
+        note: "One of the foundational Node.js web frameworks and something I consider essential knowledge for a full-stack JavaScript engineer. I don't necessarily reach for it first anymore, but understanding Express means understanding a significant part of the Node backend ecosystem.",
+      },
+      {
+        name: "Hono",
+        icon: "/icons/color/hono.svg",
+        note: "A small, portable web framework for building APIs and backend applications across modern JavaScript runtimes. I am particularly interested in it alongside Bun and Cloudflare Workers because it gives me backend primitives without imposing a large application architecture.",
+      },
+      {
+        name: "Bun",
+        icon: "/icons/color/bun.svg",
+        note: "My preferred JavaScript runtime and development toolkit. I like having the runtime, package manager, bundler and test runner in one toolchain, and when a project supports it, Bun is usually where I start.",
+      },
+      {
+        name: "TanStack Start",
+        icon: "/icons/color/tanstack.svg",
+        note: "A full-stack framework I'm actively evaluating because of its relatively unopinionated approach to application architecture. Its combination of TanStack Router, Vite and full-stack capabilities is particularly interesting to me as I explore alternatives to more prescriptive application frameworks.",
+      },
+      {
+        name: "Tailwind CSS",
+        icon: "/icons/color/tailwind.svg",
+        note: "My preferred way of building interfaces with CSS. Its utility-first approach lets me work directly at the component level while keeping responsive behaviour, spacing, typography and visual states close to the markup they affect.",
+      },
     ],
   },
   {
     id: "motion",
     title: "Interaction & Motion",
-    description:
-      "Motion for feedback, state transitions, and interface continuity; authored timelines and scroll-driven sequences where animation improves understanding.",
     technologies: [
-      { name: "Motion", icon: "/icons/color/motion.svg" },
-      { name: "GSAP", icon: "/icons/color/gsap.svg" },
-      { name: "Remotion", icon: "/icons/color/remotion.svg" },
-      { name: "Three.js", icon: "/icons/color/threejs.svg" },
+      {
+        name: "Motion",
+        icon: "/icons/color/motion.svg",
+        note: "My go-to library for interface animation. I use it when motion needs to communicate state, hierarchy or interaction rather than simply decorate the page. Springs, layout transitions and gestures become part of the component rather than a separate animation system.",
+      },
+      {
+        name: "GSAP",
+        icon: "/icons/color/gsap.svg",
+        note: "The heavier artillery when an interface needs choreography rather than simple component animation. I reach for it for complex timelines, scroll-driven experiences, SVG animation and interactions where precise sequencing matters.",
+      },
+      {
+        name: "Remotion",
+        icon: "/icons/color/remotion.svg",
+        note: "React for programmatic video. I use it when video itself becomes something that can be generated from data, components and code rather than manually edited as a static asset.",
+      },
+      {
+        name: "Three.js",
+        icon: "/icons/color/threejs.svg",
+        note: "A JavaScript 3D graphics library that brings WebGL and WebGPU capabilities into the browser. I use it when a project benefits from interactive 3D rather than treating 3D as something that belongs exclusively in a traditional rendering application.",
+      },
     ],
   },
   {
     id: "data",
     title: "Content & Data",
-    description:
-      "Structured publishing, relational business data, type-safe schemas, caching, background work, and real-time products where the architecture justifies them.",
     technologies: [
-      { name: "Payload", icon: "/icons/color/payload.svg" },
-      { name: "PostgreSQL", icon: "/icons/color/postgres.svg" },
-      { name: "Drizzle", icon: "/icons/color/drizzle.svg" },
-      { name: "Redis", icon: "/icons/color/redis.svg" },
-      { name: "Convex", icon: "/icons/color/convex.svg" },
+      {
+        name: "Payload",
+        icon: "/icons/color/payload.svg",
+        note: "Imagine a full-stack Next.js application whose content can be safely managed by its owners without handing every edit back to a developer. That's the way I think about Payload. Its code-first approach gives me control over the application and database while providing the admin experience needed to make the resulting system usable by non-developers.",
+      },
+      {
+        name: "PostgreSQL",
+        icon: "/icons/color/postgres.svg",
+        note: "My relational database of choice when I want strong transactional guarantees, expressive SQL and direct control over application data. I like PostgreSQL because it gives me a serious database without forcing the application architecture to revolve around an abstraction hiding the database underneath it.",
+      },
+      {
+        name: "Cloudflare D1",
+        icon: "/icons/color/cloudflare.svg",
+        note: "Cloudflare's serverless SQL database built on SQLite. I'm interested in D1 for applications where keeping the database within the Cloudflare ecosystem makes more sense than introducing a separate database service, particularly when the rest of the application is already running on Workers.",
+      },
+      {
+        name: "Drizzle ORM",
+        icon: "/icons/color/drizzle.svg",
+        note: "My preferred TypeScript ORM. I like its SQL-oriented approach and strong typing, and my extensive exposure to it through the Payload ecosystem has made it a natural choice when I want application-level type safety without losing sight of the SQL underneath.",
+      },
+      {
+        name: "Redis",
+        icon: "/icons/color/redis.svg",
+        note: "My choice for fast, ephemeral application data when a relational database isn't the right tool. On self-managed applications I primarily see it as a caching and coordination layer rather than trying to make it the application's source of truth.",
+      },
+      {
+        name: "Convex",
+        icon: "/icons/color/convex.svg",
+        note: "A reactive backend platform built around a document-relational database and TypeScript functions. I'm evaluating it because the combination of database, backend functions and automatic real-time synchronisation represents a very different approach to building application backends from the traditional API-plus-database model.",
+      },
+      {
+        name: "Neon",
+        icon: "/icons/color/neon.svg",
+        note: "Managed PostgreSQL with a developer experience built around serverless applications and database branching. I use it when managed Postgres makes more sense for a project than operating the database myself; for other applications, I prefer the control and learning that comes with self-hosting PostgreSQL.",
+      },
     ],
   },
   {
     id: "ai",
-    title: "AI Systems",
-    description:
-      "Hosted and local models, document processing, structured outputs, retrieval, evaluations, and human-reviewed workflows.",
+    title: "AI Platforms",
     technologies: [
-      { name: "Hugging Face", icon: "/icons/color/huggingface.svg" },
-      { name: "OpenRouter", icon: "/icons/color/openrouter.svg" },
+      {
+        name: "Hugging Face",
+        icon: "/icons/color/huggingface.svg",
+        note: "One of the central ecosystems for open machine-learning models, datasets and tooling. I'm building familiarity with it as I move deeper into AI systems, particularly around open-weight models and the infrastructure surrounding them.",
+      },
+      {
+        name: "OpenRouter",
+        icon: "/icons/color/openrouter.svg",
+        note: "My model inference abstraction layer. I use it extensively because I don't want an application to become unnecessarily coupled to one model provider. Being able to evaluate different models and providers against the actual job is increasingly important as the model landscape changes.",
+      },
       {
         name: "Ollama",
         icon: "/icons/color/ollama.svg",
         iconTone: "white",
+        note: "A practical way to run open models locally. I've used it with the Vercel AI SDK for embedded AI experiments, and I'm interested in it as an option whenever local or self-hosted inference makes more sense than another hosted API.",
       },
-      { name: "LangChain", icon: "/icons/color/langchain.svg" },
-      { name: "Vercel AI SDK", icon: "/icons/color/vercel.svg" },
+      {
+        name: "LangChain",
+        icon: "/icons/color/langchain.svg",
+        note: "A major framework in the LLM application ecosystem, particularly around tools, retrieval, agents and model orchestration. It isn't currently one of my primary AI frameworks, but I keep it in my toolbox because understanding the abstractions around modern AI applications is increasingly useful.",
+      },
+      {
+        name: "Vercel AI SDK",
+        icon: "/icons/color/vercel.svg",
+        note: "The layer I use to put AI inside applications rather than building isolated chatbot demos. It gives me primitives for model integration, streaming, structured output and tool use while allowing the AI experience to remain part of the application's normal interface.",
+      },
       {
         name: "Cloudflare Workers AI",
         icon: "/icons/color/cloudflare.svg",
         iconShape: "wide",
+        note: "Cloudflare's inference platform for running AI models through the Workers ecosystem. I'm interested in it primarily because it brings inference closer to the same infrastructure I increasingly want to use for the rest of an application.",
+      },
+      {
+        name: "Alibaba Cloud Model Studio",
+        icon: "/icons/color/alibaba%20model%20studio.svg",
+        note: "Alibaba's managed environment for working with foundation models and AI applications. I've used its sandbox and inference APIs and keep it in my toolbox as another model and infrastructure ecosystem worth understanding.",
+      },
+    ],
+    outro:
+      "My interest in all of these tools is ultimately the same: I want to build useful AI into ordinary software. The interesting problem isn't putting a chatbot in a corner of an application. It's finding places where models, agents and automation can make the underlying business system materially more capable.",
+  },
+  {
+    id: "infrastructure",
+    title: "Infrastructure",
+    technologies: [
+      {
+        name: "AWS",
+        icon: "/icons/color/aws.svg",
+        note: "The reference point I use for understanding modern cloud infrastructure. I haven't built my career around operating AWS directly, but its compute, networking, storage, database and orchestration primitives are useful to understand because so many higher-level platforms are abstractions over the same fundamental ideas.",
+      },
+      {
+        name: "Linux",
+        icon: "/icons/color/linux.svg",
+        note: "The operating system underneath much of the infrastructure I work with. Servers, containers, development environments and deployment platforms all become easier to reason about when I understand what is happening beneath the application layer.",
+      },
+      {
+        name: "Docker",
+        icon: "/icons/color/docker.svg",
+        note: "My standard way of packaging applications and their dependencies into reproducible environments. I use containers to make applications easier to move between development, deployment and self-hosted infrastructure.",
+      },
+      {
+        name: "Cloudflare",
+        icon: "/icons/color/cloudflare.svg",
+        note: "The infrastructure platform I'm increasingly building around. DNS, CDN, security, Workers, R2, D1, edge compute and AI inference make it possible to push a surprising amount of an application into one ecosystem. I'm particularly interested in how far a complete product can be taken on Cloudflare before traditional cloud infrastructure becomes necessary.",
+      },
+      {
+        name: "Vercel",
+        icon: "/icons/color/vercel.svg",
+        note: "The platform that got me comfortable shipping modern Next.js applications quickly. I've used it extensively and still appreciate how much infrastructure it removes from the path between a Git repository and production. At the same time, I've become increasingly interested in understanding and controlling the infrastructure underneath those abstractions.",
+      },
+      {
+        name: "Alibaba Cloud",
+        icon: "/icons/color/alibabacloud.svg",
+        note: "A hyperscale cloud platform I have explored through its developer credits and services. I'm particularly interested in understanding how its infrastructure and AI offerings fit into the broader cloud landscape.",
+      },
+      {
+        name: "Dokploy",
+        icon: "/icons/color/dokploy.svg",
+        note: "A self-hosted deployment platform that gives me a convenient control plane for applications running on my own infrastructure. I use it to get some of the deployment ergonomics of managed platforms while retaining ownership of the underlying VPS and containers.",
+      },
+      {
+        name: "Nginx",
+        icon: "/icons/color/nginx.svg",
+        note: "A foundational piece of web infrastructure that I use for reverse proxying and serving applications in self-managed environments. It is one of those tools where understanding what happens between the internet and the application is more valuable than memorising configuration files.",
+      },
+      {
+        name: "Kubernetes",
+        icon: "/icons/color/k8s.svg",
+        note: "The standard for orchestrating containerised workloads at serious scale. I'm actively studying Kubernetes because I want to understand the architecture behind distributed container platforms even though it isn't currently something I operate as a production administrator.",
       },
     ],
   },
   {
-    id: "infrastructure",
-    title: "Infrastructure & Delivery",
-    description:
-      "Managed and self-hosted deployment, containers, reverse proxies, DNS, caching, traffic protection, certificates, storage, and repeatable environments.",
-    technologies: [
-      { name: "Linux", icon: "/icons/color/linux.svg" },
-      { name: "Docker", icon: "/icons/color/docker.svg" },
-      { name: "Cloudflare", icon: "/icons/color/cloudflare.svg" },
-      { name: "Vercel", icon: "/icons/color/vercel.svg" },
-      { name: "Alibaba Cloud", icon: "/icons/color/alibabacloud.svg" },
-      { name: "Dokploy", icon: "/icons/color/dokploy.svg" },
-      { name: "Nginx", icon: "/icons/color/nginx.svg" },
-      { name: "Traefik", icon: "/icons/color/traefik.svg" },
-    ],
-  },
-  {
     id: "quality",
-    title: "Testing, CI/CD & Observability",
-    description:
-      "Source control, automated builds, browser and integration tests, deployment pipelines, error reporting, metrics, traces, dashboards, and alerts.",
+    title: "Quality",
     technologies: [
-      { name: "Git", icon: "/icons/color/git.svg" },
-      { name: "GitHub", icon: "/icons/color/github.svg" },
-      { name: "GitHub Actions", icon: "/icons/color/github%20actions.svg" },
-      { name: "Playwright", icon: "/icons/color/playwright.svg" },
-      { name: "Vitest", icon: "/icons/color/vitest.svg" },
-      { name: "OpenTelemetry", icon: "/icons/color/OpenTelemetry.svg" },
-      { name: "Prometheus", icon: "/icons/color/prometheus.svg" },
-      { name: "Grafana", icon: "/icons/color/grafana.svg" },
-      { name: "Sentry", icon: "/icons/color/sentry.svg" },
+      {
+        name: "Git",
+        icon: "/icons/color/git.svg",
+        note: "The foundation of my development workflow. I use it to track changes, experiment safely, work across branches and preserve the history of how an application evolved.",
+      },
+      {
+        name: "GitHub",
+        icon: "/icons/color/github.svg",
+        note: "My home for source code, collaboration and the public record of what I build. Issues, pull requests, Actions and repository history are part of how I manage software rather than just where I store it.",
+      },
+      {
+        name: "GitHub Actions",
+        icon: "/icons/color/github%20actions.svg",
+        note: "My CI/CD layer when a project lives on GitHub. I use event-driven workflows to automate things such as testing, builds and deployment so that shipping becomes a repeatable process rather than a manual ritual.",
+      },
+      {
+        name: "Playwright",
+        icon: "/icons/color/playwright.svg",
+        note: "I use Playwright to test applications the way users actually interact with them: navigating pages, authenticating, submitting forms and completing real workflows in real browsers.",
+      },
+      {
+        name: "Vitest",
+        icon: "/icons/color/vitest.svg",
+        note: "My preferred testing framework for TypeScript projects where I need fast unit and integration tests without introducing a completely separate toolchain from the application itself.",
+      },
+      {
+        name: "OpenTelemetry",
+        icon: "/icons/color/OpenTelemetry.svg",
+        note: "The instrumentation standard I use as my mental model for application observability. It gives me a vendor-neutral way to think about traces, metrics and logs before deciding where that telemetry should ultimately go.",
+      },
+      {
+        name: "Prometheus",
+        icon: "/icons/color/prometheus.svg",
+        note: "A metrics and monitoring system I use when I need a dedicated time-series view of application or infrastructure behaviour. Its pull-based model and PromQL make it particularly useful for understanding systems over time rather than only reacting to individual errors.",
+      },
+      {
+        name: "Grafana",
+        icon: "/icons/color/grafana.svg",
+        note: "The visual layer I use for turning operational data into something humans can actually reason about. It is particularly useful when metrics, logs and traces from different systems need to be viewed together.",
+      },
+      {
+        name: "Sentry",
+        icon: "/icons/color/sentry.svg",
+        note: "When something breaks in production, I want evidence rather than a user telling me that \u201cthe website isn't working.\u201d Sentry gives me the errors, traces, context and release information needed to understand what actually happened.",
+      },
+      {
+        name: "CodeRabbit",
+        icon: "/icons/color/code%20rabbit.svg",
+        note: "An AI code-review tool I am adopting as part of an increasingly AI-assisted development workflow. I am interested in tools that can review changes with more context than a traditional linter while still leaving the final engineering judgement with me.",
+      },
     ],
   },
   {
     id: "platforms",
     title: "Platforms & Integrations",
-    description:
-      "Payments, transactional communication, regulatory connections, synchronization, signature verification, duplicate prevention, and controlled failure recovery.",
     technologies: [
       {
-        name: "Stripe",
-        icon: "/icons/color/stripe.svg",
-        iconShape: "wide",
-      },
-      { name: "Resend", icon: "/icons/color/resend.svg" },
-      {
-        name: "Africa's Talking",
-        icon: "/icons/color/africaistaliking.svg",
+        name: "Lenco / BroadPay",
+        icon: "/icons/color/lenco.svg",
+        note: "A Zambian payments platform I selected after researching the local payments landscape. I'm interested in it as a way to work with local payment rails through a modern API rather than building every integration from scratch.",
       },
       {
-        name: "Mobile money gateways",
-        icon: "/icons/color/mobilemoney.svg",
+        name: "MTN MoMo",
+        icon: "/icons/color/mtn%20momo.svg",
+        note: "A direct mobile-money integration for collections and disbursements. I am working toward using the underlying payment rail directly where the application needs that level of control rather than automatically introducing a regional aggregator.",
+      },
+      {
+        name: "Zamtel Kwacha",
+        icon: "/icons/color/zamtel%20kwacha.svg",
+        note: "Zamtel's mobile-money payment rail. I am interested in direct integration for the same reason as MTN MoMo: understanding the actual payment lifecycle instead of treating payments as an opaque third-party abstraction.",
+      },
+      {
+        name: "Airtel Money",
+        icon: "/icons/color/airtel%20money.svg",
+        note: "Another core Zambian mobile-money rail I am working toward integrating directly. For business software, the interesting part isn't simply accepting a payment; it is handling the surrounding transaction state, callbacks, reconciliation and settlement correctly.",
       },
       {
         name: "ZRA Smart Invoice / VSDC",
         icon: "/icons/color/smartinvoice.svg",
         iconShape: "wide",
+        note: "Zambia's fiscalisation infrastructure for electronic invoicing. I'm interested in the integration layer between ordinary business software and the tax authority rather than treating compliance as something that happens outside the application.",
       },
       {
-        name: "APIs — REST, GraphQL & beyond",
+        name: "REST & GraphQL APIs",
         icon: "/icons/color/graphql.svg",
+        note: "The boundaries through which applications communicate. I use REST when straightforward resource-oriented APIs make sense and keep GraphQL in the toolbox when clients genuinely benefit from querying the shape of data they need.",
       },
-      { name: "Webhooks", icon: "/icons/color/webhooks.svg" },
+      {
+        name: "Webhooks",
+        icon: "/icons/color/webhooks.svg",
+        note: "One of the simplest and most useful ways for systems to tell each other that something happened. I use them for asynchronous events such as payment updates and other external system notifications, with authentication, fast acknowledgement and background processing where appropriate.",
+      },
+      {
+        name: "Africa's Talking",
+        icon: "/icons/color/africaistaliking.svg",
+        note: "A communications API platform covering services such as SMS, USSD, voice and payments across African markets. I keep it in my toolbox while also being interested in self-hosted alternatives where owning more of the communication infrastructure makes economic or architectural sense.",
+      },
     ],
   },
   {
     id: "design",
-    title: "Product Design & Visual Production",
-    description:
-      "Interface design, prototyping, design systems, vector assets, image preparation, and the path from early concept to polished implementation.",
+    title: "Design",
     technologies: [
-      { name: "Figma", icon: "/icons/color/figma.svg" },
+      {
+        name: "Paper",
+        icon: "/icons/color/paper.svg",
+        note: "My current design canvas. I like working with a tool that sits closer to the realities of the web and can participate in the same AI-assisted workflows as the rest of my development process. For me, design isn't a separate phase that hands a specification to an engineer; it is part of building the product.",
+      },
       {
         name: "Figma Make",
         icon: "/icons/color/figmamake.svg",
         iconShape: "wide",
+        note: "AI-assisted prototyping inside the Figma ecosystem. I use it as a way to move quickly from an idea or visual reference to something functional that can be evaluated, challenged and refined.",
       },
-      { name: "Adobe Illustrator", icon: "/icons/color/illustrator.svg" },
-      { name: "Adobe Photoshop", icon: "/icons/color/photoshop.svg" },
+      {
+        name: "Adobe Illustrator",
+        icon: "/icons/color/illustrator.svg",
+        note: "My vector design tool for precision work, typography, illustration and production assets. I came to software engineering through design, so I still approach SVG and interface graphics with a designer's eye rather than treating them as assets someone else will eventually provide.",
+      },
+      {
+        name: "Adobe Photoshop",
+        icon: "/icons/color/photoshop.svg",
+        note: "My raster image and compositing tool. I use it when an interface or product needs photographic manipulation, image preparation or more detailed pixel-level work.",
+      },
     ],
   },
   {
     id: "workflow",
-    title: "AI-Assisted Engineering Workflow",
-    description:
-      "Agentic tools accelerate research, implementation, testing, refactoring, and documentation; architectural constraints and direct verification still govern the result.",
+    title: "Workflow",
+    intro:
+      "I don't have one sacred development environment.\n\nEconomic constraints forced me to become comfortable moving between models, agents, editors, terminals and harnesses. If a tool gives me access to a better model, a useful workflow or an allocation I can actually afford, I'll use it. The useful consequence is that I'm less attached to any particular vendor or interface. I learn the underlying workflow and adapt to the tool.",
     technologies: [
       {
         name: "OpenCode",
         icon: "/icons/color/opencode.svg",
         iconShape: "wide",
+        note: "An open-source coding agent that gives me another route into agentic development and, importantly, lets me choose from different model providers. I use it particularly when its model selection makes economic or technical sense.",
       },
-      { name: "Cursor", icon: "/icons/color/cursor.svg" },
-      { name: "Pi", icon: "/icons/color/pi.svg" },
-      { name: "Warp", icon: "/icons/color/warp.svg" },
+      {
+        name: "Cursor",
+        icon: "/icons/color/cursor.svg",
+        note: "An AI-first development environment and an important part of the wider AI coding ecosystem even though it isn't my primary editor. I keep familiar with tools like Cursor because I don't want my ability to work effectively with AI agents tied to a single interface.",
+      },
+      {
+        name: "Pi",
+        icon: "/icons/color/pi.svg",
+        note: "A deliberately minimal agent harness that takes a different approach from full-featured AI coding environments. I find it interesting precisely because it exposes the underlying mechanics of an agent rather than trying to hide them behind an elaborate IDE.",
+      },
+      {
+        name: "Warp",
+        icon: "/icons/color/warp.svg",
+        note: "My terminal of choice. I use it for ordinary development work as well as agentic workflows, and I like having the shell, command history and AI assistance in the same environment.",
+      },
+      {
+        name: "T3 Code",
+        icon: "/icons/color/t3%20code.svg",
+        note: "A newer addition to my toolkit that I'm particularly interested in because it treats models, agents, harnesses, subscriptions and remote machines as things that can be orchestrated rather than locked to one development environment. That direction is important to me as more of my development workflow becomes distributed.",
+      },
+      {
+        name: "Hermes Agent",
+        icon: "/icons/color/hermes.svg",
+        note: "A persistent, extensible autonomous agent that fits the direction I want my development workflow to move in: agents that can maintain context, develop capabilities and continue working beyond a single interactive coding session.",
+      },
+      {
+        name: "Herdr",
+        icon: "/icons/color/herdr.svg",
+        note: "An agent multiplexer for persistent remote development. I'm interested in it for the same reason developers use tmux: the work should continue even when I disconnect, and I should be able to reconnect to the same running environment from somewhere else.",
+      },
     ],
   },
 ];

@@ -1,27 +1,5 @@
 #!/usr/bin/env node
-// context.mjs — assemble the bounded session briefing for `os context`.
-//
-// WHY THIS EXISTS
-// Intent (the charter's "one job") was captured once at intake and then never
-// re-entered any agent's loop. Every session, every agent would start from
-// state-machinery facts with the actual PURPOSE of the project invisible. This
-// is the single highest-leverage change in Phase 1: it always leads with the
-// north star so intent can't drift.
-//
-// What it prints (in order, to stdout):
-//   1. The charter's first section — the project's one job (the north star).
-//   2. Current task + branch + claimed agent (from state.json).
-//   3. The top pending handoff (if any).
-//   4. The last ledger row (last session's outcome).
-//   5. Relevant/latest dependency evidence (OpenSrc research).
-//   6. The caution note (risky areas deserve a loud PR description).
-//
-// HARD CAP: ~3 KB. If the assembly exceeds it, the charter is truncated with a
-// pointer to the full file; state facts are kept (they're small). Discipline
-// here is the point — a briefing that bloats stops being read.
-//
-// Refuses (exits 1 with a pointer) if the spine isn't hydrated: there's no
-// point briefing on state when the project's purpose isn't captured yet.
+// Build a bounded, intent-first session briefing.
 import fs from "node:fs";
 import { execSync } from "node:child_process";
 
@@ -36,8 +14,8 @@ const sh = (cmd) => { try { return execSync(cmd, { encoding: "utf8", stdio: ["pi
 // ── 1. North star: first real section of the charter ─────────────────────────
 if (!fs.existsSync(CHARTER)) {
   console.error("[context] no charter at project-spine/01-charter.md — hydrate the lean context first.");
-  console.error("           Run: bash scripts/intake.sh ready  (must print READY), then draft 01-charter.md.");
-  console.error("           See OPERATING_MANUAL.md → 'Hydrate the lean context'.");
+  console.error("           Run: bash scripts/os.sh interview start discovery; capture and confirm the conversation.");
+  console.error("           See OPERATING_MANUAL.md → Interview operations.");
   process.exit(1);
 }
 

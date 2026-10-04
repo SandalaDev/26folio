@@ -20,3 +20,33 @@
 - 2026-08-02T12:35:21Z | opencode/unknown | checkpoint | task=TASK-090 | gate= | TASK-090 starting: apply OS upgrade, re-wire hooks, re-verify pin
 - 2026-08-02T12:36:44Z | opencode/unknown | checkpoint | task=TASK-090 | gate= | TASK-090 apply done; script self-overwrite at line 134 caused early exit; post-copy steps verified manually; awaiting human review of staged diff
 - 2026-08-02T12:42:12Z | opencode/unknown | end | task=backlog/done/TASK-092.md | gate=ok
+- 2026-08-02T23:14:04Z | opencode/unknown | end | task=none | gate=ok
+- 2026-08-02T23:29:16Z | opencode/unknown | end | task=none | gate=ok
+- 2026-08-05T21:39:01Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-08T23:53:06Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-09T00:13:17Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-09T00:37:06Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-10T13:09:16Z | unknown/unknown | checkpoint | task=none | gate= | Draft EPIC-025 for owner review; preserve the portfolio boundary and defer stack choices.
+- 2026-08-10T13:20:09Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-10T14:57:21Z | unknown/unknown | end | task=none | gate=ok
+- 2026-08-15T01:03:29Z | claude-code/unknown | checkpoint | task=none | gate= | cleanup done; writing EPIC-026 (work/ project pages) + tasks
+- 2026-08-15T01:14:10Z | claude-code/unknown | end | task=none | gate=ok
+- 2026-08-19T21:39:25Z | claude-code/unknown | checkpoint | task=TASK-106 | gate= | TASK-106 claimed on feature/EPIC-025; writing the three planning/client-ops/ documents (product contract, pilot journey, legal+commercial review brief)
+- 2026-08-19T21:53:39Z | claude-code/unknown | checkpoint | task=TASK-106 | gate= | TASK-106 packet written and owner decisions recorded; awaiting owner read-through. Next: TASK-107 architecture research (needs OpenSrc evidence; card settlement currency decided there)
+- 2026-08-19T22:47:59Z | claude-code/unknown | checkpoint | task=TASK-106 | gate= | TASK-107: architecture.md, security-baseline.md and DEP-20260819-223803-architecture.md complete (review-ready). Next: owner approval of plan + repo boundary, then rewrite TASK-108..119 focus paths
+- 2026-08-19T23:33:56Z | claude-code/unknown | checkpoint | task=TASK-108 | gate= | TASK-106/107 done; TASK-108 foundation built and verified locally in ../sandala-client-ops (branch feature/EPIC-025). Blocked on owner: provider accounts for deployment, GitHub remote, @types sign-off, linter decision. TASK-109 (engagement model) needs none of those.
+- 2026-08-20T18:42:44Z | claude-code/unknown | checkpoint | task=TASK-114 | gate= | TASK-109..114 done and committed in both repos. Next: TASK-115 documents and decisions. Live verification of payments, uploads, and email still needs owner-created provider accounts.
+- 2026-09-24T23:03:50Z | ?/? | crashed | task=TASK-114 | gate=skipped | TASK-109..114 done and committed in both repos. Next: TASK-115 documents and decisions. Live verification of payments, uploads, and email still needs owner-created provider accounts.
+- 2026-09-24T23:06:56Z | unknown/unknown | checkpoint | task=TASK-114 | gate= | Apply reviewed Agent OS 2.0.0 plan at 82dea43; preserve local CI, project memory and application dependencies.
+- 2026-09-24T23:13:52Z | codex/unknown | checkpoint | task=none | gate= | Agent OS 2.0.0 installed at 82dea43; upstream 20 test files and derived-state pass, npm run test:os passes, 631 protected files unchanged. Upgrade record: planning/migrations/AGENT-OS-2.0.0-2026-09-25.md. Ready for working-tree review.
+- 2026-09-24T23:14:04Z | codex/unknown | end | task=none | gate=ok
+- 2026-09-27T22:29:55Z | cline-desktop/kimi-k3 | checkpoint | task=none | gate= | Reviewing capabilities-page copy: five owner-flagged slop items, proposals pending owner decision
+- 2026-09-27T22:33:23Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Items 1-2 implemented (hero eyebrow removed, dossier label/index dedup); lint+typecheck green; awaiting owner decision on items 3-5 proposals
+- 2026-09-27T22:59:54Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | PAUSED mid-TASK-088. Done: capabilities items 1-2 (hero eyebrow deleted; dossier dedup: single What-I-build eyebrow, no system/NN prefixes, no A-system-can label). Lint+typecheck green, UNCOMMITTED. Pending owner decisions: item 3 Working-together repurpose + pricing numbers; item 4 Built-so-you-can-leave heading; item 5 per-tech notes in capabilities.ts + TechGrid description swap; housekeeping: 96 pre-existing uncommitted template-machinery files on feature/EPIC-025 need commit/stash/leave decision before any commit of capabilities work.
+- 2026-09-27T23:02:38Z | unknown/unknown | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-10-02T14:30:26Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Machinery
+- 2026-10-03T18:55:41Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | TASK-088
+- 2026-10-03T21:31:13Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Icon
+- 2026-10-03T21:49:07Z | cline-desktop/mimo-v2.6-flash | checkpoint | task=TASK-088 | gate= | Recovered
+- 2026-10-03T21:50:17Z | cline-desktop/mimo-v2.6-flash | checkpoint | task=TASK-088 | gate= | Recovery
+- 2026-10-03T22:24:23Z | cline-desktop/mimo-v2.6-flash | end | task=backlog/tasks/TASK-088.md | gate=ok

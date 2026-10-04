@@ -1,16 +1,8 @@
 #!/usr/bin/env node
-// doctor.mjs — system health check for `os doctor`.
-//
-// Catches the two classes of decay this OS suffers from:
-//   1. ENVIRONMENT drift — node/yaml missing, hooks not wired, identity unset,
-//      broken hooks. These silently degrade the OS's memory guarantees.
-//   2. SELF-drift — the docs advertise commands that don't exist (the
-//      'rotate-log' bug), reference files nothing writes (the 'decisions.md'
-//      bug), or scripts referenced in the header aren't in the case dispatch.
-// The OS is its own first user; this applies its doctrine to itself.
-//
-// Exits 0 if healthy, 1 if any check fails. Each failure names the one fix.
+// Diagnose runtime dependencies, command wiring and state projections.
 import fs from "node:fs";
+import { nextAction } from "./workflow.mjs";
+import { state as readState } from "./runtime.mjs";
 import { execSync } from "node:child_process";
 
 // Load yaml once via dynamic import (this is an ESM .mjs file; require() is not
@@ -84,11 +76,7 @@ try {
 
 // ── 5. Spine hydration status (informational, not a failure) ────────────────
 section("spine");
-const fm = (f) => { if (!fs.existsSync(f)) return null; const m = fs.readFileSync(f, "utf8").match(/^---[\s\S]*?status:\s*(\S+)/); return m ? m[1] : "unknown"; };
-const bs = fm("project-spine/00-brief.md"), is = fm("project-spine/00-interview.md");
-const ch = fs.existsSync("project-spine/01-charter.md");
-console.log(`  brief: ${bs || "(absent)"} · interview: ${is || "(absent)"} · charter: ${ch ? "present" : "(absent)"}`);
-if (!bs) console.log("      next: bash scripts/intake.sh brief");
+try { const next=nextAction(); const s=readState(); console.log('  enforcement: '+(s.workflow?.enforcement||'legacy instruction-only')); console.log('  next: '+next.command+' — '+next.why); } catch(e) { bad(e.message,'inspect project-state/state.json'); }
 
 // ── 6. Self-drift: advertised os.sh subcommands actually exist ───────────────
 section("self-drift (commands)");
@@ -100,10 +88,11 @@ try {
     // Extract tokens like start|end|checkpoint|... from the header.
     const advertised = hdr[1].split("|").map(s => s.trim().split(/\s+/)[0]).filter(Boolean);
     // The case dispatch is the source of truth.
-    const caseBlock = os.match(/case "\$\{1:-help\}" in[\s\S]*?esac/);
-    const dispatched = caseBlock ? caseBlock[0] : "";
+    const blocks = [...os.matchAll(/case "\$\{1:-help\}" in[\s\S]*?esac/g)].map(m=>m[0]);
+    const dispatched = blocks.find(b=>b.includes("start)")) || "";
+    const names=[...dispatched.matchAll(/^\s*([a-z|-]+)\)/gm)].flatMap(m=>m[1].split("|"));
     for (const cmd of advertised) {
-      if (new RegExp(`^\\s*${cmd}\\)`, "m").test(dispatched)) ok(`os ${cmd}`);
+      if (names.includes(cmd)) ok(`os ${cmd}`);
       else bad(`os ${cmd} advertised in header but not in case dispatch`, `add '${cmd})' to the case block, or drop it from the header`);
     }
   }

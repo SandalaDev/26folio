@@ -1,6 +1,6 @@
 ---
 id: TASK-088
-title: "Refine technology atlas and delivery motion"
+title: Refine technology atlas and delivery motion
 status: in-progress
 priority: P1
 risk_level: high
@@ -11,7 +11,11 @@ files_allowed:
   - public/icons/color/
   - src/components/capabilities/
   - src/lib/capabilities.ts
-skill_refs: [gsap, framer-motion, lottie]
+skill_refs:
+  - gsap
+  - framer-motion
+  - lottie
+started_at: 2026-09-27T22:32:01Z
 ---
 
 # Task: Refine technology atlas and delivery motion
@@ -77,3 +81,24 @@ Visitor-facing asset-audit language has been removed from the technology
 atlas. The focus panel now names only the active technology and uses the dark
 background token on peach; rendered contrast measures 9.33:1. Lint, strict
 TypeScript, production build, and browser copy checks pass.
+
+2026-10-03: owner-flagged copy items 1-2 committed (d752490): hero eyebrow and
+duplicated dossier labels removed. Item 5 superseded by owner-authored rewrite
+of the whole technology section: "My tech stack" header, per-technology notes
+replacing the generic "sits within" panel text, group intro/outro support
+(Workflow intro, AI Platforms outro), Stripe dropped (icon deleted), generic
+mobile-money entry replaced by Airtel Money / MTN MoMo / Zamtel Kwacha with the
+new owner-supplied marks, plus Express, Bun, TanStack Start, Cloudflare D1,
+Neon, Alibaba Cloud Model Studio, AWS, Kubernetes, CodeRabbit, Paper, T3 Code,
+Hermes Agent, and Herdr added; Figma, Traefik, and Resend dropped. Excessive
+numbering removed (tab indices, "stack / NN"). Neon and Lenco / BroadPay have
+no mark yet and render the initials fallback. Lint, strict TypeScript, and
+production build green on Windows (tmp/*.log); icon audit 63 refs, 0 missing.
+Item 3 approved and implemented 2026-10-03: eyebrow "Working together",
+heading "Month to month, with working software you can judge.", "movement /"
+card labels removed, terms footnote rewritten to include the reversibility
+line ("a month ends it cleanly - everything delivered stays with you").
+Item 4 (standards section heading): final owner decision 2026-10-03 - no
+change; the section remains exactly as it was. All five flagged copy items
+are now resolved (1-3 applied, 4 kept as-is, 5 applied via the owner's
+full tech-stack rewrite).

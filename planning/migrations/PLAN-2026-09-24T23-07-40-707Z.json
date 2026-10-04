@@ -1,0 +1,34 @@
+{
+  "schema": "agent-os.migration-plan.v1",
+  "generated_at": "2026-09-24T23:07:40.707Z",
+  "source_template_ref": null,
+  "detected_project_schema": "agent-os.project.v0-legacy",
+  "target_project_schema": "agent-os.project.v1",
+  "modules": [
+    {
+      "id": "MIG-001-add-distribution-compat",
+      "detect_result": "matched",
+      "writes": [
+        {
+          "path": "project-state/state.json",
+          "transform": "add-distribution-compat",
+          "preserves": [
+            "every existing top-level key"
+          ]
+        }
+      ],
+      "preserved_values": [
+        "project-state/state.json (all fields except the new `distribution` key)"
+      ],
+      "unresolved_human_decisions": [],
+      "rollback": "restore project-state/state.json from the pre-apply snapshot recorded in the migration receipt"
+    }
+  ],
+  "receipt_preview": {
+    "migration_ids": [
+      "MIG-001-add-distribution-compat"
+    ],
+    "applied_at": null,
+    "idempotent_if_rerun": true
+  }
+}

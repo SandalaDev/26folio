@@ -12,28 +12,19 @@
 // Honesty over confidence: miss flags are suppressed until enough tasks have
 // completed to form a baseline (n < MIN_N). minutes come from duration_min when
 // numeric, else ended-started, else are unknown (counted, never summed).
-import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import YAML from "yaml";
+import { readLedgerRows, normalizeTaskRef, readTaskFiles } from "./task-history.mjs";
 
 const MIN_N = 5; // match render-metrics.mjs low-confidence threshold
 const BASENAME = (value) => path.basename(String(value || ""), ".md");
 
-function readLedgerRows(root) {
-  const file = path.join(root, "project-state/ledger.jsonl");
-  if (!fs.existsSync(file)) return [];
-  return fs.readFileSync(file, "utf8").split(/\r?\n/).filter(Boolean)
-    .map(line => { try { return JSON.parse(line); } catch { return null; } })
-    .filter(Boolean);
-}
+export { readLedgerRows };
 
-// Four shapes in the wild: a path (os end <path>), a bare id (crash rows), the
-// string "none", or absent. Map the last two to the unattributed bucket.
+// Ledger rows carry paths, bare ids, "none", or nothing. Map the unattributed
+// shapes to the unattributed bucket; everything else normalizes to a bare id.
 function normalizeTaskId(raw) {
-  const s = (raw == null ? "" : String(raw)).trim();
-  if (!s || s === "none") return "unattributed";
-  return BASENAME(s) || "unattributed";
+  return normalizeTaskRef(raw) || "unattributed";
 }
 
 // duration_min may be an integer, the string "unknown", or absent. Prefer the
@@ -47,32 +38,18 @@ function minutesOf(row) {
   return null;
 }
 
-function frontmatter(file) {
-  if (!fs.existsSync(file)) return {};
-  const match = fs.readFileSync(file, "utf8").match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!match) return {};
-  try { return YAML.parse(match[1]) ?? {}; } catch { return {}; }
-}
-
 function readTasks(root) {
   const map = new Map();
-  for (const dir of ["backlog/tasks", "backlog/done"]) {
-    const full = path.join(root, dir);
-    if (!fs.existsSync(full)) continue;
-    for (const name of fs.readdirSync(full)) {
-      if (!name.endsWith(".md")) continue;
-      const fm = frontmatter(path.join(full, name));
-      const id = String(fm.id || path.basename(name, ".md"));
-      map.set(id, {
-        id,
-        title: fm.title || id,
-        epic_ref: fm.epic_ref || null,
-        weight: Number(fm.progress_weight) > 0 ? Number(fm.progress_weight) : 1,
-        status: fm.status || "unknown",
-        priority: fm.priority || "P2",
-        done: dir.endsWith("done"),
-      });
-    }
+  for (const task of readTaskFiles(root)) {
+    map.set(task.id, {
+      id: task.id,
+      title: task.fm.title || task.id,
+      epic_ref: task.fm.epic_ref || null,
+      weight: task.weight,
+      status: task.fm.status || "unknown",
+      priority: task.fm.priority || "P2",
+      done: task.done,
+    });
   }
   return map;
 }
@@ -122,7 +99,7 @@ export function loadEffortModel(root = process.cwd()) {
   // effort, and a positive weight. Suppressed below MIN_N tasks.
   let baseMin = 0, baseWeight = 0, baseN = 0;
   for (const t of perTask) {
-    if (t.noFile || t.totalMin <= 0 || !t.weight) continue;
+    if (t.noFile || !t.done || t.totalMin <= 0 || !t.weight) continue;
     baseMin += t.totalMin;
     baseWeight += t.weight;
     baseN++;

@@ -11,6 +11,9 @@
 #   bash setup.sh
 set -euo pipefail
 
+source scripts/telemetry.sh
+telemetry_install_exit_hook "system-setup" "setup:run"
+
 echo "=== agent-os setup ==="
 
 # 1) Point git at the repo's hooks (so the pre-push trunk guard actually runs).
@@ -40,5 +43,5 @@ echo
 echo "=== setup complete ==="
 echo "Dashboard: $(pwd)/dashboard.html"
 echo "Usage guide: $(pwd)/guide.html"
-echo "Next: bash scripts/intake.sh brief   (start a project)"
-echo "Verify everything works: open guide.html and follow its VERIFY callouts."
+echo "Next: bash scripts/os.sh interview start discovery   (agent asks you in chat)"
+echo "Open guide.html for the complete setup, interview and daily-work walkthroughs."

@@ -1,33 +1,26 @@
 #!/usr/bin/env node
-// progress.mjs — estimate implementation progress toward business intent.
+// progress.mjs — release-scope progress and roadmap calibration.
 //
-// Task completion is a delivery proxy, not proof that a business outcome was
-// achieved. This module keeps that distinction explicit while tracing:
-//   goal <- roadmap item <- epic <- task
-//
-// Canonical metadata:
-//   project-spine/01-charter.md frontmatter:
-//     goals: [{ id, title, weight, success_signal, outcome_status }]
-//   project-spine/03-roadmap.md frontmatter:
-//     roadmap: [{ id, title, goal_refs, weight }]
-//   backlog/epics/*.md:
-//     roadmap_ref(s), goal_refs, progress_weight
-//   backlog/{tasks,done}/*.md:
-//     epic_ref, optional roadmap_ref(s)/goal_refs, progress_weight, status
+// The dashboard has one delivery goal: release-candidate readiness. This module
+// no longer groups delivery under inferred outcome goals (BUILD-*/GOAL-*). It
+// reports:
+//   - the RC headline (done weight over current projected scope) when a release
+//     is configured;
+//   - roadmap calibration rows (estimated × risk -> filed -> done);
+//   - task inventory with resolved, source-labelled dates.
+// Legacy charter goal keys remain readable as non-rendering context plus a
+// compatibility diagnostic, so old projects are never silently reinterpreted.
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import YAML from "yaml";
+import { loadReleaseScope, computeProjectedScope } from "./release-baseline.mjs";
+import { resolveTaskHistory } from "./task-history.mjs";
 
 const asList = (value) => {
   if (Array.isArray(value)) return value.filter(v => v != null && v !== "");
   if (value == null || value === "") return [];
   return [value];
-};
-
-const idFromRef = (value, pattern) => {
-  const match = String(value || "").match(pattern);
-  return match ? match[1] : null;
 };
 
 function frontmatter(file) {
@@ -51,33 +44,13 @@ function normalizedItems(value, prefix) {
   return [];
 }
 
-function readCollection(root, relativeDir, kind) {
-  const dir = path.join(root, relativeDir);
-  if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).filter(name => name.endsWith(".md")).map(name => {
-    const file = path.join(dir, name);
-    const fm = frontmatter(file);
-    return {
-      ...fm,
-      id: String(fm.id || path.basename(name, ".md")),
-      title: fm.title || path.basename(name, ".md"),
-      file: path.relative(root, file).replace(/\\/g, "/"),
-      kind,
-    };
-  });
-}
-
-const refs = (item, singular, plural, pattern) => {
-  const raw = [...asList(item[plural]), ...asList(item[singular])];
-  return [...new Set(raw.map(value => idFromRef(value, pattern) || String(value)).filter(Boolean))];
-};
-
 function weightedCompletion(items) {
   const totalWeight = items.reduce((sum, item) => sum + item.progressWeight, 0);
   const doneWeight = items.filter(item => item.done)
     .reduce((sum, item) => sum + item.progressWeight, 0);
   return {
     percent: totalWeight > 0 ? Math.round((doneWeight / totalWeight) * 100) : null,
+    planned: totalWeight > 0,
     totalWeight,
     doneWeight,
     tasksTotal: items.length,
@@ -87,119 +60,134 @@ function weightedCompletion(items) {
 
 export function loadProgressModel(root = process.cwd()) {
   const charter = frontmatter(path.join(root, "project-spine/01-charter.md"));
-  const roadmapDoc = frontmatter(path.join(root, "project-spine/03-roadmap.md"));
-  const goals = normalizedItems(charter.goals ?? charter.business_goals, "GOAL")
+  const scope = loadReleaseScope(root);
+  const history = resolveTaskHistory(root);
+  const historyById = new Map(history.tasks.map(task => [task.id, task]));
+
+  // Legacy outcome-goal keys are preserved as context only; they never organize
+  // the dashboard. A non-build_goals key additionally earns a rename diagnostic.
+  const goalSource = charter.build_goals != null
+    ? { value: charter.build_goals, key: "build_goals" }
+    : charter.goals != null
+      ? { value: charter.goals, key: "goals" }
+      : charter.business_goals != null
+        ? { value: charter.business_goals, key: "business_goals" }
+        : { value: undefined, key: null };
+  const legacyGoals = normalizedItems(goalSource.value, "BUILD")
     .filter(goal => goal.id || goal.title)
     .map((goal, index) => ({
-      id: String(goal.id || `GOAL-${index + 1}`),
+      id: String(goal.id || `BUILD-${index + 1}`),
       title: goal.title || goal.name || String(goal.id),
-      weight: Number(goal.weight) > 0 ? Number(goal.weight) : 1,
-      successSignal: goal.success_signal || goal.success_metric || null,
-      outcomeStatus: goal.outcome_status || "unvalidated",
+      exitCriteria: asList(goal.exit_criteria),
     }));
-  const roadmap = normalizedItems(roadmapDoc.roadmap ?? roadmapDoc.items, "ROAD")
-    .filter(item => item.id || item.title)
-    .map((item, index) => ({
-      id: String(item.id || `ROAD-${index + 1}`),
-      title: item.title || item.name || String(item.id),
-      weight: Number(item.weight) > 0 ? Number(item.weight) : 1,
-      goalRefs: refs(item, "goal_ref", "goal_refs", /(GOAL-[A-Za-z0-9_-]+)/),
-      status: item.status || "planned",
-    }));
+  const deprecations = [];
+  if (goalSource.key && goalSource.key !== "build_goals") {
+    deprecations.push(`project-spine/01-charter.md uses legacy \`${goalSource.key}\`; rename it to \`build_goals\`.`);
+  }
+  if (legacyGoals.length) {
+    deprecations.push(`project-spine/01-charter.md defines ${legacyGoals.length} outcome goal(s); they remain as context but the dashboard is organized by the release contract in project-spine/03-roadmap.md.`);
+  }
 
-  const epics = readCollection(root, "backlog/epics", "epic");
-  const epicById = new Map(epics.map(epic => [epic.id, epic]));
-  const openTasks = readCollection(root, "backlog/tasks", "task");
-  const doneTasks = readCollection(root, "backlog/done", "done");
-  const roadmapById = new Map(roadmap.map(item => [item.id, item]));
-
-  const tasks = [...openTasks, ...doneTasks].map(task => {
-    const epicId = idFromRef(task.epic_ref, /(EPIC-[A-Za-z0-9_-]+)/);
-    const epic = epicById.get(epicId) || {};
-    const roadmapRefs = refs(task, "roadmap_ref", "roadmap_refs", /(ROAD-[A-Za-z0-9_-]+)/);
-    const inheritedRoadmapRefs = roadmapRefs.length
-      ? roadmapRefs
-      : refs(epic, "roadmap_ref", "roadmap_refs", /(ROAD-[A-Za-z0-9_-]+)/);
-    let goalRefs = refs(task, "goal_ref", "goal_refs", /(GOAL-[A-Za-z0-9_-]+)/);
-    if (!goalRefs.length) goalRefs = refs(epic, "goal_ref", "goal_refs", /(GOAL-[A-Za-z0-9_-]+)/);
-    if (!goalRefs.length) {
-      goalRefs = [...new Set(inheritedRoadmapRefs.flatMap(ref => roadmapById.get(ref)?.goalRefs || []))];
-    }
-    const progressWeight = Number(task.progress_weight) > 0 ? Number(task.progress_weight) : 1;
-    const status = String(task.status || "").toLowerCase();
+  const tasks = scope.tasks.map(task => {
+    const resolved = historyById.get(task.id) || {};
     return {
       id: task.id,
-      title: task.title,
+      title: resolved.title || task.id,
       file: task.file,
-      epicId,
-      roadmapRefs: inheritedRoadmapRefs,
-      goalRefs,
-      progressWeight,
-      status,
-      done: task.kind === "done" || status === "done",
+      epicId: task.epicId,
+      roadmapRefs: task.roadmapRefs,
+      progressWeight: task.weight,
+      status: resolved.status || (task.done ? "done" : "unknown"),
+      done: task.done,
+      startedAt: resolved.startedAt ?? null,
+      startedSource: resolved.startedSource ?? "missing",
+      completedAt: resolved.completedAt ?? null,
+      completedSource: resolved.completedSource ?? "missing",
+      impossibleOrder: Boolean(resolved.impossibleOrder),
     };
   });
 
-  const roadmapProgress = roadmap.map(item => {
-    const linked = tasks.filter(task => task.roadmapRefs.includes(item.id));
-    const progress = weightedCompletion(linked);
-    return { ...item, ...progress };
+  const epics = scope.epics.map(epic => {
+    const linked = tasks.filter(task => task.epicId === epic.id);
+    return {
+      id: epic.id,
+      title: epic.title,
+      status: epic.status || "planned",
+      roadmapRefs: (Array.isArray(epic.roadmap_refs) ? epic.roadmap_refs : epic.roadmap_ref ? [epic.roadmap_ref] : [])
+        .map(value => String(value).match(/(ROAD-[A-Za-z0-9_-]+)/)?.[1] || String(value)),
+      ...weightedCompletion(linked),
+      taskIds: linked.map(task => task.id),
+    };
   });
 
-  const goalProgress = goals.map(goal => {
-    const linked = tasks.filter(task => task.goalRefs.includes(goal.id));
-    const progress = weightedCompletion(linked);
-    return { ...goal, ...progress };
+  const projected = computeProjectedScope(scope);
+  const roadmap = projected.rows.map(row => {
+    const linked = tasks.filter(task => task.roadmapRefs.includes(row.id));
+    return {
+      ...row,
+      ...weightedCompletion(linked),
+      estimatedWeight: row.estimatedWeight,
+      riskMultiplier: row.riskMultiplier,
+      projectedWeight: row.projectedWeight,
+      remainingWeight: row.remainingWeight,
+      targetEnd: row.targetEnd,
+    };
   });
 
-  let scope = "not-estimable";
+  const mappedTasks = tasks.filter(task => task.roadmapRefs.length);
+  const unmappedTasks = tasks.filter(task => !task.roadmapRefs.length);
+  const mappedCompletion = weightedCompletion(mappedTasks);
+  const allCompletion = weightedCompletion(tasks);
+  const unmappedWeight = unmappedTasks.reduce((sum, task) => sum + task.progressWeight, 0);
+  const unmapped = {
+    count: unmappedTasks.length,
+    weight: unmappedWeight,
+    percentOfTotalWeight: allCompletion.totalWeight > 0
+      ? Math.round((unmappedWeight / allCompletion.totalWeight) * 100)
+      : 0,
+  };
+
+  let scopeKind = "not-estimable";
   let overallPercent = null;
-  if (tasks.length && goalProgress.length) {
-    scope = "business-goal";
-    const total = goalProgress.reduce((sum, goal) => sum + goal.weight, 0);
-    overallPercent = total
-      ? Math.round(goalProgress.reduce((sum, goal) => sum + (goal.percent ?? 0) * goal.weight, 0) / total)
-      : null;
-  } else if (tasks.length && roadmapProgress.length) {
-    scope = "roadmap";
-    const total = roadmapProgress.reduce((sum, item) => sum + item.weight, 0);
-    overallPercent = total
-      ? Math.round(roadmapProgress.reduce((sum, item) => sum + (item.percent ?? 0) * item.weight, 0) / total)
-      : null;
+  if (scope.release) {
+    scopeKind = "release";
+    overallPercent = projected.rcProgress;
+  } else if (mappedTasks.length && roadmap.length) {
+    scopeKind = "roadmap";
+    overallPercent = mappedCompletion.percent;
   } else if (tasks.length) {
-    scope = "task-only";
-    overallPercent = weightedCompletion(tasks).percent;
+    scopeKind = "task-only";
+    overallPercent = allCompletion.percent;
   }
 
   const linkedToRoadmap = tasks.filter(task => task.roadmapRefs.length).length;
-  const linkedToGoals = tasks.filter(task => task.goalRefs.length).length;
-  const fullyLinked = tasks.filter(task => task.roadmapRefs.length && task.goalRefs.length).length;
-  const coveragePercent = tasks.length ? Math.round((fullyLinked / tasks.length) * 100) : 0;
-  const plannedRoadmap = roadmapProgress.filter(item => item.tasksTotal > 0).length;
-  const plannedGoals = goalProgress.filter(item => item.tasksTotal > 0).length;
-  const scopeCoveragePercent = goals.length && roadmap.length
-    ? Math.round(((plannedRoadmap / roadmap.length) + (plannedGoals / goals.length)) * 50)
-    : 0;
-  const confidence = goals.length && roadmap.length && coveragePercent >= 90 && scopeCoveragePercent === 100
-    ? "high"
-    : ((goals.length || roadmap.length) && coveragePercent >= 60 && scopeCoveragePercent >= 60 ? "medium" : "low");
+  const coveragePercent = tasks.length ? Math.round((linkedToRoadmap / tasks.length) * 100) : 0;
 
   return {
-    scope,
+    scope: scopeKind,
     overallPercent,
-    confidence,
-    warning: "Task completion estimates delivery toward intent; it does not prove the business outcome was achieved.",
-    goals: goalProgress,
-    roadmap: roadmapProgress,
+    release: scope.release ? {
+      configured: true, id: scope.release.id, title: scope.release.title,
+      approved: scope.release.approved, status: scope.release.status,
+    } : { configured: false },
+    currentProjectedWeight: projected.currentProjectedWeight,
+    doneWeight: projected.doneWeight,
+    remainingWeight: projected.remainingWeight,
+    warning: "Task completion estimates delivery of filed release scope; it does not replace human review of RC exit criteria.",
+    deprecations,
+    legacyGoals,
+    roadmap,
+    epics,
     tasks: {
-      ...weightedCompletion(tasks),
+      ...allCompletion,
+      mapped: mappedCompletion,
+      unmapped,
       linkedToRoadmap,
-      linkedToGoals,
-      fullyLinked,
       coveragePercent,
-      scopeCoveragePercent,
-      unlinked: tasks.filter(task => !task.roadmapRefs.length || !task.goalRefs.length)
-        .map(task => ({ id: task.id, file: task.file })),
+      unlinked: tasks.filter(task => !task.roadmapRefs.length).map(task => ({ id: task.id, file: task.file })),
+      items: tasks,
+      historyCoverage: history.coverage,
+      impossibleOrder: history.impossibleOrder,
     },
   };
 }

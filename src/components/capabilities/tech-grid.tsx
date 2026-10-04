@@ -78,7 +78,7 @@ function TechGrid() {
 
   const group = technologyGroups[activeIndex];
   const activeTech = group.technologies[activeTechIndex] ?? group.technologies[0];
-  const activeDescription = `${activeTech.name} sits within ${group.title.toLowerCase()}. ${group.description}`;
+  const activeDescription = activeTech.note;
 
   const selectGroup = (index: number) => {
     setActiveIndex(index);
@@ -109,9 +109,6 @@ function TechGrid() {
                 className="border-border text-muted hover:text-ink relative flex w-full items-center justify-between gap-4 border-t py-3 text-left text-sm transition-colors"
               >
                 <span className={isActive ? "text-ink" : undefined}>{item.title}</span>
-                <span className="text-soft font-mono text-xs">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
                 {isActive ? (
                   <motion.span
                     layoutId="technology-category"
@@ -143,14 +140,11 @@ function TechGrid() {
           className="border-border bg-surface min-h-[38rem] overflow-hidden border p-5 md:p-8"
         >
           <div className="border-border border-b pb-6">
-            <div>
-              <p className="text-caramel font-mono text-xs">
-                stack / {String(activeIndex + 1).padStart(2, "0")}
-              </p>
-              <h3 className="font-display text-ink mt-2 text-3xl font-semibold">{group.title}</h3>
-            </div>
+            <h3 className="font-display text-ink text-3xl font-semibold">{group.title}</h3>
           </div>
-          <p className="measure text-muted mt-6">{group.description}</p>
+          {group.intro ? (
+            <p className="measure text-muted mt-6 whitespace-pre-line">{group.intro}</p>
+          ) : null}
 
           <div className="bg-border mt-8 grid grid-cols-2 gap-px sm:grid-cols-3 xl:grid-cols-4">
             {group.technologies.map((tech, index) => {
@@ -206,11 +200,6 @@ function TechGrid() {
                     </span>
                   )}
                   <span className="text-ink max-w-36 text-sm font-medium">{tech.name}</span>
-                  {!tech.icon ? (
-                    <span className="text-soft font-mono text-[0.68rem] leading-tight">
-                      owner mark needed
-                    </span>
-                  ) : null}
                 </motion.button>
               );
             })}
@@ -270,6 +259,9 @@ function TechGrid() {
               </motion.div>
             </AnimatePresence>
           </div>
+          {group.outro ? (
+            <p className="measure text-muted border-border mt-8 border-t pt-6">{group.outro}</p>
+          ) : null}
         </motion.div>
       </AnimatePresence>
     </div>

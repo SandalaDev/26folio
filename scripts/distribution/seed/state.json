@@ -1,0 +1,62 @@
+{
+  "schema": "agent-os.state.v1",
+  "version": "2.0.0",
+  "updated": "",
+  "updated_by": "",
+  "actor": {
+    "harness": null,
+    "model": null,
+    "role": null
+  },
+  "current": {
+    "epic": null,
+    "slice": null,
+    "task": null,
+    "agent": null,
+    "branch": null,
+    "session_status": "none",
+    "handoff_status": "none"
+  },
+  "completion": {
+    "summary": "",
+    "done": [],
+    "remaining": [],
+    "blocked": "none"
+  },
+  "counts": {
+    "epics_total": 0,
+    "tasks_open": 0,
+    "tasks_in_progress": 0,
+    "tasks_done": 0,
+    "handoffs_pending": 0,
+    "handoffs_consumed": 0
+  },
+  "metrics": {},
+  "epics": [],
+  "handoff_queue": [],
+  "flow": "github",
+  "release_baselines": {
+    "schema": "agent-os.release-baselines.v1",
+    "baselines": []
+  },
+  "distribution": {
+    "schema": "agent-os.distribution-compat.v1",
+    "template_ref": null,
+    "scaffolded_at": null,
+    "project_schema": "agent-os.project.v1",
+    "migrations_applied": []
+  },
+  "revision": 0,
+  "workflow": {
+    "version": 2,
+    "enforcement": "commands"
+  },
+  "project": {
+    "name": null
+  },
+  "usage": {
+    "sources": [],
+    "rate_cards": [],
+    "subscriptions": []
+  }
+}
