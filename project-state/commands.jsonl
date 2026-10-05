@@ -44,3 +44,4 @@
 {"ts":"2026-10-05T00:17:06.008Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":1090,"harness":"unknown","session":"s-014812d425fe"}
 {"ts":"2026-10-05T00:18:52.609Z","feature":"task-claim","action":"claim","exit":0,"ms":1974,"harness":"cline-desktop","session":"s-014812d425fe"}
 {"ts":"2026-10-05T00:33:09.837Z","feature":"task-done","action":"done","exit":0,"ms":3063,"harness":"cline-desktop","session":"s-014812d425fe"}
+{"ts":"2026-10-05T00:34:47.067Z","feature":"session-end","action":"end","exit":0,"ms":19502,"harness":"cline-desktop","session":"none"}
