@@ -50,3 +50,7 @@
 - 2026-10-03T21:49:07Z | cline-desktop/mimo-v2.6-flash | checkpoint | task=TASK-088 | gate= | Recovered
 - 2026-10-03T21:50:17Z | cline-desktop/mimo-v2.6-flash | checkpoint | task=TASK-088 | gate= | Recovery
 - 2026-10-03T22:24:23Z | cline-desktop/mimo-v2.6-flash | end | task=backlog/tasks/TASK-088.md | gate=ok
+- 2026-10-04T15:55:33Z | cline-desktop/kimi-k3 | checkpoint | task=TASK-088 | gate= | Committed
+- 2026-10-04T16:11:23Z | cline-desktop/kimi-k3 | checkpoint | task=none | gate= | TASK-088
+- 2026-10-04T16:36:31Z | cline-desktop/kimi-k3 | checkpoint | task=none | gate= | TASK-088
+- 2026-10-05T00:06:02Z | ?/? | crashed | task="" | gate=skipped | TASK-088
