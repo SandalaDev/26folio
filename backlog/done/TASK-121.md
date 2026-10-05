@@ -1,7 +1,7 @@
 ---
 id: TASK-121
-title: "Refresh Collections wishlists and fix the Who I Am modal close"
-status: ready
+title: Refresh Collections wishlists and fix the Who I Am modal close
+status: done
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-027.md
@@ -23,6 +23,8 @@ testing:
     - npm run lint
     - npm run typecheck
     - npm run build
+started_at: 2026-10-05T00:18:52Z
+completed_at: 2026-10-05T00:33:07Z
 ---
 # Task: Refresh Collections wishlists and fix the Who I Am modal close
 
@@ -61,16 +63,35 @@ must be inserted exactly as supplied — no rewriting, paraphrasing or
 
 ## Acceptance Criteria
 
-- [ ] Both wishlists match the owner's final lists exactly (names, order,
+- [x] Both wishlists match the owner's final lists exactly (names, order,
       hover lines, one LEWITT L6 in Studio only, one Dan Clark Audio Noire X
       in Audiophile only).
-- [ ] Collections intro contains both supplied sentences verbatim; Studio
+- [x] Collections intro contains both supplied sentences verbatim; Studio
       Wishlist intro is the supplied paragraph verbatim.
-- [ ] No references remain to any removed product; no dead image references;
+- [x] No references remain to any removed product; no dead image references;
       removed images deleted from `public/images/about/wishlist/audiophile/`.
-- [ ] The Who I Am modal close button closes the modal at mobile, tablet and
+- [x] The Who I Am modal close button closes the modal at mobile, tablet and
       desktop widths.
-- [ ] `npm run lint`, `npm run typecheck` and `npm run build` pass.
+- [x] `npm run lint`, `npm run typecheck` and `npm run build` pass.
+
+## Verification evidence (2026-10-05)
+
+- `npm run lint`, `npm run typecheck`, `npm run build` all exit 0
+  (Next.js 15.5.19 production build, 14/14 static pages).
+- Scripted content validation (tmp/validate-wishlists.cjs,
+  tmp/validate-copy.cjs): 95 image refs resolve; audiophile list is exactly
+  the owner's ten in order; studio list is exactly the owner's twenty in
+  order; no banned product references; moved items appear exactly once each;
+  all 30 owner hover lines and the studio intro are byte-verbatim.
+- Rendered-page inspection (`next start`, /about/the-way-i-am): section
+  titles, both new intro sentences and the teaser strips (first six items of
+  each refreshed list, confirming order) render; the six key new/moved images
+  return 200 through the `/_next/image` optimizer.
+- Modal close fix is a one-class z-index correction (`dialog.tsx`): the
+  BioReader scroll container (z-10) and mobile hairline (z-20) stacked above
+  the z-auto close button and swallowed its clicks; z-30 restores hit-testing
+  at every viewport (the hairline is a 1px strip at top-0 and never overlaps
+  the top-4 button; the chapter rail is lg+-only on the left edge).
 
 ## Dependency Evidence
 

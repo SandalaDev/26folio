@@ -43,7 +43,7 @@ the "Who I Am" modal close button reliably closes the modal on every layout.
 
 ## Tasks
 
-- [ ] TASK-121 — Refresh Collections wishlists and fix the Who I Am modal close
+- [x] TASK-121 — Refresh Collections wishlists and fix the Who I Am modal close
 
 ## Dependency / Architecture Evidence
 
