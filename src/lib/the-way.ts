@@ -69,9 +69,11 @@ export interface WishlistItem {
   name: string;
   /** Product shot under public/images/about/wishlist/. */
   image: string;
-  /** Hover line. Gear: what the piece is for. Watches: why he likes it.
-   *  Colognes: why he wants it. Personal-voice lines are agent drafts
-   *  pending owner review (EPIC-018/TASK-070). */
+  /** Hover line: why the piece is on the wishlist, in the owner's voice.
+   *  Audiophile and studio lines are the owner's final copy (2026-10-05,
+   *  EPIC-027/TASK-121); watches and colognes carry his textcontent.md
+   *  lines (2026-07-20). Remaining agent drafts are pending owner review
+   *  (EPIC-018/TASK-070). */
   note: string;
 }
 
@@ -84,15 +86,19 @@ export interface Wishlist {
   items: WishlistItem[];
 }
 
-/** Collections - the wishlist wing intro (owner copy, 2026-07-18). */
+/** Collections - the wishlist wing intro (owner copy, 2026-07-18; extended
+ *  with the owner's ADHD and October 2026 wishlist-state sentences,
+ *  2026-10-05). */
 export const WISHLIST_INTRO =
-  "These collections are a tour through the things I find interesting. I like products that solve problems well, look beautiful doing it, or represent exceptional engineering. Every item is here because I think there's something worth appreciating about it.";
+  "These collections are a tour through the things I find interesting. I like products that solve problems well, look beautiful doing it, or represent exceptional engineering. Every item is here because I think there's something worth appreciating about it. One of the few positive symptoms of ADHD is having a mind that simply refuses to sit still, insisting on chasing every shiny interest it comes across; these are just a few of the ones that stuck, and trust me, there are others. This is the state of the wishlist as of October 2026. Some of these are serious future purchases, some are long-shot aspirations, and some are here simply because I want to know what it would be like to have them.";
 
 /** The five wishlists, images from public/images/about/wishlist/. */
 export const WISHLISTS: Wishlist[] = [
   {
     id: "audiophile",
-    title: "Audiophile gear",
+    // Retitled and re-lined with the owner's final copy (2026-10-05,
+    // EPIC-027/TASK-121): this is a wishlist, not an inventory.
+    title: "Audiophile Gear Wishlist",
     description: [
       "I consider myself an aspiring audiophile. Here's the headphones, IEMs, DACs, amps and speakers that have caught my attention and I'd like to hear for myself. This collection changes constantly as I learn more and discover new gear.",
     ],
@@ -100,178 +106,168 @@ export const WISHLISTS: Wishlist[] = [
       {
         name: "Sennheiser HD 800 S",
         image: "/images/about/wishlist/audiophile/Sennheiser HD 800 S.jpg",
-        note: "The reference open-back. Soundstage first, everything else second.",
+        note: "I used to own the original HD 800, which these are based on. It was my reference point, and the HD 800 S is still the reference everything else will be measured against.",
       },
       {
-        name: "Focal Clear MG",
-        image: "/images/about/wishlist/audiophile/Focal Clear MG.jpg",
-        note: "Open-back headphones for relaxed, full-bodied home listening.",
+        name: "Meze Arta",
+        image: "/images/about/wishlist/audiophile/meze audio arta.webp",
+        note: "The one I want as my flagship. I am probably more interested in the looks and build than I should be, but fortunately the reviews suggest the sound is worth having too.",
       },
       {
         name: "Sennheiser HDB 630",
         image: "/images/about/wishlist/audiophile/sennheiser hdb 630.webp",
-        note: "Closed wireless headphones that keep audiophile tuning on the go.",
+        note: "Technically replaced by the LEWITT L6, but it stays on the list because this is the headphone I would actually travel with.",
       },
       {
-        name: "64 Audio U4s",
-        image: "/images/about/wishlist/audiophile/64 Audio U4s.webp",
-        note: "Hybrid in-ears for detailed listening away from the desk.",
-      },
-      {
-        name: "Thieaudio Hype 4",
-        image: "/images/about/wishlist/audiophile/Thieaudio Hype 4.jpg",
-        note: "In-ears with big dynamic-driver bass for the gym bag.",
-      },
-      {
-        // Agent draft from the folder add (2026-07-20); owner to confirm.
-        name: "Status Pro X GoldenSound Edition",
-        image: "/images/about/wishlist/audiophile/Status Pro X Goldensound Edition.png",
-        note: "In-ears tuned by GoldenSound, the reviewer whose measurements I already trust.",
-      },
-      {
-        name: "RME ADI-2 DAC FS",
-        image: "/images/about/wishlist/audiophile/RME ADI-2 DAC FS.webp",
-        note: "Reference DAC and headphone amp for the desk.",
-      },
-      {
-        name: "Topping DX9",
-        image: "/images/about/wishlist/audiophile/Topping DX9.jpg",
-        note: "A full DAC-amp stack in one box for the second setup.",
-      },
-      {
-        name: "Eversolo DMP-A6",
-        image: "/images/about/wishlist/audiophile/Eversolo DMP-A6.jpg",
-        note: "Network streamer to front the whole digital chain.",
-      },
-      {
-        name: "MOON 371",
-        image: "/images/about/wishlist/audiophile/MOON 371.png",
-        note: "Integrated amplifier with the current to drive real speakers.",
-      },
-      {
-        name: "KEF R7 Meta",
-        image: "/images/about/wishlist/audiophile/KEF R7 Meta.webp",
-        note: "Floorstanders for the main living-room system.",
-      },
-      {
-        name: "KEF KC92",
-        image: "/images/about/wishlist/audiophile/KEF KC92.webp",
-        note: "Compact dual-driver sub to fill in the bottom octave.",
-      },
-      {
-        name: "SteelSeries Arctis Nova Elite",
-        image: "/images/about/wishlist/audiophile/SteelSeries Nova Elite.jpg",
-        note: "A gaming headset that doesn't insult the rest of the chain.",
-      },
-    ],
-  },
-  {
-    id: "music-studio",
-    title: "Dream home music studio",
-    description: [
-      "The studio is coming back, and when it does, it'll look something like this. Instruments, studio monitors, recording gear and everything else I'd need to bring the ideas trapped in my head to life.",
-    ],
-    items: [
-      {
-        name: "Sequential Prophet-10",
-        image: "/images/about/wishlist/music-studio/Sequential Prophet-10.jpg",
-        note: "The classic analog poly. Pads and keys that arrive finished.",
-      },
-      {
-        name: "Moog Muse",
-        image: "/images/about/wishlist/music-studio/moog-muse.webp",
-        note: "Eight Moog voices for basses and leads with real weight.",
-      },
-      {
-        name: "UDO Super Gemini",
-        image: "/images/about/wishlist/music-studio/udo-audio-super-gemini.webp",
-        note: "Hybrid poly for the wide, strange textures nothing else makes.",
-      },
-      {
-        name: "Elektron Analog Rytm MKII",
-        image: "/images/about/wishlist/music-studio/Elektron Analog Rytm MKII.webp",
-        note: "Analog drum machine, for drums that don't come from a sample pack.",
-      },
-      {
-        name: "Akai MPC X Special Edition",
-        image: "/images/about/wishlist/music-studio/Akai MPC X Special Edition.webp",
-        note: "The standalone sampler for chopping and sequencing off-screen.",
-      },
-      {
-        name: "Ableton Push 3",
-        image: "/images/about/wishlist/music-studio/Ableton Push 3.jpg",
-        note: "Standalone Ableton surface. Sketch beats without opening the laptop.",
-      },
-      {
-        name: "Komplete Kontrol S88 MK3",
-        image:
-          "/images/about/wishlist/music-studio/native-instruments_komplete-kontrol-s88-mk3.jpg",
-        note: "Weighted 88 keys for playing parts in, not programming them.",
-      },
-      {
-        name: "Neumann U 87 Ai",
-        image: "/images/about/wishlist/music-studio/neumann U 87 ai.jpg",
-        note: "The vocal mic. Fifty years of records were cut on this capsule.",
-      },
-      {
-        name: "Avalon VT-737sp",
-        image: "/images/about/wishlist/music-studio/Avalon VT-737sp.jpg",
-        note: "Tube channel strip between the mic and the converter: preamp, EQ and compression on the way in.",
-      },
-      {
-        name: "Universal Audio Apollo x16 Gen 2",
-        image: "/images/about/wishlist/music-studio/Universal Audio Apollo x16 Gen 2.webp",
-        note: "Sixteen channels of conversion so the whole room patches in at once.",
-      },
-      {
-        name: "Apogee Symphony Studio",
-        image: "/images/about/wishlist/music-studio/Apogee Symphony Studio.jpg",
-        note: "Conversion and monitor control at the mix position.",
-      },
-      {
-        name: "Genelec 8351B",
-        image: "/images/about/wishlist/music-studio/Genelec 8351B.jpg",
-        note: "Coaxial mains with room correction. Monitoring that tells the truth.",
-      },
-      {
-        name: "Genelec 7360A",
-        image: "/images/about/wishlist/music-studio/Genelec 7360A.jpg",
-        note: "The sub that extends that truth below 40 Hz.",
-      },
-      {
-        name: "Sennheiser HD 490 PRO",
-        image: "/images/about/wishlist/music-studio/SennheiserHD490.jpg",
-        note: "Open reference headphones for late-night mix checks.",
-      },
-      {
+        // Moved from the Studio Wishlist (owner brief, 2026-10-05); hover
+        // line kept as-is per the brief.
         name: "Dan Clark Audio Noire X",
         image: "/images/about/wishlist/music-studio/Dan Clark Audio Noire X.webp",
         note: "Closed planar headphones for tracking without bleed.",
       },
       {
+        name: "Status Pro X GoldenSound Edition",
+        image: "/images/about/wishlist/audiophile/Status Pro X Goldensound Edition.png",
+        note: "The most intriguing earbud release of the recent past. An already respected model tuned for audiophiles, and I am very curious to hear them.",
+      },
+      {
+        name: "Lynx Hilo 2",
+        image: "/images/about/wishlist/audiophile/LYNX-HILO2.jpg",
+        note: "I have had the original Hilo for 14 years. It is the only surviving piece of my studio from 2012 that I could not bring myself to sell. Only when the Hilo 2 came along did I see an alternative I was interested in.",
+      },
+      {
+        name: "Topping DX9",
+        image: "/images/about/wishlist/audiophile/Topping DX9.jpg",
+        note: "More headphone amp grunt and an alternative sound signature to the Hilo. There is a reason to have both.",
+      },
+      {
+        name: "MOON 371",
+        image: "/images/about/wishlist/audiophile/MOON 371.png",
+        note: "The centrepiece of the dream 2.1 setup.",
+      },
+      {
+        name: "Focal Sopra No.2",
+        image: "/images/about/wishlist/audiophile/Focal Sopra No2.jpg",
+        note: "The 2 of the dream 2.1 setup. These are the speakers I would build the system around.",
+      },
+      {
+        name: "JL Audio Fathom F113v2",
+        image: "/images/about/wishlist/audiophile/JL Audio Fathom F113v2.webp",
+        note: "The .1 of the dream 2.1 setup. Cuz the windows won't shake themselves when I turn up Shook Ones Pt. II... check it out now",
+      },
+    ],
+  },
+  {
+    id: "music-studio",
+    // Retitled with the owner's introduction and hover lines (2026-10-05,
+    // EPIC-027/TASK-121).
+    title: "Studio Wishlist",
+    description: [
+      "I've wanted to make music since I knew what a producer was. Fear of being laughed at kept me from ever pursuing it seriously, although apparently it didn't stop me from building a $10k studio in 2012. I started with FruityLoops, gravitated toward Ableton Live once I discovered how the pros were working, and most of my setups since then have leaned heavily toward virtual instruments, samples and an unreasonable number of plugins. Lately I've been getting more interested in physical instruments, so this wishlist is my attempt to give that side of the obsession some room.",
+    ],
+    items: [
+      {
+        name: "Sequential Prophet-10",
+        image: "/images/about/wishlist/music-studio/Sequential Prophet-10.jpg",
+        note: "The synth I keep coming back to when I think about finally giving the hardware side of this obsession some room to breathe.",
+      },
+      {
+        name: "Moog Muse",
+        image: "/images/about/wishlist/music-studio/moog-muse.webp",
+        note: "I have spent enough years making sounds inside a computer. This is one of the instruments making a very convincing argument for getting my hands dirty.",
+      },
+      {
+        name: "UDO Super Gemini",
+        image: "/images/about/wishlist/music-studio/udo-audio-super-gemini.webp",
+        note: "Because apparently one enormous polyphonic synthesizer wasn't enough. I want the Super Gemini for the kind of sounds that make you forget you were supposed to be working on something else.",
+      },
+      {
+        name: "Elektron Analog Rytm MKII",
+        image: "/images/about/wishlist/music-studio/Elektron Analog Rytm MKII.webp",
+        note: "The drum machine for when programming drums needs to become an entirely different kind of problem.",
+      },
+      {
+        name: "Akai MPC X Special Edition",
+        image: "/images/about/wishlist/music-studio/Akai MPC X Special Edition.webp",
+        note: "Sampling has always been a big part of how I make things. The MPC is the hardware version of that rabbit hole.",
+      },
+      {
+        name: "Ableton Push 3",
+        image: "/images/about/wishlist/music-studio/Ableton Push 3.jpg",
+        note: "Ableton is still home, and Push is probably the closest I can get to making the computer disappear while I am actually making music.",
+      },
+      {
+        name: "Komplete Kontrol S88 MK3",
+        image:
+          "/images/about/wishlist/music-studio/native-instruments_komplete-kontrol-s88-mk3.jpg",
+        note: "A proper keyboard for the ridiculous amount of virtual instruments I keep finding reasons to own.",
+      },
+      {
+        name: "Neumann U 87 Ai",
+        image: "/images/about/wishlist/music-studio/neumann U 87 ai.jpg",
+        note: "The microphone that has been on the 'one day' list for far too long.",
+      },
+      {
+        name: "Avalon VT-737sp",
+        image: "/images/about/wishlist/music-studio/Avalon VT-737sp.jpg",
+        note: "I wanted one of these badly enough in 2012 to know exactly why it is still on the list.",
+      },
+      {
+        name: "Universal Audio Apollo x16 Gen 2",
+        image: "/images/about/wishlist/music-studio/Universal Audio Apollo x16 Gen 2.webp",
+        note: "The kind of interface you buy when the studio has stopped being a collection of toys and started demanding proper I/O.",
+      },
+      {
+        name: "Apogee Symphony Studio",
+        image: "/images/about/wishlist/music-studio/Apogee Symphony Studio.jpg",
+        note: "Because apparently one very good interface is not enough when you start thinking about the studio you would build if you stopped pretending you were being sensible.",
+      },
+      {
+        name: "Genelec 8351B",
+        image: "/images/about/wishlist/music-studio/Genelec 8351B.jpg",
+        note: "The main monitors for the studio I keep threatening to build.",
+      },
+      {
+        name: "Genelec 7360A",
+        image: "/images/about/wishlist/music-studio/Genelec 7360A.jpg",
+        note: "The .1. Yes, I know where this is going.",
+      },
+      {
+        name: "Sennheiser HD 490 PRO",
+        image: "/images/about/wishlist/music-studio/SennheiserHD490.jpg",
+        note: "The practical headphone choice for the studio. I want something I can actually put to work without treating it like a museum piece.",
+      },
+      {
+        // Moved from the Audiophile Gear Wishlist (owner brief, 2026-10-05);
+        // the image stays in the audiophile folder as supplied by the owner.
+        name: "LEWITT L6",
+        image: "/images/about/wishlist/audiophile/lewitt_lw6.jpg",
+        note: "The closed-back I want for the studio. Mixing, tracking, late-night sessions, and generally keeping the rest of the world out.",
+      },
+      {
         name: "Ableton Live 12",
         image: "/images/about/wishlist/music-studio/ableton live 12.jpg",
-        note: "The DAW. Every track starts and ends in a Live set.",
+        note: "Still my DAW. FruityLoops got me started, but Ableton is where I stayed.",
       },
       {
         name: "Komplete 15",
         image: "/images/about/wishlist/music-studio/Komplete-15.png",
-        note: "The Native Instruments library: pianos, drums and a decade of sounds in one install.",
+        note: "I have had the Komplete ecosystem in my life for years. At this point it is less a software collection and more a permanent resident of the studio.",
       },
       {
         name: "Omnisphere 2",
         image: "/images/about/wishlist/music-studio/Omnisphere 2.jpg",
-        note: "The deep software synth, for pads and textures no hardware makes.",
+        note: "One of those instruments where you open it looking for one sound and three hours later you are still looking.",
       },
       {
         name: "FabFilter Total Bundle",
         image: "/images/about/wishlist/music-studio/FabFilter Total Bundle.webp",
-        note: "The mixing plugins: surgical EQ, compression and limiting with interfaces that teach you.",
+        note: "The boring answer to the question of what plugins I actually want around when it is time to get serious.",
       },
       {
-        name: "Valhalla DSP bundle",
+        name: "Valhalla DSP Bundle",
         image: "/images/about/wishlist/music-studio/Valhalla-dsp.webp",
-        note: "The reverbs and delays behind half of modern ambient. Fifty dollars each, absurdly.",
+        note: "Because apparently I still believe the correct amount of reverb is one more plugin.",
       },
     ],
   },
