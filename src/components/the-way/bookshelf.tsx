@@ -58,7 +58,7 @@ function BookCase({
           }`}
         >
           <span className={isOpen ? "text-rose" : "text-soft"}>
-            {isOpen ? "Close the review" : "Read the review"}
+            {isOpen ? "Close the review" : "mini review"}
           </span>
         </span>
       </span>

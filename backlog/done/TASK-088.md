@@ -1,7 +1,7 @@
 ---
 id: TASK-088
 title: Refine technology atlas and delivery motion
-status: in-progress
+status: done
 priority: P1
 risk_level: high
 epic_ref: backlog/epics/EPIC-023.md
@@ -16,6 +16,7 @@ skill_refs:
   - framer-motion
   - lottie
 started_at: 2026-09-27T22:32:01Z
+completed_at: 2026-10-04T16:04:13Z
 ---
 
 # Task: Refine technology atlas and delivery motion

@@ -60,7 +60,11 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 text-ink/70 transition-colors hover:text-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-rose focus-visible:outline-offset-2">
+      {/* z-30: the Who I Am reader stacks its scroll container (z-10) and
+          mobile progress hairline (z-20) above unlayered siblings, which
+          left this button painted — and hit-tested — under the content
+          (EPIC-027/TASK-121). */}
+      <DialogPrimitive.Close className="absolute right-4 top-4 z-30 text-ink/70 transition-colors hover:text-ink focus:outline-none focus-visible:outline-2 focus-visible:outline-rose focus-visible:outline-offset-2">
         <CloseIcon className="size-5" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
