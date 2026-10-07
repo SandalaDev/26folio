@@ -111,6 +111,17 @@ must be inserted exactly as supplied — no rewriting, paraphrasing or
 The brief's own item list (§5) and its final-state validation (§16) disagree
 on position 4 of the audiophile list; §16 is authoritative and places Dan
 Clark Audio Noire X there, with LEWITT L6 only in the Studio Wishlist.
+Owner-sanctioned follow-up edits (2026-10-07, recorded after the fact): the
+Audiophile Gear Wishlist now has eleven items. Dan Clark Audio Noire X was
+removed and its image deleted; ZMF Caldera Closed and Hongshu Audio EH-1 were
+added, with the owner's hover lines and new images in
+`public/images/about/wishlist/audiophile/`. The HDB 630 hover line and the
+Studio Wishlist intro ("pro-level studio" in place of "$10k studio") were
+reworded by the owner. The bookshelf teaser label "Read the review" became
+"mini review" in `src/components/the-way/bookshelf.tsx`. Where these differ
+from the "exactly ten" list and verbatim-copy criteria above, the later owner
+edits are authoritative.
+
 The SteelSeries Arctis Nova Elite is not mentioned anywhere in the brief but
 is absent from the final ten, so it is removed and recorded here for the
 owner's visibility.

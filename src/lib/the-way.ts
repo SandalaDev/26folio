@@ -116,14 +116,17 @@ export const WISHLISTS: Wishlist[] = [
       {
         name: "Sennheiser HDB 630",
         image: "/images/about/wishlist/audiophile/sennheiser hdb 630.webp",
-        note: "Technically replaced by the LEWITT L6, but it stays on the list because this is the headphone I would actually travel with.",
+        note: "Technically replaced by the LEWITT L6, but it stays on the list because this is the one I wanna travel with.",
       },
       {
-        // Moved from the Studio Wishlist (owner brief, 2026-10-05); hover
-        // line kept as-is per the brief.
-        name: "Dan Clark Audio Noire X",
-        image: "/images/about/wishlist/music-studio/Dan Clark Audio Noire X.webp",
-        note: "Closed planar headphones for tracking without bleed.",
+        name: "ZMF Caldera Closed",
+        image: "/images/about/wishlist/audiophile/ZMF Caldera Closed.webp",
+        note: "The Caldera is the holy grail closed back headphone.",
+      },
+      {
+        name: "Hongshu Audio EH-1",
+        image: "/images/about/wishlist/audiophile/Hongshu Audio EH-1.webp",
+        note: "Complete electrostatic system for a fraction of the cost of cans it shares the tech with and is widely reported to sound like true estat. I have to have it for the novelty if nothing else.",
       },
       {
         name: "Status Pro X GoldenSound Edition",
@@ -163,7 +166,7 @@ export const WISHLISTS: Wishlist[] = [
     // EPIC-027/TASK-121).
     title: "Studio Wishlist",
     description: [
-      "I've wanted to make music since I knew what a producer was. Fear of being laughed at kept me from ever pursuing it seriously, although apparently it didn't stop me from building a $10k studio in 2012. I started with FruityLoops, gravitated toward Ableton Live once I discovered how the pros were working, and most of my setups since then have leaned heavily toward virtual instruments, samples and an unreasonable number of plugins. Lately I've been getting more interested in physical instruments, so this wishlist is my attempt to give that side of the obsession some room.",
+      "I've wanted to make music since I knew what a producer was. Fear of being laughed at kept me from ever pursuing it seriously, although apparently it didn't stop me from building a pro-level studio in 2012. I started with FruityLoops, gravitated toward Ableton Live once I discovered how the pros were working, and most of my setups since then have leaned heavily toward virtual instruments, samples and an unreasonable number of plugins. Lately I've been getting more interested in physical instruments, so this wishlist is my attempt to give that side of the obsession some room.",
     ],
     items: [
       {
