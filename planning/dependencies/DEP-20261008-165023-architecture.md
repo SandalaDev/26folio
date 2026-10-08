@@ -1,8 +1,8 @@
 ---
 id: "DEP-20261008-165023-architecture"
 mode: "architecture"
-status: "review-ready"
-human_approval: "pending"
+status: "approved"
+human_approval: "approved"
 purpose: "Cloudflare Workers hosting for the Next.js 15.5 site: OpenNext adapter, Wrangler, and the Next patch the adapter requires"
 opensrc_cli: "0.7.2"
 created_at: "2026-10-08T16:50:23Z"
@@ -211,7 +211,7 @@ Decisions for the human, besides approving the three exact versions:
    quota and pricing were not verified in this research and should be checked
    in the Cloudflare dashboard.
 
-HUMAN: review the evidence and exact versions. If approved, change `status` to
+HUMAN (approved in chat by the owner on 2026-10-08, as written, including the three decisions above; recorded by the agent): review the evidence and exact versions. If approved, change `status` to
 `approved` and `human_approval` to `approved`. The OS install command will
 not run this plan until then. Direct package-manager commands remain available
 because the OS does not gate pushes.

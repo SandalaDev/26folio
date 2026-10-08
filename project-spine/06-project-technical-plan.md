@@ -81,9 +81,9 @@ src/
 ## Deployment (Cloudflare)
 
 Owner decision of 2026-10-08. The package set is in
-`planning/dependencies/DEP-20261008-165023-architecture.md`; the steps below
-are confirmed once that plan is approved and the preview deployment is proven
-in EPIC-028 TASK-128.
+`planning/dependencies/DEP-20261008-165023-architecture.md` (approved and
+installed 2026-10-08); the steps below are confirmed once the preview
+deployment is proven in EPIC-028 TASK-128.
 
 1. `opennextjs-cloudflare build` runs `next build` and bundles the result into
    one Worker (`.open-next/worker.js`) plus a static assets directory.
@@ -92,8 +92,11 @@ in EPIC-028 TASK-128.
 3. Secrets are set with `wrangler secret put`; the build-time public variable
    `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is supplied to the build. Local Workers runs
    read a gitignored `.dev.vars`.
-4. `opennextjs-cloudflare deploy` publishes a new Worker version; Cloudflare
-   serves it on the custom hostname with TLS handled at the edge.
+4. `opennextjs-cloudflare deploy` (`npm run cf:deploy`) publishes a new Worker
+   version; Cloudflare serves it on the custom hostname with TLS handled at the
+   edge. Always deploy and preview through the adapter commands: they load the
+   prerendered pages into the read-only static-assets cache, and a bare
+   `wrangler dev` or `wrangler deploy` leaves `/work/[slug]` returning 404.
 5. A WAF rate-limiting rule on `POST /api/contact` is the real abuse limit
    (configuration, documented in the launch checklist).
 

@@ -1,0 +1,25 @@
+{
+	// Cloudflare Worker for sandala.dev (EPIC-028 TASK-129).
+	// Plan: planning/dependencies/DEP-20261008-165023-architecture.md
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "sandala-dev",
+	"compatibility_date": "2026-09-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"images": {
+		// Optimizes /_next/image. Without this binding originals are served.
+		"binding": "IMAGES"
+	},
+	"vars": {
+		// Sender on the verified sending subdomain. Not a secret.
+		"RESEND_FROM_EMAIL": "Abe Sandala <contact@send.sandala.site>"
+	}
+	// Secrets are never listed here. Set them with `wrangler secret put`:
+	//   RESEND_API_KEY, CONTACT_TO_EMAIL, TURNSTILE_SECRET_KEY
+	// NEXT_PUBLIC_TURNSTILE_SITE_KEY is a build-time variable for `next build`.
+	// Local Workers runs read a gitignored .dev.vars file.
+}
