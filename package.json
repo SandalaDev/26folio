@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
+    "test:contact": "node --test \"tests/**/*.test.ts\"",
     "test": "echo \"Error: no application test suite specified\" && exit 1",
     "test:os": "node scripts/doctor.mjs && node scripts/test/os-integration.test.mjs && node scripts/migrate.mjs verify",
     "os:render": "bash scripts/os.sh render"
