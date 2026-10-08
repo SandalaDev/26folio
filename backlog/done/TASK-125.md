@@ -1,7 +1,7 @@
 ---
 id: TASK-125
 title: "Wire the form to the live route: honeypot, error states and honest copy"
-status: ready
+status: done
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-028.md
@@ -9,11 +9,14 @@ progress_weight: 2
 files_allowed:
   - src/components/site/contact-form.tsx
   - src/app/(site)/contact/page.tsx
-skill_refs: [design-taste-frontend, writing-style]
+skill_refs:
+  - design-taste-frontend
+  - writing-style
 parallel:
   suitable: true
   reason: Touches only the client form and page; independent of the auto-reply once the route contract is fixed.
-  dependencies: [TASK-123]
+  dependencies:
+    - TASK-123
   result: null
 testing:
   recommendation: with-task
@@ -22,6 +25,8 @@ testing:
     - npm run lint
     - npm run typecheck
     - npm run build
+started_at: 2026-10-08T16:33:23Z
+completed_at: 2026-10-08T16:37:51Z
 ---
 # Task: Wire the form to the live route: honeypot, error states and honest copy
 
@@ -51,14 +56,14 @@ Keep the existing layout, tokens and motion. Change behavior and copy only.
 
 ## Acceptance Criteria
 
-- [ ] Success, client validation, server validation, rate limited and
+- [x] Success, client validation, server validation, rate limited and
       delivery failure each render the intended state.
-- [ ] The honeypot cannot be reached by keyboard or screen reader.
-- [ ] The Turnstile widget renders in both colour schemes, works with the
+- [x] The honeypot cannot be reached by keyboard or screen reader.
+- [x] The Turnstile widget renders in both colour schemes, works with the
       keyboard, and a blocked or failed widget produces a clear message.
-- [ ] No state claims success when the route did not return 200.
-- [ ] No visual change to the default form at any width.
-- [ ] `npm run lint`, `npm run typecheck` and `npm run build` pass.
+- [x] No state claims success when the route did not return 200.
+- [x] No visual change to the default form at any width.
+- [x] `npm run lint`, `npm run typecheck` and `npm run build` pass.
 
 ## Dependency Evidence
 
@@ -75,3 +80,23 @@ Keep the existing layout, tokens and motion. Change behavior and copy only.
 
 The preview tab can freeze animation when hidden; check `document.hidden`
 before judging motion.
+
+## Completion notes (2026-10-08)
+
+- All changes are in `src/components/site/contact-form.tsx`; the contact page
+  file needed no edit. Skills: design-taste-frontend (direction only: keep the
+  existing look, no new motion) and writing-style for the notice copy.
+- The site is dark only, so the widget uses `theme: "dark"` rather than
+  following `prefers-color-scheme`.
+- Verified in the browser pane against a dev server with Cloudflare's test
+  Turnstile keys and Resend stubbed: client validation focuses the first
+  invalid field; stubbed 429, 502, network failure, Turnstile 400, server field
+  errors and a 200 without `ok:true` each rendered the right notice and never
+  showed success; the widget reset and returned a fresh token after each
+  failure; a real round trip through the route produced the success state with
+  focus moved to it, one inquiry email and one auto-reply. The widget renders
+  in the site's dark scheme at desktop and 375px, with no horizontal overflow,
+  and the honeypot has `tabindex -1`, `aria-hidden` and sits off screen.
+- Not exercised: the "script blocked" message (a content blocker was not
+  available), `prefers-reduced-motion`, and a real Resend send. The test widget
+  shows a 7px "for testing" strip, so its box is 72px here and 65px in production.

@@ -34,3 +34,27 @@ export function buildInquiryEmail(inquiry: InquiryInput): {
   ];
   return { subject, text: lines.join("\n") };
 }
+
+/**
+ * Confirmation sent to the visitor. It never repeats their message, and the
+ * greeting uses the flattened name. The wording mirrors the success state in
+ * `contact-form.tsx`; change them together.
+ */
+export function buildAutoReply(inquiry: Pick<InquiryInput, "name">): {
+  subject: string;
+  text: string;
+} {
+  const lines = [
+    `Hi ${singleLine(inquiry.name, 60)},`,
+    "",
+    "Thanks for writing. Your message reached me.",
+    "",
+    "I read every inquiry and reply to the ones that fit. If you do not hear back within a few days, the project may not be a match this time.",
+    "",
+    "Abe Sandala",
+    "sandala.dev",
+    "",
+    "You are getting this because someone used the contact form on sandala.dev with this address. If that was not you, you can ignore this email.",
+  ];
+  return { subject: "Your message reached me", text: lines.join("\n") };
+}

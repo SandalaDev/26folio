@@ -1,6 +1,6 @@
 import { env } from "@/lib/env";
 import { clientIp } from "@/lib/contact/client-ip";
-import { buildInquiryEmail } from "@/lib/contact/message";
+import { buildAutoReply, buildInquiryEmail } from "@/lib/contact/message";
 import {
   CONTACT_RATE_LIMIT,
   createMemoryRateLimiter,
@@ -119,6 +119,21 @@ export async function POST(request: Request): Promise<Response> {
     log("delivery-failed", sent.code);
     return respond(502, { ok: false });
   }
+
+  // The inquiry has reached Abe, so an auto-reply failure is logged as a code
+  // and never changes the visitor's response. It goes only to the address in
+  // this validated, verified, rate-limited request, and never repeats the message.
+  const reply = buildAutoReply(inquiry);
+  const confirmed = await sendEmail({
+    apiKey: env.RESEND_API_KEY,
+    message: {
+      from: env.RESEND_FROM_EMAIL,
+      to: inquiry.email,
+      subject: reply.subject,
+      text: reply.text,
+    },
+  });
+  if (!confirmed.ok) log("auto-reply-failed", confirmed.code);
 
   log("sent");
   return respond(200, { ok: true });
