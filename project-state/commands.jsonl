@@ -45,3 +45,42 @@
 {"ts":"2026-10-05T00:18:52.609Z","feature":"task-claim","action":"claim","exit":0,"ms":1974,"harness":"cline-desktop","session":"s-014812d425fe"}
 {"ts":"2026-10-05T00:33:09.837Z","feature":"task-done","action":"done","exit":0,"ms":3063,"harness":"cline-desktop","session":"s-014812d425fe"}
 {"ts":"2026-10-05T00:34:47.067Z","feature":"session-end","action":"end","exit":0,"ms":19502,"harness":"cline-desktop","session":"none"}
+{"ts":"2026-10-06T18:50:58.731Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":94,"harness":"unknown","session":"none"}
+{"ts":"2026-10-06T18:51:10.071Z","feature":"session-start","action":"start","exit":0,"ms":11465,"harness":"unknown","session":"s-43fe62307ec3"}
+{"ts":"2026-10-06T18:54:09.937Z","feature":"state-status","action":"status","exit":0,"ms":14375,"harness":"unknown","session":"s-43fe62307ec3"}
+{"ts":"2026-10-06T18:55:07.122Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":1902,"harness":"unknown","session":"s-43fe62307ec3"}
+{"ts":"2026-10-06T18:55:52.346Z","feature":"state-status","action":"status","exit":141,"ms":132,"harness":"unknown","session":"s-43fe62307ec3"}
+{"ts":"2026-10-06T18:56:33.797Z","feature":"state-status","action":"status","exit":141,"ms":134,"harness":"unknown","session":"s-43fe62307ec3"}
+{"ts":"2026-10-06T18:57:27.838Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":279,"harness":"unknown","session":"none"}
+{"ts":"2026-10-06T18:57:28.943Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":232,"harness":"unknown","session":"none"}
+{"ts":"2026-10-06T18:57:29.589Z","feature":"session-start","action":"start","exit":0,"ms":2476,"harness":"unknown","session":"s-22612f185e95"}
+{"ts":"2026-10-06T18:57:30.562Z","feature":"session-start","action":"start","exit":0,"ms":3405,"harness":"unknown","session":"s-df87c1b2192e"}
+{"ts":"2026-10-06T18:58:27.495Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":158,"harness":"unknown","session":"s-df87c1b2192e"}
+{"ts":"2026-10-06T19:01:06.311Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":284,"harness":"cline desktop","session":"none"}
+{"ts":"2026-10-06T19:01:07.830Z","feature":"session-start","action":"start","exit":0,"ms":3905,"harness":"cline desktop","session":"s-7b89cce9c86b"}
+{"ts":"2026-10-06T19:05:12.734Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":1126,"harness":"unknown","session":"s-7b89cce9c86b"}
+{"ts":"2026-10-06T22:08:46.747Z","feature":"session-end","action":"end","exit":0,"ms":15842,"harness":"cline desktop","session":"none"}
+{"ts":"2026-10-07T19:10:02.361Z","feature":"state-check","action":"check","exit":0,"ms":12302,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:10:37.081Z","feature":"dependency-plan","action":"deps","exit":0,"ms":190,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:10:58.446Z","feature":"work-shaping","action":"new-task:epic","exit":0,"ms":172,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:10:59.319Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":598,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:11:00.172Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":592,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:11:00.997Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":565,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:11:02.026Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":764,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:11:03.211Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":861,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:11:04.012Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":560,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:11:04.834Z","feature":"work-shaping","action":"new-task:task","exit":0,"ms":570,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:13:51.162Z","feature":"state-check","action":"check","exit":1,"ms":11007,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:15:28.098Z","feature":"view-render","action":"render","exit":0,"ms":114,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:17:03.784Z","feature":"state-check","action":"check","exit":0,"ms":11527,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:17:19.925Z","feature":"state-status","action":"status","exit":0,"ms":10841,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-07T21:17:47.517Z","feature":"state-check","action":"check","exit":0,"ms":11061,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T08:52:45.969Z","feature":"memory-decide","action":"decide","exit":2,"ms":290,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T08:53:06.030Z","feature":"memory-decide","action":"decide","exit":0,"ms":286,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T08:53:16.686Z","feature":"state-check","action":"check","exit":0,"ms":10235,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T08:54:39.719Z","feature":"view-render","action":"render","exit":0,"ms":111,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T08:56:09.401Z","feature":"state-check","action":"check","exit":0,"ms":10235,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T11:11:57.706Z","feature":"view-render","action":"render","exit":0,"ms":284,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T11:13:29.649Z","feature":"state-check","action":"check","exit":0,"ms":9738,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T11:30:58.952Z","feature":"view-render","action":"render","exit":0,"ms":110,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T11:32:28.211Z","feature":"state-check","action":"check","exit":0,"ms":10289,"harness":"claude-code","session":"none"}

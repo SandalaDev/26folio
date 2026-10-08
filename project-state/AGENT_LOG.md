@@ -55,3 +55,8 @@
 - 2026-10-04T16:36:31Z | cline-desktop/kimi-k3 | checkpoint | task=none | gate= | TASK-088
 - 2026-10-05T00:06:02Z | ?/? | crashed | task="" | gate=skipped | TASK-088
 - 2026-10-05T00:34:45Z | cline-desktop/kimi-k3 | end | task=none | gate=ok
+- 2026-10-06T18:55:06Z | unknown/unknown | checkpoint | task=none | gate= | Applying
+- 2026-10-06T18:57:28Z | ?/? | crashed | task="" | gate=skipped | Applying
+- 2026-10-06T19:01:05Z | ?/? | crashed | task="" | gate=skipped | ""
+- 2026-10-06T19:05:12Z | unknown/unknown | checkpoint | task=none | gate= | About
+- 2026-10-06T22:08:46Z | cline desktop/kimi k3 | end | task=none | gate=ok

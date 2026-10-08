@@ -1,8 +1,8 @@
 {
   "schema": "agent-os.state.v1",
   "version": "1.0.0",
-  "updated": "2026-10-05T00:35:19.446Z",
-  "updated_by": "cline-desktop",
+  "updated": "2026-10-08T11:31:20.568Z",
+  "updated_by": "cline desktop",
   "actor": {
     "harness": null,
     "model": null,
@@ -40,40 +40,40 @@
     "blocked": "none"
   },
   "counts": {
-    "epics_total": 26,
-    "tasks_open": 18,
+    "epics_total": 27,
+    "tasks_open": 26,
     "tasks_in_progress": 1,
     "tasks_done": 96,
     "handoffs_pending": 0,
     "handoffs_consumed": 0
   },
   "metrics": {
-    "updated": "2026-10-05T00:35:19.441Z",
+    "updated": "2026-10-08T11:31:20.560Z",
     "min_n": 5,
     "totals": {
-      "sessions": 26,
-      "completed": 24,
-      "crashed": 2,
-      "gate_pass": 24,
+      "sessions": 29,
+      "completed": 25,
+      "crashed": 4,
+      "gate_pass": 25,
       "gate_fail": 0,
       "attributed": 13,
-      "knownHarness": 9,
-      "knownModel": 3
+      "knownHarness": 10,
+      "knownModel": 4
     },
     "combos": [
       {
         "harness": "unknown",
         "model": "unknown",
         "role": "executor",
-        "sessions": 17,
+        "sessions": 19,
         "gate_pass": 17,
         "gate_fail": 0,
-        "mins": 168,
-        "dated": 17,
-        "crashed": 0,
+        "mins": 172,
+        "dated": 19,
+        "crashed": 2,
         "graded": 17,
         "gate_pass_rate": 100,
-        "avg_session_min": 10,
+        "avg_session_min": 9,
         "low_n": false
       },
       {
@@ -150,6 +150,21 @@
         "gate_pass_rate": 100,
         "avg_session_min": 36,
         "low_n": true
+      },
+      {
+        "harness": "cline desktop",
+        "model": "kimi k3",
+        "role": "executor",
+        "sessions": 1,
+        "gate_pass": 1,
+        "gate_fail": 0,
+        "mins": 188,
+        "dated": 1,
+        "crashed": 0,
+        "graded": 1,
+        "gate_pass_rate": 100,
+        "avg_session_min": 188,
+        "low_n": true
       }
     ],
     "commands": [
@@ -169,8 +184,8 @@
       },
       {
         "command": "branch:guard",
-        "uses": 4,
-        "lastUsed": "2026-10-05T00:06:02.797Z",
+        "uses": 9,
+        "lastUsed": "2026-10-06T19:01:06.311Z",
         "failures": 0,
         "signal": "observed"
       },
@@ -197,15 +212,15 @@
       },
       {
         "command": "check",
-        "uses": 0,
-        "lastUsed": null,
-        "failures": 0,
-        "signal": "not observed"
+        "uses": 7,
+        "lastUsed": "2026-10-08T11:13:29.649Z",
+        "failures": 1,
+        "signal": "observed"
       },
       {
         "command": "checkpoint",
-        "uses": 12,
-        "lastUsed": "2026-10-04T16:36:32.132Z",
+        "uses": 14,
+        "lastUsed": "2026-10-06T19:05:12.734Z",
         "failures": 0,
         "signal": "observed"
       },
@@ -225,17 +240,17 @@
       },
       {
         "command": "decide",
-        "uses": 0,
-        "lastUsed": null,
-        "failures": 0,
-        "signal": "not observed"
+        "uses": 2,
+        "lastUsed": "2026-10-08T08:53:06.030Z",
+        "failures": 1,
+        "signal": "observed"
       },
       {
         "command": "deps",
-        "uses": 0,
-        "lastUsed": null,
+        "uses": 1,
+        "lastUsed": "2026-10-07T21:10:37.081Z",
         "failures": 0,
-        "signal": "not observed"
+        "signal": "observed"
       },
       {
         "command": "doctor",
@@ -281,8 +296,8 @@
       },
       {
         "command": "end",
-        "uses": 4,
-        "lastUsed": "2026-10-05T00:34:47.067Z",
+        "uses": 5,
+        "lastUsed": "2026-10-06T22:08:46.747Z",
         "failures": 0,
         "signal": "observed"
       },
@@ -323,15 +338,15 @@
       },
       {
         "command": "new-task:epic",
-        "uses": 1,
-        "lastUsed": "2026-10-05T00:17:04.841Z",
+        "uses": 2,
+        "lastUsed": "2026-10-07T21:10:58.446Z",
         "failures": 0,
         "signal": "observed"
       },
       {
         "command": "new-task:task",
-        "uses": 1,
-        "lastUsed": "2026-10-05T00:17:06.008Z",
+        "uses": 8,
+        "lastUsed": "2026-10-07T21:11:04.834Z",
         "failures": 0,
         "signal": "observed"
       },
@@ -365,10 +380,10 @@
       },
       {
         "command": "render",
-        "uses": 0,
-        "lastUsed": null,
+        "uses": 4,
+        "lastUsed": "2026-10-08T11:30:58.952Z",
         "failures": 0,
-        "signal": "not observed"
+        "signal": "observed"
       },
       {
         "command": "setup:run",
@@ -400,17 +415,17 @@
       },
       {
         "command": "start",
-        "uses": 7,
-        "lastUsed": "2026-10-05T00:07:04.598Z",
+        "uses": 11,
+        "lastUsed": "2026-10-06T19:01:07.830Z",
         "failures": 3,
         "signal": "observed"
       },
       {
         "command": "status",
-        "uses": 0,
-        "lastUsed": null,
-        "failures": 0,
-        "signal": "not observed"
+        "uses": 4,
+        "lastUsed": "2026-10-07T21:17:19.925Z",
+        "failures": 2,
+        "signal": "observed"
       },
       {
         "command": "switch",
@@ -437,14 +452,14 @@
     "health": {
       "taskAttribution": {
         "numerator": 13,
-        "denominator": 26,
-        "percent": 50
+        "denominator": 29,
+        "percent": 45
       },
       "cleanEnds": {
-        "numerator": 24,
-        "denominator": 26,
-        "percent": 92,
-        "crashed": 2
+        "numerator": 25,
+        "denominator": 29,
+        "percent": 86,
+        "crashed": 4
       },
       "handoffs": {
         "created": 0,
@@ -452,18 +467,18 @@
         "resolved": 0
       },
       "knownIdentity": {
-        "harness": 9,
-        "model": 3,
-        "denominator": 26,
-        "harnessPercent": 35,
-        "modelPercent": 12
+        "harness": 10,
+        "model": 4,
+        "denominator": 29,
+        "harnessPercent": 34,
+        "modelPercent": 14
       }
     },
     "commandObservation": {
-      "events": 40,
+      "events": 78,
       "markers": 7,
       "start": "2026-09-24T23:13:53.040Z",
-      "end": "2026-10-05T00:34:47.067Z"
+      "end": "2026-10-08T11:30:58.952Z"
     },
     "features": [
       {
@@ -478,26 +493,26 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 8,
-        "uses": 8,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 12,
+        "uses": 12,
         "failures": 4,
-        "successes": 4,
-        "sessionsWithUse": 4,
-        "lastUsed": "2026-10-05T00:07:04.598Z",
-        "opportunities": 4,
+        "successes": 8,
+        "sessionsWithUse": 8,
+        "lastUsed": "2026-10-06T19:01:07.830Z",
+        "opportunities": 5,
         "opportunityKnown": true,
-        "utilization": 200,
-        "usesPerSession": 2,
+        "utilization": 240,
+        "usesPerSession": 1.5,
         "maxUsesPerOpportunity": 1,
         "repetition": {
           "status": "under-observed",
-          "ratio": 2,
-          "rationale": "Only 4 aligned opportunities; the repetition sample is too small."
+          "ratio": 2.4,
+          "rationale": "Only 5 aligned opportunities; the repetition sample is too small."
         },
         "automationCandidate": false,
         "classification": "failing",
-        "rationale": "4 failure(s) across 8 use(s); investigate before judging utilization."
+        "rationale": "4 failure(s) across 12 use(s); investigate before judging utilization."
       },
       {
         "id": "session-end",
@@ -510,14 +525,14 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 4,
-        "uses": 4,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 5,
+        "uses": 5,
         "failures": 0,
-        "successes": 4,
+        "successes": 5,
         "sessionsWithUse": 0,
-        "lastUsed": "2026-10-05T00:34:47.067Z",
-        "opportunities": 4,
+        "lastUsed": "2026-10-06T22:08:46.747Z",
+        "opportunities": 5,
         "opportunityKnown": true,
         "utilization": 100,
         "usesPerSession": null,
@@ -525,11 +540,11 @@
         "repetition": {
           "status": "under-observed",
           "ratio": 1,
-          "rationale": "Only 4 aligned opportunities; the repetition sample is too small."
+          "rationale": "Only 5 aligned opportunities; the repetition sample is too small."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 4 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "session-checkpoint",
@@ -542,26 +557,26 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 12,
-        "uses": 12,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 14,
+        "uses": 14,
         "failures": 0,
-        "successes": 12,
-        "sessionsWithUse": 4,
-        "lastUsed": "2026-10-04T16:36:32.132Z",
-        "opportunities": 1,
+        "successes": 14,
+        "sessionsWithUse": 6,
+        "lastUsed": "2026-10-06T19:05:12.734Z",
+        "opportunities": 2,
         "opportunityKnown": true,
-        "utilization": 1200,
-        "usesPerSession": 3,
+        "utilization": 700,
+        "usesPerSession": 2.3,
         "maxUsesPerOpportunity": 2,
         "repetition": {
           "status": "under-observed",
-          "ratio": 12,
-          "rationale": "Only 1 aligned opportunities; the repetition sample is too small."
+          "ratio": 7,
+          "rationale": "Only 2 aligned opportunities; the repetition sample is too small."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 1 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 2 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "session-switch",
@@ -574,14 +589,14 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
         "successes": 0,
         "sessionsWithUse": 0,
         "lastUsed": null,
-        "opportunities": 1,
+        "opportunities": 3,
         "opportunityKnown": true,
         "utilization": 0,
         "usesPerSession": null,
@@ -589,11 +604,11 @@
         "repetition": {
           "status": "under-observed",
           "ratio": 0,
-          "rationale": "Only 1 aligned opportunities; the repetition sample is too small."
+          "rationale": "Only 3 aligned opportunities; the repetition sample is too small."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 1 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 3 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "task-claim",
@@ -606,7 +621,7 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 4,
         "uses": 4,
         "failures": 0,
@@ -638,7 +653,7 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 2,
         "uses": 2,
         "failures": 0,
@@ -670,7 +685,7 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -702,13 +717,13 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 0,
-        "uses": 0,
-        "failures": 0,
-        "successes": 0,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 2,
+        "uses": 2,
+        "failures": 1,
+        "successes": 1,
         "sessionsWithUse": 0,
-        "lastUsed": null,
+        "lastUsed": "2026-10-08T08:53:06.030Z",
         "opportunities": null,
         "opportunityKnown": false,
         "utilization": null,
@@ -734,14 +749,14 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
         "successes": 0,
         "sessionsWithUse": 0,
         "lastUsed": null,
-        "opportunities": 4,
+        "opportunities": 5,
         "opportunityKnown": true,
         "utilization": 0,
         "usesPerSession": null,
@@ -753,7 +768,7 @@
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 4 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "dependency-plan",
@@ -766,13 +781,13 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 0,
-        "uses": 0,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 1,
+        "uses": 1,
         "failures": 0,
-        "successes": 0,
+        "successes": 1,
         "sessionsWithUse": 0,
-        "lastUsed": null,
+        "lastUsed": "2026-10-07T21:10:37.081Z",
         "opportunities": 0,
         "opportunityKnown": true,
         "utilization": null,
@@ -798,7 +813,7 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -830,7 +845,7 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -862,26 +877,26 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 2,
         "uses": 2,
         "failures": 1,
         "successes": 1,
         "sessionsWithUse": 1,
         "lastUsed": "2026-10-04T16:35:37.776Z",
-        "opportunities": 5,
+        "opportunities": 8,
         "opportunityKnown": true,
-        "utilization": 40,
+        "utilization": 25,
         "usesPerSession": 2,
         "maxUsesPerOpportunity": 1,
         "repetition": {
           "status": "under-observed",
-          "ratio": 0.4,
-          "rationale": "Only 5 aligned opportunities; the repetition sample is too small."
+          "ratio": 0.25,
+          "rationale": "Only 8 aligned opportunities; the repetition sample is too small."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 8 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "branch-sync",
@@ -894,14 +909,14 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
         "successes": 0,
         "sessionsWithUse": 0,
         "lastUsed": null,
-        "opportunities": 5,
+        "opportunities": 8,
         "opportunityKnown": true,
         "utilization": 0,
         "usesPerSession": null,
@@ -909,11 +924,11 @@
         "repetition": {
           "status": "under-observed",
           "ratio": 0,
-          "rationale": "Only 5 aligned opportunities; the repetition sample is too small."
+          "rationale": "Only 8 aligned opportunities; the repetition sample is too small."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 8 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "state-check",
@@ -926,26 +941,26 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 0,
-        "uses": 0,
-        "failures": 0,
-        "successes": 0,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 7,
+        "uses": 7,
+        "failures": 1,
+        "successes": 6,
         "sessionsWithUse": 0,
-        "lastUsed": null,
-        "opportunities": 4,
+        "lastUsed": "2026-10-08T11:13:29.649Z",
+        "opportunities": 5,
         "opportunityKnown": true,
-        "utilization": 0,
+        "utilization": 140,
         "usesPerSession": null,
         "maxUsesPerOpportunity": null,
         "repetition": {
           "status": "under-observed",
-          "ratio": 0,
+          "ratio": 1.4,
           "rationale": "No defensible expected cadence; raw repetition only."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 4 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "state-status",
@@ -958,26 +973,26 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 0,
-        "uses": 0,
-        "failures": 0,
-        "successes": 0,
-        "sessionsWithUse": 0,
-        "lastUsed": null,
-        "opportunities": 4,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 4,
+        "uses": 4,
+        "failures": 2,
+        "successes": 2,
+        "sessionsWithUse": 1,
+        "lastUsed": "2026-10-07T21:17:19.925Z",
+        "opportunities": 5,
         "opportunityKnown": true,
-        "utilization": 0,
-        "usesPerSession": null,
+        "utilization": 80,
+        "usesPerSession": 4,
         "maxUsesPerOpportunity": null,
         "repetition": {
           "status": "under-observed",
-          "ratio": 0,
+          "ratio": 0.8,
           "rationale": "No defensible expected cadence; raw repetition only."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 4 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "view-render",
@@ -990,26 +1005,26 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 0,
-        "uses": 0,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 4,
+        "uses": 4,
         "failures": 0,
-        "successes": 0,
+        "successes": 4,
         "sessionsWithUse": 0,
-        "lastUsed": null,
-        "opportunities": 4,
+        "lastUsed": "2026-10-08T11:30:58.952Z",
+        "opportunities": 5,
         "opportunityKnown": true,
-        "utilization": 0,
+        "utilization": 80,
         "usesPerSession": null,
         "maxUsesPerOpportunity": null,
         "repetition": {
           "status": "under-observed",
-          "ratio": 0,
+          "ratio": 0.8,
           "rationale": "No defensible expected cadence; raw repetition only."
         },
         "automationCandidate": false,
         "classification": "under-observed",
-        "rationale": "Only 4 aligned opportunities; the utilization sample is too small."
+        "rationale": "Only 5 aligned opportunities; the utilization sample is too small."
       },
       {
         "id": "system-doctor",
@@ -1022,7 +1037,7 @@
         "introducedAt": "telemetry-v1",
         "observationPolicy": "log-start",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -1057,7 +1072,7 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -1090,17 +1105,17 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 2,
-        "uses": 2,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 10,
+        "uses": 10,
         "failures": 0,
-        "successes": 2,
+        "successes": 10,
         "sessionsWithUse": 1,
-        "lastUsed": "2026-10-05T00:17:06.008Z",
+        "lastUsed": "2026-10-07T21:11:04.834Z",
         "opportunities": null,
         "opportunityKnown": false,
         "utilization": null,
-        "usesPerSession": 2,
+        "usesPerSession": 10,
         "maxUsesPerOpportunity": null,
         "repetition": {
           "status": "under-observed",
@@ -1127,17 +1142,17 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
-        "observationEvents": 6,
-        "uses": 6,
+        "observationEnd": "2026-10-08T11:30:58.952Z",
+        "observationEvents": 11,
+        "uses": 11,
         "failures": 0,
-        "successes": 6,
-        "sessionsWithUse": 1,
-        "lastUsed": "2026-10-05T00:06:02.797Z",
+        "successes": 11,
+        "sessionsWithUse": 2,
+        "lastUsed": "2026-10-06T19:01:06.311Z",
         "opportunities": null,
         "opportunityKnown": false,
         "utilization": null,
-        "usesPerSession": 6,
+        "usesPerSession": 5.5,
         "maxUsesPerOpportunity": null,
         "repetition": {
           "status": "under-observed",
@@ -1161,7 +1176,7 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -1193,7 +1208,7 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -1225,7 +1240,7 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -1260,7 +1275,7 @@
         "introducedAt": "telemetry-v2",
         "observationPolicy": "marker",
         "observationStart": "2026-09-24T23:13:53.040Z",
-        "observationEnd": "2026-10-05T00:34:47.067Z",
+        "observationEnd": "2026-10-08T11:30:58.952Z",
         "observationEvents": 0,
         "uses": 0,
         "failures": 0,
@@ -1433,6 +1448,11 @@
     {
       "id": "EPIC-027",
       "title": "About page: collections wishlist refresh and Who I Am modal fix",
+      "status": "done"
+    },
+    {
+      "id": "EPIC-028",
+      "title": "Contact: working inquiry delivery and a launch-ready page",
       "status": "ready"
     }
   ],
@@ -1454,5 +1474,5 @@
     "schema": "agent-os.release-baselines.v1",
     "baselines": []
   },
-  "revision": 52
+  "revision": 70
 }
