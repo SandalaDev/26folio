@@ -1,7 +1,7 @@
 ---
 id: EPIC-027
 title: "About page: collections wishlist refresh and Who I Am modal fix"
-status: ready
+status: done
 priority: P2
 roadmap_refs: []
 goal_refs: [GOAL-001]
