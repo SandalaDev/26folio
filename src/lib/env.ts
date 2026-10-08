@@ -1,5 +1,9 @@
 export const env = {
   RESEND_API_KEY: process.env.RESEND_API_KEY ?? "",
+  RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? "",
+  CONTACT_TO_EMAIL: process.env.CONTACT_TO_EMAIL ?? "",
+  TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY ?? "",
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "",
   R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID ?? "",
   R2_ACCESS_KEY_ID: process.env.R2_ACCESS_KEY_ID ?? "",
   R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY ?? "",

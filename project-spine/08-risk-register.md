@@ -56,7 +56,7 @@ Media assets return 403 or are served from the wrong URL pattern, breaking
 images and video on the live site.
 
 **Mitigation:**
-- Configure R2 bucket public access and custom domain in Dokploy env.
+- Configure R2 bucket public access and custom domain in the Cloudflare dashboard and environment.
 - Validate R2 URLs in staging before deploying to production.
 - Use a single `NEXT_PUBLIC_R2_URL` env var — no hardcoded paths in components.
 
@@ -98,19 +98,21 @@ visual consistency breaks down across pages as implementation progresses.
 
 ---
 
-## R06 — VPS / Dokploy single point of failure
+## R06 — Cloudflare account or deployment misconfiguration
 
 **L:** low | **I:** high
 
-Self-hosted single VPS has no redundancy. Hardware failure or misconfiguration
-takes the site offline.
+The site now runs on Cloudflare Workers. A wrong secret, a lapsed account, a bad
+DNS change or a faulty release takes the site or the contact form offline.
 
 **Mitigation:**
-- Daily automated VPS snapshots via hosting provider.
-- Deployment is fully reproducible from the repo + env vars (Docker).
-- DNS TTL set low enough to allow rapid failover if needed.
+- Releases are versioned Worker deployments; roll back to the previous version.
+- Deployment is reproducible from the repo, the lockfile and the Cloudflare
+  environment variables listed in the technical plan.
+- The staging Worker is proven on a custom hostname before production (TASK-128).
+- Keep the DNS TTL low during cutover.
 
-**Human gate:** Hosting provider selection and snapshot schedule — owner action.
+**Human gate:** Cloudflare project, DNS and domain ownership are owner actions.
 
 ---
 

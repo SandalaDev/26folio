@@ -17,6 +17,8 @@ const eslintConfig = [
       // generated build output + Next.js-authored type shims (flat config does not
       // inherit eslint-config-next's legacy ignores, so declare them explicitly).
       ".next/", "out/", "build/", "dist/", "node_modules/", "next-env.d.ts",
+      // Cloudflare build output and Wrangler local state (TASK-129).
+      ".open-next/", ".wrangler/",
     ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),

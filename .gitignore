@@ -36,6 +36,9 @@ yarn-debug.log*
 .env
 .env.local
 .env.*.local
+.dev.vars
+.wrangler/
+.open-next/
 
 # Harness-local permissions
 /.claude/settings.local.json

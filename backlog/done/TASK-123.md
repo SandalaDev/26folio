@@ -1,7 +1,7 @@
 ---
 id: TASK-123
-title: "Implement the contact API route with Resend delivery and abuse protection"
-status: ready
+title: Implement the contact API route with Resend delivery and abuse protection
+status: done
 priority: P1
 risk_level: high
 epic_ref: backlog/epics/EPIC-028.md
@@ -14,7 +14,8 @@ skill_refs: []
 parallel:
   suitable: false
   reason: One public route and its logic modules; the later tasks all build on its contract.
-  dependencies: [TASK-122]
+  dependencies:
+    - TASK-122
   result: null
 testing:
   recommendation: dedicated
@@ -23,6 +24,8 @@ testing:
     - npm run lint
     - npm run typecheck
     - npm run build
+started_at: 2026-10-08T16:22:34Z
+completed_at: 2026-10-08T16:27:42Z
 ---
 # Task: Implement the contact API route with Resend delivery and abuse protection
 
@@ -73,22 +76,22 @@ Replace the 501 stub in `src/app/api/contact/route.ts`.
 
 ## Acceptance Criteria
 
-- [ ] A valid request with the three variables set delivers one email to the
+- [ ] (needs a real key; verified in TASK-128, the Resend call itself was reached locally) A valid request with the three variables set delivers one email to the
       configured address with the visitor as reply-to.
-- [ ] Missing or malformed fields return 400 with per-field messages; the
+- [x] Missing or malformed fields return 400 with per-field messages; the
       client can render them.
-- [ ] A filled honeypot returns 200 and sends nothing.
-- [ ] A missing, invalid or unverifiable Turnstile token sends nothing; with
+- [x] A filled honeypot returns 200 and sends nothing.
+- [x] A missing, invalid or unverifiable Turnstile token sends nothing; with
       Cloudflare's test keys a valid token passes and an invalid one fails.
-- [ ] The sixth request inside the window from one IP returns 429 with
+- [x] The sixth request inside the window from one IP returns 429 with
       `Retry-After` (in-memory limiter, verified locally).
-- [ ] `cf-connecting-ip` wins over `x-forwarded-for`; neither present yields a
+- [x] `cf-connecting-ip` wins over `x-forwarded-for`; neither present yields a
       shared fallback key, never an error.
-- [ ] The route imports no Node-only module.
-- [ ] With any variable unset the route returns 503 and sends nothing.
-- [ ] A name or message containing CR/LF cannot add or alter email headers.
-- [ ] No submission content appears in logs or on disk.
-- [ ] `npm run lint`, `npm run typecheck` and `npm run build` pass.
+- [x] The route imports no Node-only module.
+- [x] With any variable unset the route returns 503 and sends nothing.
+- [x] A name or message containing CR/LF cannot add or alter email headers.
+- [x] No submission content appears in logs or on disk.
+- [x] `npm run lint`, `npm run typecheck` and `npm run build` pass.
 
 ## Dependency Evidence
 
@@ -104,3 +107,23 @@ Replace the 501 stub in `src/app/api/contact/route.ts`.
 
 Weight 3: external integration, public attack surface and privacy constraint
 in one place. Decide the Resend call style from TASK-122 before starting.
+
+## Completion notes (2026-10-08)
+
+- Modules in `src/lib/contact/`: `validate`, `client-ip`, `rate-limit`,
+  `turnstile`, `resend`, `message`. Each is self-contained (no imports between
+  them), so TASK-127 can import them without the `@/` alias.
+- Verified locally against a production build with Cloudflare's test Turnstile
+  secrets: 400 per-field errors, 400/415 on bad bodies, honeypot 200 with
+  nothing sent, missing token 400, always-fail secret 400 `turnstile`, always-pass
+  secret reaches Resend (fake key, nothing delivered), sixth request 429 with
+  `Retry-After`, GET 405. Logs held outcomes and codes only.
+- A smoke script covered CR/LF flattening, `clientIp` precedence, the limiter
+  window, Turnstile hostname/action/stale checks, and the Resend single retry
+  reusing one idempotency key.
+- Notes for later tasks: `package.json` is `"type": "commonjs"`, so `node --test`
+  cannot load these `.ts` files as ES modules directly. TASK-127 must solve that
+  (a test-only copy with a module `package.json`, or a loader). Also `env` in
+  `src/lib/env.ts` is read at module load; TASK-129 must confirm Cloudflare
+  bindings are populated by then or switch it to lazy getters.
+- Not verified: a real delivery to a real inbox (TASK-128).

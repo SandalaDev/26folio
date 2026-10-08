@@ -1,7 +1,7 @@
 ---
 id: TASK-127
 title: "tests: contact route validation, sanitising and rate limit"
-status: ready
+status: done
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-028.md
@@ -14,13 +14,16 @@ skill_refs: []
 parallel:
   suitable: true
   reason: Tests the pure modules from TASK-123 and shares no files with the form or details tasks.
-  dependencies: [TASK-123]
+  dependencies:
+    - TASK-123
   result: null
 testing:
   recommendation: none
   reason: This task is the test work for the epic; its own check is that the suite runs and fails when the logic is broken.
   commands:
     - node --test tests/
+started_at: 2026-10-08T16:39:29Z
+completed_at: 2026-10-08T16:44:05Z
 ---
 # Task: tests: contact route validation, sanitising and rate limit
 
@@ -56,11 +59,11 @@ Cover, with table-driven cases:
 
 ## Acceptance Criteria
 
-- [ ] The suite runs with one command and passes.
-- [ ] Deliberately breaking each rule (cap, strip, window) makes at least one
+- [x] The suite runs with one command and passes.
+- [x] Deliberately breaking each rule (cap, strip, window) makes at least one
       test fail; record the mutation check in the task evidence.
-- [ ] No dependency was added.
-- [ ] Lint and typecheck cover the test files without exceptions.
+- [x] No dependency was added.
+- [x] Lint and typecheck cover the test files without exceptions.
 
 ## Dependency Evidence
 
@@ -75,3 +78,30 @@ Cover, with table-driven cases:
 
 Tests never gate a push in this OS. They are evidence the owner can weigh at PR
 review.
+
+## Completion notes (2026-10-08)
+
+- Suite: `npm run test:contact` (`node --test "tests/**/*.test.ts"`), 41 tests,
+  all passing. Files under `tests/contact/`: validate (with honeypot and
+  submission parsing), message (sanitising and the auto-reply), rate-limit
+  (contract cases against the interface plus key-pressure cleanup),
+  client-ip, turnstile and resend (both with an injected `fetch`). The
+  placeholder `test` script is untouched; the owner has not been asked to
+  replace it.
+- Two small changes outside the listed files, both needed so TypeScript tests
+  can import the modules: `tsconfig.json` gains `allowImportingTsExtensions`
+  (safe with `noEmit`), and `src/lib/contact/package.json` plus
+  `tests/package.json` declare `"type": "module"`, because the root package is
+  CommonJS and Node would otherwise parse the `.ts` files as CommonJS.
+  `next build`, lint and typecheck pass with them, and the built route answered
+  a request afterwards.
+- Mutation check (each change made, suite run, change reverted). Each made at
+  least one test fail: name, message and email caps one over; email regex
+  loosened; honeypot ignored; control-character stripping removed or narrowed;
+  subject cap removed; rate window never expiring; limit off by one; client IP
+  precedence swapped; Turnstile hostname check removed, action check removed,
+  fail-closed turned fail-open; Resend retrying a 422; Resend using a new key
+  on retry. One mutant survived and is equivalent: dropping `  ` from
+  the control-character class changes nothing, because the later `\s+` collapse
+  already matches those characters.
+- No dependency was added.
