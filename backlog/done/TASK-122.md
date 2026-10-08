@@ -1,7 +1,7 @@
 ---
 id: TASK-122
-title: "Decide the delivery integration and record the dependency plan"
-status: ready
+title: Decide the delivery integration and record the dependency plan
+status: done
 priority: P1
 risk_level: low
 epic_ref: backlog/epics/EPIC-028.md
@@ -10,7 +10,8 @@ files_allowed:
   - planning/dependencies/
   - env.example
   - src/lib/env.ts
-skill_refs: [opensrc-research]
+skill_refs:
+  - opensrc-research
 parallel:
   suitable: false
   reason: Everything else in the epic depends on this decision, and it is a single research artifact.
@@ -21,6 +22,8 @@ testing:
   reason: A research and decision record; no runtime behavior changes. Verified by the plan passing `os deps check`.
   commands:
     - bash scripts/os.sh deps check <plan.md>
+started_at: 2026-10-08T16:18:57Z
+completed_at: 2026-10-08T16:21:08Z
 ---
 # Task: Decide the delivery integration and record the dependency plan
 
@@ -54,7 +57,7 @@ testing:
 
 ## Acceptance Criteria
 
-- [ ] A dependency decision exists under `planning/dependencies/` (or an
+- [x] A dependency decision exists under `planning/dependencies/` (or an
       explicit `plan: none` rationale) naming the chosen approach and the
       rejected one.
 - [ ] If a package is chosen, the plan passes `os deps check` and a human has

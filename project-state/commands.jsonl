@@ -84,3 +84,14 @@
 {"ts":"2026-10-08T11:13:29.649Z","feature":"state-check","action":"check","exit":0,"ms":9738,"harness":"claude-code","session":"none"}
 {"ts":"2026-10-08T11:30:58.952Z","feature":"view-render","action":"render","exit":0,"ms":110,"harness":"claude-code","session":"none"}
 {"ts":"2026-10-08T11:32:28.211Z","feature":"state-check","action":"check","exit":0,"ms":10289,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T16:07:44.362Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":161,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-08T16:07:46.120Z","feature":"session-start","action":"start","exit":0,"ms":1658,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:18:46.509Z","feature":"session-context","action":"context","exit":0,"ms":271,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:18:55.805Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":1516,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:18:58.407Z","feature":"task-claim","action":"claim","exit":0,"ms":1937,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:19:04.867Z","feature":"dependency-plan","action":"deps","exit":0,"ms":415,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:19:54.237Z","feature":"dependency-plan","action":"deps","exit":0,"ms":13237,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:20:53.819Z","feature":"dependency-plan","action":"deps","exit":1,"ms":263,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:21:09.422Z","feature":"task-done","action":"done","exit":0,"ms":1551,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:22:35.002Z","feature":"task-claim","action":"claim","exit":0,"ms":1796,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:27:43.248Z","feature":"task-done","action":"done","exit":0,"ms":1886,"harness":"claude-code","session":"s-2784110cf3f9"}

@@ -160,9 +160,10 @@ owner inputs listed below gate TASK-126 and TASK-128.
 
 ## Dependency / Architecture Evidence
 
-- plan: pending TASK-122
+- plan: none, decided in TASK-122. Record:
+  `planning/dependencies/DEC-20261008-contact-delivery.md`
 
-TASK-122 compares the Resend REST API called with `fetch` (no new package)
+TASK-122 compared the Resend REST API called with `fetch` (no new package)
 against the `resend` SDK at an exact version, using OpenSrc evidence, and
 records the choice. On Workers the `fetch` route is the expected winner.
 TASK-129 produces a separate architecture plan for the Cloudflare adapter at
