@@ -63,3 +63,5 @@
 - 2026-10-08T16:18:55Z | claude-code/unknown | checkpoint | task=none | gate= | EPIC-028 TASK-122: decide Resend/Turnstile/Cloudflare approach
 - 2026-10-08T16:52:46Z | claude-code/unknown | checkpoint | task=TASK-129 | gate= | TASK-129 blocked: owner must approve DEP-20261008-165023-architecture.md, then os deps install
 - 2026-10-08T21:18:15Z | claude-code/unknown | end | task=backlog/tasks/TASK-129.md | gate=ok
+- 2026-10-08T21:34:15Z | claude-code/unknown | checkpoint | task=TASK-129 | gate= | TASK-129: deploying staging Worker sandala-dev-staging
+- 2026-10-08T21:45:22Z | claude-code/unknown | end | task=none | gate=ok

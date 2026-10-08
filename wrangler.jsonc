@@ -1,6 +1,8 @@
 {
-	// Cloudflare Worker for sandala.dev (EPIC-028 TASK-129).
+	// Cloudflare Workers for sandala.dev (EPIC-028 TASK-129).
 	// Plan: planning/dependencies/DEP-20261008-165023-architecture.md
+	// Top level is production. `--env staging` is the preview Worker used for
+	// verification before go-live (TASK-128).
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": ".open-next/worker.js",
 	"name": "sandala-dev",
@@ -17,6 +19,21 @@
 	"vars": {
 		// Sender on the verified sending subdomain. Not a secret.
 		"RESEND_FROM_EMAIL": "Abe Sandala <contact@send.sandala.site>"
+	},
+	"env": {
+		"staging": {
+			"name": "sandala-dev-staging",
+			"vars": {
+				"RESEND_FROM_EMAIL": "Abe Sandala <contact@send.sandala.site>"
+			},
+			"images": {
+				"binding": "IMAGES"
+			},
+			"assets": {
+				"directory": ".open-next/assets",
+				"binding": "ASSETS"
+			}
+		}
 	}
 	// Secrets are never listed here. Set them with `wrangler secret put`:
 	//   RESEND_API_KEY, CONTACT_TO_EMAIL, TURNSTILE_SECRET_KEY
