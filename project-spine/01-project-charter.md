@@ -37,7 +37,7 @@ phase of sandala.dev — it is a distinct project with its own spine.
 - World-class UI with Framer Motion, GSAP, Lottie/SVG animations
 - Contact form via Resend (email delivery only — no stored submissions)
 - Media assets served from Cloudflare R2
-- Dockerised deployment on a self-hosted VPS via Dokploy
+- Deployment to Cloudflare Workers through the OpenNext adapter
 
 **Out of scope — sandala.dev (this project, ever or this phase):**
 - Blog or article pages (content lives at scrumtrulescent.com)
@@ -70,7 +70,7 @@ phase of sandala.dev — it is a distinct project with its own spine.
 | Animation | Framer Motion, GSAP, Lottie |
 | Email | Resend |
 | Storage | Cloudflare R2 |
-| Hosting | Self-hosted VPS · Dokploy |
+| Hosting | Cloudflare Workers · OpenNext adapter · Wrangler |
 | No database | sandala.dev is and remains static/SSG |
 | Magazine API | Read-only fetch from scrumtrulescent.com Payload REST API at build time |
 
@@ -80,6 +80,6 @@ phase of sandala.dev — it is a distinct project with its own spine.
 2. Lighthouse performance score ≥ 90 on all pages.
 3. No CLS issues; animations never reduce usability.
 4. Contact form delivers emails via Resend reliably.
-5. Full deployment via Dokploy with zero-downtime updates.
+5. Full deployment to Cloudflare with versioned, zero-downtime releases.
 6. "From Scrumtrulescent Magazine" section loads featured articles from the
    magazine API at build time with a graceful fallback if the API is unavailable.

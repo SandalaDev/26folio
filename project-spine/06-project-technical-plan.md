@@ -21,8 +21,9 @@ source: hydrated from 00-original-intent.md + INTAKE-INTERVIEW.md
 | Animation | Lottie | Lightweight JSON-based vector animations |
 | Email | Resend | Contact form delivery only |
 | Media | Cloudflare R2 | Images, video, Lottie JSON |
-| Runtime | Node.js | Next.js server; API routes for contact form only |
-| Deployment | Dokploy on VPS | Docker-based; zero-downtime deploys |
+| Runtime | Cloudflare Workers | Next.js through the OpenNext adapter with `nodejs_compat`; one API route (contact form) |
+| Deployment | Cloudflare Workers + Wrangler | Versioned releases; plan `planning/dependencies/DEP-20261008-165023-architecture.md` |
+| Bot protection | Cloudflare Turnstile | Contact form; verified server-side |
 
 ## Project structure
 
@@ -61,39 +62,43 @@ src/
 | Env | Purpose | Notes |
 |---|---|---|
 | local | Development | `pnpm dev` / `next dev` |
-| staging | Pre-prod review | Dokploy preview environment on same VPS |
-| production | Live site | Dokploy production on VPS |
+| staging | Pre-prod review | Separate Cloudflare Worker (or version preview) with its own secrets and a custom hostname, so the WAF rule applies |
+| production | Live site | Cloudflare Worker on the production hostname |
 
 ## Environment variables
 
 | Variable | Used by | Notes |
 |---|---|---|
-| `RESEND_API_KEY` | Resend client | Secret — never committed |
-| `RESEND_FROM_EMAIL` | Contact form | Verified sender address |
-| `CONTACT_TO_EMAIL` | Contact form | Abe's delivery address |
+| `RESEND_API_KEY` | Resend client | Cloudflare secret; locally `.dev.vars` or `.env.local`; never committed |
+| `RESEND_FROM_EMAIL` | Contact form | Sender on `send.sandala.site`, display name included |
+| `CONTACT_TO_EMAIL` | Contact form | Abe's delivery address; Cloudflare secret, never committed |
+| `TURNSTILE_SECRET_KEY` | Contact form | Cloudflare secret; local development uses Cloudflare's published test secret |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Contact form widget | Public, inlined at build |
 | `NEXT_PUBLIC_R2_URL` | Media URLs | Public Cloudflare R2 base URL |
 | `MAGAZINE_API_URL` | Magazine client | Base URL for scrumtrulescent.com Payload REST API |
 | `MAGAZINE_API_KEY` | Magazine client | Read-only API key for Payload; never exposed client-side |
 
-## Deployment (Dokploy)
+## Deployment (Cloudflare)
 
-1. Push to `main` triggers a Dokploy webhook.
-2. Dokploy builds the Docker image (`Dockerfile` in repo root).
-3. Image runs `next start` on port 3000 inside the container.
-4. Dokploy manages reverse proxy (Traefik) and SSL termination.
-5. Zero-downtime via container replacement.
+Owner decision of 2026-10-08. The package set is in
+`planning/dependencies/DEP-20261008-165023-architecture.md`; the steps below
+are confirmed once that plan is approved and the preview deployment is proven
+in EPIC-028 TASK-128.
 
-Dockerfile pattern:
-```dockerfile
-FROM node:22-alpine AS base
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --frozen-lockfile
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "start"]
-```
+1. `opennextjs-cloudflare build` runs `next build` and bundles the result into
+   one Worker (`.open-next/worker.js`) plus a static assets directory.
+2. `wrangler.jsonc` declares the Worker, the `ASSETS` binding, the `IMAGES`
+   binding for `/_next/image`, and the `nodejs_compat` flag.
+3. Secrets are set with `wrangler secret put`; the build-time public variable
+   `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is supplied to the build. Local Workers runs
+   read a gitignored `.dev.vars`.
+4. `opennextjs-cloudflare deploy` publishes a new Worker version; Cloudflare
+   serves it on the custom hostname with TLS handled at the edge.
+5. A WAF rate-limiting rule on `POST /api/contact` is the real abuse limit
+   (configuration, documented in the launch checklist).
+
+Scripts: `cf:build`, `cf:preview` and `cf:deploy` wrap the adapter commands.
+`npm run build` stays the Next-only check used by lint, typecheck and CI.
 
 ## Skills to install
 

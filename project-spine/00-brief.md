@@ -31,7 +31,8 @@ large consultancy. Scrumtrulescent remains a separate project and codebase.
 
 Use Next.js App Router, TypeScript strict mode, Tailwind CSS, accessible
 component composition, and purposeful motion. The site remains static by
-default and deploys through Dokploy. Secrets stay in environment variables.
+default and deploys to Cloudflare (decided 2026-10-08). Secrets stay in
+Cloudflare secrets and local environment files, never in the repository.
 Performance, accessibility, responsive behavior, reduced-motion support, and
 authentic public language are non-negotiable. Detailed legacy constraints remain
 in `project-spine/06-project-technical-plan.md` and

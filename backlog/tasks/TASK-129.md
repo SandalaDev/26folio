@@ -19,11 +19,15 @@ files_allowed:
   - planning/dependencies/
   - project-spine/
   - env.example
-skill_refs: [opensrc-research]
+skill_refs:
+  - opensrc-research
 parallel:
   suitable: false
   reason: One deployment configuration touching the manifest, build and runtime; splitting it would create conflicting configs.
-  dependencies: [TASK-124, TASK-125, TASK-127]
+  dependencies:
+    - TASK-124
+    - TASK-125
+    - TASK-127
   result: null
 testing:
   recommendation: with-task
@@ -32,6 +36,7 @@ testing:
     - npm run lint
     - npm run typecheck
     - npm run build
+started_at: 2026-10-08T16:45:33Z
 ---
 # Task: Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates
 
@@ -100,3 +105,23 @@ on Cloudflare, and deployment preparation happens here, at the end.
 Weight 3: new runtime target, new dependencies, and a cross-cutting image
 change. The owner does the Cloudflare project and DNS setup; the agent
 prepares the repository and the checklist.
+
+## Progress notes (2026-10-08)
+
+Done without installing anything:
+
+- Architecture plan `planning/dependencies/DEP-20261008-165023-architecture.md`
+  (adapter 1.20.9, wrangler 4.148.0, next 15.5.27). Evidence complete, status
+  `review-ready`, `os deps check` passes. **A human must approve it** before
+  `os deps install`. The plan carries three decisions for the owner: accept the
+  Next patch bump from 15.5.19 (the adapter refuses anything below 15.5.27),
+  confirm no ISR or R2 cache is wanted, and confirm the `IMAGES` binding
+  (transformation quota and price were not verified).
+- Spine rewrite (step 7): `00-brief`, `01-project-charter`,
+  `06-project-technical-plan` and the R06 risk no longer describe Dokploy.
+  `02-roadmap` EPIC-009 and `INTAKE-INTERVIEW.md` still mention it as history.
+- `.gitignore` now excludes `.dev.vars`, `.wrangler/` and `.open-next/`.
+
+Blocked on the approval above: steps 2 to 6 and 8 (install, `wrangler.jsonc`,
+`open-next.config.ts`, scripts, local Workers run, image check, preview
+deployment). The preview deployment also needs the owner's Cloudflare project.

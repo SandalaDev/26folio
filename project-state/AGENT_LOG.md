@@ -61,3 +61,4 @@
 - 2026-10-06T19:05:12Z | unknown/unknown | checkpoint | task=none | gate= | About
 - 2026-10-06T22:08:46Z | cline desktop/kimi k3 | end | task=none | gate=ok
 - 2026-10-08T16:18:55Z | claude-code/unknown | checkpoint | task=none | gate= | EPIC-028 TASK-122: decide Resend/Turnstile/Cloudflare approach
+- 2026-10-08T16:52:46Z | claude-code/unknown | checkpoint | task=TASK-129 | gate= | TASK-129 blocked: owner must approve DEP-20261008-165023-architecture.md, then os deps install

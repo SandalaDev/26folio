@@ -101,3 +101,8 @@
 {"ts":"2026-10-08T16:37:52.526Z","feature":"task-done","action":"done","exit":0,"ms":1495,"harness":"claude-code","session":"s-2784110cf3f9"}
 {"ts":"2026-10-08T16:39:29.910Z","feature":"task-claim","action":"claim","exit":0,"ms":1372,"harness":"claude-code","session":"s-2784110cf3f9"}
 {"ts":"2026-10-08T16:44:06.765Z","feature":"task-done","action":"done","exit":0,"ms":1432,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:45:33.834Z","feature":"task-claim","action":"claim","exit":0,"ms":1334,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:50:23.349Z","feature":"dependency-plan","action":"deps","exit":0,"ms":225995,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:50:33.779Z","feature":"dependency-plan","action":"deps","exit":0,"ms":6461,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:51:55.744Z","feature":"dependency-plan","action":"deps","exit":0,"ms":9114,"harness":"claude-code","session":"s-2784110cf3f9"}
+{"ts":"2026-10-08T16:52:46.559Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":898,"harness":"claude-code","session":"s-2784110cf3f9"}

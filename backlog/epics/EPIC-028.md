@@ -103,12 +103,12 @@ to TASK-128:
 
 Size classes follow ds-epic-estimator (S=1, M=2, L=3). Total weight 15.
 
-- [ ] TASK-122 (S) — Decide the delivery integration and record the dependency plan
-- [ ] TASK-123 (L) — Implement the contact API route with Resend delivery and abuse protection
-- [ ] TASK-124 (M) — Send an auto-reply confirmation to the sender
-- [ ] TASK-125 (M) — Wire the form to the live route: honeypot, error states and honest copy
+- [x] TASK-122 (S) — Decide the delivery integration and record the dependency plan
+- [x] TASK-123 (L) — Implement the contact API route with Resend delivery and abuse protection
+- [x] TASK-124 (M) — Send an auto-reply confirmation to the sender
+- [x] TASK-125 (M) — Wire the form to the live route: honeypot, error states and honest copy
 - [ ] TASK-126 (S) — Replace placeholder contact details and social links with real ones
-- [ ] TASK-127 (M) — tests: contact route validation, sanitising and rate limit
+- [x] TASK-127 (M) — tests: contact route validation, sanitising and rate limit
 - [ ] TASK-129 (L) — Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates
 - [ ] TASK-128 (M) — Verify end to end on Cloudflare staging and hand off the launch checklist
 
