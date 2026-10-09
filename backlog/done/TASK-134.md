@@ -1,7 +1,7 @@
 ---
 id: TASK-134
-title: "Dependency plan for ffmpeg as a local clip tool"
-status: blocked
+title: Dependency plan for ffmpeg as a local clip tool
+status: done
 priority: P1
 risk_level: low
 epic_ref: EPIC-029
@@ -9,7 +9,8 @@ progress_weight: 1
 depends_on: []
 files_allowed:
   - planning/dependencies/
-skill_refs: [opensrc-research]
+skill_refs:
+  - opensrc-research
 parallel:
   suitable: true
   reason: Planning only.
@@ -22,6 +23,8 @@ testing:
     - npm run lint
     - npm run typecheck
     - npm run build
+started_at: 2026-10-09T21:54:32Z
+completed_at: 2026-10-09T21:54:34Z
 ---
 
 # Task: Dependency plan for ffmpeg as a local clip tool
@@ -35,7 +38,7 @@ testing:
 
 ## Acceptance Criteria
 
-- [ ] A plan exists under planning/dependencies/ and the owner has approved or declined it.
+- [x] A plan exists under planning/dependencies/ and the owner has approved or declined it.
 
 ## Dependency Evidence
 

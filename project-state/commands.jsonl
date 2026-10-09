@@ -128,3 +128,9 @@
 {"ts":"2026-10-09T16:59:18.035Z","feature":"session-start","action":"start","exit":0,"ms":1016,"harness":"claude-code","session":"s-4522b73177ad"}
 {"ts":"2026-10-09T17:01:09.248Z","feature":"branch-workflow","action":"branch:start","exit":0,"ms":5536,"harness":"claude-code","session":"s-4522b73177ad"}
 {"ts":"2026-10-09T21:39:54.638Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":954,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:50:35.809Z","feature":"branch-workflow","action":"branch:cleanup","exit":0,"ms":5566,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:50:41.650Z","feature":"branch-workflow","action":"branch:cleanup","exit":0,"ms":5604,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:50:47.336Z","feature":"branch-workflow","action":"branch:cleanup","exit":0,"ms":5452,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:51:08.266Z","feature":"dependency-plan","action":"deps","exit":0,"ms":194,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:54:33.325Z","feature":"task-claim","action":"claim","exit":0,"ms":1865,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:54:35.922Z","feature":"task-done","action":"done","exit":0,"ms":2021,"harness":"claude-code","session":"s-4522b73177ad"}

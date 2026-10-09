@@ -171,7 +171,7 @@ cards, about 1 MB per card clip and 3 MB per hero clip, with a poster frame.
 - [ ] TASK-131: Extend the project model: credits, disciplines, capability link, video, product suite. (M, 2)
 - [ ] TASK-132: Owner asset intake for Cloudege, Scrumtrulescent, sandala.dev and the OK cover. (S, 1) *blocked on owner*
 - [ ] TASK-133: Capture public screens of scrumtrulescent.com and sandala.dev. (S, 1)
-- [ ] TASK-134: Dependency plan for ffmpeg as a local clip tool. (S, 1) *needs owner approval*
+- [x] TASK-134: Dependency plan for ffmpeg as a local clip tool. (S, 1) Approved and installed 2026-10-09.
 - [ ] TASK-135: Build brand-project clips from stills. (M, 2)
 - [ ] TASK-136: Video preview component for cards and heroes. (M, 2)
 - [ ] TASK-137: Scrumtrulescent and sandala.dev pages. (M, 2)
@@ -211,4 +211,4 @@ assets and a partner sign-off. No delivery rate is recorded for this project
 
 ## Dependency / Architecture Evidence
 
-- plan: pending TASK-134 (ffmpeg, local tool only; no `package.json` change)
+- plan: planning/dependencies/DEP-20261009-ffmpeg-local-tool.md (installed; local tool only, no `package.json` change)
