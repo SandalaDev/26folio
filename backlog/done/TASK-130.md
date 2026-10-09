@@ -1,7 +1,7 @@
 ---
 id: TASK-130
-title: "Salvage the EPIC-026 build onto this branch"
-status: ready
+title: Salvage the EPIC-026 build onto this branch
+status: done
 priority: P1
 risk_level: medium
 epic_ref: EPIC-029
@@ -26,6 +26,8 @@ testing:
     - npm run lint
     - npm run typecheck
     - npm run build
+started_at: 2026-10-09T22:11:12Z
+completed_at: 2026-10-09T22:15:39Z
 ---
 
 # Task: Salvage the EPIC-026 build onto this branch
@@ -42,9 +44,9 @@ testing:
 
 ## Acceptance Criteria
 
-- [ ] The four brand projects render through the composition renderer at /work/<slug>.
-- [ ] The home page featured-work block still renders.
-- [ ] Lint, typecheck and build pass.
+- [x] The four brand projects render through the composition renderer at /work/<slug>.
+- [x] The home page featured-work block still renders.
+- [x] Lint, typecheck and build pass.
 
 ## Dependency Evidence
 
@@ -59,3 +61,24 @@ testing:
 
 Shaped at the EPIC-029 kickoff on 2026-10-09. See the epic for the decisions
 this task carries out.
+
+## Result (2026-10-10)
+
+`dev` had not touched any salvaged path since EPIC-026 branched (67afd34), so
+the product files were checked out from `feature/EPIC-026` instead of
+cherry-picking; that kept EPIC-026's old backlog and state edits out. Brought
+over: `public/images/projects/` (four projects plus `MANIFEST.md`),
+`src/lib/projects.ts`, `src/components/work/`, `src/app/(site)/work/`,
+`planning/content/page-copy/Work.md`, and the `metadataBase` in
+`src/app/layout.tsx` (keeps project OpenGraph URLs off localhost).
+`case-study-detail.tsx` is removed, as on the EPIC-026 branch.
+
+Removed `ok-pharmacy/dispensary-scene.webp`, the AI scene the owner ruled out
+at kickoff; the manifest records why.
+
+Evidence: lint, typecheck and `npm run build` pass (15 static pages). In the
+dev server all four project pages return 200, every image URL loads, no image
+lacks `alt`, the console has no errors, and the home featured-work block still
+links to `/work/provision-finance` and `/work/ok-pharmacy`. `/work` still shows
+the two placeholders; TASK-140 retires them. Screenshots were not possible: the
+browser pane was hidden.
