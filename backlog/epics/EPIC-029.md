@@ -180,7 +180,7 @@ cards, about 1 MB per card clip and 3 MB per hero clip, with a poster frame.
 - [x] TASK-140: Rebuild the `/work` grid for seven projects and retire placeholders. (M, 2)
 - [ ] TASK-141: Add the brand and web design capability. (M, 2)
 - [x] TASK-142: Reconcile the spine. (S, 1)
-- [ ] TASK-143: tests: validate the work section. (M, 2)
+- [x] TASK-143: tests: validate the work section. (M, 2)
 
 Order: 130, then 131. After 131, tasks 133, 134 and 136 can run side by side;
 135 follows 134; 137, 139 and 141 follow 131; 140 follows 136; 138 starts when
@@ -212,3 +212,24 @@ assets and a partner sign-off. No delivery rate is recorded for this project
 ## Dependency / Architecture Evidence
 
 - plan: planning/dependencies/DEP-20261009-ffmpeg-local-tool.md (installed; local tool only, no `package.json` change)
+
+## Progress (2026-10-10)
+
+Done: TASK-130, 131, 133, 134, 135, 136, 140, 142, 143. `/work` now shows
+sandala.dev, The Flavour Grills Cafe and the three self-commissioned projects,
+with credits, preview loops and capability links; the spine matches.
+
+Built, waiting on owner approval of copy (`planning/content/page-copy/Work.md`):
+TASK-137 (sandala.dev half), TASK-139, TASK-141.
+
+Waiting on owner assets (TASK-132): Cloudege (TASK-138), Scrumtrulescent
+(TASK-137's other half; scrumtrulescent.com is not live), the sandala.dev
+recording, the regenerated OK Pharmacy cover.
+
+Open owner decisions: Flavour Grills' phone numbers on `poster-pastry` (on the
+page and in its clips); whether the sandala.dev card should keep the home-page
+screenshot until its recording arrives.
+
+Filed outside the epic: every page's heading is invisible under reduced motion
+(a site-wide hydration defect in 22 components); the home page's four "What I
+do" links point at anchors `/capabilities` does not have.

@@ -15,7 +15,7 @@ import type { VideoClip } from "@/lib/projects";
  * stops it fades out to the still again. No blank frame is ever shown.
  *
  * - `trigger="hover"`: plays while `active` (card hover or keyboard focus). On
- *   devices with no hover it plays while mostly in view instead.
+ *   devices with no hover it plays while crossing the middle of the screen.
  * - `trigger="autoplay"`: plays while in view, pauses off screen.
  * - Reduced motion renders no video at all; the still stands in.
  *
@@ -51,9 +51,15 @@ function PreviewVideo({ clip, trigger, active = false, className }: PreviewVideo
   React.useEffect(() => {
     const el = ref.current;
     if (!el || !watchView) return;
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: trigger === "autoplay" ? 0.25 : 0.6,
-    });
+    /* Heroes play while a quarter is visible. Cards on no-hover devices play only
+       while crossing the middle tenth of the screen: on a phone three stacked
+       cards fit in view, and three loops at once is wasted data. */
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      trigger === "autoplay"
+        ? { threshold: 0.25 }
+        : { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
+    );
     io.observe(el);
     return () => io.disconnect();
   }, [watchView, trigger, mounted]);
