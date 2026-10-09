@@ -1,7 +1,7 @@
 ---
 id: TASK-099
 title: "Build the ProjectComposition renderer and rebuild /work/[slug] around it"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -121,3 +121,9 @@ page can actually be looked at end to end.
 Do not run a production build while the dev server is running — a prior finding on
 this project is that it clobbers `.next` and produces failures unrelated to the
 code.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

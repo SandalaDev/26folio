@@ -122,3 +122,9 @@
 {"ts":"2026-10-09T16:39:12.364Z","feature":"session-start","action":"start","exit":1,"ms":270,"harness":"claude-code","session":"s-bf6fb9adebc0"}
 {"ts":"2026-10-09T16:41:23.631Z","feature":"task-done","action":"done","exit":0,"ms":1746,"harness":"claude-code","session":"s-bf6fb9adebc0"}
 {"ts":"2026-10-09T16:47:10.450Z","feature":"session-end","action":"end","exit":0,"ms":14424,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-09T16:49:34.287Z","feature":"branch-workflow","action":"branch:base","exit":0,"ms":727,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-09T16:49:38.282Z","feature":"branch-pr","action":"pr","exit":0,"ms":4983,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-09T16:59:17.210Z","feature":"branch-workflow","action":"branch:guard","exit":0,"ms":146,"harness":"claude-code","session":"none"}
+{"ts":"2026-10-09T16:59:18.035Z","feature":"session-start","action":"start","exit":0,"ms":1016,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T17:01:09.248Z","feature":"branch-workflow","action":"branch:start","exit":0,"ms":5536,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T21:39:54.638Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":954,"harness":"claude-code","session":"s-4522b73177ad"}

@@ -66,3 +66,4 @@
 - 2026-10-08T21:34:15Z | claude-code/unknown | checkpoint | task=TASK-129 | gate= | TASK-129: deploying staging Worker sandala-dev-staging
 - 2026-10-08T21:45:22Z | claude-code/unknown | end | task=none | gate=ok
 - 2026-10-09T16:47:09Z | claude-code/unknown | end | task=none | gate=ok
+- 2026-10-09T21:39:54Z | claude-code/unknown | checkpoint | task=none | gate= | EPIC-029 kickoff confirmed and sliced (TASK-130..143). Next: TASK-130 salvage EPIC-026 build.
