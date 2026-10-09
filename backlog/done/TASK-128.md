@@ -1,7 +1,7 @@
 ---
 id: TASK-128
 title: Verify end to end on Cloudflare staging and hand off the launch checklist
-status: ready
+status: done
 priority: P1
 risk_level: high
 epic_ref: backlog/epics/EPIC-028.md
@@ -25,6 +25,7 @@ testing:
     - npm run typecheck
     - npm run build
 started_at: 2026-10-09T15:11:22Z
+completed_at: 2026-10-09T16:41:22Z
 ---
 # Task: Verify end to end on Cloudflare staging and hand off the launch checklist
 
@@ -56,12 +57,12 @@ performs the DNS and secret steps.
 
 ## Acceptance Criteria
 
-- [ ] Every item above has a recorded result with date and evidence.
-- [ ] R02's mitigations are checked off, or each gap is named as an accepted
+- [x] Every item above has a recorded result with date and evidence.
+- [x] R02's mitigations are checked off, or each gap is named as an accepted
       risk by the owner.
-- [ ] `npm run lint`, `npm run typecheck` and `npm run build` pass on the
+- [x] `npm run lint`, `npm run typecheck` and `npm run build` pass on the
       release candidate.
-- [ ] Epic closeout interview can demonstrate the working flow.
+- [x] Epic closeout interview can demonstrate the working flow.
 
 ## Dependency Evidence
 
@@ -103,3 +104,19 @@ real secret both return 400 `turnstile` and send nothing. A bad Resend key was
 verified locally under workerd (502, never success), not on staging.
 Not done: item 6 (device and accessibility pass on staging, needs the owner's
 human check for the form states) and item 7 (go-live results).
+
+## Closed with accepted gaps (2026-10-09)
+
+The owner chose to close the epic here ("we can revisit this before going live").
+This task is marked done on that basis, not because every item passed. The
+remaining checks move to the go-live checklist in EPIC-028 and must be run before
+production traffic:
+
+- DMARC retest on a new message (record is now published), the same check in a
+  second, non-Gmail mailbox, and confirmation that the auto-reply arrives and
+  Reply goes to the sender. The first message landed in Gmail Spam.
+- The Cloudflare WAF rate-limit rule, observed returning 429 on a custom hostname.
+  Until then only the per-isolate in-app limiter runs, which is not a real limit.
+- A bad Resend key observed on the deployed Worker, not only locally.
+- The mobile, keyboard, screen reader and reduced-motion pass on the deployed page.
+- Production: widget, secrets, DNS, first real submission, and who watches the inbox.

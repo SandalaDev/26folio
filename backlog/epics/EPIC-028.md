@@ -1,7 +1,7 @@
 ---
 id: EPIC-028
 title: "Contact: working inquiry delivery and a launch-ready page"
-status: ready
+status: done
 priority: P1
 roadmap_refs: []
 goal_refs: [GOAL-001]
@@ -107,10 +107,10 @@ Size classes follow ds-epic-estimator (S=1, M=2, L=3). Total weight 15.
 - [x] TASK-123 (L) — Implement the contact API route with Resend delivery and abuse protection
 - [x] TASK-124 (M) — Send an auto-reply confirmation to the sender
 - [x] TASK-125 (M) — Wire the form to the live route: honeypot, error states and honest copy
-- [ ] TASK-126 (S) — Replace placeholder contact details and social links with real ones (deferred by the owner on 2026-10-08: the URLs come much later; not blocking go-live)
+- [ ] TASK-126 (S) — Replace placeholder contact details and social links with real ones (deferred and detached from this epic by the owner on 2026-10-09; the URLs come much later)
 - [x] TASK-127 (M) — tests: contact route validation, sanitising and rate limit
 - [x] TASK-129 (L) — Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates
-- [ ] TASK-128 (M) — Verify end to end on Cloudflare staging and hand off the launch checklist
+- [x] TASK-128 (M) — Verify end to end on Cloudflare staging and hand off the launch checklist
 
 Order: 122 first. 123 follows 122. 124 and 125 follow 123 and are independent
 of each other. 127 follows 123. 126 can run any time once the owner supplies
@@ -259,3 +259,10 @@ Real send and reply-to; auto-reply delivery; SPF, DKIM and DMARC in the received
 headers across two mailboxes; honeypot, oversized body and a 429 observed on the
 custom hostname; bad Resend key and failed Turnstile never show success;
 keyboard, mobile and reduced-motion pass; first-week inbox owner named.
+
+## Closeout (2026-10-09)
+
+Closed by the owner with accepted gaps: see `planning/interviews/closeout-EPIC-028.md`.
+The gaps listed under TASK-128 ("Closed with accepted gaps") and the staging and
+go-live checklist above must be run before production traffic. TASK-126 (social
+links) is deferred and detached from this epic.

@@ -1,10 +1,10 @@
 ---
 id: TASK-126
 title: "Replace placeholder contact details and social links with real ones"
-status: ready
+status: deferred
 priority: P2
 risk_level: low
-epic_ref: backlog/epics/EPIC-028.md
+epic_ref:
 progress_weight: 1
 files_allowed:
   - src/components/about/social-links.tsx
@@ -63,3 +63,11 @@ testing:
 Blocked on owner inputs; this is the first thing to ask for in the kickoff.
 Real addresses are public site content, not secrets, but do not paste them
 anywhere beyond the files that render them.
+
+## Deferred out of EPIC-028 (2026-10-09)
+
+The owner said the social profile URLs will come much later and told the agent to
+ignore this task, then chose to close EPIC-028 without it. It is detached from the
+epic (`epic_ref` cleared) so the epic can close, and is not done. Pick it up in a
+future epic or as a standalone task once the URLs exist. The contact page and the
+footer still show five `href="#"` buttons until then.
