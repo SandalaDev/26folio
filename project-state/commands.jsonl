@@ -138,3 +138,6 @@
 {"ts":"2026-10-09T22:15:41.757Z","feature":"task-done","action":"done","exit":0,"ms":2367,"harness":"claude-code","session":"s-4522b73177ad"}
 {"ts":"2026-10-09T22:17:50.238Z","feature":"task-claim","action":"claim","exit":0,"ms":1562,"harness":"claude-code","session":"s-4522b73177ad"}
 {"ts":"2026-10-09T22:21:45.064Z","feature":"task-done","action":"done","exit":0,"ms":1524,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T22:23:19.197Z","feature":"session-checkpoint","action":"checkpoint","exit":0,"ms":949,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T22:56:11.384Z","feature":"task-claim","action":"claim","exit":0,"ms":1658,"harness":"claude-code","session":"s-4522b73177ad"}
+{"ts":"2026-10-09T23:09:09.181Z","feature":"task-done","action":"done","exit":0,"ms":1680,"harness":"claude-code","session":"s-4522b73177ad"}

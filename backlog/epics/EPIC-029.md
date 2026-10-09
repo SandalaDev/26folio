@@ -170,7 +170,7 @@ cards, about 1 MB per card clip and 3 MB per hero clip, with a poster frame.
 - [x] TASK-130: Salvage the EPIC-026 build onto this branch. (M, 2)
 - [x] TASK-131: Extend the project model: credits, disciplines, capability link, video, product suite. (M, 2)
 - [ ] TASK-132: Owner asset intake for Cloudege, Scrumtrulescent, sandala.dev and the OK cover. (S, 1) *blocked on owner*
-- [ ] TASK-133: Capture public screens of scrumtrulescent.com and sandala.dev. (S, 1)
+- [x] TASK-133: Capture public screens of scrumtrulescent.com and sandala.dev. (S, 1) sandala.dev done; Scrumtrulescent moved to TASK-132 (site not live).
 - [x] TASK-134: Dependency plan for ffmpeg as a local clip tool. (S, 1) Approved and installed 2026-10-09.
 - [ ] TASK-135: Build brand-project clips from stills. (M, 2)
 - [ ] TASK-136: Video preview component for cards and heroes. (M, 2)

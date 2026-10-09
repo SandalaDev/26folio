@@ -229,3 +229,22 @@ presents one full-width composed sheet at generous size with a caption.
 This is the composition model working as intended — a new asset kind surfaced a
 missing block rather than being crammed into a template. Added to `EPIC-026`'s
 vocabulary and to `TASK-094` / `TASK-097`.
+
+---
+
+## `sandala-dev` — 6 files, 251KB
+
+Captured by the agent on 2026-10-10 (EPIC-029 TASK-133) from a local
+production build of this site, through headless Chrome with device emulation.
+Desktop at 1440×900 and 2x, phones at 390×844 and 3x, downscaled to the widths
+below. No private data appears in any of them: the contact form is empty.
+Recapture if the pages change materially before launch.
+
+| File | Size | Weight | Role | Shows |
+|---|---|---|---|---|
+| `screen-home.webp` | 1600×1000 | 46KB | `screens` | Home hero: headline, portrait, positioning line, "Let's talk" |
+| `screen-about.webp` | 1600×1000 | 50KB | `screens` | About hero: "Engineer. Designer. Builder." and the bio |
+| `screen-capabilities.webp` | 1600×1000 | 41KB | `screens` | Capabilities hero with the "useful system" diagram |
+| `screen-contact.webp` | 1600×1000 | 35KB | `screens` | Contact page: the inquiry form and direct channels |
+| `phone-home.webp` | 780×1688 | 53KB | `devices` | Home hero at phone width |
+| `phone-contact.webp` | 780×1688 | 26KB | `devices` | Contact form at phone width |
