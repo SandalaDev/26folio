@@ -108,8 +108,18 @@ Content organisation heavily borrowed from addepto.com. The two tabbed sections 
 
 | # | Block | Component | Source | Reference | Motion |
 |---|---|---|---|---|---|
-| 1 | Project grid | `WorkGrid` + `WorkCard` | custom | baunfire.com card motion; brief description per project (problem/outcome). No case studies/metrics in v1 | `WorkCard` zoom + diagonal reveal, Framer (§7 #3); optional `HoverVideo` (§7 #8) where a clip exists |
+| 1 | Project grid | `WorkGrid` + `WorkCard` | custom | baunfire.com card motion; credit and disciplines per card; lead card spans both columns when the count is odd (EPIC-029) | `WorkCard` zoom + diagonal reveal, Framer (§7 #3); `PreviewVideo` loop on hover or focus (EPIC-029) |
 | 2 | CTA band | `CTACallout` ("Start a project") | shared (§1) | → `/contact` | Framer entry |
+
+### `/work/[slug]` (EPIC-026, EPIC-029)
+
+| # | Block | Component | Source | Reference | Motion |
+|---|---|---|---|---|---|
+| 1 | Composition | `ProjectComposition` walking the project's ordered `blocks` | custom | Layout adapts to each project's assets; chrome is the site's own (design system §9) | `BlockReveal` entry |
+| 2 | Hero | `ProjectHeroBlock`: cover on `ArtefactPlate`, credit, role, disciplines | custom | | `PreviewVideo` autoplay loop over the cover |
+| 3 | Artefact blocks | `note`, `logo-suite`, `palette`, `board`, `flatlay`, `poster`, `packaging`, `in-situ`, `screens`, `devices`, `social` | custom | Each exists because a real asset needed it | Framer entry; `ScreensFrame` scroll pan |
+| 4 | Capability link | "The capability behind it" → `/capabilities#<id>` | custom | Ends every page on the service it evidences | none |
+| 5 | CTA band | `CTACallout` ("Start a project") | shared (§1) | → `/contact` | Framer entry |
 
 ### `/contact`
 

@@ -716,25 +716,4 @@ export const projects: Project[] = [
       },
     ],
   },
-  /* Placeholders from EPIC-005, retired by TASK-102 once the grid and routes are
-     rebuilt. Kept until then so nothing breaks mid-epic; they carry empty
-     compositions rather than fabricated ones. */
-  {
-    slug: "placeholder-three",
-    title: "Project three",
-    description: "Placeholder, retired by TASK-102.",
-    href: "/work/placeholder-three",
-    disciplines: [],
-    credit: "Self-commissioned",
-    blocks: [],
-  },
-  {
-    slug: "placeholder-four",
-    title: "Project four",
-    description: "Placeholder, retired by TASK-102.",
-    href: "/work/placeholder-four",
-    disciplines: [],
-    credit: "Self-commissioned",
-    blocks: [],
-  },
 ];

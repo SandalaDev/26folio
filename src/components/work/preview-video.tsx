@@ -36,8 +36,13 @@ function PreviewVideo({ clip, trigger, active = false, className }: PreviewVideo
   const [inView, setInView] = React.useState(false);
   const [noHover, setNoHover] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
+  /* The server cannot know the visitor's motion preference, so rendering the
+     <video> there and dropping it on a reduced-motion client is a hydration
+     mismatch. Nothing renders until mount; the still underneath covers it. */
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    setMounted(true);
     setNoHover(window.matchMedia("(hover: none)").matches);
   }, []);
 
@@ -51,7 +56,7 @@ function PreviewVideo({ clip, trigger, active = false, className }: PreviewVideo
     });
     io.observe(el);
     return () => io.disconnect();
-  }, [watchView, trigger]);
+  }, [watchView, trigger, mounted]);
 
   const shouldPlay = trigger === "autoplay" || noHover ? inView : active;
 
@@ -66,9 +71,9 @@ function PreviewVideo({ clip, trigger, active = false, className }: PreviewVideo
       el.pause();
       setVisible(false);
     }
-  }, [shouldPlay]);
+  }, [shouldPlay, mounted]);
 
-  if (reduceMotion) return null;
+  if (!mounted || reduceMotion) return null;
 
   return (
     <video

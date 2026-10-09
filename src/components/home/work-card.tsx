@@ -18,8 +18,9 @@ import type { Project } from "@/lib/projects";
  * open toward the viewer; the image zooms on the same hover spring so door
  * swing + zoom read as one motion (EPIC-011 owner note 5). Fine pointers
  * with motion allowed get the tilt; everyone else keeps a plain CSS zoom.
- * Projects without an image (placeholders) keep the gradient text-card
- * treatment.
+ * Projects without an image keep the gradient text-card treatment. EPIC-029:
+ * every card states its credit (Client, Own venture or Self-commissioned) and
+ * disciplines, and plays its preview loop on hover or focus.
  */
 function WorkCard({
   project,
@@ -37,7 +38,7 @@ function WorkCard({
   // Drives the card's preview loop (EPIC-029 TASK-136); hover or keyboard focus.
   const [active, setActive] = React.useState(false);
 
-  /* Imageless fallback - the pre-EPIC-010 text card (placeholders on /work). */
+  /* Imageless fallback - the pre-EPIC-010 text card, for a project with no cover yet. */
   if (!project.image) {
     return (
       <Link
@@ -103,6 +104,10 @@ function WorkCard({
             <h3 className="mt-2 font-display text-3xl font-semibold text-ink md:text-4xl">
               {project.title}
             </h3>
+            <p className="mt-3 text-sm text-soft">
+              <span className="text-ink">{project.credit}</span>
+              {project.disciplines.length > 0 && <> · {project.disciplines.join(", ")}</>}
+            </p>
           </div>
         </Link>
       </motion.div>

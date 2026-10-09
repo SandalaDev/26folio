@@ -9,17 +9,16 @@ export const dynamic = "force-static";
 export default function WorkPage() {
   return (
     <>
-      {/* EPIC-020: shared centered manifesto opener. EPIC-026 TASK-101 fills the
-          supporting line: it states the client-versus-self split up front, so a
-          visitor never has to infer it card by card. */}
+      {/* EPIC-020: shared centered manifesto opener. The supporting line states
+          the three kinds of credit up front (EPIC-029), so a visitor never has to
+          infer them card by card. No count: projects join as their assets land. */}
       <PageHero
         title="A few things I've shipped"
         backdrop={<MeshBg tone="rose" className="-z-10" />}
       >
         <p className="measure text-subhead text-soft">
-          Four design and branding projects: identity, packaging, print and
-          interface. One was commissioned; the other three I set myself, and each
-          says so.
+          My own ventures, a brand identity for a client, and brand work I set
+          myself. Each card says which is which.
         </p>
       </PageHero>
 

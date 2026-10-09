@@ -22,6 +22,16 @@ stop-slop: 50/50.
 - Each page ends on a link to the "Brand Identity & Interface Design"
   capability, then "Start a project".
 
+## `/work` page (TASK-140)
+
+**Title** (existing, EPIC-020): A few things I've shipped
+
+**Supporting line:** My own ventures, a brand identity for a client, and brand
+work I set myself. Each card says which is which.
+
+No project count, so it stays true as Scrumtrulescent and Cloudege join. Each
+card shows its credit and disciplines under the title.
+
 ## sandala.dev (TASK-137)
 
 - **Tagline:** This site
