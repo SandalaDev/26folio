@@ -52,3 +52,9 @@ testing:
 
 Shaped at the EPIC-029 kickoff on 2026-10-09. See the epic for the decisions
 this task carries out.
+
+## Carried from TASK-131
+
+The four brand projects already set `capability: "design"`. Give the new
+service `id: "design"` (it becomes the `/capabilities#design` anchor) and the
+links appear with no further change.

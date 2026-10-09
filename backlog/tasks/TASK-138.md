@@ -55,3 +55,8 @@ testing:
 
 Shaped at the EPIC-029 kickoff on 2026-10-09. See the epic for the decisions
 this task carries out.
+
+## Carried from TASK-131
+
+Add the `product-suite` kind to `ProjectBlock` here, together with its
+renderer case, so the exhaustive switch never sees an unrendered kind.

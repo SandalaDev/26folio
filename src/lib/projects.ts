@@ -21,9 +21,9 @@
  * Copy (TASK-101) is written from what the artwork actually shows and awaits owner
  * approval. It contains no metrics, outcomes, testimonials or client quotes —
  * partly because the content strategy forbids them, and partly because none of
- * that evidence exists. Only Flavour Grills was commissioned; the other three say
- * "self-initiated" in the prose as well as in the card credit, because a concept
- * presented as client work is the overclaim the charter exists to prevent.
+ * that evidence exists. Only Flavour Grills was commissioned; the other three are
+ * credited "Self-commissioned" and say so in their prose too (EPIC-029 TASK-139
+ * brings the prose in line with that label).
  */
 
 /** A committed image under `public/images/projects/<slug>/`. */
@@ -94,16 +94,32 @@ export interface Project {
   /** What kind of work this was: "Brand identity", "Packaging design", … */
   disciplines: string[];
   /**
-   * Real client engagement, or self-initiated concept work. Stated plainly on
-   * the card and the page: presenting a self-initiated concept as client work is
-   * the overclaim the charter exists to prevent.
+   * Whose work this was. Stated plainly on the card and the page: presenting
+   * self-commissioned work as client work is the overclaim the charter exists to
+   * prevent. There is deliberately no year field (EPIC-029 decision 16).
    */
-  engagement: "client" | "self-initiated";
-  /** Omitted rather than guessed — only set where the artwork evidences it. */
-  year?: string;
+  credit: ProjectCredit;
+  /** The owner's role, where it needs saying (e.g. Cloudege's co-founder credit). */
   role?: string;
+  /**
+   * The `/capabilities` service this project evidences, by `CapabilityService.id`.
+   * The page ends on a link to it; an id that does not resolve renders no link.
+   */
+  capability?: string;
+  /** Muted preview loops. The poster stands in whenever motion is reduced. */
+  video?: { card?: VideoClip; hero?: VideoClip };
   /** The composition, in render order. */
   blocks: ProjectBlock[];
+}
+
+export type ProjectCredit = "Client" | "Own venture" | "Self-commissioned";
+
+/** A muted loop under `public/videos/projects/<slug>/`. */
+export interface VideoClip {
+  mp4: string;
+  webm?: string;
+  /** First-frame still; shown before playback and instead of it. */
+  poster: string;
 }
 
 /* ---------------------------------------------------------------------------
@@ -142,15 +158,112 @@ const FLAVOUR_PALETTE = [
 /* ---------------------------------------------------------------------------
    Compositions.
 
-   Order matters: `projects[0]` and `projects[1]` are what the home page's
-   FeaturedWork renders (it takes `projects.slice(0, 2)`). Provision Finance and
-   OK Pharmacy lead because they have the most to show and both have landscape-
-   friendly covers; Flavour Grills' only cover is a portrait flatlay, which reads
-   poorly in a wide featured card. TASK-100 revisits the ordering for the grid,
-   where the real-client credit may deserve to lead instead.
+   Array order is the grid order and the previous/next order (EPIC-029 decision
+   4): own ventures, then the client project, then self-commissioned work.
+   Cloudege, Scrumtrulescent and sandala.dev join at the front as their pages
+   land (TASK-137, TASK-138).
+
+   The home page's FeaturedWork does not follow this order; it renders
+   `featuredOnHome`, because Flavour Grills' only cover is a portrait flatlay
+   that reads poorly in a wide featured card.
    --------------------------------------------------------------------------- */
 
+export const featuredOnHome = ["provision-finance", "ok-pharmacy"] as const;
+
 export const projects: Project[] = [
+  {
+    slug: "flavour-grills-cafe",
+    title: "The Flavour Grills Cafe",
+    tagline: "Restaurant & hospitality",
+    description:
+      "Identity and collateral for a Zambian restaurant, bar and events venue, built around a lidded cooking pot.",
+    href: "/work/flavour-grills-cafe",
+    image: "/images/projects/flavour-grills-cafe/flatlay.webp",
+    disciplines: ["Brand identity", "Print & collateral"],
+    credit: "Client",
+    capability: "design",
+    blocks: [
+      {
+        kind: "hero",
+        // Shares flatlay.webp — this identity ships no separate cover asset, and
+        // cropping one would alter the artwork. The hero shows it contained; the
+        // flatlay block below gives it full room. TASK-101/TASK-096 to confirm
+        // the two presentations read as intentional rather than repeated.
+        cover: {
+          src: "/images/projects/flavour-grills-cafe/flatlay.webp",
+          width: 633,
+          height: 948,
+          alt: "Overhead arrangement of Flavour Grills Cafe collateral on slate and wood: a navy menu folder, letterhead, business cards, labelled spice jars, a branded coffee pouch and leather tags.",
+          // Dark slate photograph with its own environment.
+          tone: "bare",
+        },
+      },
+      {
+        kind: "note",
+        heading: "The brief",
+        body: "The one commissioned project here. Flavour Grills is a restaurant, a bar and a special-events venue, so the identity has to work in three registers at once: something you read at the table, something you recognise from outside, and something that leaves with you. The mark is a lidded three-legged cooking pot, drawn plainly enough to hold at business-card scale and to reverse to a single colour where the printing calls for it, which is why it ships in coral-and-navy, all-navy and all-white. The collateral was designed as a set rather than a logo plus applications: menu folder, stationery, spice-jar labels, coffee packaging and leather tags.",
+      },
+      {
+        kind: "logo-suite",
+        // Three tones in one block — the finding that made per-lockup tones
+        // necessary (TASK-093). Navy on the warm-dark base loses its tagline
+        // line entirely; white on a light mat does the same.
+        lockups: [
+          {
+            src: "/images/projects/flavour-grills-cafe/logo-primary.webp",
+            width: 600,
+            height: 450,
+            alt: "Primary Flavour Grills Cafe lockup: the name in coral beside a navy lidded cooking pot, above the line Restaurant, Bar, Special Events.",
+            tone: "light",
+          },
+          {
+            src: "/images/projects/flavour-grills-cafe/logo-navy.webp",
+            width: 600,
+            height: 450,
+            alt: "Single-colour navy version of the Flavour Grills Cafe lockup.",
+            tone: "light",
+          },
+          {
+            src: "/images/projects/flavour-grills-cafe/logo-white.webp",
+            width: 600,
+            height: 450,
+            alt: "Reversed white version of the Flavour Grills Cafe lockup.",
+            tone: "neutral",
+          },
+        ],
+      },
+      { kind: "palette", swatches: FLAVOUR_PALETTE },
+      {
+        kind: "flatlay",
+        image: {
+          src: "/images/projects/flavour-grills-cafe/flatlay.webp",
+          width: 633,
+          height: 948,
+          alt: "Flavour Grills Cafe collateral photographed from above on slate and wood: navy menu folder, letterhead, business cards, three labelled spice jars, a branded coffee pouch with beans visible through the window, leather tags, cinnamon, cardamom and star anise.",
+          caption:
+            "Collateral — menu folder, stationery, spice labels, coffee packaging and leather tags.",
+        },
+      },
+      {
+        kind: "poster",
+        posters: [
+          {
+            src: "/images/projects/flavour-grills-cafe/poster-pastry.webp",
+            width: 634,
+            height: 950,
+            alt: "Poster showing a stack of sliced spiced pastries on a plate with coffee, cinnamon and cardamom, the logo at the top and contact details in a coral band at the foot.",
+          },
+          {
+            // 408x612 native — cannot be shown as large as the other poster.
+            src: "/images/projects/flavour-grills-cafe/poster-duotone.webp",
+            width: 408,
+            height: 612,
+            alt: "Poster with a coral duotone food photograph and the Flavour Grills Cafe logo reversed in white over it.",
+          },
+        ],
+      },
+    ],
+  },
   {
     slug: "provision-finance",
     title: "Provision Finance",
@@ -160,8 +273,8 @@ export const projects: Project[] = [
     href: "/work/provision-finance",
     image: "/images/projects/provision-finance/cover.webp",
     disciplines: ["Brand identity", "Web design"],
-    engagement: "self-initiated",
-    year: "2018", // the homepage mockup carries "© 2018" and a 05/05/18 timestamp
+    credit: "Self-commissioned",
+    capability: "design",
     blocks: [
       {
         kind: "hero",
@@ -289,7 +402,8 @@ export const projects: Project[] = [
     href: "/work/ok-pharmacy",
     image: "/images/projects/ok-pharmacy/cover.webp",
     disciplines: ["Brand identity", "Signage & packaging", "Web design"],
-    engagement: "self-initiated",
+    credit: "Self-commissioned",
+    capability: "design",
     blocks: [
       {
         kind: "hero",
@@ -418,7 +532,8 @@ export const projects: Project[] = [
     href: "/work/gardenfare-foods",
     image: "/images/projects/gardenfare-foods/cover.webp",
     disciplines: ["Brand identity", "Packaging design"],
-    engagement: "self-initiated",
+    credit: "Self-commissioned",
+    capability: "design",
     blocks: [
       {
         kind: "hero",
@@ -506,98 +621,6 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "flavour-grills-cafe",
-    title: "The Flavour Grills Cafe",
-    tagline: "Restaurant & hospitality",
-    description:
-      "Identity and collateral for a Zambian restaurant, bar and events venue, built around a lidded cooking pot.",
-    href: "/work/flavour-grills-cafe",
-    image: "/images/projects/flavour-grills-cafe/flatlay.webp",
-    disciplines: ["Brand identity", "Print & collateral"],
-    engagement: "client",
-    blocks: [
-      {
-        kind: "hero",
-        // Shares flatlay.webp — this identity ships no separate cover asset, and
-        // cropping one would alter the artwork. The hero shows it contained; the
-        // flatlay block below gives it full room. TASK-101/TASK-096 to confirm
-        // the two presentations read as intentional rather than repeated.
-        cover: {
-          src: "/images/projects/flavour-grills-cafe/flatlay.webp",
-          width: 633,
-          height: 948,
-          alt: "Overhead arrangement of Flavour Grills Cafe collateral on slate and wood: a navy menu folder, letterhead, business cards, labelled spice jars, a branded coffee pouch and leather tags.",
-          // Dark slate photograph with its own environment.
-          tone: "bare",
-        },
-      },
-      {
-        kind: "note",
-        heading: "The brief",
-        body: "The one commissioned project here. Flavour Grills is a restaurant, a bar and a special-events venue, so the identity has to work in three registers at once: something you read at the table, something you recognise from outside, and something that leaves with you. The mark is a lidded three-legged cooking pot, drawn plainly enough to hold at business-card scale and to reverse to a single colour where the printing calls for it, which is why it ships in coral-and-navy, all-navy and all-white. The collateral was designed as a set rather than a logo plus applications: menu folder, stationery, spice-jar labels, coffee packaging and leather tags.",
-      },
-      {
-        kind: "logo-suite",
-        // Three tones in one block — the finding that made per-lockup tones
-        // necessary (TASK-093). Navy on the warm-dark base loses its tagline
-        // line entirely; white on a light mat does the same.
-        lockups: [
-          {
-            src: "/images/projects/flavour-grills-cafe/logo-primary.webp",
-            width: 600,
-            height: 450,
-            alt: "Primary Flavour Grills Cafe lockup: the name in coral beside a navy lidded cooking pot, above the line Restaurant, Bar, Special Events.",
-            tone: "light",
-          },
-          {
-            src: "/images/projects/flavour-grills-cafe/logo-navy.webp",
-            width: 600,
-            height: 450,
-            alt: "Single-colour navy version of the Flavour Grills Cafe lockup.",
-            tone: "light",
-          },
-          {
-            src: "/images/projects/flavour-grills-cafe/logo-white.webp",
-            width: 600,
-            height: 450,
-            alt: "Reversed white version of the Flavour Grills Cafe lockup.",
-            tone: "neutral",
-          },
-        ],
-      },
-      { kind: "palette", swatches: FLAVOUR_PALETTE },
-      {
-        kind: "flatlay",
-        image: {
-          src: "/images/projects/flavour-grills-cafe/flatlay.webp",
-          width: 633,
-          height: 948,
-          alt: "Flavour Grills Cafe collateral photographed from above on slate and wood: navy menu folder, letterhead, business cards, three labelled spice jars, a branded coffee pouch with beans visible through the window, leather tags, cinnamon, cardamom and star anise.",
-          caption:
-            "Collateral — menu folder, stationery, spice labels, coffee packaging and leather tags.",
-        },
-      },
-      {
-        kind: "poster",
-        posters: [
-          {
-            src: "/images/projects/flavour-grills-cafe/poster-pastry.webp",
-            width: 634,
-            height: 950,
-            alt: "Poster showing a stack of sliced spiced pastries on a plate with coffee, cinnamon and cardamom, the logo at the top and contact details in a coral band at the foot.",
-          },
-          {
-            // 408x612 native — cannot be shown as large as the other poster.
-            src: "/images/projects/flavour-grills-cafe/poster-duotone.webp",
-            width: 408,
-            height: 612,
-            alt: "Poster with a coral duotone food photograph and the Flavour Grills Cafe logo reversed in white over it.",
-          },
-        ],
-      },
-    ],
-  },
   /* Placeholders from EPIC-005, retired by TASK-102 once the grid and routes are
      rebuilt. Kept until then so nothing breaks mid-epic; they carry empty
      compositions rather than fabricated ones. */
@@ -607,7 +630,7 @@ export const projects: Project[] = [
     description: "Placeholder, retired by TASK-102.",
     href: "/work/placeholder-three",
     disciplines: [],
-    engagement: "self-initiated",
+    credit: "Self-commissioned",
     blocks: [],
   },
   {
@@ -616,7 +639,7 @@ export const projects: Project[] = [
     description: "Placeholder, retired by TASK-102.",
     href: "/work/placeholder-four",
     disciplines: [],
-    engagement: "self-initiated",
+    credit: "Self-commissioned",
     blocks: [],
   },
 ];

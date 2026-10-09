@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ProjectComposition } from "@/components/work/project-composition";
 import { CTACallout } from "@/components/site/cta-callout";
+import { capabilityServices } from "@/lib/capabilities";
 import { projects } from "@/lib/projects";
 
 export const dynamic = "force-static";
@@ -41,24 +42,15 @@ export default async function WorkDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const index = projects.findIndex((p) => p.slug === slug);
-  const project = projects[index];
+  const project = projects.find((p) => p.slug === slug);
 
   if (!project) notFound();
 
-  /* Previous/next walk the same order the grid uses, and stop at the ends rather
-     than wrapping — with four projects, wrapping would quietly imply a longer list
-     than exists. */
-  const previous = index > 0 ? projects[index - 1] : undefined;
-  const next = index < projects.length - 1 ? projects[index + 1] : undefined;
+  const capability = capabilityServices.find((c) => c.id === project.capability);
 
   return (
     <>
-      <ProjectComposition
-        project={project}
-        previous={previous && { slug: previous.slug, title: previous.title }}
-        next={next && { slug: next.slug, title: next.title }}
-      />
+      <ProjectComposition project={project} capability={capability} />
       <CTACallout
         heading="Got something like this in mind?"
         body="Tell me what you're trying to build and I'll tell you straight whether I'm the right fit."

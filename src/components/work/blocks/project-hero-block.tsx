@@ -24,9 +24,9 @@ import type { Asset, Project } from "@/lib/projects";
  * cover on its own plate handles every proportion and both ink directions without
  * cropping or recolouring anything.
  *
- * The engagement credit sits in the same meta row as the disciplines, at the same
- * weight. Three of four projects are self-initiated, and a visitor must never have
- * to guess which.
+ * The credit sits in the same meta row as the disciplines, at the same weight.
+ * Most of the brand projects are self-commissioned, and a visitor must never
+ * have to guess which.
  */
 
 export interface ProjectHeroBlockProps {
@@ -43,8 +43,6 @@ export interface ProjectHeroBlockProps {
 }
 
 function ProjectHeroBlock({ cover, project, markSrc }: ProjectHeroBlockProps) {
-  const engagement = project.engagement === "client" ? "Client engagement" : "Self-initiated";
-
   return (
     <Section className="relative overflow-hidden">
       <MeshBg tone="rose" className="-z-10" />
@@ -66,23 +64,23 @@ function ProjectHeroBlock({ cover, project, markSrc }: ProjectHeroBlockProps) {
             <p className="text-subhead measure text-soft">{project.tagline}</p>
           ) : null}
 
-          {/* Meta row. `engagement` and `disciplines` carry equal weight; the
+          {/* Meta row. `credit` and `disciplines` carry equal weight; the
               honest credit is not small print. */}
           <dl className="border-border flex flex-wrap gap-x-10 gap-y-4 border-t pt-6">
             <div className="flex flex-col gap-1">
-              <dt className="eyebrow text-muted">Engagement</dt>
-              <dd className="text-ink">{engagement}</dd>
+              <dt className="eyebrow text-muted">Credit</dt>
+              <dd className="text-ink">{project.credit}</dd>
             </div>
+            {project.role && (
+              <div className="flex flex-col gap-1">
+                <dt className="eyebrow text-muted">Role</dt>
+                <dd className="text-ink">{project.role}</dd>
+              </div>
+            )}
             {project.disciplines.length > 0 && (
               <div className="flex flex-col gap-1">
                 <dt className="eyebrow text-muted">Disciplines</dt>
                 <dd className="text-ink">{project.disciplines.join(" · ")}</dd>
-              </div>
-            )}
-            {project.year && (
-              <div className="flex flex-col gap-1">
-                <dt className="eyebrow text-muted">Year</dt>
-                <dd className="text-ink">{project.year}</dd>
               </div>
             )}
           </dl>

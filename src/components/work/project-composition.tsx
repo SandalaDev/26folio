@@ -14,6 +14,7 @@ import {
   BoardBlock,
 } from "@/components/work/blocks/media-blocks";
 import { ScreensBlock, DevicesBlock } from "@/components/work/blocks/digital-blocks";
+import type { CapabilityService } from "@/lib/capabilities";
 import type { Project, ProjectBlock } from "@/lib/projects";
 
 /**
@@ -94,12 +95,15 @@ function renderBlock(block: ProjectBlock, project: Project, key: number): React.
 
 export interface ProjectCompositionProps {
   project: Project;
-  /** Adjacent projects for the foot navigation. */
-  previous?: Pick<Project, "slug" | "title">;
-  next?: Pick<Project, "slug" | "title">;
+  /**
+   * The /capabilities service this project evidences, already resolved from
+   * `project.capability`. The page ends on it (EPIC-029 decision 17); absent
+   * when the id does not resolve, so a missing service renders nothing.
+   */
+  capability?: Pick<CapabilityService, "id" | "title" | "summary">;
 }
 
-function ProjectComposition({ project, previous, next }: ProjectCompositionProps) {
+function ProjectComposition({ project, capability }: ProjectCompositionProps) {
   return (
     <article className="flex flex-col">
       <Section className="pb-0 md:pb-0">
@@ -110,33 +114,18 @@ function ProjectComposition({ project, previous, next }: ProjectCompositionProps
 
       {project.blocks.map((block, i) => renderBlock(block, project, i))}
 
-      {(previous || next) && (
+      {capability && (
         <Section className="border-border border-t pt-12 md:pt-16">
-          <nav
-            aria-label="Other projects"
-            className="flex flex-col gap-8 sm:flex-row sm:justify-between"
+          <Link
+            href={`/capabilities#${capability.id}`}
+            className="group flex max-w-2xl flex-col gap-2"
           >
-            {previous ? (
-              <Link href={`/work/${previous.slug}`} className="group flex flex-col gap-1">
-                <span className="eyebrow text-muted">Previous</span>
-                <span className="font-display text-ink group-hover:text-rose text-2xl transition-colors">
-                  {previous.title}
-                </span>
-              </Link>
-            ) : (
-              <span />
-            )}
-            {next ? (
-              <Link href={`/work/${next.slug}`} className="group flex flex-col gap-1 sm:text-right">
-                <span className="eyebrow text-muted">Next</span>
-                <span className="font-display text-ink group-hover:text-rose text-2xl transition-colors">
-                  {next.title}
-                </span>
-              </Link>
-            ) : (
-              <span />
-            )}
-          </nav>
+            <span className="eyebrow text-muted">The capability behind it</span>
+            <span className="font-display text-ink group-hover:text-rose text-2xl transition-colors">
+              {capability.title} →
+            </span>
+            <span className="measure text-soft">{capability.summary}</span>
+          </Link>
         </Section>
       )}
     </article>
