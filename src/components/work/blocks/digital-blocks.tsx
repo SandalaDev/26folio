@@ -58,7 +58,7 @@ function ScreensBlock({ shot, label = "Interface" }: { shot: Asset; label?: stri
 /**
  * DevicesBlock — `kind: "devices"`. Laptop and phone mocks composed as a row.
  *
- * Provision Finance only: `device-laptop` 849×849, `device-phone` 274×573 and
+ * Provision Finance: `device-laptop` 849×849, `device-phone` 274×573 and
  * `device-desktop` 1026×768. The phone is small at source and must never be
  * upscaled past its intrinsic width or it will look soft beside the laptop, which
  * `ArtefactFigure` enforces.
@@ -68,7 +68,8 @@ function ScreensBlock({ shot, label = "Interface" }: { shot: Asset; label?: stri
  *
  * The arrangement is deliberate rather than a plain grid — the widest mock leads and
  * the narrower ones sit beside it — and it stacks below `md`, where an overlap or a
- * three-across row becomes a mess.
+ * three-across row becomes a mess. A set with no landscape mock (sandala.dev's
+ * phones) gets its own row instead; see below.
  */
 function DevicesBlock({ mocks }: { mocks: Asset[] }) {
   if (mocks.length === 0) return null;
@@ -76,6 +77,35 @@ function DevicesBlock({ mocks }: { mocks: Asset[] }) {
   // Widest-aspect mock leads; portrait mocks follow at smaller scale.
   const sorted = [...mocks].sort((a, b) => b.width / b.height - a.width / a.height);
   const [lead, ...rest] = sorted;
+
+  /* No landscape mock to lead (sandala.dev's two phone screens): a portrait mock in
+     the 7-of-12 lead slot renders taller than the viewport. Phones sit side by side
+     instead, each capped near the width of a real phone held at reading distance. */
+  if (lead.width < lead.height) {
+    return (
+      <Section className="py-14 md:py-20">
+        <BlockReveal stagger className="flex flex-col gap-8">
+          <BlockRevealItem>
+            <Eyebrow as="h2" tone="caramel">
+              On device
+            </Eyebrow>
+          </BlockRevealItem>
+          <div className="flex flex-wrap items-end justify-center gap-8 md:gap-12">
+            {sorted.map((asset) => (
+              <BlockRevealItem key={asset.src} className="w-full max-w-[17rem]">
+                <ArtefactFigure
+                  asset={asset}
+                  fallbackTone="bare"
+                  inset="sm"
+                  sizes="(min-width: 768px) 17rem, 100vw"
+                />
+              </BlockRevealItem>
+            ))}
+          </div>
+        </BlockReveal>
+      </Section>
+    );
+  }
 
   return (
     <Section className="py-14 md:py-20">

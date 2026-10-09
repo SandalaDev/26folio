@@ -183,6 +183,86 @@ export const featuredOnHome = ["provision-finance", "ok-pharmacy"] as const;
 
 export const projects: Project[] = [
   {
+    slug: "sandala-dev",
+    title: "sandala.dev",
+    tagline: "This site",
+    description:
+      "This site: a design system, its motion and a working contact pipeline, designed and built by one person.",
+    href: "/work/sandala-dev",
+    image: "/images/projects/sandala-dev/screen-home.webp",
+    disciplines: ["Interface design", "Design system", "Front-end engineering"],
+    credit: "Own venture",
+    // The plan named the "motion" technology area, but that is a tab, not a
+    // service a link can land on; the design service is what this site evidences.
+    capability: "design",
+    blocks: [
+      {
+        kind: "hero",
+        cover: {
+          src: "/images/projects/sandala-dev/screen-home.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The sandala.dev home page: the headline I build the software your business actually needs, a circular portrait, a positioning paragraph and a Let's talk button on a warm dark gradient.",
+          tone: "bare",
+        },
+      },
+      {
+        kind: "note",
+        body: "Own venture: the site you are reading. It had two jobs. The first was to say plainly what I do and for whom, so every page starts from a problem a business would recognize before it names any technology. The second was to be evidence in its own right, so it is built the way I build for clients. A warm, dark design system with square corners and a small set of tokens keeps every page in one language, including these project pages, which fit their layout to each project's artwork but never borrow its colours. Motion appears where it explains something and switches off entirely for anyone whose device asks for reduced motion. The contact form checks for a human with Turnstile, validates on the server, delivers the inquiry by email through Resend and sends the sender an acknowledgement. Every page is generated ahead of time and served from Cloudflare's edge, with no database to maintain. Built with Next.js, TypeScript, Tailwind CSS, Framer Motion and GSAP, on Cloudflare Workers.",
+      },
+      {
+        kind: "screens",
+        label: "Capabilities",
+        shot: {
+          src: "/images/projects/sandala-dev/screen-capabilities.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The capabilities page hero: Custom software for businesses that have outgrown manual work, beside a diagram linking payments, automation and customers to a useful system.",
+          caption: "Capabilities: services described by the problem they solve.",
+        },
+      },
+      {
+        kind: "screens",
+        label: "About",
+        shot: {
+          src: "/images/projects/sandala-dev/screen-about.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The about page hero: Engineer. Designer. Builder. above a short biography.",
+          caption: "About: the person, in the same voice as the work.",
+        },
+      },
+      {
+        kind: "devices",
+        mocks: [
+          {
+            src: "/images/projects/sandala-dev/phone-home.webp",
+            width: 780,
+            height: 1688,
+            alt: "The home page at phone width: the headline, portrait, paragraph and Let's talk button stacked in one column.",
+          },
+          {
+            src: "/images/projects/sandala-dev/phone-contact.webp",
+            width: 780,
+            height: 1688,
+            alt: "The contact page at phone width: the Let's talk heading above name, email, project type and message fields.",
+          },
+        ],
+      },
+      {
+        kind: "screens",
+        label: "Contact",
+        shot: {
+          src: "/images/projects/sandala-dev/screen-contact.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The contact page: an inquiry form with name, email, project type and message fields, beside direct channels and a note on what happens next.",
+          caption: "Contact: Turnstile, server validation, email delivery and an auto-reply.",
+        },
+      },
+    ],
+  },
+  {
     slug: "flavour-grills-cafe",
     title: "The Flavour Grills Cafe",
     tagline: "Restaurant & hospitality",
@@ -253,7 +333,7 @@ export const projects: Project[] = [
           height: 948,
           alt: "Flavour Grills Cafe collateral photographed from above on slate and wood: navy menu folder, letterhead, business cards, three labelled spice jars, a branded coffee pouch with beans visible through the window, leather tags, cinnamon, cardamom and star anise.",
           caption:
-            "Collateral — menu folder, stationery, spice labels, coffee packaging and leather tags.",
+            "Collateral: menu folder, stationery, spice labels, coffee packaging and leather tags.",
         },
       },
       {
@@ -303,7 +383,7 @@ export const projects: Project[] = [
       {
         kind: "note",
         heading: "The idea",
-        body: "A self-initiated exercise: give a retail finance brand a mark with an argument behind it, then push far enough to see whether the mark can carry an interface and not just a shopfront. Four attributes — professional, visionary, precise, proficient — resolved into a three-bar device drawn on golden-ratio construction, then reversed for navy and for white. The site design puts borrowing, transacting and saving on the landing page as three equal actions rather than burying them in a product menu, and keeps a live exchange-rate strip above the fold instead of on a page of its own. Provision Finance is not a real institution and the copy inside these mockups is placeholder.",
+        body: "Self-commissioned. I gave a retail finance brand a mark with an argument behind it, then pushed far enough to see whether the mark could carry an interface as well as a shopfront. Four attributes (professional, visionary, precise, proficient) resolved into a three-bar device drawn on golden-ratio construction, then reversed for navy and for white. The site design puts borrowing, transacting and saving on the landing page as three equal actions, and keeps a live exchange-rate strip above the fold where a customer checking rates will see it first. Provision Finance is not a real institution, and the copy inside these mockups is placeholder.",
       },
       {
         // Placed early on purpose: this board is the clearest evidence of design
@@ -316,7 +396,7 @@ export const projects: Project[] = [
           height: 2000,
           alt: "Logo rationale board: a brass telescope beside the words Professional, Visionary, Precise, Proficient, with the three-bar mark constructed on golden-ratio geometry.",
           caption:
-            "Rationale board — the mark derived from the attributes, on golden-ratio construction.",
+            "Rationale board: the mark derived from the attributes, on golden-ratio construction.",
         },
       },
       {
@@ -341,7 +421,7 @@ export const projects: Project[] = [
           width: 2000,
           height: 2000,
           alt: "Four-part brand board: the shopfront photograph, the logo reversed white on navy and navy on white, and the two brand patterns.",
-          caption: "Brand board — reversals and the two pattern treatments.",
+          caption: "Brand board: reversals and the two pattern treatments.",
         },
       },
       {
@@ -352,7 +432,7 @@ export const projects: Project[] = [
           width: 1920,
           height: 1620,
           alt: "Provision Finance homepage design: red login bar, navy navigation, a sunflower-field hero reading Hello. How can we help?, three circular Borrow, Transact and Save actions, a seven-currency exchange rate strip, and a customer stories row.",
-          caption: "Homepage — three equal front doors, with live exchange rates.",
+          caption: "Homepage: three equal front doors, with live exchange rates.",
         },
       },
       {
@@ -363,7 +443,7 @@ export const projects: Project[] = [
           width: 1729,
           height: 2000,
           alt: "Provision Finance products page design covering loans and accounts, with comparison cards and a red Visa card render.",
-          caption: "Products — loans and accounts, laid out for comparison.",
+          caption: "Products: loans and accounts, laid out for comparison.",
         },
       },
       {
@@ -433,7 +513,7 @@ export const projects: Project[] = [
       {
         kind: "note",
         heading: "The idea",
-        body: "Self-initiated. The whole idea is one shape doing two jobs: the O of the wordmark is a hand making an OK sign, so the letter and the reassurance arrive together. A pharmacy mark has to survive being read from across a mall on lit signage and at avatar size on a social profile, so the monogram was drawn to stand alone — no wordmark, no tagline — and the fuller lockups build outward from it. From there it went onto 24-hour signage, retail packaging, print, social and a storefront design with a branch locator.",
+        body: "Self-commissioned. The idea is one shape doing two jobs: the O of the wordmark is a hand making an OK sign, so the letter and the reassurance arrive together. A pharmacy mark has to be read from across a mall on lit signage and at avatar size on a social profile, so the monogram was drawn to stand alone, without wordmark or tagline, and the fuller lockups build outward from it. From there it went onto 24-hour signage, retail packaging, print, social and a storefront design with a branch locator.",
       },
       {
         kind: "logo-suite",
@@ -478,7 +558,7 @@ export const projects: Project[] = [
             width: 1500,
             height: 1000,
             alt: "Illuminated double-sided sign hung from a mall ceiling, showing the OK Pharmacy logo above the words OPEN 24 HOURS.",
-            caption: "Suspended signage — the 24-hour promise carried at distance.",
+            caption: "Suspended signage: the 24-hour promise carried at distance.",
           },
           {
             src: "/images/projects/ok-pharmacy/bag.webp",
@@ -530,7 +610,7 @@ export const projects: Project[] = [
           width: 2000,
           height: 1913,
           alt: "OK Pharmacy online storefront design: a New Arrivals hero, a row of stocked brands, a branch locator map, and a pharmacist portrait over teal sections.",
-          caption: "Storefront — retail catalogue, stocked brands and branch locator.",
+          caption: "Storefront: retail catalogue, stocked brands and branch locator.",
         },
       },
       // The AI-generated dispensary scene is not used: it misdraws the mark and
@@ -564,7 +644,7 @@ export const projects: Project[] = [
       {
         kind: "note",
         heading: "The idea",
-        body: "Self-initiated, and the constraint I set myself was format. A can, a gusseted pouch, a bottle and a jar give you four different curves, four label shapes and four printing methods, so the mark had to be indifferent to all of them. A circular stamp — tree and wheat ears inside a scalloped ring — holds its shape on every one and still reads at the size a jar lid allows. Four colourways carry it across the range so each product reads as its own thing without leaving the family.",
+        body: "Self-commissioned, and the constraint I set myself was format. A can, a gusseted pouch, a bottle and a jar give four different curves, four label shapes and four printing methods, so the mark had to be indifferent to all of them. A circular stamp, a tree and wheat ears inside a scalloped ring, holds its shape on every one and still reads at the size a jar lid allows. Four colourways carry it across the range, so each product reads as its own thing without leaving the family.",
       },
       {
         kind: "logo-suite",
@@ -586,7 +666,7 @@ export const projects: Project[] = [
           width: 1200,
           height: 1200,
           alt: "Colourway board showing the Gardenfare mark in four versions: deep russet, orange, black outline on white, and yellow.",
-          caption: "Colourways — one mark, four grounds to print on.",
+          caption: "Colourways: one mark, four grounds to print on.",
         },
       },
       { kind: "palette", swatches: GARDENFARE_PALETTE },
@@ -598,28 +678,28 @@ export const projects: Project[] = [
             width: 694,
             height: 694,
             alt: "GardenFruit mixed fruit juice can, beaded with condensation, on a lime gradient.",
-            caption: "GardenFruit — mixed fruit juice",
+            caption: "GardenFruit: mixed fruit juice",
           },
           {
             src: "/images/projects/gardenfare-foods/pack-oats.webp",
             width: 793,
             height: 793,
             alt: "GardenOats gusseted pouch, lightly sweetened with maple sugar, on an orange gradient.",
-            caption: "GardenOats — lightly sweetened",
+            caption: "GardenOats: lightly sweetened",
           },
           {
             src: "/images/projects/gardenfare-foods/pack-soy.webp",
             width: 750,
             height: 750,
             alt: "GardenSoy organic soy milk bottle with a yellow cap, on a mint gradient.",
-            caption: "GardenSoy — organic soy milk",
+            caption: "GardenSoy: organic soy milk",
           },
           {
             src: "/images/projects/gardenfare-foods/pack-spread.webp",
             width: 600,
             height: 600,
             alt: "GardenSpread creamy peanut butter jar with a brown lid, on a peach gradient.",
-            caption: "GardenSpread — creamy peanut butter",
+            caption: "GardenSpread: creamy peanut butter",
           },
         ],
       },
@@ -631,7 +711,7 @@ export const projects: Project[] = [
           width: 1225,
           height: 1216,
           alt: "Applications sheet: the green Gardenfare mark on white above three alternate colourways laid over a produce photograph.",
-          caption: "Applications — the mark against real product photography.",
+          caption: "Applications: the mark against real product photography.",
         },
       },
     ],

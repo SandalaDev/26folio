@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDownRight, Check } from "@phosphor-icons/react";
 
@@ -91,6 +92,22 @@ function ServiceDossier() {
                         </li>
                       ))}
                     </ul>
+                    {service.evidence?.length ? (
+                      <p className="mt-8 text-sm text-soft">
+                        In the work:{" "}
+                        {service.evidence.map((item, i) => (
+                          <span key={item.href}>
+                            {i > 0 ? " · " : null}
+                            <Link
+                              href={item.href}
+                              className="text-ink underline decoration-border underline-offset-4 transition-colors hover:text-rose hover:decoration-rose"
+                            >
+                              {item.title}
+                            </Link>
+                          </span>
+                        ))}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
 

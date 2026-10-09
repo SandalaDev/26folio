@@ -6,6 +6,8 @@ export interface CapabilityService {
   examples: string[];
   startingPoint: string;
   note?: string;
+  /** Projects on /work that show this capability (EPIC-029 TASK-141). */
+  evidence?: { title: string; href: string }[];
 }
 
 export const problemSignals = [
@@ -152,6 +154,29 @@ export const capabilityServices: CapabilityService[] = [
       "Design for authentication, validation, retries, duplicate prevention, rate limits, audit trails, and clear intervention when another service is unavailable.",
     ],
     startingPoint: "Show me the two systems your staff are connecting manually.",
+  },
+  {
+    id: "design",
+    index: "09",
+    title: "Brand Identity & Interface Design",
+    summary:
+      "Give the business an identity people recognize: a mark, colours and type that hold together on a sign, a package, a phone screen and an invoice, carried into the website and the software it runs on.",
+    examples: [
+      "A new café gets a logo, colours and type that work on a menu, a coffee pouch and a shop sign.",
+      "A finance company's mark is drawn from a simple construction, so it holds up at icon size and on a building.",
+      "A food producer's packaging reads as one family across very different products.",
+      "A pharmacy's identity carries from the logo to signage, carrier bags, social posts and the online store.",
+      "Website pages are designed as reusable sections, so the next page stays on brand without a designer.",
+      "Staff get the logo files, colour values and usage rules they need instead of guessing.",
+    ],
+    note: "Design and engineering come from the same person, so the identity, the interface and the code share one set of decisions. What gets designed is what gets built.",
+    startingPoint: "Show me what customers see of your business today, from the sign outside to the receipt.",
+    evidence: [
+      { title: "The Flavour Grills Cafe", href: "/work/flavour-grills-cafe" },
+      { title: "Provision Finance", href: "/work/provision-finance" },
+      { title: "OK Pharmacy", href: "/work/ok-pharmacy" },
+      { title: "Gardenfare Foods", href: "/work/gardenfare-foods" },
+    ],
   },
 ];
 
