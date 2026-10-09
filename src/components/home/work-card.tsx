@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, useTransform } from "framer-motion";
 
 import { useDoorTilt } from "@/components/motion/tilt-card";
+import { PreviewVideo } from "@/components/work/preview-video";
 import type { Project } from "@/lib/projects";
 
 /**
@@ -33,6 +34,8 @@ function WorkCard({
   });
   // Coordinated zoom off the same spring (design lane §3.B: never useState).
   const imageScale = useTransform(hover, [0, 1], [1, 1.06]);
+  // Drives the card's preview loop (EPIC-029 TASK-136); hover or keyboard focus.
+  const [active, setActive] = React.useState(false);
 
   /* Imageless fallback - the pre-EPIC-010 text card (placeholders on /work). */
   if (!project.image) {
@@ -58,6 +61,10 @@ function WorkCard({
       <motion.div style={cardStyle} className="will-change-transform">
         <Link
           href={project.href}
+          onPointerEnter={() => setActive(true)}
+          onPointerLeave={() => setActive(false)}
+          onFocus={() => setActive(true)}
+          onBlur={() => setActive(false)}
           className={`group relative flex flex-col justify-end overflow-hidden border border-border bg-surface transition-colors hover:border-border-2 ${
             featured ? "min-h-[26rem] md:min-h-[34rem]" : "aspect-[4/3]"
           }`}
@@ -80,6 +87,9 @@ function WorkCard({
               sizes="(min-width: 768px) 55vw, 100vw"
               className="object-cover"
             />
+            {project.video?.card ? (
+              <PreviewVideo clip={project.video.card} trigger="hover" active={active} />
+            ) : null}
           </motion.div>
           {/* Warm scrim keeps title/tagline at AA contrast over any image. */}
           <div

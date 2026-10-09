@@ -5,6 +5,7 @@ import { MeshBg } from "@/components/site/mesh-bg";
 import { ArtefactPlate } from "@/components/work/artefact-plate";
 import { SvgTreatment } from "@/components/work/svg-treatment";
 import { BlockReveal } from "@/components/work/blocks/block-reveal";
+import { PreviewVideo } from "@/components/work/preview-video";
 import type { Asset, Project } from "@/lib/projects";
 
 /**
@@ -88,15 +89,22 @@ function ProjectHeroBlock({ cover, project, markSrc }: ProjectHeroBlockProps) {
 
         <div className="md:col-span-6">
           <ArtefactPlate tone={cover.tone ?? "neutral"} inset="md">
-            <Image
-              src={cover.src}
-              width={cover.width}
-              height={cover.height}
-              alt={cover.alt}
-              priority
-              sizes="(min-width: 768px) 45vw, 100vw"
-              className="h-auto w-full"
-            />
+            {/* The hero loop overlays the cover and fills its box, so the cover
+                sets the layout and stays as the still under reduced motion. */}
+            <div className="relative">
+              <Image
+                src={cover.src}
+                width={cover.width}
+                height={cover.height}
+                alt={cover.alt}
+                priority
+                sizes="(min-width: 768px) 45vw, 100vw"
+                className="h-auto w-full"
+              />
+              {project.video?.hero ? (
+                <PreviewVideo clip={project.video.hero} trigger="autoplay" />
+              ) : null}
+            </div>
           </ArtefactPlate>
         </div>
       </BlockReveal>

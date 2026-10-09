@@ -168,6 +168,17 @@ const FLAVOUR_PALETTE = [
    that reads poorly in a wide featured card.
    --------------------------------------------------------------------------- */
 
+/** The card and hero loops built by tools/build-clips.mjs (EPIC-029 TASK-135). */
+function clips(slug: string): Project["video"] {
+  const base = `/videos/projects/${slug}`;
+  const clip = (name: "card" | "hero"): VideoClip => ({
+    mp4: `${base}/${name}.mp4`,
+    webm: `${base}/${name}.webm`,
+    poster: `${base}/${name}-poster.webp`,
+  });
+  return { card: clip("card"), hero: clip("hero") };
+}
+
 export const featuredOnHome = ["provision-finance", "ok-pharmacy"] as const;
 
 export const projects: Project[] = [
@@ -182,6 +193,7 @@ export const projects: Project[] = [
     disciplines: ["Brand identity", "Print & collateral"],
     credit: "Client",
     capability: "design",
+    video: clips("flavour-grills-cafe"),
     blocks: [
       {
         kind: "hero",
@@ -275,6 +287,7 @@ export const projects: Project[] = [
     disciplines: ["Brand identity", "Web design"],
     credit: "Self-commissioned",
     capability: "design",
+    video: clips("provision-finance"),
     blocks: [
       {
         kind: "hero",
@@ -404,6 +417,7 @@ export const projects: Project[] = [
     disciplines: ["Brand identity", "Signage & packaging", "Web design"],
     credit: "Self-commissioned",
     capability: "design",
+    video: clips("ok-pharmacy"),
     blocks: [
       {
         kind: "hero",
@@ -534,6 +548,7 @@ export const projects: Project[] = [
     disciplines: ["Brand identity", "Packaging design"],
     credit: "Self-commissioned",
     capability: "design",
+    video: clips("gardenfare-foods"),
     blocks: [
       {
         kind: "hero",

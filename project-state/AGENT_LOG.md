@@ -67,3 +67,4 @@
 - 2026-10-08T21:45:22Z | claude-code/unknown | end | task=none | gate=ok
 - 2026-10-09T16:47:09Z | claude-code/unknown | end | task=none | gate=ok
 - 2026-10-09T21:39:54Z | claude-code/unknown | checkpoint | task=none | gate= | EPIC-029 kickoff confirmed and sliced (TASK-130..143). Next: TASK-130 salvage EPIC-026 build.
+- 2026-10-09T22:23:18Z | claude-code/unknown | checkpoint | task=none | gate= | TASK-130 and TASK-131 done. Next ready: TASK-133 screens, TASK-135 brand clips, TASK-136 video component, TASK-139, TASK-141.

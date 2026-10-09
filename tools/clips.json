@@ -1,0 +1,92 @@
+{
+  "provision-finance": {
+    "hero": {
+      "size": [960, 960],
+      "shots": [
+        { "src": "provision-finance/cover.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.12 } },
+        { "src": "provision-finance/screen-homepage.webp", "dur": 3.8, "from": { "z": 1.7, "x": 0.5, "y": 0 }, "to": { "z": 1.7, "x": 0.5, "y": 1 } },
+        { "src": "provision-finance/device-laptop.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.1 } },
+        { "src": "provision-finance/brand-board.webp", "dur": 2.6, "from": { "z": 1.05 }, "to": { "z": 1.2 } },
+        { "src": "provision-finance/cover.webp", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    },
+    "card": {
+      "size": [720, 720],
+      "crf": 26,
+      "shots": [
+        { "src": "provision-finance/cover.webp", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "provision-finance/screen-homepage.webp", "dur": 3.4, "from": { "z": 1.7, "x": 0.5, "y": 0 }, "to": { "z": 1.7, "x": 0.5, "y": 1 } },
+        { "src": "provision-finance/cover.webp", "dur": 1.4, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    }
+  },
+  "ok-pharmacy": {
+    "hero": {
+      "size": [960, 960],
+      "shots": [
+        { "src": "ok-pharmacy/cover.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.1 } },
+        { "src": "ok-pharmacy/signage.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.15 } },
+        { "src": "ok-pharmacy/bag.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.12 } },
+        { "src": "ok-pharmacy/poster.webp", "fit": "contain", "dur": 2.4, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "ok-pharmacy/screen-storefront.webp", "dur": 3.2, "from": { "z": 1.5, "x": 0.5, "y": 0 }, "to": { "z": 1.5, "x": 0.5, "y": 1 } },
+        { "src": "ok-pharmacy/cover.webp", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    },
+    "card": {
+      "size": [720, 720],
+      "crf": 26,
+      "shots": [
+        { "src": "ok-pharmacy/cover.webp", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "ok-pharmacy/signage.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.15 } },
+        { "src": "ok-pharmacy/bag.webp", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.1 } },
+        { "src": "ok-pharmacy/cover.webp", "dur": 1.4, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    }
+  },
+  "gardenfare-foods": {
+    "hero": {
+      "size": [1280, 800],
+      "shots": [
+        { "src": "gardenfare-foods/cover.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.06 } },
+        { "src": "gardenfare-foods/pack-fruit.webp", "fit": "contain", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "gardenfare-foods/pack-oats.webp", "fit": "contain", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "gardenfare-foods/pack-soy.webp", "fit": "contain", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "gardenfare-foods/pack-spread.webp", "fit": "contain", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "gardenfare-foods/cover.webp", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    },
+    "card": {
+      "size": [960, 600],
+      "crf": 26,
+      "shots": [
+        { "src": "gardenfare-foods/cover.webp", "dur": 1.8, "from": { "z": 1 }, "to": { "z": 1.05 } },
+        { "src": "gardenfare-foods/pack-fruit.webp", "fit": "contain", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1.06 } },
+        { "src": "gardenfare-foods/pack-oats.webp", "fit": "contain", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1.06 } },
+        { "src": "gardenfare-foods/pack-soy.webp", "fit": "contain", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1.06 } },
+        { "src": "gardenfare-foods/pack-spread.webp", "fit": "contain", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1.06 } },
+        { "src": "gardenfare-foods/cover.webp", "dur": 1.3, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    }
+  },
+  "flavour-grills-cafe": {
+    "hero": {
+      "size": [640, 960],
+      "shots": [
+        { "src": "flavour-grills-cafe/flatlay.webp", "dur": 3.4, "from": { "z": 1 }, "to": { "z": 1.3, "x": 0.4, "y": 0.3 } },
+        { "src": "flavour-grills-cafe/poster-pastry.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.1 } },
+        { "src": "flavour-grills-cafe/poster-duotone.webp", "dur": 2.6, "from": { "z": 1 }, "to": { "z": 1.1 } },
+        { "src": "flavour-grills-cafe/logo-primary.webp", "fit": "contain", "dur": 2.2, "from": { "z": 1 }, "to": { "z": 1.06 } },
+        { "src": "flavour-grills-cafe/flatlay.webp", "dur": 1.6, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    },
+    "card": {
+      "size": [480, 720],
+      "crf": 26,
+      "shots": [
+        { "src": "flavour-grills-cafe/flatlay.webp", "dur": 2.8, "from": { "z": 1 }, "to": { "z": 1.25, "x": 0.4, "y": 0.3 } },
+        { "src": "flavour-grills-cafe/poster-pastry.webp", "dur": 2.4, "from": { "z": 1 }, "to": { "z": 1.08 } },
+        { "src": "flavour-grills-cafe/flatlay.webp", "dur": 1.4, "from": { "z": 1 }, "to": { "z": 1 } }
+      ]
+    }
+  }
+}
