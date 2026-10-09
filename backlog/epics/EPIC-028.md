@@ -1,7 +1,7 @@
 ---
 id: EPIC-028
 title: "Contact: working inquiry delivery and a launch-ready page"
-status: ready
+status: done
 priority: P1
 roadmap_refs: []
 goal_refs: [GOAL-001]
@@ -107,10 +107,10 @@ Size classes follow ds-epic-estimator (S=1, M=2, L=3). Total weight 15.
 - [x] TASK-123 (L) — Implement the contact API route with Resend delivery and abuse protection
 - [x] TASK-124 (M) — Send an auto-reply confirmation to the sender
 - [x] TASK-125 (M) — Wire the form to the live route: honeypot, error states and honest copy
-- [ ] TASK-126 (S) — Replace placeholder contact details and social links with real ones
+- [ ] TASK-126 (S) — Replace placeholder contact details and social links with real ones (deferred and detached from this epic by the owner on 2026-10-09; the URLs come much later)
 - [x] TASK-127 (M) — tests: contact route validation, sanitising and rate limit
-- [ ] TASK-129 (L) — Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates
-- [ ] TASK-128 (M) — Verify end to end on Cloudflare staging and hand off the launch checklist
+- [x] TASK-129 (L) — Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates
+- [x] TASK-128 (M) — Verify end to end on Cloudflare staging and hand off the launch checklist
 
 Order: 122 first. 123 follows 122. 124 and 125 follow 123 and are independent
 of each other. 127 follows 123. 126 can run any time once the owner supplies
@@ -200,3 +200,69 @@ changes.
   modules avoid the `@/` alias. TASK-123 must keep them in that shape. The
   rest is verified in the tasks that touch it (lint, typecheck, build,
   rendered-page checks) and by a real send on staging in TASK-128.
+
+## Staging and go-live checklist
+
+Prepared in TASK-129 and consumed by TASK-128. The staging Worker is live at
+`https://sandala-dev-staging.sandala-r2.workers.dev` (deployed 2026-10-08 with
+Cloudflare's public test Turnstile site key, no secrets). Every route, image
+and the 503-when-unconfigured behavior were verified there.
+
+Deploy commands (always through the adapter, never a bare `wrangler deploy`,
+because the adapter loads the prerendered pages and `/work/[slug]` is 404
+without them):
+
+```bash
+# staging
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=<real staging site key> npm run cf:build -- --env staging
+npm run cf:deploy -- --env staging
+# production (top-level config)
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=<real production site key> npm run cf:build
+npm run cf:deploy
+```
+
+### Owner steps, in order
+
+1. **Resend.** Create the account, add the domain `send.sandala.site`, add the
+   SPF and DKIM records Resend shows, plus a DMARC record
+   (`_dmarc.sandala.site`, start with `p=none`). Wait until Resend shows the
+   domain as verified. Create a sending API key.
+2. **Turnstile widget (staging).** Cloudflare dashboard, Turnstile, add a
+   widget, mode Managed, hostname
+   `sandala-dev-staging.sandala-r2.workers.dev` (and any custom staging
+   hostname). Copy the site key (public). The secret key goes straight into
+   step 3, never into chat or a file.
+3. **Staging secrets.** Run each and paste the value at the prompt:
+   ```bash
+   npx wrangler secret put RESEND_API_KEY --env staging
+   npx wrangler secret put CONTACT_TO_EMAIL --env staging
+   npx wrangler secret put TURNSTILE_SECRET_KEY --env staging
+   ```
+   Then rebuild and redeploy staging with the real site key (see above).
+4. **Custom staging hostname and WAF rule.** A WAF rule only applies on a zone,
+   not on `workers.dev`. Attach a hostname such as `staging.sandala.dev` to the
+   staging Worker (Workers, the Worker, Settings, Domains and Routes), then in
+   that zone: Security, WAF, Rate limiting rules, create a rule:
+   - Expression: `(http.request.method eq "POST" and http.request.uri.path eq "/api/contact")`
+   - Characteristic: IP. Free plan allows one rule, a 10 second period and a
+     10 second block. Suggested: 3 requests per 10 seconds, action Block.
+   - Add the production hostname to the same rule's zone when it goes live.
+5. **Confirm** the sender address (`wrangler.jsonc` currently has
+   `Abe Sandala <contact@send.sandala.site>`).
+6. **Production.** Create the production Turnstile widget for `sandala.dev`,
+   set the same three secrets without `--env`, build and deploy, attach
+   `sandala.dev` to the Worker, and put the DNS cutover on a low TTL.
+
+### Agent steps (TASK-128), once steps 1 to 4 are done
+
+Real send and reply-to; auto-reply delivery; SPF, DKIM and DMARC in the received
+headers across two mailboxes; honeypot, oversized body and a 429 observed on the
+custom hostname; bad Resend key and failed Turnstile never show success;
+keyboard, mobile and reduced-motion pass; first-week inbox owner named.
+
+## Closeout (2026-10-09)
+
+Closed by the owner with accepted gaps: see `planning/interviews/closeout-EPIC-028.md`.
+The gaps listed under TASK-128 ("Closed with accepted gaps") and the staging and
+go-live checklist above must be run before production traffic. TASK-126 (social
+links) is deferred and detached from this epic.

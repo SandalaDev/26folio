@@ -1,7 +1,7 @@
 ---
 id: TASK-129
 title: "Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates"
-status: ready
+status: done
 priority: P1
 risk_level: high
 epic_ref: backlog/epics/EPIC-028.md
@@ -37,6 +37,7 @@ testing:
     - npm run typecheck
     - npm run build
 started_at: 2026-10-08T16:45:33Z
+completed_at: 2026-10-08T21:43:34Z
 ---
 # Task: Prepare the site for Cloudflare: adapter, config, images, rate limit and spine updates
 
@@ -78,16 +79,16 @@ on Cloudflare, and deployment preparation happens here, at the end.
 
 ## Acceptance Criteria
 
-- [ ] An approved architecture plan exists and `os deps check` passes before
+- [x] An approved architecture plan exists and `os deps check` passes before
       install.
-- [ ] The site builds for Cloudflare and runs under the local Workers runtime.
-- [ ] Every route renders on the preview deployment, and every image URL on
+- [x] The site builds for Cloudflare and runs under the local Workers runtime.
+- [x] Every route renders on the preview deployment, and every image URL on
       the About, Work and Capabilities pages returns 200.
-- [ ] The contact route reads its settings on Cloudflare and returns 503, not a
+- [x] The contact route reads its settings on Cloudflare and returns 503, not a
       crash, when they are missing.
-- [ ] No secret, key or recipient address is in the repository.
-- [ ] The project spine no longer describes Dokploy as the host.
-- [ ] `npm run lint`, `npm run typecheck` and `npm run build` pass.
+- [x] No secret, key or recipient address is in the repository.
+- [x] The project spine no longer describes Dokploy as the host.
+- [x] `npm run lint`, `npm run typecheck` and `npm run build` pass.
 
 ## Dependency Evidence
 
@@ -173,3 +174,26 @@ Not done, needs the owner:
   recommendation awaiting the owner.
 - Not verified here: image binding quota and price in production, and cache
   headers on the deployed assets.
+
+## Completion notes (2026-10-08, part 3)
+
+- Preview deployment: `https://sandala-dev-staging.sandala-r2.workers.dev`
+  (Worker `sandala-dev-staging`, `wrangler.jsonc` env `staging`). Built and
+  deployed with `npm run cf:build -- --env staging` and `npm run cf:deploy --
+  --env staging`.
+- On the deployed Worker: `/`, `/about`, `/about/the-way-i-am`, `/capabilities`,
+  `/work`, all four `/work/[slug]` and `/contact` return 200; an unknown path
+  404. 75 image and asset URLs returned 200 by fetching (the one apparent
+  failure was my checker not decoding an HTML-escaped apostrophe; the real URL
+  returns 200). `POST /api/contact` returns 503 with no secrets and `GET` 405.
+- Step 6, caching: `public/_headers` sets `/_next/static/*` to a year and
+  immutable, images, projects and icons to a day, fonts to a week. Verified on
+  the deployed Worker (a first check hit a stale edge copy; with a cache-busting
+  query the headers applied). HTML pages keep the adapter's `s-maxage` default.
+- Step 4, rate limit: documented as configuration in the epic's Staging and
+  go-live checklist (WAF rule on `POST /api/contact`). It cannot apply on
+  `workers.dev`, so it is proven in TASK-128 on a custom hostname.
+- Deployed with Cloudflare's public test Turnstile site key and no secrets, so
+  the staging contact route cannot send mail yet. The Turnstile hostname and
+  action checks are skipped for test secrets, so a real widget is needed to prove
+  them (TASK-128).

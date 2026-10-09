@@ -51,7 +51,7 @@ completed_at: 2026-10-08T16:32:05Z
 - [x] Honeypot and rate-limited requests produce neither.
 - [x] If the auto-reply fails, the visitor still gets success and the failure
       is logged without content.
-- [ ] The owner has approved the auto-reply wording (DRAFT, awaiting approval).
+- [x] The owner has approved the auto-reply wording (approved in chat on 2026-10-08, as drafted).
 - [x] `npm run lint`, `npm run typecheck` and `npm run build` pass.
 
 ## Dependency Evidence
