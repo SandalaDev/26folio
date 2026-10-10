@@ -248,3 +248,27 @@ Recapture if the pages change materially before launch.
 | `screen-contact.webp` | 1600×1000 | 35KB | `screens` | Contact page: the inquiry form and direct channels |
 | `phone-home.webp` | 780×1688 | 53KB | `devices` | Home hero at phone width |
 | `phone-contact.webp` | 780×1688 | 26KB | `devices` | Contact form at phone width |
+
+---
+
+## `scrumtrulescent` — 9 files, 530KB
+
+Captured by the agent on 2026-10-10 (EPIC-029, owner request) from the
+magazine's own development server (`C:\_git\scrumtrulescent`, already running
+on port 3000), through headless Chrome with device emulation; the Next.js dev
+badge removed before capture. Nothing was written to that repository or its
+database. The site has no published articles yet, so no article page exists to
+capture; the Payload admin sits behind a login and is left to the owner. Logos
+are copied unchanged from that repo's `public/`.
+
+| File | Size | Role | Shows |
+|---|---|---|---|
+| `screen-home.webp` | 1600×1000 | `hero` | Home, light theme |
+| `screen-home-dark.webp` | 1600×1000 | `screens` | Home, dark theme |
+| `screen-topic.webp` | 1600×1000 | `screens` | The Tech topic page with its HOW THINGS WORK. collection |
+| `phone-home.webp` | 780×1688 | `devices` | Home at phone width |
+| `board-design-system.webp` | 1600×1111 | `board` | The `/design-system` page opening |
+| `board-editorial.webp` | 1600×778 | `board` | Editorial patterns from the design system |
+| `logo-lockup.svg` | 900×600 | `logo-suite` | `s_logo.svg`, light lockup |
+| `logo-lockup-dark.svg` | 900×600 | `logo-suite` | `s_logo dark.svg`, dark lockup |
+| `logo-mark.svg` | 500×500 | `logo-suite` | `s_head logo.svg`, head mark |

@@ -88,6 +88,7 @@ export const capabilityServices: CapabilityService[] = [
     note: "Editors change words, images, products, listings, and records while the system preserves typography, spacing, responsiveness, accessibility, and hierarchy. Drafts, previews, approvals, scheduling, version history, reusable sections, media, permissions, languages, SEO, and integrations can be shaped around the organization.",
     startingPoint:
       "Show me what your team needs to update and what you never want them to accidentally break.",
+    evidence: [{ title: "Scrumtrulescent", href: "/work/scrumtrulescent" }],
   },
   {
     id: "smart-invoice",

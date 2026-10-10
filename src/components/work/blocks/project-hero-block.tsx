@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 
 import { Section } from "@/components/site/section";
@@ -43,6 +44,16 @@ export interface ProjectHeroBlockProps {
   markSrc?: string;
 }
 
+const DISPLAY_CHARS_PER_LINE = 9;
+
+function displayScale(title: string): CSSProperties | undefined {
+  const longest = Math.max(...title.split(/\s+/).map((word) => word.length));
+  if (longest <= DISPLAY_CHARS_PER_LINE) return undefined;
+  return {
+    fontSize: `calc(var(--text-display) * ${(DISPLAY_CHARS_PER_LINE / longest).toFixed(3)})`,
+  };
+}
+
 function ProjectHeroBlock({ cover, project, markSrc }: ProjectHeroBlockProps) {
   return (
     <Section className="relative overflow-hidden">
@@ -59,7 +70,15 @@ function ProjectHeroBlock({ cover, project, markSrc }: ProjectHeroBlockProps) {
 
       <BlockReveal className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
         <div className="flex flex-col gap-6 md:col-span-6">
-          <h1 className="display-gradient font-display text-display">{project.title}</h1>
+          {/* The half-width column fits about nine display characters per line. A
+              longer single word ("Scrumtrulescent") cannot wrap, so the size steps
+              down in proportion instead of the word overflowing the column. */}
+          <h1
+            className="display-gradient font-display text-display"
+            style={displayScale(project.title)}
+          >
+            {project.title}
+          </h1>
 
           {project.tagline ? (
             <p className="text-subhead measure text-soft">{project.tagline}</p>

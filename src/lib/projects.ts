@@ -183,6 +183,123 @@ export const featuredOnHome = ["provision-finance", "ok-pharmacy"] as const;
 
 export const projects: Project[] = [
   {
+    slug: "scrumtrulescent",
+    title: "Scrumtrulescent",
+    tagline: "Personal publication",
+    description:
+      "My personal publication and the private editorial desk behind it, designed and built on Payload CMS. In development.",
+    href: "/work/scrumtrulescent",
+    image: "/images/projects/scrumtrulescent/screen-home.webp",
+    disciplines: ["Product design", "Design system", "Payload CMS engineering"],
+    credit: "Own venture",
+    capability: "cms",
+    blocks: [
+      {
+        kind: "hero",
+        cover: {
+          src: "/images/projects/scrumtrulescent/screen-home.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The Scrumtrulescent home page in its light theme: the line A uniquirky perspective on code, music, sport, technology, books and movies beside the illustrated scrumtrulescent lockup, between heavy black rules.",
+          tone: "bare",
+        },
+      },
+      {
+        kind: "note",
+        body: "Own venture, in development. Scrumtrulescent is my personal publication: one person writing across code, tech, opinion, sport, television, film, books and music, with the continuity of a social feed and the care of a printed magazine. The public site is a sharp editorial broadsheet: black rules, condensed headlines, a serif for reading, and one electric pink used as a pointer and never as a mood. It has light and dark themes, topic pages, search, an email list, and a living design system page that documents its own rules. Behind it sits a private editorial desk built into Payload. One story record carries an idea through research, outlining, drafting, fact-checking, scheduling and publication without being copied between collections. The desk adds quick capture, a pipeline board, a calendar and a balance view across topics; the writing workspace adds an outline, version history, focus mode and panels for research, fact checks and spelling. One rule shapes all of it: I write every published word. AI can help with research and fact checks, and may not draft, rewrite or publish. The first articles are being written now, so what you see here is the real build with nothing published yet. Built with Next.js, Payload CMS, PostgreSQL and TypeScript.",
+      },
+      {
+        kind: "logo-suite",
+        lockups: [
+          {
+          src: "/images/projects/scrumtrulescent/logo-lockup.svg",
+          width: 900,
+          height: 600,
+          alt: "The Scrumtrulescent lockup: an illustrated portrait of Abe adjusting his glasses above the scrumtrulescent wordmark, black on white.",
+          tone: "light",
+        },
+          {
+          src: "/images/projects/scrumtrulescent/logo-lockup-dark.svg",
+          width: 900,
+          height: 600,
+          alt: "The dark-theme lockup: the same portrait and wordmark with white lettering and an illustrated border.",
+          tone: "neutral",
+        },
+          {
+          src: "/images/projects/scrumtrulescent/logo-mark.svg",
+          width: 500,
+          height: 500,
+          alt: "The head mark alone, used as the site's home link.",
+          tone: "light",
+        },
+        ],
+      },
+      {
+        kind: "palette",
+        swatches: [
+          { hex: "#0a0a0a", name: "Ink" }, // 10-design-system.md neutral-950
+          { hex: "#ffffff", name: "Paper" }, // neutral-0
+          { hex: "#ff2d6f", name: "Signal pink" }, // pink-500
+        ],
+      },
+      {
+        kind: "board",
+        label: "Design system",
+        sheet: {
+          src: "/images/projects/scrumtrulescent/board-design-system.webp",
+          width: 1600,
+          height: 1111,
+          alt: "The magazine's design system page: the headline Hard rules. Human stories., a short statement of the system, section links, and the start of the typography section.",
+          caption: "Design system: the rules, published as a page of the site.",
+        },
+      },
+      {
+        kind: "board",
+        label: "Editorial patterns",
+        sheet: {
+          src: "/images/projects/scrumtrulescent/board-editorial.webp",
+          width: 1600,
+          height: 778,
+          alt: "Editorial patterns from the design system: a lead story card with a portrait and an Essay label beside a list of three shorter story entries tagged Field note, Opinion and Review.",
+          caption: "Editorial patterns: story cards and lists from the design system.",
+        },
+      },
+      {
+        kind: "screens",
+        label: "Topic page",
+        shot: {
+          src: "/images/projects/scrumtrulescent/screen-topic.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The Tech topic page: the heading Tech with the line The Times They Are A-Changin, and a black collection card reading HOW THINGS WORK. beside Networking.",
+          caption: "Topic page: Tech, with a collection of connected pieces.",
+        },
+      },
+      {
+        kind: "screens",
+        label: "Dark theme",
+        shot: {
+          src: "/images/projects/scrumtrulescent/screen-home-dark.webp",
+          width: 1600,
+          height: 1000,
+          alt: "The Scrumtrulescent home page in its dark theme: white type and rules on black, with the dark lockup.",
+          caption: "Dark theme: the same home page after dark.",
+        },
+      },
+      {
+        kind: "devices",
+        mocks: [
+          {
+          src: "/images/projects/scrumtrulescent/phone-home.webp",
+          width: 780,
+          height: 1688,
+          alt: "The Scrumtrulescent home page at phone width: the head mark and a menu button above the introduction and the portrait.",
+        },
+        ],
+      },
+    ],
+  },
+  {
     slug: "sandala-dev",
     title: "sandala.dev",
     tagline: "This site",

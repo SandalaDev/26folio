@@ -32,6 +32,29 @@ work I set myself. Each card says which is which.
 No project count, so it stays true as Scrumtrulescent and Cloudege join. Each
 card shows its credit and disciplines under the title.
 
+## Scrumtrulescent (TASK-137)
+
+**Status: awaiting owner approval** (written 2026-10-10, after the rest of this
+file was approved). Framed from the magazine's own spine (`00-brief.md`,
+`10-design-system.md`); every feature named was checked against its code.
+
+- **Tagline:** Personal publication
+- **Credit:** Own venture
+- **Disciplines:** Product design, Design system, Payload CMS engineering
+- **Description:** My personal publication and the private editorial desk behind it, designed and built on Payload CMS. In development.
+- **Ends on:** Bespoke CMS Development with Payload, which lists it as evidence.
+
+**The idea**
+
+Own venture, in development. Scrumtrulescent is my personal publication: one person writing across code, tech, opinion, sport, television, film, books and music, with the continuity of a social feed and the care of a printed magazine. The public site is a sharp editorial broadsheet: black rules, condensed headlines, a serif for reading, and one electric pink used as a pointer and never as a mood. It has light and dark themes, topic pages, search, an email list, and a living design system page that documents its own rules. Behind it sits a private editorial desk built into Payload. One story record carries an idea through research, outlining, drafting, fact-checking, scheduling and publication without being copied between collections. The desk adds quick capture, a pipeline board, a calendar and a balance view across topics; the writing workspace adds an outline, version history, focus mode and panels for research, fact checks and spelling. One rule shapes all of it: I write every published word. AI can help with research and fact checks, and may not draft, rewrite or publish. The first articles are being written now, so what you see here is the real build with nothing published yet. Built with Next.js, Payload CMS, PostgreSQL and TypeScript.
+
+**Captions**
+
+- Design system: the rules, published as a page of the site.
+- Editorial patterns: story cards and lists from the design system.
+- Topic page: Tech, with a collection of connected pieces.
+- Dark theme: the same home page after dark.
+
 ## sandala.dev (TASK-137)
 
 - **Tagline:** This site

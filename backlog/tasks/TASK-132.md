@@ -39,8 +39,8 @@ Track the owner-supplied assets agreed at kickoff. Drop originals in
 - [ ] Cloudege: card loop (5 to 8 s) and hero loop (10 to 15 s)
 - [ ] Cloudege: the partner's sign-off on the finished page content
 - [ ] Scrumtrulescent: Payload admin screens and a recording (read an article, then publish one)
-- [ ] Scrumtrulescent: public screens (home, an article, the article at phone width). Moved here from TASK-133: scrumtrulescent.com is not live. Supply them, or authorize the agent to run the magazine locally and capture them.
-- [ ] Scrumtrulescent: its status to state on the page (in development, private beta, launching on a date)
+- [x] Scrumtrulescent: public screens. The owner asked the agent to capture them from the local build; done 2026-10-10 (no article page exists yet).
+- [x] Scrumtrulescent: status. The page says "in development", matching the live site's own "I have not published anything yet".
 - [ ] sandala.dev: a recording of moving through the site
 - [ ] OK Pharmacy: a regenerated cover scene with the mark and text correct and no visible watermark
 

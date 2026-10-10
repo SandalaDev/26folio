@@ -215,21 +215,19 @@ assets and a partner sign-off. No delivery rate is recorded for this project
 
 ## Progress (2026-10-10)
 
-Done: TASK-130, 131, 133, 134, 135, 136, 140, 142, 143. `/work` now shows
-sandala.dev, The Flavour Grills Cafe and the three self-commissioned projects,
-with credits, preview loops and capability links; the spine matches.
+Done: TASK-130, 131, 133, 134, 135, 136, 139, 140, 141, 142, 143. `/work` shows
+six projects (Scrumtrulescent, sandala.dev, The Flavour Grills Cafe, Provision
+Finance, OK Pharmacy, Gardenfare Foods) with credits, capability links and, for
+the four brand projects, preview loops. The owner approved the copy except
+Scrumtrulescent's, which was written after that approval.
 
-Built, waiting on owner approval of copy (`planning/content/page-copy/Work.md`):
-TASK-137 (sandala.dev half), TASK-139, TASK-141.
+Open:
+- TASK-137: owner approval of the Scrumtrulescent copy.
+- TASK-132 (owner assets): Cloudege's product list, screens, logo, clips and
+  the partner's sign-off; Scrumtrulescent admin screens and a recording; a
+  sandala.dev recording; the regenerated OK Pharmacy cover.
+- TASK-138: Cloudege, blocked on those assets.
 
-Waiting on owner assets (TASK-132): Cloudege (TASK-138), Scrumtrulescent
-(TASK-137's other half; scrumtrulescent.com is not live), the sandala.dev
-recording, the regenerated OK Pharmacy cover.
-
-Open owner decisions: Flavour Grills' phone numbers on `poster-pastry` (on the
-page and in its clips); whether the sandala.dev card should keep the home-page
-screenshot until its recording arrives.
-
-Filed outside the epic: every page's heading is invisible under reduced motion
-(a site-wide hydration defect in 22 components); the home page's four "What I
-do" links point at anchors `/capabilities` does not have.
+Filed outside the epic: page headings invisible under reduced motion (site-wide
+hydration defect in 22 components); the home page's four "What I do" links
+point at anchors `/capabilities` does not have.
