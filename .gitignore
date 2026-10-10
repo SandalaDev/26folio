@@ -73,3 +73,6 @@ planning/content/.slop/
 /ui plans/
 /meeting on techlife.md
 /00-inbox/
+
+# stray nested Obsidian vault that Obsidian keeps re-creating at the repo root
+/26folio/

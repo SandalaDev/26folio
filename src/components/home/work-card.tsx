@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, useTransform } from "framer-motion";
 
 import { useDoorTilt } from "@/components/motion/tilt-card";
+import { PreviewVideo } from "@/components/work/preview-video";
 import type { Project } from "@/lib/projects";
 
 /**
@@ -17,8 +18,9 @@ import type { Project } from "@/lib/projects";
  * open toward the viewer; the image zooms on the same hover spring so door
  * swing + zoom read as one motion (EPIC-011 owner note 5). Fine pointers
  * with motion allowed get the tilt; everyone else keeps a plain CSS zoom.
- * Projects without an image (placeholders) keep the gradient text-card
- * treatment.
+ * Projects without an image keep the gradient text-card treatment. EPIC-029:
+ * every card states its credit (Client, Own venture or Self-commissioned) and
+ * disciplines, and plays its preview loop on hover or focus.
  */
 function WorkCard({
   project,
@@ -33,8 +35,10 @@ function WorkCard({
   });
   // Coordinated zoom off the same spring (design lane §3.B: never useState).
   const imageScale = useTransform(hover, [0, 1], [1, 1.06]);
+  // Drives the card's preview loop (EPIC-029 TASK-136); hover or keyboard focus.
+  const [active, setActive] = React.useState(false);
 
-  /* Imageless fallback - the pre-EPIC-010 text card (placeholders on /work). */
+  /* Imageless fallback - the pre-EPIC-010 text card, for a project with no cover yet. */
   if (!project.image) {
     return (
       <Link
@@ -58,6 +62,10 @@ function WorkCard({
       <motion.div style={cardStyle} className="will-change-transform">
         <Link
           href={project.href}
+          onPointerEnter={() => setActive(true)}
+          onPointerLeave={() => setActive(false)}
+          onFocus={() => setActive(true)}
+          onBlur={() => setActive(false)}
           className={`group relative flex flex-col justify-end overflow-hidden border border-border bg-surface transition-colors hover:border-border-2 ${
             featured ? "min-h-[26rem] md:min-h-[34rem]" : "aspect-[4/3]"
           }`}
@@ -80,6 +88,9 @@ function WorkCard({
               sizes="(min-width: 768px) 55vw, 100vw"
               className="object-cover"
             />
+            {project.video?.card ? (
+              <PreviewVideo clip={project.video.card} trigger="hover" active={active} />
+            ) : null}
           </motion.div>
           {/* Warm scrim keeps title/tagline at AA contrast over any image. */}
           <div
@@ -93,6 +104,10 @@ function WorkCard({
             <h3 className="mt-2 font-display text-3xl font-semibold text-ink md:text-4xl">
               {project.title}
             </h3>
+            <p className="mt-3 text-sm text-soft">
+              <span className="text-ink">{project.credit}</span>
+              {project.disciplines.length > 0 && <> · {project.disciplines.join(", ")}</>}
+            </p>
           </div>
         </Link>
       </motion.div>

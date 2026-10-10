@@ -1,7 +1,7 @@
 ---
 id: TASK-103
 title: "Card hover video previews (HoverVideo) — owner input required"
-status: blocked
+status: superseded
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -142,3 +142,9 @@ with the date.
 If Option B is chosen, the clips are the long-lead item — ask for them early, and
 specify format, resolution, duration, and target file size in the request rather
 than accepting whatever arrives.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

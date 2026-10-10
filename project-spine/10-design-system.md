@@ -229,6 +229,28 @@ skin-derived palette); illustration carries the futuristic edge. Keep them tonal
 consistent with the warm-dark base — no cold, blue-cast stock imagery dropped onto a
 warm canvas. Decorative images use `alt=""`; meaningful images carry real `alt` text.
 
+**Site imagery versus artefact imagery (EPIC-026, confirmed in EPIC-029).** The
+rule above binds *site imagery*: portraits, decorative illustration and backdrops,
+whose palette is ours to choose. *Artefact imagery* (project and client work on
+`/work`) is evidence and is shown faithfully: correct colours and proportions, no
+filters, no recolouring, no warm wash. It sits on an `ArtefactPlate`, a mat built
+from `surface`, `surface-2` and `border` with a hairline edge, which separates
+foreign artwork from the warm canvas instead of pretending it belongs to it. Project
+pages adapt their *layout* to each project's assets; they never borrow a project's
+palette, type or primitives. A project's brand colours appear only inside its
+artwork and as labelled swatches in a `palette` block.
+
+**AI-generated imagery (EPIC-029).** Allowed as a mockup or environment scene when
+no watermark is visible, and never in place of the artwork itself. A generated
+scene that garbles a mark or its text is not used.
+
+**Preview video.** Work cards and project heroes may carry a muted loop. It sits
+over the still already on the page, fills that still's box, fades in only once
+playback starts, and is not rendered at all under reduced motion. Budget: about
+1 MB per card clip and 3 MB per hero clip, `preload="none"`. Clips cut from a
+project's stills are built by `tools/build-clips.mjs` and contain only the
+owner's artwork.
+
 ## 10. Accessibility
 
 - WCAG **AA** floor (4.5:1 text); body text pairs above target AAA (see §2).

@@ -1,7 +1,7 @@
 ---
 id: TASK-093
 title: "Normalize, optimize, and commit the four project asset sets"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -139,3 +139,9 @@ Finance 12 / 12MB, Gardenfare Foods 9 / 2.6MB, Flavour Grills Cafe 6 / 1.5MB.
 `tmp/pdfs/maxisave-*.jpg` in the working tree is unrelated scratch from an
 earlier session and is now gitignored. It is **not** part of this epic; do not
 process or commit it.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

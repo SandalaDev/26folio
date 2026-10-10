@@ -1,7 +1,7 @@
 ---
 id: TASK-105
 title: "tests: validate the work section — accessibility, design-system conformance, image budget, build"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -195,3 +195,9 @@ the payload and reduced-motion checks when previews arrive.
 
 Record measurements inline above as they are taken. The point of this task is the
 evidence it leaves behind, not the checkmarks.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.
