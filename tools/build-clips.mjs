@@ -25,10 +25,27 @@ const FFMPEG = process.env.FFMPEG ?? "ffmpeg";
 const ease = (t) => 0.5 - Math.cos(Math.PI * Math.min(Math.max(t, 0), 1)) / 2;
 const lerp = (a, b, t) => a + (b - a) * t;
 
-/** Decode a still once; `contain` pads it to the frame's aspect with its own corner colour. */
-async function loadStill(file, fit, aspect) {
-  let img = sharp(path.join(ROOT, "public/images/projects", file)).removeAlpha();
-  if (fit === "contain") {
+/** Edge pixels copied around each still, so bicubic sampling at the border never reads black. */
+const PAD = 4;
+
+/** The frame-aspect window at zoom 1: as much of the still as fits. */
+function baseWindow(width, height, W, H) {
+  let bw = width;
+  let bh = bw / (W / H);
+  if (bh > height) { bh = height; bw = bh * (W / H); }
+  return { bw, bh };
+}
+
+/**
+ * Decode a shot's still once. `contain` pads it to the frame's aspect with its own
+ * corner colour. The still is then resized once, so that the shot's widest window
+ * maps to the frame at exactly 1:1: every frame after that only enlarges, which
+ * bicubic sampling does cleanly at fractional positions.
+ */
+async function loadStill(shot, W, H) {
+  const aspect = W / H;
+  let img = sharp(path.join(ROOT, "public/images/projects", shot.src)).removeAlpha();
+  if ((shot.fit ?? "cover") === "contain") {
     const { width, height } = await img.metadata();
     const { data } = await img.clone().extract({ left: 0, top: 0, width: 1, height: 1 }).raw().toBuffer({ resolveWithObject: true });
     const background = { r: data[0], g: data[1], b: data[2] };
@@ -37,29 +54,50 @@ async function loadStill(file, fit, aspect) {
     img = sharp(await img.extend({
       left: Math.floor((w - width) / 2), right: Math.ceil((w - width) / 2),
       top: Math.floor((h - height) / 2), bottom: Math.ceil((h - height) / 2), background,
-    }).toBuffer());
+    }).png({ compressionLevel: 0 }).toBuffer());
   }
-  const { data, info } = await img.raw().toBuffer({ resolveWithObject: true });
-  return { data, width: info.width, height: info.height };
+  const { width, height } = await img.metadata();
+  const { bw } = baseWindow(width, height, W, H);
+  const scale = (W * Math.min(shot.from.z, shot.to.z)) / bw;
+  const w = Math.round(width * scale);
+  const h = Math.round(height * scale);
+  const { data, info } = await sharp(await img.resize(w, h, { kernel: "lanczos3", fit: "fill" }).png({ compressionLevel: 0 }).toBuffer())
+    .removeAlpha()
+    .extend({ top: PAD, bottom: PAD, left: PAD, right: PAD, extendWith: "copy" })
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  return { data, width: w, height: h, rawWidth: info.width, rawHeight: info.height };
 }
 
-/** One frame of a shot: a window of the frame's aspect, zoomed by `z`, centred by focal x/y in 0..1. */
+/**
+ * One frame of a shot: a window of the frame's aspect, zoomed by `z`, centred by
+ * focal x/y in 0..1. The window keeps its fractional size and position: rounding
+ * either to whole pixels made the picture wobble from frame to frame.
+ */
 async function shotFrame(still, shot, t, W, H) {
   const k = ease(t);
-  const z = lerp(shot.from.z, shot.to.z, k);
+  // Geometric, so equal steps of time read as equal steps of scale.
+  const z = shot.from.z * (shot.to.z / shot.from.z) ** k;
   const fx = lerp(shot.from.x ?? 0.5, shot.to.x ?? 0.5, k);
   const fy = lerp(shot.from.y ?? 0.5, shot.to.y ?? 0.5, k);
-  const aspect = W / H;
-  let bw = still.width;
-  let bh = bw / aspect;
-  if (bh > still.height) { bh = still.height; bw = bh * aspect; }
-  const ww = Math.max(2, Math.round(bw / z));
-  const wh = Math.max(2, Math.round(bh / z));
-  const left = Math.round(lerp(0, still.width - ww, fx));
-  const top = Math.round(lerp(0, still.height - wh, fy));
-  return sharp(still.data, { raw: { width: still.width, height: still.height, channels: 3 } })
-    .extract({ left, top, width: ww, height: wh })
-    .resize(W, H, { kernel: "lanczos3" })
+  const { bw, bh } = baseWindow(still.width, still.height, W, H);
+  const ww = bw / z;
+  const wh = bh / z;
+  const left = PAD + (still.width - ww) * fx;
+  const top = PAD + (still.height - wh) * fy;
+  const s = W / ww;
+  // libvips maps output X = s * x + odx; the half-pixel terms align pixel centres.
+  const { data, info } = await sharp(still.data, { raw: { width: still.rawWidth, height: still.rawHeight, channels: 3 } })
+    .affine([s, 0, 0, s], {
+      odx: 0.5 * s - 0.5 - s * left,
+      ody: 0.5 * s - 0.5 - s * top,
+      interpolator: sharp.interpolators.bicubic,
+    })
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  // sharp runs extract before affine within one pipeline, so crop in a second pass.
+  return sharp(data, { raw: { width: info.width, height: info.height, channels: 3 } })
+    .extract({ left: 0, top: 0, width: W, height: H })
     .raw()
     .toBuffer();
 }
@@ -77,7 +115,7 @@ async function buildClip(slug, name, clip) {
   const [W, H] = clip.size;
   const out = path.join(ROOT, "public/videos/projects", slug);
   fs.mkdirSync(out, { recursive: true });
-  const stills = await Promise.all(clip.shots.map((s) => loadStill(s.src, s.fit ?? "cover", W / H)));
+  const stills = await Promise.all(clip.shots.map((s) => loadStill(s, W, H)));
 
   // Timeline: each shot overlaps the previous one by FADE seconds.
   const starts = [];

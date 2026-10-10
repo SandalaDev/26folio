@@ -76,6 +76,11 @@ preview clip until the owner's recording arrives (TASK-132).
 status line is unknown; both are on the TASK-132 list. Nothing is published
 for it until they land.
 
+## sandala.dev removed (2026-10-10)
+
+The owner decided sandala.dev is not a project (TASK-144). Its entry, screens
+and copy were removed; only the Scrumtrulescent page remains in this task.
+
 ## sandala.dev copy approved (2026-10-10)
 
 The owner chose "Approve as written" in chat for the sandala.dev text, the

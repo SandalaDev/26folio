@@ -41,7 +41,7 @@ Track the owner-supplied assets agreed at kickoff. Drop originals in
 - [ ] Scrumtrulescent: Payload admin screens and a recording (read an article, then publish one)
 - [x] Scrumtrulescent: public screens. The owner asked the agent to capture them from the local build; done 2026-10-10 (no article page exists yet).
 - [x] Scrumtrulescent: status. The page says "in development", matching the live site's own "I have not published anything yet".
-- [ ] sandala.dev: a recording of moving through the site
+- [x] ~~sandala.dev: a recording of moving through the site~~ Not needed: sandala.dev is no longer a project (TASK-144).
 - [ ] OK Pharmacy: a regenerated cover scene with the mark and text correct and no visible watermark
 
 Clip spec: muted MP4 (H.264), any length over the target is fine; the agent

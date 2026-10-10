@@ -62,7 +62,7 @@ a known property rather than treated as a defect.
 
 ---
 
-## `ok-pharmacy` — 12 files, 672KB
+## `ok-pharmacy` — 12 files, 1126KB
 
 Self-initiated. Teal-to-green identity; the `O` of the wordmark is a hand making
 an "OK" gesture. Tagline "For Your Wellness". The deepest application set of the
@@ -70,18 +70,31 @@ four.
 
 | File | Dimensions | Size | Role | What it shows | From |
 |---|---|---|---|---|---|
-| `cover.webp` | 830×830 | 116KB | `hero` | A woman holding a small child close, both smiling, on white, with the OK monogram overlaid in translucent teal | `cover.jpg` |
+| `cover.webp` | 1800×1800 | 347KB | `hero` | A woman holding a small child close, both smiling, on white, with the OK monogram overlaid in translucent teal | `cover.jpg` |
 | `logo-full.svg` | 665×667 | 10KB | `logo-suite` | Primary lockup: monogram, "Pharmacy" in green, "For Your Wellness" | `full-logo-svg.svg` |
 | `logo-symbol.svg` | 533×320 | 2KB | `logo-suite` | Monogram alone, blue-teal | `logo-symbol-svg.svg` |
 | `logo-wordmark.svg` | 827×453 | 11KB | `logo-suite` | Monogram plus "Pharmacy", no tagline | `symbol-name-svg.svg` |
-| `logo-square.webp` | 1200×1077 | 26KB | `logo-suite` | Full lockup on a white square, tagline set lowercase | `square-logo-png.png` |
-| `signage.webp` | 1500×1000 | 91KB | `in-situ` | Illuminated double-sided sign hung from a mall ceiling, reading "OPEN 24 HOURS" below the logo | `signage-mockup.jpg` |
-| `bag.webp` | 1600×1113 | 21KB | `in-situ` | White paper retail bag with rope handles carrying the logo, on a teal ground | `bag-mockup.jpg` |
-| `poster.webp` | 1439×830 | 73KB | `poster` | Logo beside the mother-and-child photograph, on white | `poster.jpg` |
-| `social-banner.webp` | 1100×417 | 21KB | `social` | Wide teal banner: monogram over photographs of smiling people | `social-banner.jpg` |
-| `social-facebook.webp` | 1600×965 | 52KB | `social` | Facebook page mockup with branded cover and a "SPECIAL OFFER! 30% OFF" post | `FB Page Mockup.jpg` |
-| `social-linkedin.webp` | 816×1200 | 57KB | `social` | LinkedIn company page mockup | `LinkedIn-mockup.jpg` |
+| `logo-square.webp` | 2000×1795 | 50KB | `logo-suite` | Full lockup on a white square, tagline set lowercase | `square-logo-png.png` |
+| `signage.webp` | 2400×1600 | 131KB | `in-situ` | Illuminated double-sided sign hung from a mall ceiling, reading "OPEN 24 HOURS" below the logo | `signage-mockup.jpg` |
+| `bag.webp` | 1725×1200 | 24KB | `in-situ` | White paper retail bag with rope handles carrying the logo, on a teal ground | `bag-mockup.jpg` |
+| `poster.webp` | 2400×1384 | 110KB | `poster` | Logo beside the mother-and-child photograph, on white | `poster.jpg` |
+| `social-banner.webp` | 2200×834 | 50KB | `social` | Wide teal banner: monogram over photographs of smiling people | `social-banner.jpg` |
+| `social-facebook.webp` | 2400×1448 | 89KB | `social` | Facebook page mockup with branded cover and a "SPECIAL OFFER! 30% OFF" post | `FB Page Mockup.jpg` |
+| `social-linkedin.webp` | 1224×1800 | 112KB | `social` | LinkedIn company page mockup | `LinkedIn-mockup.jpg` |
 | `screen-storefront.webp` | 2000×1913 | 190KB | `screens` | Full e-commerce site design: "New Arrivals" hero, stocked-brand row, branch locator map, pharmacist portrait, teal sections | `website.svg` (rasterized) |
+
+**AI-upscaled (EPIC-029 TASK-144, owner request, 2026-10-10).** The owner judged
+these rasters too low-resolution. `cover`, `poster`, `signage`, `social-banner`,
+`social-linkedin` and `logo-square` were enlarged 4x from their originals with
+Real-ESRGAN (`realesrgan-x4plus`; planning/dependencies/DEP-20261010-realesrgan-local-tool.md),
+then downscaled to the sizes above. The model shifted tone (skin lighter, greys
+whiter), so only its fine detail was kept: each output is the upscale plus the
+difference between the original and the upscale at a 6px Gaussian blur, which
+restores the original's colour. Every output was compared with its original by
+eye; faces and lettering are unchanged. This is an explicit exception to the
+no-retouch rule above, for this project only. `bag` and `social-facebook` were
+not upscaled: their originals were already larger, so they were re-derived at
+1725px and 2400px.
 
 **Excluded**
 
@@ -229,25 +242,6 @@ presents one full-width composed sheet at generous size with a caption.
 This is the composition model working as intended — a new asset kind surfaced a
 missing block rather than being crammed into a template. Added to `EPIC-026`'s
 vocabulary and to `TASK-094` / `TASK-097`.
-
----
-
-## `sandala-dev` — 6 files, 251KB
-
-Captured by the agent on 2026-10-10 (EPIC-029 TASK-133) from a local
-production build of this site, through headless Chrome with device emulation.
-Desktop at 1440×900 and 2x, phones at 390×844 and 3x, downscaled to the widths
-below. No private data appears in any of them: the contact form is empty.
-Recapture if the pages change materially before launch.
-
-| File | Size | Weight | Role | Shows |
-|---|---|---|---|---|
-| `screen-home.webp` | 1600×1000 | 46KB | `screens` | Home hero: headline, portrait, positioning line, "Let's talk" |
-| `screen-about.webp` | 1600×1000 | 50KB | `screens` | About hero: "Engineer. Designer. Builder." and the bio |
-| `screen-capabilities.webp` | 1600×1000 | 41KB | `screens` | Capabilities hero with the "useful system" diagram |
-| `screen-contact.webp` | 1600×1000 | 35KB | `screens` | Contact page: the inquiry form and direct channels |
-| `phone-home.webp` | 780×1688 | 53KB | `devices` | Home hero at phone width |
-| `phone-contact.webp` | 780×1688 | 26KB | `devices` | Contact form at phone width |
 
 ---
 

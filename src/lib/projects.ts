@@ -300,86 +300,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "sandala-dev",
-    title: "sandala.dev",
-    tagline: "This site",
-    description:
-      "This site: a design system, its motion and a working contact pipeline, designed and built by one person.",
-    href: "/work/sandala-dev",
-    image: "/images/projects/sandala-dev/screen-home.webp",
-    disciplines: ["Interface design", "Design system", "Front-end engineering"],
-    credit: "Own venture",
-    // The plan named the "motion" technology area, but that is a tab, not a
-    // service a link can land on; the design service is what this site evidences.
-    capability: "design",
-    blocks: [
-      {
-        kind: "hero",
-        cover: {
-          src: "/images/projects/sandala-dev/screen-home.webp",
-          width: 1600,
-          height: 1000,
-          alt: "The sandala.dev home page: the headline I build the software your business actually needs, a circular portrait, a positioning paragraph and a Let's talk button on a warm dark gradient.",
-          tone: "bare",
-        },
-      },
-      {
-        kind: "note",
-        body: "Own venture: the site you are reading. It had two jobs. The first was to say plainly what I do and for whom, so every page starts from a problem a business would recognize before it names any technology. The second was to be evidence in its own right, so it is built the way I build for clients. A warm, dark design system with square corners and a small set of tokens keeps every page in one language, including these project pages, which fit their layout to each project's artwork but never borrow its colours. Motion appears where it explains something and switches off entirely for anyone whose device asks for reduced motion. The contact form checks for a human with Turnstile, validates on the server, delivers the inquiry by email through Resend and sends the sender an acknowledgement. Every page is generated ahead of time and served from Cloudflare's edge, with no database to maintain. Built with Next.js, TypeScript, Tailwind CSS, Framer Motion and GSAP, on Cloudflare Workers.",
-      },
-      {
-        kind: "screens",
-        label: "Capabilities",
-        shot: {
-          src: "/images/projects/sandala-dev/screen-capabilities.webp",
-          width: 1600,
-          height: 1000,
-          alt: "The capabilities page hero: Custom software for businesses that have outgrown manual work, beside a diagram linking payments, automation and customers to a useful system.",
-          caption: "Capabilities: services described by the problem they solve.",
-        },
-      },
-      {
-        kind: "screens",
-        label: "About",
-        shot: {
-          src: "/images/projects/sandala-dev/screen-about.webp",
-          width: 1600,
-          height: 1000,
-          alt: "The about page hero: Engineer. Designer. Builder. above a short biography.",
-          caption: "About: the person, in the same voice as the work.",
-        },
-      },
-      {
-        kind: "devices",
-        mocks: [
-          {
-            src: "/images/projects/sandala-dev/phone-home.webp",
-            width: 780,
-            height: 1688,
-            alt: "The home page at phone width: the headline, portrait, paragraph and Let's talk button stacked in one column.",
-          },
-          {
-            src: "/images/projects/sandala-dev/phone-contact.webp",
-            width: 780,
-            height: 1688,
-            alt: "The contact page at phone width: the Let's talk heading above name, email, project type and message fields.",
-          },
-        ],
-      },
-      {
-        kind: "screens",
-        label: "Contact",
-        shot: {
-          src: "/images/projects/sandala-dev/screen-contact.webp",
-          width: 1600,
-          height: 1000,
-          alt: "The contact page: an inquiry form with name, email, project type and message fields, beside direct channels and a note on what happens next.",
-          caption: "Contact: Turnstile, server validation, email delivery and an auto-reply.",
-        },
-      },
-    ],
-  },
-  {
     slug: "flavour-grills-cafe",
     title: "The Flavour Grills Cafe",
     tagline: "Restaurant & hospitality",
@@ -620,8 +540,8 @@ export const projects: Project[] = [
         kind: "hero",
         cover: {
           src: "/images/projects/ok-pharmacy/cover.webp",
-          width: 830,
-          height: 830,
+          width: 1800,
+          height: 1800,
           alt: "A woman holding a small child close, both smiling, with the OK monogram overlaid in translucent teal.",
           // Photograph on a white ground: needs a mat to stop it bleeding out.
           tone: "neutral",
@@ -658,8 +578,8 @@ export const projects: Project[] = [
           },
           {
             src: "/images/projects/ok-pharmacy/logo-square.webp",
-            width: 1200,
-            height: 1077,
+            width: 2000,
+            height: 1795,
             alt: "The full OK Pharmacy lockup on a white square, tagline set lowercase.",
             // Already a white field edge to edge.
             tone: "bare",
@@ -672,15 +592,15 @@ export const projects: Project[] = [
         scenes: [
           {
             src: "/images/projects/ok-pharmacy/signage.webp",
-            width: 1500,
-            height: 1000,
+            width: 2400,
+            height: 1600,
             alt: "Illuminated double-sided sign hung from a mall ceiling, showing the OK Pharmacy logo above the words OPEN 24 HOURS.",
             caption: "Suspended signage: the 24-hour promise carried at distance.",
           },
           {
             src: "/images/projects/ok-pharmacy/bag.webp",
-            width: 1600,
-            height: 1113,
+            width: 1725,
+            height: 1200,
             alt: "White paper retail bag with rope handles carrying the OK Pharmacy logo, on a teal ground.",
           },
         ],
@@ -690,8 +610,8 @@ export const projects: Project[] = [
         posters: [
           {
             src: "/images/projects/ok-pharmacy/poster.webp",
-            width: 1439,
-            height: 830,
+            width: 2400,
+            height: 1384,
             alt: "OK Pharmacy poster: the logo beside a photograph of a woman holding a small child, on white.",
           },
         ],
@@ -701,20 +621,20 @@ export const projects: Project[] = [
         items: [
           {
             src: "/images/projects/ok-pharmacy/social-facebook.webp",
-            width: 1600,
-            height: 965,
+            width: 2400,
+            height: 1448,
             alt: "Facebook page mockup with an OK Pharmacy branded cover image and a special offer post.",
           },
           {
             src: "/images/projects/ok-pharmacy/social-linkedin.webp",
-            width: 816,
-            height: 1200,
+            width: 1224,
+            height: 1800,
             alt: "LinkedIn company page mockup for OK Pharmacy.",
           },
           {
             src: "/images/projects/ok-pharmacy/social-banner.webp",
-            width: 1100,
-            height: 417,
+            width: 2200,
+            height: 834,
             alt: "Wide teal social banner with the OK monogram over photographs of smiling people.",
           },
         ],

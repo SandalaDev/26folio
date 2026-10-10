@@ -55,26 +55,6 @@ Own venture, in development. Scrumtrulescent is my personal publication: one per
 - Topic page: Tech, with a collection of connected pieces.
 - Dark theme: the same home page after dark.
 
-## sandala.dev (TASK-137)
-
-- **Tagline:** This site
-- **Credit:** Own venture
-- **Disciplines:** Interface design, Design system, Front-end engineering
-- **Description:** This site: a design system, its motion and a working contact pipeline, designed and built by one person.
-- **Ends on:** Brand Identity & Interface Design. The plan named the "motion"
-  technology area, but that is a tab on /capabilities, not a section a link can
-  land on.
-
-**The idea**
-
-Own venture: the site you are reading. It had two jobs. The first was to say plainly what I do and for whom, so every page starts from a problem a business would recognize before it names any technology. The second was to be evidence in its own right, so it is built the way I build for clients. A warm, dark design system with square corners and a small set of tokens keeps every page in one language, including these project pages, which fit their layout to each project's artwork but never borrow its colours. Motion appears where it explains something and switches off entirely for anyone whose device asks for reduced motion. The contact form checks for a human with Turnstile, validates on the server, delivers the inquiry by email through Resend and sends the sender an acknowledgement. Every page is generated ahead of time and served from Cloudflare's edge, with no database to maintain. Built with Next.js, TypeScript, Tailwind CSS, Framer Motion and GSAP, on Cloudflare Workers.
-
-**Captions**
-
-- Capabilities: services described by the problem they solve.
-- About: the person, in the same voice as the work.
-- Contact: Turnstile, server validation, email delivery and an auto-reply.
-
 ## The Flavour Grills Cafe
 
 - **Tagline:** Restaurant & hospitality
@@ -151,6 +131,8 @@ Self-commissioned, and the constraint I set myself was format. A can, a gusseted
    were rebuilt from the cropped version.
 2. **`role` is unset on the four brand projects.** Fill it only if there is
    something to say.
+3. **sandala.dev is not a project** (owner, 2026-10-10, TASK-144). Its page,
+   card and screen captures were removed; the site speaks for itself.
 
 The AI-generated dispensary scene was ruled out at the EPIC-029 kickoff and is
 no longer in the repository.

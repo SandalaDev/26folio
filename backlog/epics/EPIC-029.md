@@ -57,6 +57,8 @@ answered "Yes, matches".
 3. **Projects in scope: seven.** The four brand projects, Scrumtrulescent,
    sandala.dev, and Cloudege: a suite of about six SaaS products under one
    brand that the owner is building with a partner.
+   *Amended 2026-10-10 by the owner (TASK-144): sandala.dev is not a
+   project. Six in scope.*
 4. **Grid order: real work first.** Cloudege, Scrumtrulescent, sandala.dev,
    The Flavour Grills Cafe, then the three self-commissioned projects.
 5. **Depth: short narrative.** About 150 to 300 words per page: the brief, the
@@ -181,6 +183,7 @@ cards, about 1 MB per card clip and 3 MB per hero clip, with a poster frame.
 - [x] TASK-141: Add the brand and web design capability. (M, 2)
 - [x] TASK-142: Reconcile the spine. (S, 1)
 - [x] TASK-143: tests: validate the work section. (M, 2)
+- [x] TASK-144: Owner review fixes: drop sandala.dev, steady clips, upscaled OK Pharmacy rasters. (S, 1)
 
 Order: 130, then 131. After 131, tasks 133, 134 and 136 can run side by side;
 135 follows 134; 137, 139 and 141 follow 131; 140 follows 136; 138 starts when
@@ -212,6 +215,7 @@ assets and a partner sign-off. No delivery rate is recorded for this project
 ## Dependency / Architecture Evidence
 
 - plan: planning/dependencies/DEP-20261009-ffmpeg-local-tool.md (installed; local tool only, no `package.json` change)
+- plan: planning/dependencies/DEP-20261010-realesrgan-local-tool.md (installed; local tool only, no `package.json` change)
 
 ## Progress (2026-10-10)
 
@@ -227,6 +231,12 @@ Open:
   the partner's sign-off; Scrumtrulescent admin screens and a recording; a
   sandala.dev recording; the regenerated OK Pharmacy cover.
 - TASK-138: Cloudege, blocked on those assets.
+
+Owner review, 2026-10-10 (TASK-144): sandala.dev removed from the work
+section; the clips wobbled because the builder rounded each frame's crop to
+whole pixels, so every clip was rebuilt with sub-pixel sampling; the OK
+Pharmacy rasters were AI-upscaled at the owner's request, an explicit
+exception to the no-retouch rule for that project only.
 
 Filed outside the epic: page headings invisible under reduced motion (site-wide
 hydration defect in 22 components); the home page's four "What I do" links
