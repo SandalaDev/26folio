@@ -178,7 +178,7 @@ set, so its page leans hardest on the flatlay and on written description.
 | `logo-navy.webp` | 600×450 | 18KB | `logo-suite` | All-navy single-colour version. **Transparent** | `flavour_blue.png` |
 | `logo-white.webp` | 600×450 | 9KB | `logo-suite` | All-white reversed version. **Transparent** | `flavour_white.png` |
 | `poster-duotone.webp` | 408×612 | 47KB | `poster` | Coral duotone food photograph with the white logo reversed over it | `flavour_posterwhite.png` |
-| `poster-pastry.webp` | 634×950 | 74KB | `poster` | A stack of sliced spiced pastries on a plate with coffee, cinnamon and cardamom; logo at top, contact details in a coral band at the foot | `postr2.png` |
+| `poster-pastry.webp` | 634×878 | 74KB | `poster` | A stack of sliced spiced pastries on a plate with coffee, cinnamon and cardamom; logo at top. Cropped above the coral contact band (owner decision, EPIC-029) | `postr2.png` |
 
 **Finding — the logo suite needs per-lockup plate tones.** Rendered against the
 warm-dark background (`#1a1411`) and against a light plate (`--color-ink`,
@@ -195,10 +195,10 @@ tone to a whole set; each lockup must carry its own. Both are recorded against
 `TASK-095` and `TASK-094`. A light mat needs no new token: `--color-ink` is already
 a warm pale rose and works as a mat fill.
 
-**Two items for TASK-101.** `poster-pastry.webp` carries the client's live phone
-numbers and web address in the coral band. Confirm with the owner before
-republishing a client's contact details on a third-party portfolio, even though the
-client distributes the poster itself. Also, `poster-duotone.webp` is only 408×612 —
+**Contact band removed (EPIC-029, 2026-10-10).** The coral band at the foot of
+`postr2.png` carried the client's phone numbers and web address. The owner chose to
+crop it, so `poster-pastry.webp` is cut from the original at row 878, just above the
+band. Also, `poster-duotone.webp` is only 408×612 —
 the native ceiling, so it cannot be shown as large as the other poster.
 
 ---

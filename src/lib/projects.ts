@@ -342,8 +342,8 @@ export const projects: Project[] = [
           {
             src: "/images/projects/flavour-grills-cafe/poster-pastry.webp",
             width: 634,
-            height: 950,
-            alt: "Poster showing a stack of sliced spiced pastries on a plate with coffee, cinnamon and cardamom, the logo at the top and contact details in a coral band at the foot.",
+            height: 878,
+            alt: "Poster showing a stack of sliced spiced pastries on a plate with coffee, cinnamon and cardamom and the logo at the top.",
           },
           {
             // 408x612 native — cannot be shown as large as the other poster.

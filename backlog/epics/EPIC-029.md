@@ -176,9 +176,9 @@ cards, about 1 MB per card clip and 3 MB per hero clip, with a poster frame.
 - [x] TASK-136: Video preview component for cards and heroes. (M, 2)
 - [ ] TASK-137: Scrumtrulescent and sandala.dev pages. (M, 2)
 - [ ] TASK-138: Cloudege page and product-suite block. (M, 2) *blocked on TASK-132*
-- [ ] TASK-139: Revise the four brand pages to the new rules. (S, 1)
+- [x] TASK-139: Revise the four brand pages to the new rules. (S, 1)
 - [x] TASK-140: Rebuild the `/work` grid for seven projects and retire placeholders. (M, 2)
-- [ ] TASK-141: Add the brand and web design capability. (M, 2)
+- [x] TASK-141: Add the brand and web design capability. (M, 2)
 - [x] TASK-142: Reconcile the spine. (S, 1)
 - [x] TASK-143: tests: validate the work section. (M, 2)
 

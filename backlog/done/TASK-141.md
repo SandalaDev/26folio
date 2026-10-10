@@ -1,7 +1,7 @@
 ---
 id: TASK-141
 title: Add the brand and web design capability
-status: ready
+status: done
 priority: P1
 risk_level: low
 epic_ref: EPIC-029
@@ -28,6 +28,7 @@ testing:
     - npm run typecheck
     - npm run build
 started_at: 2026-10-09T23:29:19Z
+completed_at: 2026-10-10T00:05:51Z
 ---
 
 # Task: Add the brand and web design capability
@@ -42,7 +43,7 @@ started_at: 2026-10-09T23:29:19Z
 ## Acceptance Criteria
 
 - [x] The service renders and its id resolves from the four brand pages.
-- [ ] Owner approved the copy.
+- [x] Owner approved the copy.
 
 ## Dependency Evidence
 
@@ -77,3 +78,7 @@ Verified in the dev server: `/capabilities` renders `id="design"` with the
 evidence links; `/work/provision-finance` links to `/capabilities#design`.
 
 Open: owner approval of the copy. The task stays open until then.
+
+## Approved (2026-10-10)
+
+The owner chose "Approve as written" in chat.

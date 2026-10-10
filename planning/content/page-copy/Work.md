@@ -5,7 +5,7 @@ string on the project pages, gathered so they can be read side by side. This
 file is the review surface; the shipped strings live in `src/lib/projects.ts`.
 Scrumtrulescent and Cloudege are added when their assets arrive.
 
-**Status: awaiting owner approval.** Written from what the artwork shows.
+**Status: approved by the owner on 2026-10-10** ("Approve as written"). Written from what the artwork shows.
 stop-slop: 50/50.
 
 ## Rules this copy holds to
@@ -121,16 +121,13 @@ Self-commissioned, and the constraint I set myself was format. A can, a gusseted
 - GardenSpread: creamy peanut butter
 - Applications: the mark against real product photography.
 
-## Owner decisions still open
+## Owner decisions
 
-1. **The client's contact details are legible in `poster-pastry`.** The coral
-   band at the foot of that poster carries Flavour Grills' phone numbers and web
-   address. It appears on the page and in both Flavour Grills preview clips.
-   The client distributes the poster itself, but republishing their contact
-   details on a portfolio is their call. Confirm, or supply a version with the
-   band cropped (the clips are rebuilt from it with one command).
-2. **`role` is unset on the four brand projects.** The artwork shows what was
-   made, not who else was involved. Fill it only if there is something to say.
+1. **Contact band on `poster-pastry`: cropped** (owner, 2026-10-10). The poster is
+   cut from the original just above the coral band, and both Flavour Grills clips
+   were rebuilt from the cropped version.
+2. **`role` is unset on the four brand projects.** Fill it only if there is
+   something to say.
 
 The AI-generated dispensary scene was ruled out at the EPIC-029 kickoff and is
 no longer in the repository.

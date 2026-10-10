@@ -75,3 +75,10 @@ preview clip until the owner's recording arrives (TASK-132).
 **Scrumtrulescent: blocked.** No screens exist (the site is not live) and its
 status line is unknown; both are on the TASK-132 list. Nothing is published
 for it until they land.
+
+## sandala.dev copy approved (2026-10-10)
+
+The owner chose "Approve as written" in chat for the sandala.dev text, the
+`/work` line and the brand copy. Scrumtrulescent: the owner asked the agent to
+run the magazine locally, use its own branding and images, and frame it from
+its spine.

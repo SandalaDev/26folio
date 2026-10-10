@@ -1,7 +1,7 @@
 ---
 id: TASK-139
 title: Revise the four brand pages to the new rules
-status: ready
+status: done
 priority: P1
 risk_level: low
 epic_ref: EPIC-029
@@ -29,6 +29,7 @@ testing:
     - npm run typecheck
     - npm run build
 started_at: 2026-10-09T23:31:14Z
+completed_at: 2026-10-10T00:03:52Z
 ---
 
 # Task: Revise the four brand pages to the new rules
@@ -45,7 +46,7 @@ started_at: 2026-10-09T23:31:14Z
 ## Acceptance Criteria
 
 - [x] No brand page could be read as client work unless it is.
-- [ ] Owner approved the copy.
+- [x] Owner approved the copy.
 
 ## Dependency Evidence
 
@@ -75,3 +76,7 @@ the monogram overlaid), so it stays until the regenerated scene arrives.
 Open owner decisions, carried in `Work.md`: Flavour Grills' phone numbers and
 web address are legible on `poster-pastry` (also in its clips); `role` is
 unset. The task stays open until the copy is approved.
+
+## Approved (2026-10-10)
+
+The owner chose "Approve as written" in chat.
