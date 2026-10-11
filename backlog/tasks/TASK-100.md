@@ -1,7 +1,7 @@
 ---
 id: TASK-100
 title: "Rebuild the /work grid for four real projects with honest credits"
-status: ready
+status: superseded
 priority: P1
 risk_level: low
 epic_ref: backlog/epics/EPIC-026.md
@@ -114,3 +114,9 @@ The two placeholder entries still exist in `projects.ts` at this point and will
 render in the grid. That is expected and temporary — `TASK-102` removes them.
 Do not delete them here; the grid work and the data cleanup are separate changes
 and keeping them separate keeps each reviewable.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

@@ -1,7 +1,7 @@
 ---
 id: TASK-097
 title: "Build the print and object blocks: flatlay, poster, packaging, in-situ, social"
-status: ready
+status: superseded
 priority: P2
 risk_level: low
 epic_ref: backlog/epics/EPIC-026.md
@@ -129,3 +129,9 @@ Depends on `TASK-094` and `TASK-095`. Runs in parallel with `TASK-096` and
 `SocialBlock` is used by exactly one project. That is fine and expected: the
 vocabulary is meant to grow one block per genuine need, not to be uniformly
 consumed. If a second project never needs it, it stays a one-user block.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

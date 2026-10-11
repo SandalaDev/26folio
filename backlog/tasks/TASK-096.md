@@ -1,7 +1,7 @@
 ---
 id: TASK-096
 title: "Build the foundational blocks: hero, note, logo-suite, palette"
-status: ready
+status: superseded
 priority: P1
 risk_level: low
 epic_ref: backlog/epics/EPIC-026.md
@@ -150,3 +150,9 @@ A prior finding worth remembering while building motion here: a hidden preview
 tab freezes `requestAnimationFrame`, so every framer-motion animation looks
 broken for reasons unrelated to the code. Check `document.hidden` before
 debugging.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

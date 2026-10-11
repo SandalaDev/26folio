@@ -1,7 +1,7 @@
 ---
 id: TASK-104
 title: "Reconcile the spine: content strategy, UI element map, design system"
-status: ready
+status: superseded
 priority: P2
 risk_level: low
 epic_ref: backlog/epics/EPIC-026.md
@@ -137,3 +137,9 @@ exists to prevent.
 `10-design-system.html` is a visual reference generated from the tokens. If it
 needs regenerating after the accent-channel addition, note it here rather than
 hand-editing the HTML — §12 forbids hand-authoring that preview.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

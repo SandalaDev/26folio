@@ -1,7 +1,7 @@
 ---
 id: TASK-095
 title: "Build the ArtefactPlate surface and the SVG treatment primitives"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -174,3 +174,9 @@ Record measured contrast ratios here as they are found, so `TASK-104` can write 
 The cancelled accent channel is documented above on purpose. `EPIC-026`'s history
 contains the rejected proposal, and without this note a later session could
 reasonably conclude it was simply forgotten.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

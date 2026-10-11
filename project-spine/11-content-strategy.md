@@ -123,6 +123,9 @@ Heavily borrows content organisation from addepto.com. Three sections:
      integration, e-commerce.
    - **AI integration:** customer-care voice & chatbots, receptionist bot, custom
      integrations, local/on-prem AI.
+   - **Brand identity & interface design** (added by EPIC-029, id `design`): the
+     identity carried into the website and the software. It links to the brand
+     projects on `/work` as evidence, and they link back to it.
 2. **Technologies**
    - Intro on skillset and tooling philosophy.
    - **Logo grid** (ramotion.com-inspired): *does not scroll* — animates a new set
@@ -136,9 +139,25 @@ Heavily borrows content organisation from addepto.com. Three sections:
 CTA: **Request a proposal & quote**.
 
 ### `/work`
-- Grid of projects, each with a **brief description** (problem/outcome framing where
-  possible). No case-study deep dives, testimonials, or metrics in v1 — projects
-  stand on their own for now (§5).
+*Rewritten by EPIC-029 (kickoff confirmed 2026-10-09); supersedes the v1 "no deep
+dives" rule. Full record: `backlog/epics/EPIC-029.md`.*
+
+- **Role:** evidence for the whole pitch, design and engineering together.
+- **Projects and order:** real work first. Own ventures (Cloudege, Scrumtrulescent,
+  sandala.dev), then the client project (The Flavour Grills Cafe), then
+  self-commissioned brand work (Provision Finance, OK Pharmacy, Gardenfare Foods).
+  A project appears only once its assets exist; Cloudege also needs the partner's
+  sign-off.
+- **Credit labels:** "Client", "Own venture", "Self-commissioned", on every card and
+  page. Self-commissioned work also says so in the first word of its text.
+- **Cards:** title, tagline, credit and disciplines, a preview loop on hover or
+  focus. No years.
+- **Project pages:** a short narrative (about 150 to 300 words: the brief, the
+  approach, what was made), then the artefacts. Engineering projects show real UI
+  screens and name the stack in one line. Each page ends on a link to the
+  `/capabilities` service it evidences, then "Start a project".
+- **Never:** testimonials, metrics, outcome claims, years, invented briefs or
+  quotes, fabricated mockups, or self-commissioned work presented as client work.
 - CTA: **Start a project**.
 
 ### `/contact`
@@ -152,13 +171,13 @@ CTA: **Request a proposal & quote**.
 |---|---|---|
 | All page copy (Home, About, Capabilities, Work, Contact) | **To create** | Agent drafts → Abe curates/approves |
 | Bio (short + long), interests content | To create | Abe provides raw material; agent shapes |
-| Project entries + brief descriptions | To create | Abe supplies projects; agent writes briefs |
+| Project entries + page copy | Drafted (EPIC-029), awaiting approval | Abe supplies assets; agent writes from what they show (`planning/content/page-copy/Work.md`) |
 | Technology list + "what I use it for" lines | To create | Abe lists tools; agent writes hover copy |
 | Engagement-process steps | To create | Agent drafts from Abe's actual process |
 | Scrumtrulescent intro blurb | To create | Agent drafts; Abe approves |
 | Photography / portrait | Exists (partial) | `Portrait 800 transparent.png` in repo root — confirm usage rights/placement |
 | Featured magazine articles | External | Pulled live from scrumtrulescent.com API; not authored here |
-| Testimonials / metrics / client logos | **Not in v1** | Deliberately excluded for now |
+| Testimonials / metrics / client logos | **Excluded** | Deliberately excluded; EPIC-029 reconfirmed for `/work` |
 
 Nothing pre-written exists — everything is generated from scratch, agent-created and
 owner-curated.

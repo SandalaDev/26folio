@@ -1,7 +1,7 @@
 ---
 id: TASK-094
 title: "Extend Project into the composition model and author all four compositions"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -141,3 +141,9 @@ redoing the work.
 The two placeholder projects (`placeholder-three`, `placeholder-four`) stay in
 place for now so nothing breaks mid-epic; `TASK-102` removes them once the grid
 and routes are rebuilt.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

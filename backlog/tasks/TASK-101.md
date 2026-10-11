@@ -1,7 +1,7 @@
 ---
 id: TASK-101
 title: "Draft per-project copy and alt text for owner approval"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -129,3 +129,9 @@ be read in place, at real size, rather than as a list of strings.
 
 Owner approval is mandatory before this ships. It is the one task in the epic
 where a confident-sounding wrong sentence does lasting damage.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

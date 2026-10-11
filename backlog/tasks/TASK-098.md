@@ -1,7 +1,7 @@
 ---
 id: TASK-098
 title: "Build the digital blocks: screens scroll frame and devices rows"
-status: ready
+status: superseded
 priority: P2
 risk_level: medium
 epic_ref: backlog/epics/EPIC-026.md
@@ -122,3 +122,9 @@ Prior finding, directly relevant: a hidden preview tab freezes
 appear completely broken. Check `document.hidden` first, before assuming the
 `useScroll` wiring is wrong. Also do not run a production build while the dev
 server is running — it clobbers `.next` and produces confusing failures.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

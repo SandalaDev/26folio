@@ -1,7 +1,7 @@
 ---
 id: TASK-102
 title: "Retire the placeholder projects and the two orphaned cover images"
-status: ready
+status: superseded
 priority: P2
 risk_level: low
 epic_ref: backlog/epics/EPIC-026.md
@@ -92,3 +92,9 @@ broken images.
 Note for whoever picks this up: the two orphaned images were restored during this
 session's cleanup specifically so that no commit on this branch would render broken
 images. Deleting them is the intended end state, not a reversal of that decision.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+EPIC-029 replaces EPIC-026. Work built for this task on the unmerged local
+branch `feature/EPIC-026` is salvaged by TASK-130; what remains is re-planned
+in EPIC-029.

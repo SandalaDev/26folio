@@ -1,7 +1,7 @@
 ---
 id: EPIC-026
 title: "Work section — real project pages composed from each project's own assets"
-status: ready
+status: superseded
 priority: P1
 risk_level: medium
 roadmap_refs: [ROAD-004]
@@ -318,3 +318,12 @@ filenames that are not plain ascii slugs make Next's image optimizer fail the
 request rather than degrade, and a hidden preview tab freezes
 `requestAnimationFrame`, so framer-motion work looks broken for reasons that have
 nothing to do with the code. Check `document.hidden` before debugging motion.
+
+## Superseded by EPIC-029 (2026-10-09)
+
+TASK-093 to TASK-101 were built on local branch `feature/EPIC-026` (never
+pushed or merged); TASK-102 to TASK-105 were not started. The owner started
+EPIC-029 with a new kickoff interview: seven projects including engineering
+work, video on every card and hero, and a new design capability. EPIC-029
+salvages this build (TASK-130) and re-plans the rest. Keep the branch until
+TASK-130 lands.
